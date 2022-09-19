@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_b/colors.dart';
 
+import '../../../home/pages/home_page.dart';
+
 class SetGPSPage extends StatefulWidget {
   const SetGPSPage({super.key});
 
@@ -28,8 +30,7 @@ class _SetGPSPageState extends State<SetGPSPage> {
           },
         ),
       ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+      body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,
@@ -76,7 +77,14 @@ class _SetGPSPageState extends State<SetGPSPage> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
                   child: const Text('เปิดใช้งาน Location'),
                 ),
                 SizedBox(height: size.height * 0.015),

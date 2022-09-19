@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_b/home/screens.dart';
 import 'package:project_b/login/login_main_page.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const LoginMainPage(),
+      home: const ScreensPage(),
     );
   }
 }
