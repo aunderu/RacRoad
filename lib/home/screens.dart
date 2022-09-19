@@ -55,6 +55,10 @@ class _ScreensPageState extends State<ScreensPage> {
           destinations: const [
             NavigationDestination(
               icon: Icon(
+                Icons.home_outlined,
+                size: 40,
+              ),
+              selectedIcon: Icon(
                 Icons.home,
                 size: 40,
               ),
@@ -62,20 +66,29 @@ class _ScreensPageState extends State<ScreensPage> {
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.group,
+                Icons.groups_outlined,
+                size: 40,
+              ),
+              selectedIcon: Icon(
+                Icons.groups,
                 size: 40,
               ),
               label: 'Club',
             ),
             NavigationDestination(
-                icon: Icon(
-                  Icons.sos,
-                  color: Colors.red,
-                  size: 40,
-                ),
-                label: 'SOS'),
+              icon: Icon(
+                Icons.sos_outlined,
+                color: Colors.red,
+                size: 40,
+              ),
+              label: 'SOS',
+            ),
             NavigationDestination(
               icon: Icon(
+                Icons.notifications_outlined,
+                size: 40,
+              ),
+              selectedIcon: Icon(
                 Icons.notifications,
                 size: 40,
               ),
@@ -83,6 +96,10 @@ class _ScreensPageState extends State<ScreensPage> {
             ),
             NavigationDestination(
               icon: Icon(
+                Icons.person_outline,
+                size: 40,
+              ),
+              selectedIcon: Icon(
                 Icons.person,
                 size: 40,
               ),
