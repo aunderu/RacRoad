@@ -210,66 +210,69 @@ class _HomePageState extends State<HomePage> {
 Widget clubSuggestion(BuildContext context, Size size) {
   return Padding(
     padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 12, 12),
-    child: Container(
-      width: 160,
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            color: Color(0x34090F13),
-            offset: Offset(0, 2),
-          )
-        ],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              // child: Image.network(
-              //   '',
-              //   width: double.infinity,
-              //   height: 100,
-              //   fit: BoxFit.cover,
-              // ),
-              child: Container(
-                width: double.infinity,
-                height: 100,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 5),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                    size.width * 0.2,
-                    size.height * 0.035,
-                  ),
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-                child: Text(
-                  'Join',
-                  style: GoogleFonts.sarabun(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+    child: InkWell(
+      onTap: () {},
+      child: Container(
+        width: 160,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEBEBEB),
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 4,
+              color: Color(0x34090F13),
+              offset: Offset(0, 2),
+            )
+          ],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                // child: Image.network(
+                //   '',
+                //   width: double.infinity,
+                //   height: 100,
+                //   fit: BoxFit.cover,
+                // ),
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  color: Colors.white,
                 ),
               ),
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 5),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(
+                      size.width * 0.2,
+                      size.height * 0.035,
+                    ),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  child: Text(
+                    'Join',
+                    style: GoogleFonts.sarabun(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

@@ -50,6 +50,7 @@ dependencies:
   get: ^4.6.5
   easy_debounce: ^2.0.2+1
   like_button: ^2.0.4
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
