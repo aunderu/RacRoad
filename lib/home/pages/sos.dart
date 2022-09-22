@@ -66,7 +66,17 @@ class _SOSPageState extends State<SOSPage> {
             elevation: 0,
           ),
         ],
-        body: Container(),
+        body: Container(
+          child: Center(
+            child: Text(
+              'SOS',
+              style: GoogleFonts.sarabun(
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

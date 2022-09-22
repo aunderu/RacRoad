@@ -1,6 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:project_b/home/pages/club/view_calentar.dart';
@@ -14,6 +16,7 @@ class ClubDetailsPage extends StatefulWidget {
 
 class _ClubDetailsPageState extends State<ClubDetailsPage> {
   TextEditingController? searchController;
+  bool isFabVisible = true;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,160 +32,198 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: Row(
+      floatingActionButton: isFabVisible
+          ? SpeedDial(
+              icon: Icons.add,
+              backgroundColor: Colors.black,
+              activeIcon: Icons.close,
+              spaceBetweenChildren: 1,
+              spacing: 10,
               children: [
-                Container(
-                  width: 35,
-                  height: 35,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.asset(
-                    'assets/imgs/profile.png',
-                    fit: BoxFit.contain,
-                  ),
+                SpeedDialChild(
+                  child: const Icon(Icons.camera_alt_outlined),
+                  label: "Camera",
                 ),
-                Text(
-                  'User Name',
-                  style: GoogleFonts.sarabun(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
+                SpeedDialChild(
+                  child: const Icon(Icons.live_tv_outlined),
+                  label: "Live",
+                ),
+                SpeedDialChild(
+                  child: const Icon(Icons.add_photo_alternate_outlined),
+                  label: "Photo/Video",
+                ),
+                SpeedDialChild(
+                  child: const Icon(Icons.border_color_outlined),
+                  label: "Post",
                 ),
               ],
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                child: IconButton(
-                  hoverColor: Colors.transparent,
-                  iconSize: 60,
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                  onPressed: () {},
+            )
+          : null,
+      body: NotificationListener<UserScrollNotification>(
+        onNotification: (notification) {
+          if (notification.direction == ScrollDirection.forward) {
+            if (!isFabVisible) setState(() => isFabVisible = true);
+          } else if (notification.direction == ScrollDirection.reverse) {
+            if (isFabVisible) setState(() => isFabVisible = false);
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
                 ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-            ],
-            centerTitle: false,
-            elevation: 0,
-          ),
-        ],
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: searchController,
-                          onChanged: (_) => EasyDebounce.debounce(
-                            'textController',
-                            const Duration(milliseconds: 2000),
-                            () => setState(() {}),
-                          ),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Search',
-                            labelStyle: GoogleFonts.sarabun(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xFFF3F3F3),
-                            suffixIcon: const Icon(
-                              Icons.search,
-                              color: Color(0xFF757575),
-                              size: 22,
-                            ),
-                          ),
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                clubDetails(context, size),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                  child: Text(
-                    'News Feed',
-                    style: GoogleFonts.sarabun(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+              title: Row(
+                children: [
+                  Container(
+                    width: 35,
+                    height: 35,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset(
+                      'assets/imgs/profile.png',
+                      fit: BoxFit.contain,
                     ),
                   ),
-                ),
+                  Text(
+                    'User Name',
+                    style: GoogleFonts.sarabun(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    primary: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      newsFeed(context, size),
-                      newsFeed(context, size),
-                      newsFeed(context, size),
-                      newsFeed(context, size),
-                    ],
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                  child: IconButton(
+                    hoverColor: Colors.transparent,
+                    iconSize: 60,
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    onPressed: () {},
                   ),
                 ),
               ],
+              centerTitle: false,
+              elevation: 0,
+            ),
+          ],
+          body: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: searchController,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              'textController',
+                              const Duration(milliseconds: 2000),
+                              () => setState(() {}),
+                            ),
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelText: 'Search',
+                              labelStyle: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              filled: true,
+                              fillColor: const Color(0xFFF3F3F3),
+                              suffixIcon: const Icon(
+                                Icons.search,
+                                color: Color(0xFF757575),
+                                size: 22,
+                              ),
+                            ),
+                            style: GoogleFonts.sarabun(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  clubDetails(context, size),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                    child: Text(
+                      'News Feed',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      primary: false,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        newsFeed(context, size),
+                        newsFeed(context, size),
+                        newsFeed(context, size),
+                        newsFeed(context, size),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
