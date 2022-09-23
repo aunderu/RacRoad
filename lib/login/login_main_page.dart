@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_b/colors.dart';
+import 'package:project_b/home/screens.dart';
 import 'package:project_b/login/page/with_email/stepone_with_email.dart';
 
+import '../home/pages/home_page.dart';
 import 'page/with_phone/stepone_with_phone.dart';
 
 class LoginMainPage extends StatelessWidget {
@@ -142,7 +144,14 @@ Widget loginWithGoogle(BuildContext context, Size size) {
         borderRadius: BorderRadius.circular(30.0),
       ),
     ),
-    onPressed: () {},
+    onPressed: () async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ScreensPage(),
+        ),
+      );
+    },
     label: Align(
       alignment: Alignment.centerLeft,
       child: Text(
@@ -170,7 +179,14 @@ Widget loginWithFacebook(BuildContext context, Size size) {
         borderRadius: BorderRadius.circular(30.0),
       ),
     ),
-    onPressed: () {},
+    onPressed: () async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ScreensPage(),
+        ),
+      );
+    },
     label: Align(
       alignment: Alignment.centerLeft,
       child: Text(

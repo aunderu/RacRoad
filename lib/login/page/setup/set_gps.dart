@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_b/colors.dart';
+import 'package:project_b/home/screens.dart';
 
 import '../../../home/pages/home_page.dart';
 
@@ -81,7 +82,7 @@ class _SetGPSPageState extends State<SetGPSPage> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (context) => const ScreensPage(),
                       ),
                     );
                   },

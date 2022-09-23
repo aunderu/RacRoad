@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_b/colors.dart';
+
+import '../../../home/screens.dart';
 
 const List<String> list = <String>['TH +66', 'MY +60', 'ID +62', 'SG +65'];
 
@@ -230,7 +231,14 @@ class _StepTwoOTPPageState extends State<StepTwoOTPPage> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ScreensPage(),
+                      ),
+                    );
+                  },
                   child: const Text('Next'),
                 ),
               ],
