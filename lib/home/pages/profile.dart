@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:project_b/colors.dart';
-import 'package:project_b/home/pages/profile/my_car_widget.dart';
-import 'package:project_b/home/pages/profile/my_club_widget.dart';
-import 'package:project_b/home/pages/profile/my_job_widget.dart';
+import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/pages/profile/my_car_widget.dart';
+import 'package:rac_road/home/pages/profile/my_club_widget.dart';
+import 'package:rac_road/home/pages/profile/my_job_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -23,9 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
 
   List pages = [
-    MyCarWidget(),
-    MyClubWidget(),
-    MyJobWidget(),
+    const MyCarWidget(),
+    const MyClubWidget(),
+    const MyJobWidget(),
   ];
 
   int current = 0;

@@ -1,5 +1,5 @@
-name: project_b
-description: A new Flutter project.
+name: rac_road
+description: A Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -52,6 +52,7 @@ dependencies:
   like_button: ^2.0.4
   expandable: ^5.0.1
   flutter_speed_dial: ^6.0.0
+  rename: ^2.0.1
 
 dev_dependencies:
   flutter_test:

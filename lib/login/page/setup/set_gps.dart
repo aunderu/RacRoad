@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project_b/colors.dart';
-import 'package:project_b/home/screens.dart';
+import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/screens.dart';
 
-import '../../../home/pages/home_page.dart';
 
 class SetGPSPage extends StatefulWidget {
   const SetGPSPage({super.key});

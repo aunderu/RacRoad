@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project_b/colors.dart';
+import 'package:rac_road/colors.dart';
 
 import 'steptwo_otp.dart';
 
