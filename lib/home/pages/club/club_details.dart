@@ -45,10 +45,6 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                   label: "Camera",
                 ),
                 SpeedDialChild(
-                  child: const Icon(Icons.live_tv_outlined),
-                  label: "Live",
-                ),
-                SpeedDialChild(
                   child: const Icon(Icons.add_photo_alternate_outlined),
                   label: "Photo/Video",
                 ),

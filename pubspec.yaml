@@ -53,6 +53,8 @@ dependencies:
   expandable: ^5.0.1
   flutter_speed_dial: ^6.0.0
   rename: ^2.0.1
+  auto_size_text: ^3.0.0
+  lottie: ^1.4.3
 
 dev_dependencies:
   flutter_test:
@@ -79,7 +81,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/imgs/
+    - assets/imgs/logos/
     - assets/icons/
+    - assets/lotties/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

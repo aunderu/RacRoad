@@ -17,6 +17,8 @@ class ScreensPage extends StatefulWidget {
 class _ScreensPageState extends State<ScreensPage> {
   TextEditingController? searchController;
   int index = 0;
+  final bool _isNoti = true;
+
   final screens = [
     const HomePage(),
     const ClubPage(),
@@ -52,8 +54,8 @@ class _ScreensPageState extends State<ScreensPage> {
         child: NavigationBar(
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
-          destinations: const [
-            NavigationDestination(
+          destinations: [
+            const NavigationDestination(
               icon: Icon(
                 Icons.home_outlined,
                 size: 40,
@@ -64,7 +66,7 @@ class _ScreensPageState extends State<ScreensPage> {
               ),
               label: 'Home',
             ),
-            NavigationDestination(
+            const NavigationDestination(
               icon: Icon(
                 Icons.groups_outlined,
                 size: 40,
@@ -75,7 +77,7 @@ class _ScreensPageState extends State<ScreensPage> {
               ),
               label: 'Club',
             ),
-            NavigationDestination(
+            const NavigationDestination(
               icon: Icon(
                 Icons.sos_outlined,
                 color: Colors.red,
@@ -84,24 +86,100 @@ class _ScreensPageState extends State<ScreensPage> {
               label: 'SOS',
             ),
             NavigationDestination(
-              icon: Icon(
-                Icons.notifications_outlined,
-                size: 40,
+              icon: Stack(
+                children: [
+                  const Icon(
+                    Icons.notifications_outlined,
+                    size: 40,
+                  ),
+                  _isNoti
+                      ? Positioned(
+                          top: -1.0,
+                          right: -1.0,
+                          child: Stack(
+                            children: const [
+                              Icon(
+                                Icons.brightness_1,
+                                color: Colors.red,
+                                size: 15,
+                              )
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
               ),
-              selectedIcon: Icon(
-                Icons.notifications,
-                size: 40,
+              selectedIcon: Stack(
+                children: [
+                  const Icon(
+                    Icons.notifications,
+                    size: 40,
+                  ),
+                  _isNoti
+                      ? Positioned(
+                          top: -1.0,
+                          right: -1.0,
+                          child: Stack(
+                            children: const [
+                              Icon(
+                                Icons.brightness_1,
+                                color: Colors.red,
+                                size: 15,
+                              )
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
               ),
               label: 'Notification',
             ),
             NavigationDestination(
-              icon: Icon(
-                Icons.person_outline,
-                size: 40,
+              icon: Stack(
+                children: [
+                  const Icon(
+                    Icons.person_outline,
+                    size: 40,
+                  ),
+                  _isNoti
+                      ? Positioned(
+                          top: -1.0,
+                          right: -1.0,
+                          child: Stack(
+                            children: const [
+                              Icon(
+                                Icons.brightness_1,
+                                color: Colors.red,
+                                size: 15,
+                              )
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
               ),
-              selectedIcon: Icon(
-                Icons.person,
-                size: 40,
+              selectedIcon: Stack(
+                children: [
+                  const Icon(
+                    Icons.person,
+                    size: 40,
+                  ),
+                  _isNoti
+                      ? Positioned(
+                          top: -1.0,
+                          right: -1.0,
+                          child: Stack(
+                            children: const [
+                              Icon(
+                                Icons.brightness_1,
+                                color: Colors.red,
+                                size: 15,
+                              )
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
               ),
               label: 'Profile',
             ),

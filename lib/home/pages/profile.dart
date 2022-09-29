@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
@@ -106,9 +105,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Image.network(
-                          'https://picsum.photos/seed/76/600',
-                        ),
+                        // child: Image.network(
+                        //   '',
+                        // ),
+                        child: Container(color: Colors.grey),
                       ),
                     ),
                     Container(

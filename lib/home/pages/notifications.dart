@@ -175,14 +175,14 @@ Widget listTile() {
         radius: 25,
       ),
       title: Text(
-        'หัวข้อแจ้งเตือน บลา ๆ',
+        'หัวข้อแจ้งเตือน',
         style: GoogleFonts.sarabun(
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: Text(
-        'วันที่ผ่านมา บลา ๆ',
+        '1 วันที่ผ่านมา',
         style: GoogleFonts.sarabun(
           fontSize: 12,
         ),
