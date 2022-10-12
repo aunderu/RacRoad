@@ -53,7 +53,7 @@ class LoggedInPage extends StatelessWidget {
               style: GoogleFonts.sarabun(fontSize: 24),
             ),
             Text(
-              'ชื่อ : ' + user.email!,
+              'ชื่อ : ' + user.email,
               style: GoogleFonts.sarabun(fontSize: 24),
             ),
           ],
