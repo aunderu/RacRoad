@@ -55,6 +55,7 @@ dependencies:
   rename: ^2.0.1
   auto_size_text: ^3.0.0
   lottie: ^1.4.3
+  google_sign_in: ^5.4.2
 
 dev_dependencies:
   flutter_test:

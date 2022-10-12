@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/login/api/google_sign_in_api.dart';
+import 'package:rac_road/login/page/setup/logged_in_page.dart';
 
 import '../colors.dart';
 import '../home/screens.dart';
@@ -12,6 +14,7 @@ class LoginMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -131,6 +134,22 @@ Widget loginWithMail(BuildContext context, Size size) {
 }
 
 Widget loginWithGoogle(BuildContext context, Size size) {
+  Future googleSignIn() async {
+    final user = await GoogleSignInApi.login();
+
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('เข้าสู่ระบบล้มเหลว'),
+        ),
+      );
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => LoggedInPage(user: user),
+      ));
+    }
+  }
+
   return ElevatedButton.icon(
     icon: Image.asset(
       "assets/icons/google_logo.png",
@@ -143,14 +162,7 @@ Widget loginWithGoogle(BuildContext context, Size size) {
         borderRadius: BorderRadius.circular(30.0),
       ),
     ),
-    onPressed: () async {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ScreensPage(),
-        ),
-      );
-    },
+    onPressed: () => googleSignIn(),
     label: Align(
       alignment: Alignment.centerLeft,
       child: Text(
