@@ -282,12 +282,12 @@ class Pricing extends StatelessWidget {
                 padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                 child: ElevatedButton(
                   onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ScreensPage(),
-                      ),
-                    );
+                    // await Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const ScreensPage(),
+                    //   ),
+                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,

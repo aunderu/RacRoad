@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'pages/club.dart';
 import 'pages/home_page.dart';
@@ -8,7 +9,9 @@ import 'pages/profile.dart';
 import 'pages/sos.dart';
 
 class ScreensPage extends StatefulWidget {
-  const ScreensPage({super.key});
+  const ScreensPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ScreensPage> createState() => _ScreensPageState();

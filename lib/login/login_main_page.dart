@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/login/api/google_sign_in_api.dart';
 import 'package:rac_road/login/page/setup/logged_in_page.dart';
@@ -138,11 +139,7 @@ Widget loginWithGoogle(BuildContext context, Size size) {
     final user = await GoogleSignInApi.login();
 
     if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('เข้าสู่ระบบล้มเหลว'),
-        ),
-      );
+      Fluttertoast.showToast(msg: "เข้าสู่ระบบล้มเหลว");
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => LoggedInPage(user: user),
@@ -191,12 +188,12 @@ Widget loginWithFacebook(BuildContext context, Size size) {
       ),
     ),
     onPressed: () async {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ScreensPage(),
-        ),
-      );
+      // await Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const ScreensPage(),
+      //   ),
+      // );
     },
     label: Align(
       alignment: Alignment.centerLeft,

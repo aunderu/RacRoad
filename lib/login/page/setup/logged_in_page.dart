@@ -18,6 +18,7 @@ class LoggedInPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('เข้าสู่ระบบเรียบร้อย'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         actions: [
           TextButton(
             child: Text(
@@ -49,11 +50,11 @@ class LoggedInPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'ชื่อ : ' + user.displayName!,
+              'ชื่อ : ${user.displayName!}',
               style: GoogleFonts.sarabun(fontSize: 24),
             ),
             Text(
-              'ชื่อ : ' + user.email,
+              'อีเมล : ${user.email}',
               style: GoogleFonts.sarabun(fontSize: 24),
             ),
           ],
