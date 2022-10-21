@@ -29,7 +29,7 @@ class _WaitingState extends State<Waiting> {
                 ),
               );
             },
-            icon: Icon(Icons.arrow_forward_ios),
+            icon: const Icon(Icons.arrow_forward_ios),
             color: Colors.black,
           ),
         ],

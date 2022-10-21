@@ -378,25 +378,14 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                       child: GestureDetector(
                         onTap: () {
                           showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
                               ),
-                            ),
-                            builder: (context) => Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ElevatedButton(
-                                    child: Text('close'),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                              builder: (context) => Container());
                         },
                         child: Container(
                           width: 100,
@@ -503,25 +492,14 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                     child: InkWell(
                       onTap: () {
                         showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          builder: (context) => Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ElevatedButton(
-                                  child: Text('close'),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                            builder: (context) => Container());
                       },
                       child: Ink(
                         width: 100,
@@ -680,22 +658,12 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(20),
                             ),
                           ),
-                          builder: (context) => Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ElevatedButton(
-                                  child: Text('close'),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            ),
-                          ),
+                          builder: (context) => Container(),
                         );
                       },
                       child: Ink(
@@ -820,25 +788,14 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                     child: InkWell(
                       onTap: () {
                         showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          builder: (context) => Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ElevatedButton(
-                                  child: Text('close'),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                            builder: (context) => Container());
                       },
                       child: Ink(
                         width: 100,
@@ -930,29 +887,19 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(20),
                             ),
                           ),
-                          builder: (context) => Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ElevatedButton(
-                                  child: Text('close'),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            ),
-                          ),
+                          builder: (context) => Container(),
                         );
                       },
                       child: Ink(
                         width: 100,
                         height: 100,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFEBEBEB),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFEBEBEB),
                         ),
                         child: Stack(
                           children: [

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -190,73 +192,76 @@ class _LoginMainPageState extends State<LoginMainPage> {
           height: MediaQuery.of(context).size.height * 1,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/imgs/MainLoginBG.jpg'),
+              image: AssetImage('assets/imgs/MainLoginBG-min.jpg'),
               fit: BoxFit.cover,
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: size.height * 0.2,
-              left: size.width * 0.05,
-              right: size.width * 0.05,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Text(
-                          'Rac Road',
-                          style: GoogleFonts.sarabun(
-                            fontSize: 50,
-                            color: mainGreen,
-                            fontWeight: FontWeight.bold,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: size.height * 0.2,
+                left: size.width * 0.05,
+                right: size.width * 0.05,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            'Rac Road',
+                            style: GoogleFonts.sarabun(
+                              fontSize: 50,
+                              color: mainGreen,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.only(
-                          start: size.width * 0.2,
-                          bottom: size.height * 0.1,
-                        ),
-                        child: Text(
-                          'Community for all',
-                          style: GoogleFonts.sarabun(
-                            fontSize: 25,
-                            height: -0.01,
-                            color: mainGreen,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(
+                            start: size.width * 0.2,
+                            bottom: size.height * 0.1,
+                          ),
+                          child: Text(
+                            'Community for all',
+                            style: GoogleFonts.sarabun(
+                              fontSize: 25,
+                              height: -0.01,
+                              color: mainGreen,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                loginWithMail(context, size),
-                SizedBox(height: size.height * 0.02),
-                loginWithGoogle(context, size),
-                SizedBox(height: size.height * 0.02),
-                loginWithFacebook(context, size),
-                SizedBox(height: size.height * 0.02),
-                loginWithPhone(context, size),
-                Padding(
-                  padding: EdgeInsetsDirectional.only(
-                    top: size.height * 0.02,
-                  ),
-                  child: Text(
-                    'มีปัญหาในการเข้าระบบใช่ไหม ?',
-                    style: GoogleFonts.sarabun(
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xC8FFFFFF),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  loginWithMail(context, size),
+                  SizedBox(height: size.height * 0.02),
+                  loginWithGoogle(context, size),
+                  SizedBox(height: size.height * 0.02),
+                  loginWithFacebook(context, size),
+                  SizedBox(height: size.height * 0.02),
+                  loginWithPhone(context, size),
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      top: size.height * 0.02,
+                    ),
+                    child: Text(
+                      'มีปัญหาในการเข้าระบบใช่ไหม ?',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xC8FFFFFF),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/pages/profile/apply_for_technician/TAF.dart';
 
 class MyJobWidget extends StatefulWidget {
   const MyJobWidget({super.key});
@@ -15,25 +16,35 @@ class _MyJobWidgetState extends State<MyJobWidget> {
     return Center(
       child: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Image.asset(
             "assets/imgs/mechanic.png",
             height: 200,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             'สนใจเป็นครอบครัวช่างเหมือนกันเหรอ',
             style: GoogleFonts.sarabun(
               fontSize: 20,
             ),
           ),
-          SizedBox(height: 10),
-          Text(
-            'สมัครเป็นช่าง',
-            style: GoogleFonts.sarabun(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: mainGreen,
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TAFpage(),
+                ),
+              );
+            },
+            child: Text(
+              'สมัครเป็นช่าง',
+              style: GoogleFonts.sarabun(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: mainGreen,
+              ),
             ),
           ),
         ],

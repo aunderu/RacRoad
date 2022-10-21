@@ -6,7 +6,6 @@ import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
 
-
 class ProfilePage extends StatefulWidget {
   // final GoogleSignInAccount user;
   const ProfilePage({
@@ -95,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         // child: Image.network(
                         //   widget.user.photoUrl!,
                         // ),
-                        child: Container(color: Colors.grey), 
+                        child: Container(color: Colors.grey),
                       ),
                     ),
                     Container(
@@ -122,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: size.height * 0.02),
                 Text(
-                  "ชื่อ บลา ๆ",
+                  "User Name",
                   style: GoogleFonts.sarabun(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,
@@ -131,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: size.height * 0.005),
                 Text(
-                  "EmailAddress@mail.com",
+                  "useremail@email.com",
                   style: GoogleFonts.sarabun(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,

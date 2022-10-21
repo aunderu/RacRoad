@@ -93,9 +93,19 @@ class _CheckLoginState extends State<CheckLogin> {
         ),
       );
     } else {
-      Timer(const Duration(seconds: 2),
-          () => Get.to(() => const LoginMainPage()));
+      Timer(
+        const Duration(seconds: 2),
+        () => Get.to(
+          () => const LoginMainPage(),
+        ),
+      );
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(const AssetImage('assets/imgs/MainLoginBG-min.jpg'), context);
+    super.didChangeDependencies();
   }
 
   @override
