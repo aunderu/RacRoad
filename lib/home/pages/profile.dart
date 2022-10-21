@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/pages/account_setting.dart';
 import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
 
+
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  // final GoogleSignInAccount user;
+  const ProfilePage({
+    Key? key,
+    // required this.user,
+  }) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -33,62 +39,43 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            leading: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-              child: Container(
-                width: 50,
-                height: 50,
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Image.asset(
-                  'assets/imgs/profile.png',
-                  fit: BoxFit.contain,
-                ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+            child: IconButton(
+              hoverColor: Colors.transparent,
+              iconSize: 60,
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.black,
+                size: 30,
               ),
-            ),
-            title: Text(
-              'User Name',
-              style: GoogleFonts.sarabun(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                child: IconButton(
-                  hoverColor: Colors.transparent,
-                  iconSize: 60,
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Colors.black,
-                    size: 30,
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AccountSetting(),
                   ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-            centerTitle: false,
-            elevation: 0,
+                );
+              },
+            ),
           ),
         ],
-        body: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: SingleChildScrollView(
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(top: size.height * 0.1),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,9 +93,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: BoxShape.circle,
                         ),
                         // child: Image.network(
-                        //   '',
+                        //   widget.user.photoUrl!,
                         // ),
-                        child: Container(color: Colors.grey),
+                        child: Container(color: Colors.grey), 
                       ),
                     ),
                     Container(
@@ -132,6 +119,24 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ],
+                ),
+                SizedBox(height: size.height * 0.02),
+                Text(
+                  "ชื่อ บลา ๆ",
+                  style: GoogleFonts.sarabun(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.005),
+                Text(
+                  "EmailAddress@mail.com",
+                  style: GoogleFonts.sarabun(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),

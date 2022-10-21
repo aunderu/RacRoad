@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/home/screens.dart';
 
 class ScanQRcode extends StatelessWidget {
   const ScanQRcode({super.key});
@@ -13,7 +12,7 @@ class ScanQRcode extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
-        actions: [
+        actions: const [
           // IconButton(
           //   onPressed: () async {
           //     await Navigator.push(
@@ -29,7 +28,7 @@ class ScanQRcode extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+        padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
         child: Align(
           alignment: Alignment.center,
           child: Container(

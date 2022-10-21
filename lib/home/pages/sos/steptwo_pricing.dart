@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/stepthere_qrcode.dart';
-import 'package:rac_road/home/screens.dart';
 
 class Pricing extends StatelessWidget {
   const Pricing({super.key});

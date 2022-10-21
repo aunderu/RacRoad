@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/screens.dart';
 import 'package:rac_road/models/category.dart';
 
 import 'items.dart';

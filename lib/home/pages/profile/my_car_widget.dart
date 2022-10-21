@@ -375,17 +375,41 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                     alignment: const AlignmentDirectional(1, 1),
                     child: Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 5),
-                      child: Container(
-                        width: 100,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        alignment: const AlignmentDirectional(0, 0),
-                        child: Text(
-                          'การเชื่อมต่อ',
-                          style: GoogleFonts.sarabun(),
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            builder: (context) => Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ElevatedButton(
+                                    child: Text('close'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          alignment: const AlignmentDirectional(0, 0),
+                          child: Text(
+                            'การเชื่อมต่อ',
+                            style: GoogleFonts.sarabun(),
+                          ),
                         ),
                       ),
                     ),
@@ -473,139 +497,171 @@ class _MyCarWidgetState extends State<MyCarWidget> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEBEBEB),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0, -1),
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                          child: Text(
-                            'น้ำมัน',
-                            style: GoogleFonts.sarabun(),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                      ),
-                      const Align(
-                        alignment: AlignmentDirectional(1, -1),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                          child: Icon(
-                            Icons.keyboard_control,
-                            color: Colors.black,
-                            size: 24,
+                          builder: (context) => Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ElevatedButton(
+                                  child: Text('close'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ),
                           ),
+                        );
+                      },
+                      child: Ink(
+                        width: 100,
+                        height: 100,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFEBEBEB),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Stack(
                           children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'เครื่อง',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
-                                    ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                ],
+                            Align(
+                              alignment: const AlignmentDirectional(0, -1),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 5, 0, 0),
+                                child: Text(
+                                  'น้ำมัน',
+                                  style: GoogleFonts.sarabun(),
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              alignment: AlignmentDirectional(1, -1),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                                child: Icon(
+                                  Icons.keyboard_control,
+                                  color: Colors.black,
+                                  size: 24,
+                                ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
+                                  0, 25, 0, 0),
+                              child: Column(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'เบรก',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'เครื่อง',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'เบรก',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
                                   ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'เพาเวอร์',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'เพาเวอร์',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
-                                    ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
                                   ),
                                 ],
                               ),
@@ -613,109 +669,141 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEBEBEB),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0, -1),
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                          child: Text(
-                            'ยางรถ',
-                            style: GoogleFonts.sarabun(),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                      ),
-                      const Align(
-                        alignment: AlignmentDirectional(1, -1),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                          child: Icon(
-                            Icons.keyboard_control,
-                            color: Colors.black,
-                            size: 24,
+                          builder: (context) => Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ElevatedButton(
+                                  child: Text('close'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ),
                           ),
+                        );
+                      },
+                      child: Ink(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEBEBEB),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Stack(
                           children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'ผ้าเบรก',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
-                                    ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                ],
+                            Align(
+                              alignment: const AlignmentDirectional(0, -1),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 5, 0, 0),
+                                child: Text(
+                                  'ยางรถ',
+                                  style: GoogleFonts.sarabun(),
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              alignment: AlignmentDirectional(1, -1),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                                child: Icon(
+                                  Icons.keyboard_control,
+                                  color: Colors.black,
+                                  size: 24,
+                                ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
+                                  0, 25, 0, 0),
+                              child: Column(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'ยางรถ',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'ผ้าเบรก',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'ยางรถ',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
                                   ),
                                 ],
                               ),
@@ -723,76 +811,107 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEBEBEB),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0, -1),
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                          child: Text(
-                            'แบตเตอรี่',
-                            style: GoogleFonts.sarabun(),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                      ),
-                      const Align(
-                        alignment: AlignmentDirectional(1, -1),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                          child: Icon(
-                            Icons.keyboard_control,
-                            color: Colors.black,
-                            size: 24,
+                          builder: (context) => Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ElevatedButton(
+                                  child: Text('close'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ),
                           ),
+                        );
+                      },
+                      child: Ink(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEBEBEB),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Stack(
                           children: [
+                            Align(
+                              alignment: const AlignmentDirectional(0, -1),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 5, 0, 0),
+                                child: Text(
+                                  'แบตเตอรี่',
+                                  style: GoogleFonts.sarabun(),
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              alignment: AlignmentDirectional(1, -1),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                                child: Icon(
+                                  Icons.keyboard_control,
+                                  color: Colors.black,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
+                                  0, 25, 0, 0),
+                              child: Column(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'แบตเตอรี่',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'แบตเตอรี่',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
-                                    ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
                                   ),
                                 ],
                               ),
@@ -800,76 +919,106 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEBEBEB),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0, -1),
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                          child: Text(
-                            'แอร์',
-                            style: GoogleFonts.sarabun(),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                      ),
-                      const Align(
-                        alignment: AlignmentDirectional(1, -1),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                          child: Icon(
-                            Icons.keyboard_control,
-                            color: Colors.black,
-                            size: 24,
+                          builder: (context) => Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ElevatedButton(
+                                  child: Text('close'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ),
                           ),
+                        );
+                      },
+                      child: Ink(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEBEBEB),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Stack(
                           children: [
+                            Align(
+                              alignment: const AlignmentDirectional(0, -1),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 5, 0, 0),
+                                child: Text(
+                                  'แอร์',
+                                  style: GoogleFonts.sarabun(),
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              alignment: AlignmentDirectional(1, -1),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                                child: Icon(
+                                  Icons.keyboard_control,
+                                  color: Colors.black,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 10, 10, 0),
-                              child: Row(
+                                  0, 25, 0, 0),
+                              child: Column(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'น้ำยา',
-                                    style: GoogleFonts.sarabun(
-                                      fontSize: 12,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'น้ำยา',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          percent: 0.5,
+                                          width: 100,
+                                          lineHeight: 24,
+                                          animation: true,
+                                          progressColor: mainGreen,
+                                          backgroundColor: Colors.white,
+                                          center: Text(
+                                            '50%',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color(0xFF2E2E2E),
+                                            ),
+                                          ),
+                                          barRadius: const Radius.circular(50),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  LinearPercentIndicator(
-                                    percent: 0.5,
-                                    width: 100,
-                                    lineHeight: 24,
-                                    animation: true,
-                                    progressColor: mainGreen,
-                                    backgroundColor: Colors.white,
-                                    center: Text(
-                                      '50%',
-                                      style: GoogleFonts.sarabun(
-                                        color: const Color(0xFF2E2E2E),
-                                      ),
-                                    ),
-                                    barRadius: const Radius.circular(50),
-                                    padding: EdgeInsets.zero,
                                   ),
                                 ],
                               ),
@@ -877,7 +1026,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/home/pages/account_setting.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -66,7 +67,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     color: Colors.black,
                     size: 30,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AccountSetting(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

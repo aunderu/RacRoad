@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/login/api/google_sign_in_api.dart';
 import 'package:rac_road/login/page/setup/set_name.dart';
-
-import '../setup/logged_in_page.dart';
 
 class StepOneWithEmail extends StatefulWidget {
   const StepOneWithEmail({super.key});
@@ -15,17 +11,17 @@ class StepOneWithEmail extends StatefulWidget {
 }
 
 class _StepOneWithEmailState extends State<StepOneWithEmail> {
-  Future googleSignIn() async {
-    final user = await GoogleSignInApi.login();
+  // Future googleSignIn() async {
+  //   final user = await GoogleSignInApi.login();
 
-    if (user == null) {
-      Fluttertoast.showToast(msg: "เข้าสู่ระบบล้มเหลว");
-    } else {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => LoggedInPage(user: user),
-      ));
-    }
-  }
+  //   if (user == null) {
+  //     Fluttertoast.showToast(msg: "เข้าสู่ระบบล้มเหลว");
+  //   } else {
+  //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //       builder: (context) => ScreensPage(),
+  //     ));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +104,7 @@ class _StepOneWithEmailState extends State<StepOneWithEmail> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () => googleSignIn(),
+                  onPressed: () => null,
                   label: const Align(
                       alignment: Alignment.centerLeft,
                       child: Text('ลงชื่อเข้าใช้ด้วย GOOGLE')),

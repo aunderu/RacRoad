@@ -1,8 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:like_button/like_button.dart';
+import 'package:rac_road/home/pages/account_setting.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -47,8 +47,12 @@ class _HomePageState extends State<HomePage> {
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),
-                child: Image.network(
-                  'photoUrl',
+                // child: Image.network(
+                //   'photoUrl',
+                //   fit: BoxFit.contain,
+                // ),
+                child: Image.asset(
+                  'assets/imgs/profile.png',
                   fit: BoxFit.contain,
                 ),
               ),
@@ -71,7 +75,14 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.black,
                     size: 30,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AccountSetting(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

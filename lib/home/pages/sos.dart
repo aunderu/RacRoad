@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/pages/account_setting.dart';
 import 'package:rac_road/home/pages/sos/setgps.dart';
+
 
 class SOSPage extends StatefulWidget {
   const SOSPage({super.key});
@@ -61,7 +63,14 @@ class _SOSPageState extends State<SOSPage> {
                     color: Colors.black,
                     size: 30,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AccountSetting(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/home/pages/account_setting.dart';
 
 import 'club/club_details.dart';
 
@@ -68,7 +69,14 @@ class _ClubPageState extends State<ClubPage> {
                     color: Colors.black,
                     size: 30,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AccountSetting(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
