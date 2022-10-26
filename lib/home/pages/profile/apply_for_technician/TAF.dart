@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // TAF = Technician application form
 class TAFpage extends StatefulWidget {
@@ -16,8 +18,15 @@ class _TAFpageState extends State<TAFpage> {
   TextEditingController? tel1Controller;
   TextEditingController? tel2Controller;
   TextEditingController? serviceZoneController;
-  final formKey = GlobalKey<FormState>();
+  final List<GlobalKey<FormState>> _formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  int currentStep = 0;
+  bool isCompleted = false;
 
   @override
   void initState() {
@@ -60,7 +69,449 @@ class _TAFpageState extends State<TAFpage> {
           },
         ),
       ),
-      body: Container(),
+      body: isCompleted
+          ? formCompleted()
+          : Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: _formKeys[currentStep],
+              child: Stepper(
+                type: StepperType.vertical,
+                steps: getSteps(),
+                currentStep: currentStep,
+                onStepContinue: () {
+                  final isLastStep = currentStep == getSteps().length - 1;
+
+                  if (isLastStep) {
+                    setState(() {
+                      isCompleted = true;
+                    });
+                    print('Completed');
+                  } else {
+                    if (_formKeys[currentStep].currentState!.validate()) {
+                      setState(
+                        () => currentStep += 1,
+                      );
+                    }
+                  }
+                },
+                onStepCancel: currentStep == 0
+                    ? null
+                    : () => setState(
+                          () => currentStep -= 1,
+                        ),
+              ),
+            ),
     );
   }
+
+  List<Step> getSteps() => [
+        Step(
+          state: currentStep > 0 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 0,
+          title: const Text('ประสบการณ์การทำงาน'),
+          content: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: serviceTypeController,
+                      decoration: InputDecoration(
+                        labelText: 'คุณทำงานแนวไหน ?',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "กรุณากรอกข้อมูลด้วย";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ตัวอย่าง : ลากรถ, เปลี่ยนอะไหล่',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: workHistoryController,
+                      decoration: InputDecoration(
+                        labelText: 'คุณมีประสบการณ์ทำงานที่ไหนบ้าง ?',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      style: GoogleFonts.sarabun(),
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ตัวอย่าง : เคยทำงานที่ บริษัท *** จังหวัดยะลา 2 ปี',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Step(
+          state: currentStep > 1 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 1,
+          title: Text('ข้อมูลการติดต่อ'),
+          content: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: tel1Controller,
+                      decoration: InputDecoration(
+                        labelText: 'เบอร์โทร',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "กรุณากรอกข้อมูลด้วย";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: GoogleFonts.sarabun(),
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'จำเป็นต้องระบุ',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: tel2Controller,
+                      decoration: InputDecoration(
+                        labelText: 'เบอร์โทรสำรอง',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      style: GoogleFonts.sarabun(),
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ไม่จำเป็นต้องระบุ',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: addressController,
+                      decoration: InputDecoration(
+                        labelText: 'ที่อยู่ของคุณ',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "กรุณากรอกข้อมูลด้วย";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: GoogleFonts.sarabun(),
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ที่อยู่ของร้านของคุณ',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Step(
+          state: currentStep > 2 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 2,
+          title: Text('ข้อมูลการให้บริการ'),
+          content: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: serviceZoneController,
+                      decoration: InputDecoration(
+                        labelText: 'พื้นที่ให้บริการของคุณ',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "กรุณากรอกข้อมูลด้วย";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: GoogleFonts.sarabun(),
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ตัวอย่าง : อำเภอโคกโพธิ์ จังหวัดปัตตานี',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: serviceTimeController,
+                      decoration: InputDecoration(
+                        labelText: 'เวลาให้บริการ',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "กรุณากรอกข้อมูลด้วย";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ตัวอย่าง : จ. - ศ. เวลา 09.30 น. - 20.00 น.',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Step(
+          state: currentStep > 3 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 3,
+          title: Text('เสร็จสิ้น'),
+          content: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        'ฉันทำงานแนว',
+                        style: GoogleFonts.sarabun(fontSize: 17),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Text(
+                        '${serviceTypeController!.text} ${workHistoryController!.text}',
+                        style: GoogleFonts.sarabun(fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        'ติดต่อได้ที่',
+                        style: GoogleFonts.sarabun(fontSize: 17),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Text(
+                        '${addressController!.text}\nเบอร์โทร ${tel1Controller!.text} ${tel2Controller!.text}',
+                        style: GoogleFonts.sarabun(fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        'ข้อมูลการให้บริการ',
+                        style: GoogleFonts.sarabun(fontSize: 17),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Text(
+                        'พื้นที่ให้บริการ ${serviceZoneController!.text}\nเวลา ${serviceTimeController!.text}',
+                        style: GoogleFonts.sarabun(fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ];
+}
+
+Widget formCompleted() {
+  return Container();
 }
