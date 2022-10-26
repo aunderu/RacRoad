@@ -14,7 +14,8 @@ class MyCarWidget extends StatefulWidget {
 }
 
 class _MyCarWidgetState extends State<MyCarWidget> {
-  final bool _isMultiCar = false;
+  final bool _haveCar = false;
+  final bool _isMultiCar = true;
   @override
   Widget build(BuildContext context) {
     if (_isMultiCar) {

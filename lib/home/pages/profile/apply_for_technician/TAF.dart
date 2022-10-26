@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/screens.dart';
 
 // TAF = Technician application form
 class TAFpage extends StatefulWidget {
@@ -18,11 +21,7 @@ class _TAFpageState extends State<TAFpage> {
   TextEditingController? tel1Controller;
   TextEditingController? tel2Controller;
   TextEditingController? serviceZoneController;
-  final List<GlobalKey<FormState>> _formKeys = [
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-  ];
+  final formKeys = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   int currentStep = 0;
@@ -73,7 +72,7 @@ class _TAFpageState extends State<TAFpage> {
           ? formCompleted()
           : Form(
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              key: _formKeys[currentStep],
+              key: formKeys,
               child: Stepper(
                 type: StepperType.vertical,
                 steps: getSteps(),
@@ -87,11 +86,14 @@ class _TAFpageState extends State<TAFpage> {
                     });
                     print('Completed');
                   } else {
-                    if (_formKeys[currentStep].currentState!.validate()) {
-                      setState(
-                        () => currentStep += 1,
-                      );
-                    }
+                    // if (_formKeys[currentStep].currentState!.validate()) {
+                    //   setState(
+                    //     () => currentStep += 1,
+                    //   );
+                    // }
+                    setState(
+                      () => currentStep += 1,
+                    );
                   }
                 },
                 onStepCancel: currentStep == 0
@@ -135,13 +137,13 @@ class _TAFpageState extends State<TAFpage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "กรุณากรอกข้อมูลด้วย";
-                        } else {
-                          return null;
-                        }
-                      },
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return "กรุณากรอกข้อมูลด้วย";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                       style: GoogleFonts.sarabun(),
                     ),
                     const SizedBox(height: 5),
@@ -225,13 +227,13 @@ class _TAFpageState extends State<TAFpage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "กรุณากรอกข้อมูลด้วย";
-                        } else {
-                          return null;
-                        }
-                      },
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return "กรุณากรอกข้อมูลด้วย";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                       style: GoogleFonts.sarabun(),
                       keyboardType: TextInputType.phone,
                     ),
@@ -306,13 +308,13 @@ class _TAFpageState extends State<TAFpage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "กรุณากรอกข้อมูลด้วย";
-                        } else {
-                          return null;
-                        }
-                      },
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return "กรุณากรอกข้อมูลด้วย";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                       style: GoogleFonts.sarabun(),
                       maxLines: 4,
                       keyboardType: TextInputType.multiline,
@@ -360,13 +362,13 @@ class _TAFpageState extends State<TAFpage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "กรุณากรอกข้อมูลด้วย";
-                        } else {
-                          return null;
-                        }
-                      },
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return "กรุณากรอกข้อมูลด้วย";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                       style: GoogleFonts.sarabun(),
                       maxLines: 4,
                       keyboardType: TextInputType.multiline,
@@ -405,13 +407,13 @@ class _TAFpageState extends State<TAFpage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "กรุณากรอกข้อมูลด้วย";
-                        } else {
-                          return null;
-                        }
-                      },
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return "กรุณากรอกข้อมูลด้วย";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                       style: GoogleFonts.sarabun(),
                     ),
                     const SizedBox(height: 5),
@@ -513,5 +515,43 @@ class _TAFpageState extends State<TAFpage> {
 }
 
 Widget formCompleted() {
-  return Container();
+  return SizedBox(
+    width: double.infinity,
+    child: Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        const SizedBox(height: 200),
+        const Icon(
+          Icons.check_circle_outline,
+          color: mainGreen,
+          size: 100,
+        ),
+        const SizedBox(height: 15),
+        Text(
+          "เราได้ข้อมูลของคุณแล้ว !",
+          style: GoogleFonts.sarabun(fontSize: 25),
+        ),
+        Text(
+          "เราจะทำการตรวจสอบข้อมูลของคุณ",
+          style: GoogleFonts.sarabun(
+            fontSize: 20,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            Fluttertoast.showToast(
+              msg: "ส่งแบบฟอร์มสมัครเป็นช่างเรียบร้อย!",
+              backgroundColor: mainGreen,
+              fontSize: 17,
+            );
+            Get.to(() => const ScreensPage());
+          },
+          style: ElevatedButton.styleFrom(backgroundColor: mainGreen),
+          child: const Text('กลับหน้าแรก'),
+        ),
+      ],
+    ),
+  );
 }

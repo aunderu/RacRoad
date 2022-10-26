@@ -41,7 +41,22 @@ class _MyAppState extends State<MyApp> {
         _currentUser = account;
       });
     });
-    _googleSignIn.signInSilently();
+    googleSigninSilently();
+  }
+
+  Future googleSigninSilently() async {
+    try {
+      final result = await _googleSignIn.signInSilently();
+      if (result != null) {
+        final ggAuth = await result.authentication;
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString("token", ggAuth.accessToken.toString());
+        // print(ggAuth.idToken);
+        print(ggAuth.accessToken);
+      }
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -72,13 +87,7 @@ class _CheckLoginState extends State<CheckLogin> {
   @override
   void initState() {
     super.initState();
-    // getToken();
     checkLogin();
-  }
-
-  Future<void> getToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    token = preferences.getString("token")!;
   }
 
   void checkLogin() async {

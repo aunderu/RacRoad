@@ -1,8 +1,11 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:like_button/like_button.dart';
 import 'package:rac_road/home/pages/account_setting.dart';
+import 'package:rac_road/models/user_profile_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -14,15 +17,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController? searchController;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController? searchController;
+  late SharedPreferences sharedPreferences;
+
+  bool circular = true;
 
   @override
   void initState() {
     super.initState();
     searchController = TextEditingController();
+
+    // fetchUser();
   }
+
+  // Future<UserProfile?> fetchUser() async {
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  //   int? id = sharedPreferences.getInt("id");
+  //   Response response = await post(
+  //     Uri.parse('https://api-racroad.chabafarm.com/api/my/profile/$id'),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return userProfileFromJson(response.body);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

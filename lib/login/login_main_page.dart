@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
@@ -25,6 +26,19 @@ class LoginMainPage extends StatefulWidget {
 }
 
 class _LoginMainPageState extends State<LoginMainPage> {
+  GoogleSignInAccount? _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
+  }
+
   Widget loginWithMail(BuildContext context, Size size) {
     return ElevatedButton.icon(
       icon: const Icon(
@@ -72,6 +86,14 @@ class _LoginMainPageState extends State<LoginMainPage> {
           preferences.setString("token", ggAuth.accessToken.toString());
           // print(ggAuth.idToken);
           // print(ggAuth.accessToken);
+          final GoogleSignInAccount? user = _currentUser;
+          Response response = await post(
+              Uri.parse('https://api-racroad.chabafarm.com/api/login'),
+              body: {
+                'email': user!.email,
+                'name': user.displayName,
+                'avatar': user.photoUrl,
+              });
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => isTel
                   ? const ScreensPage()

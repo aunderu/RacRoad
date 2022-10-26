@@ -25,7 +25,7 @@ class _ScreensPageState extends State<ScreensPage> {
   int index = 0;
   final bool _isNoti = true;
 
-  final screens = [
+  final _screens = <Widget>[
     const HomePage(),
     const ClubPage(),
     const SOSPage(),
@@ -47,6 +47,7 @@ class _ScreensPageState extends State<ScreensPage> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
+      body: _screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: Colors.greenAccent.shade100,
@@ -192,7 +193,6 @@ class _ScreensPageState extends State<ScreensPage> {
           ],
         ),
       ),
-      body: screens[index],
     );
   }
 }

@@ -19,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  int current = 0;
 
   List<String> items = [
     "My Car",
@@ -31,8 +32,6 @@ class _ProfilePageState extends State<ProfilePage> {
     const MyClubWidget(),
     const MyJobWidget(),
   ];
-
-  int current = 0;
 
   @override
   Widget build(BuildContext context) {
