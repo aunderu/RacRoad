@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../controller/models_controller.dart';
+import 'pages/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
 import 'pages/notifications.dart';
@@ -47,7 +49,139 @@ class _ScreensPageState extends State<ScreensPage> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      body: _screens[index],
+      body: index != 4
+          ? NestedScrollView(
+              floatHeaderSlivers: true,
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                FutureBuilder(
+                  future: getUserProfile(),
+                  builder: (context, snapshot) {
+                    var result = snapshot.data;
+                    if (result != null) {
+                      return SliverAppBar(
+                        floating: true,
+                        snap: true,
+                        backgroundColor: Colors.white,
+                        automaticallyImplyLeading: false,
+                        leading: Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.network(
+                              result.data.myProfile.avatar,
+                              fit: BoxFit.contain,
+                            ),
+                            // child: Image.asset(
+                            //   'assets/imgs/profile.png',
+                            //   fit: BoxFit.contain,
+                            // ),
+                          ),
+                        ),
+                        title: Text(
+                          result.data.myProfile.name,
+                          style: GoogleFonts.sarabun(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        actions: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 5, 0),
+                            child: IconButton(
+                              hoverColor: Colors.transparent,
+                              iconSize: 60,
+                              icon: const Icon(
+                                Icons.settings,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AccountSetting(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                        centerTitle: false,
+                        elevation: 0,
+                      );
+                    }
+                    return SliverAppBar(
+                      floating: true,
+                      snap: true,
+                      backgroundColor: Colors.white,
+                      automaticallyImplyLeading: false,
+                      leading: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          // child: Image.network(
+                          //   'photoUrl',
+                          //   fit: BoxFit.contain,
+                          // ),
+                          child: Image.asset(
+                            'assets/imgs/profile.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        'User Name',
+                        style: GoogleFonts.sarabun(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      actions: [
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                          child: IconButton(
+                            hoverColor: Colors.transparent,
+                            iconSize: 60,
+                            icon: const Icon(
+                              Icons.settings,
+                              color: Colors.black,
+                              size: 30,
+                            ),
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AccountSetting(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                      centerTitle: false,
+                      elevation: 0,
+                    );
+                  },
+                ),
+              ],
+              body: _screens[index],
+            )
+          : _screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: Colors.greenAccent.shade100,

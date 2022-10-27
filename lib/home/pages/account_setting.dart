@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../controller/models_controller.dart';
 import '../../login/api/google_sign_in_api.dart';
 import '../../login/login_main_page.dart';
 
@@ -59,62 +60,129 @@ class AccountSetting extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                2, 2, 2, 2),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(60),
-                              // child: Image.network(
-                              //   'https://picsum.photos/seed/470/600',
-                              //   width: 100,
-                              //   height: 100,
-                              //   fit: BoxFit.cover,
-                              // ),
-                              child: Container(
-                                color: Colors.grey,
-                                width: 70,
-                                height: 70,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                          child: Column(
+                    child: FutureBuilder(
+                      future: getUserProfile(),
+                      builder: (context, snapshot) {
+                        var result = snapshot.data;
+                        if (result != null) {
+                          return Row(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'User Name',
-                                style: GoogleFonts.sarabun(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                              Card(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                color: Colors.white,
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      2, 2, 2, 2),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: Image.network(
+                                      result.data.myProfile.avatar,
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    // child: Container(
+                                    //   color: Colors.grey,
+                                    //   width: 70,
+                                    //   height: 70,
+                                    // ),
+                                  ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 4, 0, 0),
-                                child: Text(
-                                  'useremail@email.com',
-                                  style: GoogleFonts.sarabun(),
+                                    16, 0, 0, 0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      result.data.myProfile.name,
+                                      style: GoogleFonts.sarabun(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 0, 0),
+                                      child: Text(
+                                        result.data.myProfile.email,
+                                        style: GoogleFonts.sarabun(),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
-                          ),
-                        ),
-                      ],
+                          );
+                        }
+                        return Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Card(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              color: Colors.white,
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    2, 2, 2, 2),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(60),
+                                  // child: Image.network(
+                                  //   'https://picsum.photos/seed/470/600',
+                                  //   width: 100,
+                                  //   height: 100,
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                  child: Container(
+                                    color: Colors.grey,
+                                    width: 70,
+                                    height: 70,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16, 0, 0, 0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'User Name',
+                                    style: GoogleFonts.sarabun(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 4, 0, 0),
+                                    child: Text(
+                                      'useremail@email.com',
+                                      style: GoogleFonts.sarabun(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/home/pages/account_setting.dart';
 
+import '../../controller/models_controller.dart';
+
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
 
@@ -26,147 +28,90 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            leading: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-              child: Container(
-                width: 50,
-                height: 50,
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Image.asset(
-                  'assets/imgs/profile.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            title: Text(
-              'User Name',
-              style: GoogleFonts.sarabun(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            actions: [
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                child: IconButton(
-                  hoverColor: Colors.transparent,
-                  iconSize: 60,
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AccountSetting(),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: searchController,
+                        onChanged: (_) => EasyDebounce.debounce(
+                          'textController',
+                          const Duration(milliseconds: 2000),
+                          () => setState(() {}),
+                        ),
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          labelText: 'Search',
+                          labelStyle: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFF3F3F3),
+                          suffixIcon: const Icon(
+                            Icons.search,
+                            color: Color(0xFF757575),
+                            size: 22,
+                          ),
+                        ),
+                        style: GoogleFonts.sarabun(),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
-            ],
-            centerTitle: false,
-            elevation: 0,
-          ),
-        ],
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: searchController,
-                          onChanged: (_) => EasyDebounce.debounce(
-                            'textController',
-                            const Duration(milliseconds: 2000),
-                            () => setState(() {}),
-                          ),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Search',
-                            labelStyle: GoogleFonts.sarabun(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xFFF3F3F3),
-                            suffixIcon: const Icon(
-                              Icons.search,
-                              color: Color(0xFF757575),
-                              size: 22,
-                            ),
-                          ),
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ),
-                    ],
-                  ),
+              // Generated code for this ListView Widget...
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  primary: false,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    listTile(),
+                    listTile(),
+                    listTile(),
+                  ],
                 ),
-                // Generated code for this ListView Widget...
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    primary: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      listTile(),
-                      listTile(),
-                      listTile(),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),

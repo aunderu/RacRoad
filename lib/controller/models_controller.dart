@@ -9,9 +9,9 @@ const url = "https://api-racroad.chabafarm.com/api";
 
 
 // ################################ UserProfile #################################
-Future<UserProfile?> getUserProfile(String token) async {
+Future<UserProfile?> getUserProfile() async {
   final response = await http.get(
-    Uri.parse("$url/my/profile/$token"),
+    Uri.parse("$url/my/profile/14"),
   );
   if (response.statusCode == 200) {
     final itemUserProfile = json.decode(response.body);
