@@ -27,6 +27,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
             style: GoogleFonts.sarabun(
               fontSize: 20,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
           TextButton(
