@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/loading/skelton.dart';
 
 import '../controller/models_controller.dart';
 import 'pages/account_setting.dart';
@@ -137,18 +138,12 @@ class _ScreensPageState extends State<ScreensPage> {
                           //   'photoUrl',
                           //   fit: BoxFit.contain,
                           // ),
-                          child: Image.asset(
-                            'assets/imgs/profile.png',
-                            fit: BoxFit.contain,
-                          ),
+                          child: const Skelton(),
                         ),
                       ),
-                      title: Text(
-                        'User Name',
-                        style: GoogleFonts.sarabun(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      title: const Skelton(
+                        width: 200,
+                        height: 20,
                       ),
                       actions: [
                         Padding(

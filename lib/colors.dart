@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
 
+const primaryBGColor = Color.fromARGB(255, 241, 244, 248);
+const secondaryBGColor = Colors.white;
+
 const mainGreen = Color.fromARGB(255, 0, 170, 170);
 const darkGray = Color.fromARGB(255, 102, 102, 102);

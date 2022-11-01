@@ -16,10 +16,10 @@ class _MyJobWidgetState extends State<MyJobWidget> {
     return Center(
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
           Image.asset(
             "assets/imgs/mechanic.png",
-            height: 200,
+            height: 150,
           ),
           const SizedBox(height: 20),
           Text(
@@ -34,7 +34,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TAFpage(),
+                  builder: (context) => const TAFpage(),
                 ),
               );
             },

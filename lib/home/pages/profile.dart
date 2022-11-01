@@ -6,6 +6,7 @@ import 'package:rac_road/home/pages/account_setting.dart';
 import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
+import 'package:rac_road/loading/skelton.dart';
 
 class ProfilePage extends StatefulWidget {
   // final GoogleSignInAccount user;
@@ -164,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 // child: Image.network(
                                 //   widget.user.photoUrl!,
                                 // ),
-                                child: Container(color: Colors.grey),
+                                child: const Skelton(),
                               ),
                             ),
                             Container(
@@ -190,22 +191,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                         SizedBox(height: size.height * 0.02),
-                        Text(
-                          "User Name",
-                          style: GoogleFonts.sarabun(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                          ),
+                        const Skelton(
+                          height: 18,
+                          width: 120,
                         ),
                         SizedBox(height: size.height * 0.005),
-                        Text(
-                          "useremail@email.com",
-                          style: GoogleFonts.sarabun(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                          ),
+                        const Skelton(
+                          height: 18,
+                          width: 250,
                         ),
                       ],
                     );

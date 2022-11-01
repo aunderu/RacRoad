@@ -1,11 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
 import 'package:like_button/like_button.dart';
-import 'package:rac_road/controller/models_controller.dart';
-import 'package:rac_road/home/pages/account_setting.dart';
-import 'package:rac_road/models/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {

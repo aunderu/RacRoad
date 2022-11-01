@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
+import 'package:rac_road/loading/account_setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controller/models_controller.dart';
@@ -124,64 +125,7 @@ class AccountSetting extends StatelessWidget {
                             ],
                           );
                         }
-                        return Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Card(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              color: Colors.white,
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    2, 2, 2, 2),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(60),
-                                  // child: Image.network(
-                                  //   'https://picsum.photos/seed/470/600',
-                                  //   width: 100,
-                                  //   height: 100,
-                                  //   fit: BoxFit.cover,
-                                  // ),
-                                  child: Container(
-                                    color: Colors.grey,
-                                    width: 70,
-                                    height: 70,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16, 0, 0, 0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'User Name',
-                                    style: GoogleFonts.sarabun(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 0, 0),
-                                    child: Text(
-                                      'useremail@email.com',
-                                      style: GoogleFonts.sarabun(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
+                        return const AccountSettingLoading();
                       },
                     ),
                   ),

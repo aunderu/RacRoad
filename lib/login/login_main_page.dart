@@ -94,6 +94,8 @@ class _LoginMainPageState extends State<LoginMainPage> {
                 'name': user.displayName,
                 'avatar': user.photoUrl,
               });
+
+          // print(user.photoUrl);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => isTel
                   ? const ScreensPage()

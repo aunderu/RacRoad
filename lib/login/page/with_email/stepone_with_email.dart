@@ -104,7 +104,7 @@ class _StepOneWithEmailState extends State<StepOneWithEmail> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () => null,
+                  onPressed: null,
                   label: const Align(
                       alignment: Alignment.centerLeft,
                       child: Text('ลงชื่อเข้าใช้ด้วย GOOGLE')),

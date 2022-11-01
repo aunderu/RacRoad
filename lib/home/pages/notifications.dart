@@ -1,9 +1,6 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/home/pages/account_setting.dart';
-
-import '../../controller/models_controller.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});

@@ -7,7 +7,7 @@ import 'package:rac_road/home/screens.dart';
 
 // TAF = Technician application form
 class TAFpage extends StatefulWidget {
-  TAFpage({Key? key}) : super(key: key);
+  const TAFpage({Key? key}) : super(key: key);
 
   @override
   State<TAFpage> createState() => _TAFpageState();
@@ -21,6 +21,8 @@ class _TAFpageState extends State<TAFpage> {
   TextEditingController? tel1Controller;
   TextEditingController? tel2Controller;
   TextEditingController? serviceZoneController;
+  TextEditingController? stdHistoryController;
+  TextEditingController? tncNameController;
   final formKeys = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -37,6 +39,8 @@ class _TAFpageState extends State<TAFpage> {
     tel1Controller = TextEditingController();
     tel2Controller = TextEditingController();
     serviceZoneController = TextEditingController();
+    stdHistoryController = TextEditingController();
+    tncNameController = TextEditingController();
   }
 
   @override
@@ -48,6 +52,8 @@ class _TAFpageState extends State<TAFpage> {
     tel1Controller?.dispose();
     tel2Controller?.dispose();
     serviceZoneController?.dispose();
+    stdHistoryController?.dispose();
+    tncNameController?.dispose();
     super.dispose();
   }
 
@@ -114,49 +120,6 @@ class _TAFpageState extends State<TAFpage> {
           content: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      controller: serviceTypeController,
-                      decoration: InputDecoration(
-                        labelText: 'คุณทำงานแนวไหน ?',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 204, 232, 255),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      // validator: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return "กรุณากรอกข้อมูลด้วย";
-                      //   } else {
-                      //     return null;
-                      //   }
-                      // },
-                      style: GoogleFonts.sarabun(),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      'ตัวอย่าง : ลากรถ, เปลี่ยนอะไหล่',
-                      style: GoogleFonts.sarabun(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,6 +154,37 @@ class _TAFpageState extends State<TAFpage> {
                         color: Colors.grey,
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: stdHistoryController,
+                      decoration: InputDecoration(
+                        labelText: 'ประวัติการศึกษา',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      style: GoogleFonts.sarabun(),
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'เขียนประวัติการศึกษาของคุณ',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -200,9 +194,53 @@ class _TAFpageState extends State<TAFpage> {
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 1,
-          title: Text('ข้อมูลการติดต่อ'),
+          title: const Text('ข้อมูลการติดต่อ'),
           content: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: tncNameController,
+                      decoration: InputDecoration(
+                        labelText: 'ชื่ออู่ หรือ ชื่อช่างของคุณ',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 204, 232, 255),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return "กรุณากรอกข้อมูลด้วย";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
+                      style: GoogleFonts.sarabun(),
+                      keyboardType: TextInputType.text,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ตัวอย่าง : ช่างอั๋น การช่าง 24 ช.ม.',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
@@ -335,7 +373,7 @@ class _TAFpageState extends State<TAFpage> {
         Step(
           state: currentStep > 2 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 2,
-          title: Text('ข้อมูลการให้บริการ'),
+          title: const Text('ข้อมูลการให้บริการ'),
           content: Column(
             children: [
               Padding(
@@ -344,9 +382,9 @@ class _TAFpageState extends State<TAFpage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      controller: serviceZoneController,
+                      controller: serviceTypeController,
                       decoration: InputDecoration(
-                        labelText: 'พื้นที่ให้บริการของคุณ',
+                        labelText: 'คุณทำงานแนวไหน ?',
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: Color.fromARGB(255, 230, 230, 230),
@@ -370,8 +408,46 @@ class _TAFpageState extends State<TAFpage> {
                       //   }
                       // },
                       style: GoogleFonts.sarabun(),
-                      maxLines: 4,
-                      keyboardType: TextInputType.multiline,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'ตัวอย่าง : ลากรถ, เปลี่ยนอะไหล่',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: TextFormField(
+                        controller: serviceZoneController,
+                        decoration: InputDecoration(
+                          labelText: 'พื้นที่ให้บริการของคุณ',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 230, 230, 230),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 204, 232, 255),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return "กรุณากรอกข้อมูลด้วย";
+                        //   } else {
+                        //     return null;
+                        //   }
+                        // },
+                        style: GoogleFonts.sarabun(),
+                        maxLines: 4,
+                        keyboardType: TextInputType.multiline,
+                      ),
                     ),
                     const SizedBox(height: 5),
                     Text(
@@ -432,7 +508,7 @@ class _TAFpageState extends State<TAFpage> {
         Step(
           state: currentStep > 3 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 3,
-          title: Text('เสร็จสิ้น'),
+          title: const Text('เสร็จสิ้น'),
           content: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -444,17 +520,20 @@ class _TAFpageState extends State<TAFpage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: Text(
-                        'ฉันทำงานแนว',
+                        'ข้อมูลของฉัน',
                         style: GoogleFonts.sarabun(fontSize: 17),
                       ),
                     ),
                     Expanded(
-                      flex: 6,
+                      flex: 7,
                       child: Text(
-                        '${serviceTypeController!.text} ${workHistoryController!.text}',
-                        style: GoogleFonts.sarabun(fontSize: 17),
+                        ': ${tncNameController!.text} ,\n ${workHistoryController!.text} ${stdHistoryController!.text}',
+                        style: GoogleFonts.sarabun(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -468,17 +547,20 @@ class _TAFpageState extends State<TAFpage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: Text(
                         'ติดต่อได้ที่',
                         style: GoogleFonts.sarabun(fontSize: 17),
                       ),
                     ),
                     Expanded(
-                      flex: 6,
+                      flex: 7,
                       child: Text(
-                        '${addressController!.text}\nเบอร์โทร ${tel1Controller!.text} ${tel2Controller!.text}',
-                        style: GoogleFonts.sarabun(fontSize: 17),
+                        ': ${tncNameController!.text} ${addressController!.text}\n${tel1Controller!.text} ${tel2Controller!.text}',
+                        style: GoogleFonts.sarabun(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -492,17 +574,20 @@ class _TAFpageState extends State<TAFpage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: Text(
                         'ข้อมูลการให้บริการ',
                         style: GoogleFonts.sarabun(fontSize: 17),
                       ),
                     ),
                     Expanded(
-                      flex: 6,
+                      flex: 7,
                       child: Text(
-                        'พื้นที่ให้บริการ ${serviceZoneController!.text}\nเวลา ${serviceTimeController!.text}',
-                        style: GoogleFonts.sarabun(fontSize: 17),
+                        ': ประเภท ${serviceTypeController!.text} ที่ ${serviceZoneController!.text}\nเวลาทำการ ${serviceTimeController!.text}',
+                        style: GoogleFonts.sarabun(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
