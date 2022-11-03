@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/home/pages/profile/create_club/on_boarding.dart';
 
 import '../../../colors.dart';
 
@@ -34,12 +35,12 @@ class _MyClubWidgetState extends State<MyClubWidget> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () async {
-                // await Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const TAFpage(),
-                //   ),
-                // );
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OnBoardingPage(),
+                  ),
+                );
               },
               child: Text(
                 'เพิ่มคลับ',
