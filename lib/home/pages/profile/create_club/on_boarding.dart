@@ -86,34 +86,34 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    duration: Duration(milliseconds: 100),
-                    reverseDuration: Duration(milliseconds: 100),
-                    child: CreateClubPage(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: mainGreen,
-                minimumSize: const Size(
-                  300,
-                  40,
-                ),
-              ),
-              child: Text(
-                'สร้างคลับ',
-                style: GoogleFonts.sarabun(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: Duration(milliseconds: 100),
+                        reverseDuration: Duration(milliseconds: 100),
+                        child: CreateClubPage(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainGreen,
+                    minimumSize: const Size(
+                      300,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'สร้างคลับ',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 Text(
                   'โดยการสร้างคลับ คุณได้ยินยอมข้อตกลงแล้ว',
                   style: GoogleFonts.sarabun(),
@@ -126,7 +126,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
