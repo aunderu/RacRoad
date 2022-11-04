@@ -43,21 +43,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         padding: const EdgeInsets.only(bottom: 80),
         child: PageView(
           controller: controller,
-          children: [
-            Container(
-              child: const Center(
-                child: Text('Page 1'),
-              ),
+          children: const [
+            Center(
+              child: Text('Page 1'),
             ),
-            Container(
-              child: const Center(
-                child: Text('Page 2'),
-              ),
+            Center(
+              child: Text('Page 2'),
             ),
-            Container(
-              child: const Center(
-                child: Text('Page 3'),
-              ),
+            Center(
+              child: Text('Page 3'),
             ),
           ],
         ),
@@ -94,9 +88,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       context,
                       PageTransition(
                         type: PageTransitionType.rightToLeft,
-                        duration: Duration(milliseconds: 100),
-                        reverseDuration: Duration(milliseconds: 100),
-                        child: CreateClubPage(),
+                        duration: const Duration(milliseconds: 100),
+                        reverseDuration: const Duration(milliseconds: 100),
+                        child: const CreateClubPage(),
                       ),
                     );
                   },

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:rac_road/colors.dart';
+import 'package:rac_road/home/screens.dart';
 
 import '../../../../models/category.dart';
-import 'items.dart';
-import 'picked_interests.dart';
 
 class CreateClubPage extends StatefulWidget {
   const CreateClubPage({super.key});
@@ -36,7 +37,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
   }
 
   int activeIndex = 0;
-  int totalIndex = 3;
+  int totalIndex = 4;
   List<Category> pickInterest = [];
   int _itemTotal = 0;
 
@@ -80,6 +81,8 @@ class _CreateClubPageState extends State<CreateClubPage> {
         return formClubDescription();
       case 2:
         return formClubTags(size);
+      case 3:
+        return finishClubDetails();
       default:
         return formClubName();
     }
@@ -102,7 +105,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                   shape: Shape.pipe,
                   spacing: 10.0,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'ตั้งชื่อคลับของคุณ',
                   style: GoogleFonts.sarabun(
@@ -110,7 +113,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                     fontSize: 25,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'คุณอาจใช้ชื่อรถที่คุณรัก เพื่อดึงดูดคนที่มีความสนใจเดียวกับคุณและร่วมพูดคุยแลกเปลี่ยนร่วมกัน',
                   style: GoogleFonts.sarabun(
@@ -120,7 +123,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
               ],
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -171,7 +174,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
               ),
             ),
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: ElevatedButton(
@@ -220,7 +223,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                   shape: Shape.pipe,
                   spacing: 10.0,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'อธิบายคลับของคุณสักหน่อย',
                   style: GoogleFonts.sarabun(
@@ -228,7 +231,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                     fontSize: 25,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'คำอธิบายคลับเป็นสิ่งที่ทำให้ผู้ที่สนใจคลับของคุณรู้ว่าคลับของคุณเกี่ยวกับสิ่งใด',
                   style: GoogleFonts.sarabun(
@@ -238,7 +241,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
               ],
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -275,22 +278,16 @@ class _CreateClubPageState extends State<CreateClubPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                validator: MultiValidator([
-                  RequiredValidator(
-                    errorText: "กรุณากรอกชื่อคลับด้วย",
-                  ),
-                  MinLengthValidator(
-                    4,
-                    errorText: "ชื่อคลับห้ามต่ำกว่า 3 ตัวอักษร",
-                  )
-                ]),
+                validator: RequiredValidator(
+                  errorText: "กรุณากรอกคำอธิบายคลับด้วย",
+                ),
                 style: GoogleFonts.sarabun(),
-                
-                keyboardType: TextInputType.text,
+                maxLines: 4,
+                keyboardType: TextInputType.multiline,
               ),
             ),
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: ElevatedButton(
@@ -333,12 +330,12 @@ class _CreateClubPageState extends State<CreateClubPage> {
               children: [
                 DotStepper(
                   activeStep: activeIndex,
-                  dotCount: 3,
+                  dotCount: totalIndex,
                   dotRadius: 20.0,
                   shape: Shape.pipe,
                   spacing: 10.0,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'คุณคิดว่าคลับ ${clubNameController!.text} ของคุณอยู่หมวดหมู่อะไร',
                   style: GoogleFonts.sarabun(
@@ -346,7 +343,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                     fontSize: 25,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'หมวดหมู่จะช่วยให้คนที่มีความสนใจเดียวกันหาเจอได้ง่ายขึ้น คุณสามารถเลือกได้สูงสุด 3 หมวดหมู่',
                   style: GoogleFonts.sarabun(
@@ -356,14 +353,20 @@ class _CreateClubPageState extends State<CreateClubPage> {
               ],
             ),
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: ElevatedButton(
               onPressed: () {
-                if (basicFormKey.currentState?.validate() ?? false) {
-                  // next
-                }
+                setState(() {
+                  activeIndex++;
+                });
+                // if (basicFormKey.currentState?.validate() ?? false) {
+                //   // next
+                //   setState(() {
+                //     activeIndex++;
+                //   });
+                // }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: mainGreen,
@@ -382,6 +385,162 @@ class _CreateClubPageState extends State<CreateClubPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget finishClubDetails() {
+    //   return Row(
+    //     mainAxisSize: MainAxisSize.max,
+    //     children: [
+    //       Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           Expanded(
+    //             child: Padding(
+    //               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+    //               child: Column(
+    //                 mainAxisSize: MainAxisSize.max,
+    //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //                 children: [
+    //                   DotStepper(
+    //                     activeStep: activeIndex,
+    //                     dotCount: totalIndex,
+    //                     dotRadius: 20.0,
+    //                     shape: Shape.pipe,
+    //                     spacing: 10.0,
+    //                   ),
+    //                   SizedBox(height: 10),
+    //                   Text(
+    //                     'ชื่อคลับของคุณคือ :\n${clubNameController!.text}',
+    //                     style: GoogleFonts.sarabun(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 25,
+    //                     ),
+    //                   ),
+    //                   SizedBox(height: 10),
+    //                   Text(
+    //                     clubDescriptionController!.text,
+    //                     style: GoogleFonts.sarabun(
+    //                       fontSize: 17,
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //           SizedBox(height: 50),
+    //           Align(
+    //             alignment: Alignment.center,
+    //             child: Padding(
+    //               padding: const EdgeInsets.all(20.0),
+    //               child: ElevatedButton(
+    //                 onPressed: () {},
+    //                 style: ElevatedButton.styleFrom(
+    //                   backgroundColor: mainGreen,
+    //                   minimumSize: const Size(
+    //                     300,
+    //                     40,
+    //                   ),
+    //                 ),
+    //                 child: Text(
+    //                   'ถัดไป',
+    //                   style: GoogleFonts.sarabun(
+    //                     fontWeight: FontWeight.bold,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   );
+    // }
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DotStepper(
+                        activeStep: activeIndex,
+                        dotCount: totalIndex,
+                        dotRadius: 20.0,
+                        shape: Shape.pipe,
+                        spacing: 10.0,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'ชื่อคลับของคุณคือ\n${clubNameController!.text}',
+                        style: GoogleFonts.sarabun(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        "Tags : {Club tags}",
+                        style: GoogleFonts.sarabun(
+                          fontSize: 17,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        "คำอธิบายคลับ\n${clubDescriptionController!.text}",
+                        style: GoogleFonts.sarabun(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
+
+                      Get.to(const ScreensPage());
+                      Fluttertoast.showToast(
+                        msg: "สร้างคลับเรียบร้อย",
+                        backgroundColor: mainGreen,
+                        fontSize: 17,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainGreen,
+                      minimumSize: const Size(
+                        300,
+                        40,
+                      ),
+                    ),
+                    child: Text(
+                      'สร้างคลับ',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

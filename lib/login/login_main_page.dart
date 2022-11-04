@@ -76,7 +76,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
   }
 
   Widget loginWithGoogle(BuildContext context, Size size) {
-    bool isTel = false;
+    bool isTel = true;
     Future googleSignIn() async {
       try {
         final result = await _googleSignIn.signIn();
