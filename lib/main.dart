@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'RacRoad',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: mainGreen,
         scaffoldBackgroundColor: Colors.white,
       ),
       home: const CheckLogin(),

@@ -79,34 +79,41 @@ class _TAFpageState extends State<TAFpage> {
           : Form(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               key: formKeys,
-              child: Stepper(
-                type: StepperType.vertical,
-                steps: getSteps(),
-                currentStep: currentStep,
-                onStepContinue: () {
-                  final isLastStep = currentStep == getSteps().length - 1;
+              child: Theme(
+                data: ThemeData(
+                  colorScheme: Theme.of(context).colorScheme.copyWith(
+                        primary: mainGreen,
+                      ),
+                ),
+                child: Stepper(
+                  type: StepperType.vertical,
+                  steps: getSteps(),
+                  currentStep: currentStep,
+                  onStepContinue: () {
+                    final isLastStep = currentStep == getSteps().length - 1;
 
-                  if (isLastStep) {
-                    setState(() {
-                      isCompleted = true;
-                    });
-                    print('Completed');
-                  } else {
-                    // if (_formKeys[currentStep].currentState!.validate()) {
-                    //   setState(
-                    //     () => currentStep += 1,
-                    //   );
-                    // }
-                    setState(
-                      () => currentStep += 1,
-                    );
-                  }
-                },
-                onStepCancel: currentStep == 0
-                    ? null
-                    : () => setState(
-                          () => currentStep -= 1,
-                        ),
+                    if (isLastStep) {
+                      setState(() {
+                        isCompleted = true;
+                      });
+                      print('Completed');
+                    } else {
+                      // if (_formKeys[currentStep].currentState!.validate()) {
+                      //   setState(
+                      //     () => currentStep += 1,
+                      //   );
+                      // }
+                      setState(
+                        () => currentStep += 1,
+                      );
+                    }
+                  },
+                  onStepCancel: currentStep == 0
+                      ? null
+                      : () => setState(
+                            () => currentStep -= 1,
+                          ),
+                ),
               ),
             ),
     );

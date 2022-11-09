@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:rac_road/home/pages/profile/add_car/add_car.dart';
 import 'package:rac_road/home/pages/profile/car_details.dart';
 
 import '../../../colors.dart';
@@ -38,12 +39,12 @@ class _MyCarWidgetState extends State<MyCarWidget> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () async {
-                // await Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const TAFpage(),
-                //   ),
-                // );
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddCarPage(),
+                  ),
+                );
               },
               child: Text(
                 'เพิ่มรถ',
