@@ -5,7 +5,8 @@ import 'package:rac_road/home/pages/profile/create_club/on_boarding.dart';
 import '../../../colors.dart';
 
 class MyClubWidget extends StatefulWidget {
-  const MyClubWidget({super.key});
+  final String getToken;
+  const MyClubWidget({super.key, required this.getToken});
 
   @override
   State<MyClubWidget> createState() => _MyClubWidgetState();

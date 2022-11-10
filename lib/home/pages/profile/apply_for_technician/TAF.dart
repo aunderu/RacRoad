@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/screens.dart';
 
 // TAF = Technician application form
 class TAFpage extends StatefulWidget {
-  const TAFpage({Key? key}) : super(key: key);
+  final String getToken;
+  const TAFpage({Key? key, required this.getToken}) : super(key: key);
 
   @override
   State<TAFpage> createState() => _TAFpageState();
@@ -59,6 +64,38 @@ class _TAFpageState extends State<TAFpage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> techSubmit() async {
+      if (workHistoryController?.text != "" ||
+          stdHistoryController?.text != "" ||
+          tncNameController?.text != "" ||
+          tel1Controller?.text != "" ||
+          addressController?.text != "" ||
+          serviceTypeController?.text != "" ||
+          serviceZoneController?.text != "" ||
+          serviceTimeController?.text != "") {
+        final response = await http.post(
+          Uri.parse("https://api-racroad.chabafarm.com/api/technician/store"),
+          body: {
+            'user_id': widget.getToken,
+            'address': addressController!.text,
+            'tel1': tel1Controller!.text,
+            'tel2': tel2Controller?.text,
+            'service_zone': serviceZoneController!.text,
+            'service_time': serviceTimeController!.text,
+            'service_type': serviceTypeController!.text,
+            'work_history': workHistoryController!.text,
+            'tnc_name': tncNameController!.text,
+            'std_history': stdHistoryController!.text,
+          },
+        );
+        if (response.statusCode == 200) {
+          return jsonDecode(response.body);
+        } else {
+          throw Exception(jsonDecode(response.body));
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -75,7 +112,7 @@ class _TAFpageState extends State<TAFpage> {
         ),
       ),
       body: isCompleted
-          ? formCompleted()
+          ? formCompleted(widget.getToken)
           : Form(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               key: formKeys,
@@ -93,10 +130,20 @@ class _TAFpageState extends State<TAFpage> {
                     final isLastStep = currentStep == getSteps().length - 1;
 
                     if (isLastStep) {
-                      setState(() {
-                        isCompleted = true;
-                      });
-                      print('Completed');
+                      if (workHistoryController?.text != "" ||
+                          stdHistoryController?.text != "" ||
+                          tncNameController?.text != "" ||
+                          tel1Controller?.text != "" ||
+                          addressController?.text != "" ||
+                          serviceTypeController?.text != "" ||
+                          serviceZoneController?.text != "" ||
+                          serviceTimeController?.text != "") {
+                        techSubmit();
+                        setState(() {
+                          isCompleted = true;
+                          print('Completed');
+                        });
+                      }
                     } else {
                       // if (_formKeys[currentStep].currentState!.validate()) {
                       //   setState(
@@ -606,7 +653,7 @@ class _TAFpageState extends State<TAFpage> {
       ];
 }
 
-Widget formCompleted() {
+Widget formCompleted(String token) {
   return SizedBox(
     width: double.infinity,
     child: Column(
@@ -633,12 +680,12 @@ Widget formCompleted() {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            // Fluttertoast.showToast(
-            //   msg: "ส่งแบบฟอร์มสมัครเป็นช่างเรียบร้อย!",
-            //   backgroundColor: mainGreen,
-            //   fontSize: 17,
-            // );
-            // Get.to(() => const ScreensPage());
+            Fluttertoast.showToast(
+              msg: "ส่งแบบฟอร์มสมัครเป็นช่างเรียบร้อย!",
+              backgroundColor: mainGreen,
+              fontSize: 17,
+            );
+            Get.to(() => ScreensPage(getToken: token));
           },
           style: ElevatedButton.styleFrom(backgroundColor: mainGreen),
           child: const Text('กลับหน้าแรก'),

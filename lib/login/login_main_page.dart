@@ -80,12 +80,14 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
   Widget loginWithGoogle(BuildContext context, Size size) {
     bool isTel = true;
+    const url = "https://api.racroad.com/api";
+    const testurl = "https://api-racroad.chabafarm.com/api";
 
     Future<UserLogin> googleSignIn() async {
       final result = await _googleSignIn.signIn();
       if (result != null) {
         final response = await http.post(
-          Uri.parse('https://api.racroad.com/api/google/login'),
+          Uri.parse('$testurl/google/login'), 
           body: {
             'email': result.email,
             'name': result.displayName,

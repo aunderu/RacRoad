@@ -5,7 +5,8 @@ import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/profile/apply_for_technician/TAF.dart';
 
 class MyJobWidget extends StatefulWidget {
-  const MyJobWidget({super.key});
+  final String getToken;
+  const MyJobWidget({super.key, required this.getToken});
 
   @override
   State<MyJobWidget> createState() => _MyJobWidgetState();
@@ -39,7 +40,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                   type: PageTransitionType.rightToLeft,
                   duration: const Duration(milliseconds: 200),
                   reverseDuration: const Duration(milliseconds: 100),
-                  child: const TAFpage(),
+                  child: TAFpage(getToken: widget.getToken),
                 ),
               );
             },

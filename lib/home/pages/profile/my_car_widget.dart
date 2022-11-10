@@ -8,7 +8,8 @@ import 'package:rac_road/home/pages/profile/car_details.dart';
 import '../../../colors.dart';
 
 class MyCarWidget extends StatefulWidget {
-  const MyCarWidget({super.key});
+  final String getToken;
+  const MyCarWidget({super.key, required this.getToken});
 
   @override
   State<MyCarWidget> createState() => _MyCarWidgetState();

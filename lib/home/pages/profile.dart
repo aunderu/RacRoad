@@ -31,10 +31,10 @@ class _ProfilePageState extends State<ProfilePage> {
     "My Job",
   ];
 
-  List pages = [
-    const MyCarWidget(),
-    const MyClubWidget(),
-    const MyJobWidget(),
+  late final List pages = [
+    MyCarWidget(getToken: widget.token),
+    MyClubWidget(getToken: widget.token),
+    MyJobWidget(getToken: widget.token),
   ];
 
   @override
@@ -62,7 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  AccountSetting(getToken: widget.token),
+                    builder: (context) =>
+                        AccountSetting(getToken: widget.token),
                   ),
                 );
               },

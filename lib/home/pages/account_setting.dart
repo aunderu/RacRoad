@@ -162,7 +162,7 @@ class AccountSetting extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         const Icon(
-                          Icons.notifications_none,
+                          Icons.account_circle_outlined,
                           color: darkGray,
                           size: 24,
                         ),
@@ -170,7 +170,7 @@ class AccountSetting extends StatelessWidget {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                           child: Text(
-                            'ตั้งค่า การแจ้งเตือน',
+                            'ข้อมูล โปรไฟล์ของฉัน',
                             style: GoogleFonts.sarabun(),
                           ),
                         ),
@@ -212,7 +212,7 @@ class AccountSetting extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         const Icon(
-                          Icons.account_circle_outlined,
+                          Icons.notifications_none,
                           color: darkGray,
                           size: 24,
                         ),
@@ -220,7 +220,7 @@ class AccountSetting extends StatelessWidget {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                           child: Text(
-                            'แก้ไข โปรไฟล์',
+                            'ตั้งค่า การแจ้งเตือน',
                             style: GoogleFonts.sarabun(),
                           ),
                         ),
