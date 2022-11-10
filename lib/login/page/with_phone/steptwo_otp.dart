@@ -232,12 +232,12 @@ class _StepTwoOTPPageState extends State<StepTwoOTPPage> {
                     ),
                   ),
                   onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ScreensPage(),
-                      ),
-                    );
+                    // await Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const ScreensPage(),
+                    //   ),
+                    // );
                   },
                   child: const Text('Next'),
                 ),

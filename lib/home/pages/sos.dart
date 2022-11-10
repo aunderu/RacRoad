@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/setgps.dart';
 
-
 class SOSPage extends StatefulWidget {
-  const SOSPage({super.key});
+  final String token;
+  const SOSPage({super.key, required this.token});
 
   @override
   State<SOSPage> createState() => _SOSPageState();

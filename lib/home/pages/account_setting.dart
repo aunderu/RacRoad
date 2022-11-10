@@ -9,7 +9,8 @@ import '../../login/api/google_sign_in_api.dart';
 import '../../login/login_main_page.dart';
 
 class AccountSetting extends StatelessWidget {
-  const AccountSetting({Key? key}) : super(key: key);
+  final String getToken;
+  const AccountSetting({Key? key, required this.getToken}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class AccountSetting extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
                     child: FutureBuilder(
-                      future: getUserProfile(),
+                      future: getUserProfile(getToken),
                       builder: (context, snapshot) {
                         var result = snapshot.data;
                         if (result != null) {

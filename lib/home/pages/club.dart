@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'club/club_details.dart';
 
 class ClubPage extends StatefulWidget {
-  const ClubPage({super.key});
+  final String token;
+  const ClubPage({super.key, required this.token});
 
   @override
   State<ClubPage> createState() => _ClubPageState();

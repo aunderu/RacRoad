@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({super.key});
+  final String token;
+  const NotificationsPage({super.key, required this.token});
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();

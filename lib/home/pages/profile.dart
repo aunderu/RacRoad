@@ -10,8 +10,10 @@ import 'package:rac_road/loading/skelton.dart';
 
 class ProfilePage extends StatefulWidget {
   // final GoogleSignInAccount user;
+  final String token;
   const ProfilePage({
     Key? key,
+    required this.token,
     // required this.user,
   }) : super(key: key);
 
@@ -60,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AccountSetting(),
+                    builder: (context) =>  AccountSetting(getToken: widget.token),
                   ),
                 );
               },
@@ -81,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 FutureBuilder(
-                  future: getUserProfile(),
+                  future: getUserProfile(widget.token),
                   builder: (context, snapshot) {
                     var result = snapshot.data;
                     if (result != null) {

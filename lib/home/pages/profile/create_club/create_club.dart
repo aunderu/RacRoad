@@ -513,13 +513,12 @@ class _CreateClubPageState extends State<CreateClubPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       // ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
-
-                      Get.to(const ScreensPage());
-                      Fluttertoast.showToast(
-                        msg: "สร้างคลับเรียบร้อย",
-                        backgroundColor: mainGreen,
-                        fontSize: 17,
-                      );
+                      // Fluttertoast.showToast(
+                      //   msg: "สร้างคลับเรียบร้อย",
+                      //   backgroundColor: mainGreen,
+                      //   fontSize: 17,
+                      // );
+                      // Get.to(const ScreensPage());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: mainGreen,

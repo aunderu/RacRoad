@@ -633,12 +633,12 @@ Widget formCompleted() {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            Fluttertoast.showToast(
-              msg: "ส่งแบบฟอร์มสมัครเป็นช่างเรียบร้อย!",
-              backgroundColor: mainGreen,
-              fontSize: 17,
-            );
-            Get.to(() => const ScreensPage());
+            // Fluttertoast.showToast(
+            //   msg: "ส่งแบบฟอร์มสมัครเป็นช่างเรียบร้อย!",
+            //   backgroundColor: mainGreen,
+            //   fontSize: 17,
+            // );
+            // Get.to(() => const ScreensPage());
           },
           style: ElevatedButton.styleFrom(backgroundColor: mainGreen),
           child: const Text('กลับหน้าแรก'),

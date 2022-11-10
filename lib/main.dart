@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:rac_road/home/screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +22,9 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 void main() {
+  Intl.defaultLocale = "th";
+  initializeDateFormatting();
+
   runApp(const MyApp());
 }
 
@@ -41,23 +46,23 @@ class _MyAppState extends State<MyApp> {
         _currentUser = account;
       });
     });
-    googleSigninSilently();
+    // googleSigninSilently();
   }
 
-  Future googleSigninSilently() async {
-    try {
-      final result = await _googleSignIn.signInSilently();
-      if (result != null) {
-        final ggAuth = await result.authentication;
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setString("token", ggAuth.accessToken.toString());
-        // print(ggAuth.idToken);
-        print(ggAuth.accessToken);
-      }
-    } catch (error) {
-      print(error);
-    }
-  }
+  // Future googleSigninSilently() async {
+  //   try {
+  //     final result = await _googleSignIn.signInSilently();
+  //     if (result != null) {
+  //       final ggAuth = await result.authentication;
+  //       SharedPreferences preferences = await SharedPreferences.getInstance();
+  //       preferences.setString("token", ggAuth.accessToken.toString());
+  //       // print(ggAuth.idToken);
+  //       print(ggAuth.accessToken);
+  //     }
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +87,19 @@ class CheckLogin extends StatefulWidget {
 }
 
 class _CheckLoginState extends State<CheckLogin> {
-  String token = "";
+  String? token = "";
 
   @override
   void initState() {
     super.initState();
+
+    getToken();
     checkLogin();
+  }
+
+  Future<void> getToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    token = preferences.getString("token");
   }
 
   void checkLogin() async {
@@ -98,7 +110,9 @@ class _CheckLoginState extends State<CheckLogin> {
       Timer(
         const Duration(seconds: 2),
         () => Get.to(
-          () => const ScreensPage(),
+          () => ScreensPage(
+            getToken: token,
+          ),
         ),
       );
     } else {

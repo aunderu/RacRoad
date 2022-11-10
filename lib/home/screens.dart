@@ -11,10 +11,12 @@ import 'pages/profile.dart';
 import 'pages/sos.dart';
 
 class ScreensPage extends StatefulWidget {
+  final String getToken;
   // final int pageIndex;
   // final GoogleSignInAccount user;
   const ScreensPage({
     Key? key,
+    required this.getToken,
     // required this.pageIndex,
     // required this.user,
   }) : super(key: key);
@@ -28,12 +30,12 @@ class _ScreensPageState extends State<ScreensPage> {
   int index = 0;
   final bool _isNoti = true;
 
-  final _screens = <Widget>[
-    const HomePage(),
-    const ClubPage(),
-    const SOSPage(),
-    const NotificationsPage(),
-    const ProfilePage(),
+  late final _screens = <Widget>[
+    HomePage(token: widget.getToken),
+    ClubPage(token: widget.getToken),
+    SOSPage(token: widget.getToken),
+    NotificationsPage(token: widget.getToken),
+    ProfilePage(token: widget.getToken),
   ];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -55,7 +57,7 @@ class _ScreensPageState extends State<ScreensPage> {
               floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 FutureBuilder(
-                  future: getUserProfile(),
+                  future: getUserProfile(widget.getToken),
                   builder: (context, snapshot) {
                     var result = snapshot.data;
                     if (result != null) {
@@ -78,10 +80,6 @@ class _ScreensPageState extends State<ScreensPage> {
                               result.data.myProfile.avatar,
                               fit: BoxFit.contain,
                             ),
-                            // child: Image.asset(
-                            //   'assets/imgs/profile.png',
-                            //   fit: BoxFit.contain,
-                            // ),
                           ),
                         ),
                         title: Text(
@@ -107,8 +105,9 @@ class _ScreensPageState extends State<ScreensPage> {
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AccountSetting(),
+                                    builder: (context) => AccountSetting(
+                                      getToken: widget.getToken,
+                                    ),
                                   ),
                                 );
                               },
@@ -161,7 +160,9 @@ class _ScreensPageState extends State<ScreensPage> {
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const AccountSetting(),
+                                  builder: (context) => AccountSetting(
+                                    getToken: widget.getToken,
+                                  ),
                                 ),
                               );
                             },

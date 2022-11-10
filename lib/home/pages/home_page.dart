@@ -5,8 +5,10 @@ import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+  final String token;
   const HomePage({
     Key? key,
+    required this.token,
   }) : super(key: key);
 
   @override

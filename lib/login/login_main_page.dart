@@ -1,13 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'package:rac_road/main.dart';
+import 'package:rac_road/models/user_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
-import '../home/screens.dart';
 import 'page/with_email/stepone_with_email.dart';
 import 'page/with_phone/stepone_with_phone.dart';
 
@@ -77,32 +80,26 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
   Widget loginWithGoogle(BuildContext context, Size size) {
     bool isTel = true;
-    Future googleSignIn() async {
-      try {
-        final result = await _googleSignIn.signIn();
-        if (result != null) {
-          final ggAuth = await result.authentication;
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          preferences.setString("token", ggAuth.accessToken.toString());
-          // print(ggAuth.idToken);
-          // print(ggAuth.accessToken);
-          final GoogleSignInAccount? user = _currentUser;
-          Response response = await post(
-              Uri.parse('https://api-racroad.chabafarm.com/api/login'),
-              body: {
-                'email': user!.email,
-                'name': user.displayName,
-                'avatar': user.photoUrl,
-              });
 
-          // print(user.photoUrl);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => isTel
-                  ? const ScreensPage()
-                  : const StepOneWithPhoneNumber()));
+    Future<UserLogin> googleSignIn() async {
+      final result = await _googleSignIn.signIn();
+      if (result != null) {
+        final response = await http.post(
+          Uri.parse('https://api.racroad.com/api/google/login'),
+          body: {
+            'email': result.email,
+            'name': result.displayName,
+            'avatar': result.photoUrl,
+          },
+        );
+        if (response.statusCode == 200) {
+          String responseString = response.body;
+          return userLoginFromJson(responseString);
+        } else {
+          throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
         }
-      } catch (error) {
-        print(error);
+      } else {
+        throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
       }
     }
 
@@ -118,7 +115,14 @@ class _LoginMainPageState extends State<LoginMainPage> {
           borderRadius: BorderRadius.circular(30.0),
         ),
       ),
-      onPressed: () => googleSignIn(),
+      onPressed: () async {
+        final UserLogin login = await googleSignIn();
+        if (login.status == true) {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setString("token", login.data.id);
+          Get.to(() => CheckLogin());
+        }
+      },
       label: Align(
         alignment: Alignment.centerLeft,
         child: Text(

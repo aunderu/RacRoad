@@ -258,12 +258,13 @@ class _AddCarPageState extends State<AddCarPage> {
               padding: const EdgeInsets.all(20.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Get.to(ScreensPage());
-                  Fluttertoast.showToast(
-                    msg: "เพิ่มรถเรียบร้อย",
-                    backgroundColor: mainGreen,
-                    fontSize: 17,
-                  );
+                  // Fluttertoast.showToast(
+                  //   msg: "เพิ่มรถเรียบร้อย",
+                  //   backgroundColor: mainGreen,
+                  //   fontSize: 17,
+                  // );
+                  // Get.to(ScreensPage());
+                  
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: mainGreen,

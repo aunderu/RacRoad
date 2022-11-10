@@ -5,13 +5,13 @@ import 'package:rac_road/models/user_profile_model.dart';
 
 UserProfile? resultUserProfile;
 
-const url = "https://api-racroad.chabafarm.com/api";
+const url = "https://api.racroad.com/api";
 
 
 // ################################ UserProfile #################################
-Future<UserProfile?> getUserProfile() async {
+Future<UserProfile?> getUserProfile(String token) async {
   final response = await http.get(
-    Uri.parse("$url/my/profile/14"),
+    Uri.parse("$url/my/profile/$token"),
   );
   if (response.statusCode == 200) {
     final itemUserProfile = json.decode(response.body);
