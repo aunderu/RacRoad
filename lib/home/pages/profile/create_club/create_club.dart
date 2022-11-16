@@ -1,16 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/screens.dart';
-
 import '../../../../models/category.dart';
 
 class CreateClubPage extends StatefulWidget {
-  const CreateClubPage({super.key});
+  final String getToken;
+  const CreateClubPage({super.key, required this.getToken});
 
   @override
   State<CreateClubPage> createState() => _CreateClubPageState();
@@ -21,29 +26,50 @@ class _CreateClubPageState extends State<CreateClubPage> {
 
   TextEditingController? clubNameController;
   TextEditingController? clubDescriptionController;
+  TextEditingController? clubZoneController;
 
   @override
   void initState() {
     super.initState();
     clubNameController = TextEditingController();
     clubDescriptionController = TextEditingController();
+    clubZoneController = TextEditingController();
   }
 
   @override
   void dispose() {
     clubNameController?.dispose();
     clubDescriptionController?.dispose();
+    clubZoneController?.dispose();
     super.dispose();
   }
 
+  Future<void> clubSubmit() async {
+    final response = await http.post(
+      Uri.parse("https://api.racroad.com/api/club/store"),
+      body: {
+        'user_id': widget.getToken,
+        'club_name': clubNameController!.text,
+        'description': clubDescriptionController!.text,
+        'club_zone': clubZoneController!.text,
+      },
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(jsonDecode(response.body));
+    }
+  }
+
   int activeIndex = 0;
-  int totalIndex = 4;
+  int totalIndex = 5;
   List<Category> pickInterest = [];
   int _itemTotal = 0;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return WillPopScope(
       onWillPop: () async {
         if (activeIndex != 0) {
@@ -80,8 +106,10 @@ class _CreateClubPageState extends State<CreateClubPage> {
       case 1:
         return formClubDescription();
       case 2:
-        return formClubTags(size);
+        return formClubZone();
       case 3:
+        return formClubTags(size);
+      case 4:
         return finishClubDetails();
       default:
         return formClubName();
@@ -319,6 +347,124 @@ class _CreateClubPageState extends State<CreateClubPage> {
     );
   }
 
+  Widget formClubZone() {
+    return Form(
+      key: basicFormKey,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DotStepper(
+                  activeStep: activeIndex,
+                  dotCount: totalIndex,
+                  dotRadius: 20.0,
+                  shape: Shape.pipe,
+                  spacing: 10.0,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'โซนของคลับคุณ',
+                  style: GoogleFonts.sarabun(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'โซนที่ตั้งคลับของคุณ ช่วยดึงดูดให้คนใกล้เคียงเข้าคลับได้',
+                  style: GoogleFonts.sarabun(
+                    fontSize: 17,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 15),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: TextFormField(
+                controller: clubZoneController,
+                decoration: InputDecoration(
+                  labelText: 'โซนของคลับ',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 230, 230, 230),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 204, 232, 255),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                validator: MultiValidator([
+                  RequiredValidator(
+                    errorText: "กรุณากรอกโซนของคลับด้วย",
+                  ),
+                  MinLengthValidator(
+                    4,
+                    errorText: "โซนของคลับห้ามต่ำกว่า 3 ตัวอักษร",
+                  )
+                ]),
+                style: GoogleFonts.sarabun(),
+                keyboardType: TextInputType.text,
+              ),
+            ),
+          ),
+          const SizedBox(height: 50),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (basicFormKey.currentState?.validate() ?? false) {
+                  // next
+                  setState(() {
+                    activeIndex++;
+                  });
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: mainGreen,
+                minimumSize: const Size(
+                  300,
+                  40,
+                ),
+              ),
+              child: Text(
+                'ถัดไป',
+                style: GoogleFonts.sarabun(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget formClubTags(Size size) {
     return SingleChildScrollView(
       child: Column(
@@ -497,7 +643,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        "คำอธิบายคลับ\n${clubDescriptionController!.text}",
+                        "คำอธิบายคลับ\n${clubDescriptionController!.text} ,${clubZoneController!.text}",
                         style: GoogleFonts.sarabun(
                           fontSize: 17,
                         ),
@@ -512,13 +658,15 @@ class _CreateClubPageState extends State<CreateClubPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      // ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
-                      // Fluttertoast.showToast(
-                      //   msg: "สร้างคลับเรียบร้อย",
-                      //   backgroundColor: mainGreen,
-                      //   fontSize: 17,
-                      // );
-                      // Get.to(const ScreensPage());
+                      //ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
+                      clubSubmit();
+
+                      Fluttertoast.showToast(
+                        msg: "สร้างคลับเรียบร้อย",
+                        backgroundColor: mainGreen,
+                        fontSize: 17,
+                      );
+                      Get.to(ScreensPage(getToken: widget.getToken));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: mainGreen,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/loading/skelton.dart';
@@ -76,9 +77,11 @@ class _ScreensPageState extends State<ScreensPage> {
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child: Image.network(
-                              result.data.myProfile.avatar,
-                              fit: BoxFit.contain,
+                            child: CachedNetworkImage(
+                              imageUrl: result.data.myProfile.avatar,
+                              placeholder: (context, url) => Image.asset('assets/imgs/profile.png'),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
                           ),
                         ),

@@ -4,112 +4,92 @@ import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/stepthere_qrcode.dart';
 
 class Pricing extends StatelessWidget {
-  const Pricing({super.key});
+  final String token;
+  const Pricing({super.key, required this.token});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 24, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'บริการเปลี่ยนล้อ',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            const Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
-                              child: Icon(
-                                Icons.date_range_rounded,
-                                color: darkGray,
-                                size: 20,
-                              ),
-                            ),
-                            Text(
-                              'วัน - เดือน',
-                              style: GoogleFonts.sarabun(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: darkGray,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            const Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
-                              child: Icon(
-                                Icons.access_time_rounded,
-                                color: darkGray,
-                                size: 20,
-                              ),
-                            ),
-                            Text(
-                              'เวลา',
-                              style: GoogleFonts.sarabun(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: darkGray,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 Column(
                   mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      // child: Image.network(
-                      //   '',
-                      //   width: 50,
-                      //   height: 50,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      child: Container(
-                        color: Colors.grey,
-                        width: 50,
-                        height: 50,
+                    Text(
+                      'บริการเปลี่ยนล้อ',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                      child: Text(
-                        'User Nmae',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                            child: Icon(
+                              Icons.date_range_rounded,
+                              color: darkGray,
+                              size: 20,
+                            ),
+                          ),
+                          Text(
+                            'วัน - เดือน',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: darkGray,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                            child: Icon(
+                              Icons.access_time_rounded,
+                              color: darkGray,
+                              size: 20,
+                            ),
+                          ),
+                          Text(
+                            'เวลา',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: darkGray,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -274,6 +254,7 @@ class Pricing extends StatelessWidget {
             endIndent: 16,
             color: Color.fromARGB(255, 231, 231, 231),
           ),
+          const Expanded(child: Spacer()),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

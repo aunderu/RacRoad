@@ -39,7 +39,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const OnBoardingPage(),
+                    builder: (context) => OnBoardingPage(getToken: widget.getToken),
                   ),
                 );
               },

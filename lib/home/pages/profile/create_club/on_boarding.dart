@@ -6,7 +6,8 @@ import 'package:rac_road/home/pages/profile/create_club/create_club.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingPage extends StatefulWidget {
-  const OnBoardingPage({super.key});
+  final String getToken;
+  const OnBoardingPage({super.key, required this.getToken});
 
   @override
   State<OnBoardingPage> createState() => _OnBoardingPageState();
@@ -90,7 +91,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         type: PageTransitionType.rightToLeft,
                         duration: const Duration(milliseconds: 100),
                         reverseDuration: const Duration(milliseconds: 100),
-                        child: const CreateClubPage(),
+                        child: CreateClubPage(getToken: widget.getToken),
                       ),
                     );
                   },

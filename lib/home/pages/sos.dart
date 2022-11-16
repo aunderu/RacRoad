@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/sos/setgps.dart';
+import 'package:rac_road/home/pages/sos/sos_form.dart';
 
 class SOSPage extends StatefulWidget {
   final String token;
@@ -36,7 +36,8 @@ class _SOSPageState extends State<SOSPage> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SOSsetGPS(),
+                        builder: (context) =>
+                            SOSFormPage(getToken: widget.token),
                       ),
                     );
                   },

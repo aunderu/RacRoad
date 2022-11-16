@@ -74,7 +74,7 @@ class _TAFpageState extends State<TAFpage> {
           serviceZoneController?.text != "" ||
           serviceTimeController?.text != "") {
         final response = await http.post(
-          Uri.parse("https://api-racroad.chabafarm.com/api/technician/store"),
+          Uri.parse("https://api.racroad.com/api/technician/store"),
           body: {
             'user_id': widget.getToken,
             'address': addressController!.text,

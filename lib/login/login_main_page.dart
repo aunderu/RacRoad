@@ -87,7 +87,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
       final result = await _googleSignIn.signIn();
       if (result != null) {
         final response = await http.post(
-          Uri.parse('$testurl/google/login'), 
+          Uri.parse('$url/google/login'), 
           body: {
             'email': result.email,
             'name': result.displayName,

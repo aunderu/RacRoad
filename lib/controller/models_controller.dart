@@ -13,7 +13,7 @@ const testurl = "https://api-racroad.chabafarm.com/api";
 Future<UserProfile?> getUserProfile(String token) async {
   try {
     final response = await http.get(
-      Uri.parse("$testurl/my/profile/$token"),
+      Uri.parse("$url/my/profile/$token"),
     );
     if (response.statusCode == 200) {
       final itemUserProfile = json.decode(response.body);

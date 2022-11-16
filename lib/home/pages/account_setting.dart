@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
@@ -82,17 +83,17 @@ class AccountSetting extends StatelessWidget {
                                       2, 2, 2, 2),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(60),
-                                    child: Image.network(
-                                      result.data.myProfile.avatar,
+                                    child: CachedNetworkImage(
+                                      imageUrl: result.data.myProfile.avatar,
                                       width: 70,
                                       height: 70,
                                       fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          Image.asset(
+                                              'assets/imgs/profile.png'),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
                                     ),
-                                    // child: Container(
-                                    //   color: Colors.grey,
-                                    //   width: 70,
-                                    //   height: 70,
-                                    // ),
                                   ),
                                 ),
                               ),

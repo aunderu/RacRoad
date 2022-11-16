@@ -1,6 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/home/pages/sos/steptwo_pricing.dart';
 
 class NotificationsPage extends StatefulWidget {
   final String token;
@@ -103,9 +105,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: [
-                    listTile(),
-                    listTile(),
-                    listTile(),
+                    listTile(widget.token),
                   ],
                 ),
               )
@@ -117,36 +117,42 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 }
 
-Widget listTile() {
+Widget listTile(String token) {
   return Padding(
     padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 5),
-    child: ListTile(
-      leading: const CircleAvatar(
-        backgroundImage: AssetImage('assets/imgs/profile.png'),
-        radius: 25,
-      ),
-      title: Text(
-        'หัวข้อแจ้งเตือน',
-        style: GoogleFonts.sarabun(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
+    child: GestureDetector(
+      onTap: () {
+        Get.to(() => Pricing(token: token));
+      },
+      child: ListTile(
+        leading: const CircleAvatar(
+          backgroundImage: AssetImage('assets/imgs/oparator.png'),
+          radius: 25,
         ),
-      ),
-      subtitle: Text(
-        '1 วันที่ผ่านมา',
-        style: GoogleFonts.sarabun(
-          fontSize: 12,
+        title: Text(
+          'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ',
+          style: GoogleFonts.sarabun(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          maxLines: 2,
         ),
-      ),
-      trailing: const Icon(
-        Icons.keyboard_control,
-        color: Color(0xFF303030),
-        size: 20,
-      ),
-      tileColor: const Color(0xFFF5F5F5),
-      dense: false,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        subtitle: Text(
+          '1 นาทีที่ผ่านมา',
+          style: GoogleFonts.sarabun(
+            fontSize: 12,
+          ),
+        ),
+        trailing: const Icon(
+          Icons.keyboard_control,
+          color: Color(0xFF303030),
+          size: 20,
+        ),
+        tileColor: const Color(0xFFF5F5F5),
+        dense: false,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
       ),
     ),
   );
