@@ -13,12 +13,13 @@ import 'pages/sos.dart';
 
 class ScreensPage extends StatefulWidget {
   final String getToken;
-  // final int pageIndex;
+  int pageIndex;
+  final bool isSOS;
   // final GoogleSignInAccount user;
-  const ScreensPage({
+  ScreensPage({
     Key? key,
     required this.getToken,
-    // required this.pageIndex,
+    required this.pageIndex, required this.isSOS,
     // required this.user,
   }) : super(key: key);
 
@@ -28,13 +29,16 @@ class ScreensPage extends StatefulWidget {
 
 class _ScreensPageState extends State<ScreensPage> {
   TextEditingController? searchController;
-  int index = 0;
+  // int index = 0;
   final bool _isNoti = true;
 
   late final _screens = <Widget>[
     HomePage(token: widget.getToken),
     ClubPage(token: widget.getToken),
-    SOSPage(token: widget.getToken),
+    SOSPage(
+      token: widget.getToken,
+      isSOS: widget.isSOS,
+    ),
     NotificationsPage(token: widget.getToken),
     ProfilePage(token: widget.getToken),
   ];
@@ -53,7 +57,7 @@ class _ScreensPageState extends State<ScreensPage> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      body: index != 4
+      body: widget.pageIndex != 4
           ? NestedScrollView(
               floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -79,7 +83,8 @@ class _ScreensPageState extends State<ScreensPage> {
                             ),
                             child: CachedNetworkImage(
                               imageUrl: result.data.myProfile.avatar,
-                              placeholder: (context, url) => Image.asset('assets/imgs/profile.png'),
+                              placeholder: (context, url) =>
+                                  Image.asset('assets/imgs/profile.png'),
                               errorWidget: (context, url, error) =>
                                   Icon(Icons.error),
                             ),
@@ -178,9 +183,9 @@ class _ScreensPageState extends State<ScreensPage> {
                   },
                 ),
               ],
-              body: _screens[index],
+              body: _screens[widget.pageIndex],
             )
-          : _screens[index],
+          : _screens[widget.pageIndex],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: Colors.greenAccent.shade100,
@@ -192,8 +197,9 @@ class _ScreensPageState extends State<ScreensPage> {
           ),
         ),
         child: NavigationBar(
-          selectedIndex: index,
-          onDestinationSelected: (index) => setState(() => this.index = index),
+          selectedIndex: widget.pageIndex,
+          onDestinationSelected: (index) =>
+              setState(() => widget.pageIndex = index),
           destinations: [
             const NavigationDestination(
               icon: Icon(

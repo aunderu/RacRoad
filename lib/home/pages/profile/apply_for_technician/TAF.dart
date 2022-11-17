@@ -685,7 +685,11 @@ Widget formCompleted(String token) {
               backgroundColor: mainGreen,
               fontSize: 17,
             );
-            Get.to(() => ScreensPage(getToken: token));
+            Get.to(() => ScreensPage(
+                  getToken: token,
+                  isSOS: false,
+                  pageIndex: 4,
+                ));
           },
           style: ElevatedButton.styleFrom(backgroundColor: mainGreen),
           child: const Text('กลับหน้าแรก'),

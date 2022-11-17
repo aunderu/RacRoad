@@ -1,12 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/sos_form.dart';
+import 'package:rac_road/home/pages/sos/timeline/timeline_page.dart';
 
 class SOSPage extends StatefulWidget {
   final String token;
-  const SOSPage({super.key, required this.token});
+  final bool isSOS;
+  const SOSPage({super.key, required this.token, required this.isSOS});
 
   @override
   State<SOSPage> createState() => _SOSPageState();
@@ -22,11 +25,71 @@ class _SOSPageState extends State<SOSPage> {
       key: scaffoldKey,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+        padding: const EdgeInsetsDirectional.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            widget.isSOS == true
+                ? Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Material(
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(() => TimeLinePage(getToken: widget.token));
+                          },
+                          child: Ink(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: lightGrey,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Stack(
+                              children: [
+                                const Align(
+                                  alignment: AlignmentDirectional(0.7, -1),
+                                  child: Icon(
+                                    Icons.new_releases_sharp,
+                                    color: Color(0x47FF6767),
+                                    size: 100,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.all(16),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AutoSizeText(
+                                        'ติดตามสถานะ',
+                                        style: GoogleFonts.sarabun(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      AutoSizeText(
+                                        'แจ้งเหตุฉุกเฉินปัจจุบันของคุณ',
+                                        style: GoogleFonts.sarabun(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
             ClipRRect(
               borderRadius: BorderRadius.circular(40),
               child: Material(

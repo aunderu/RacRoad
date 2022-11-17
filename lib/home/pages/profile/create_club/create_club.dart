@@ -62,7 +62,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
   }
 
   int activeIndex = 0;
-  int totalIndex = 5;
+  int totalIndex = 4;
   List<Category> pickInterest = [];
   int _itemTotal = 0;
 
@@ -107,9 +107,9 @@ class _CreateClubPageState extends State<CreateClubPage> {
         return formClubDescription();
       case 2:
         return formClubZone();
+      // case 3:
+      //   return formClubTags(size);
       case 3:
-        return formClubTags(size);
-      case 4:
         return finishClubDetails();
       default:
         return formClubName();
@@ -318,28 +318,57 @@ class _CreateClubPageState extends State<CreateClubPage> {
           const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (basicFormKey.currentState?.validate() ?? false) {
-                  // next
-                  setState(() {
-                    activeIndex++;
-                  });
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: mainGreen,
-                minimumSize: const Size(
-                  300,
-                  40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // ปุ่มย้อนกลับ
+                ElevatedButton(
+                  onPressed: () {
+                    // back
+                    setState(() {
+                      activeIndex--;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainRed,
+                    minimumSize: const Size(
+                      150,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'ย้อนกลับ',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-              child: Text(
-                'ถัดไป',
-                style: GoogleFonts.sarabun(
-                  fontWeight: FontWeight.bold,
+
+                // ปุ่มถัดไป
+                ElevatedButton(
+                  onPressed: () {
+                    if (basicFormKey.currentState?.validate() ?? false) {
+                      // next
+                      setState(() {
+                        activeIndex++;
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainGreen,
+                    minimumSize: const Size(
+                      150,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'ถัดไป',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -436,28 +465,57 @@ class _CreateClubPageState extends State<CreateClubPage> {
           const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (basicFormKey.currentState?.validate() ?? false) {
-                  // next
-                  setState(() {
-                    activeIndex++;
-                  });
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: mainGreen,
-                minimumSize: const Size(
-                  300,
-                  40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // ปุ่มย้อนกลับ
+                ElevatedButton(
+                  onPressed: () {
+                    // back
+                    setState(() {
+                      activeIndex--;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainRed,
+                    minimumSize: const Size(
+                      150,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'ย้อนกลับ',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-              child: Text(
-                'ถัดไป',
-                style: GoogleFonts.sarabun(
-                  fontWeight: FontWeight.bold,
+
+                // ปุ่มถัดไป
+                ElevatedButton(
+                  onPressed: () {
+                    if (basicFormKey.currentState?.validate() ?? false) {
+                      // next
+                      setState(() {
+                        activeIndex++;
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainGreen,
+                    minimumSize: const Size(
+                      150,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'ถัดไป',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -502,31 +560,60 @@ class _CreateClubPageState extends State<CreateClubPage> {
           const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  activeIndex++;
-                });
-                // if (basicFormKey.currentState?.validate() ?? false) {
-                //   // next
-                //   setState(() {
-                //     activeIndex++;
-                //   });
-                // }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: mainGreen,
-                minimumSize: const Size(
-                  300,
-                  40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // ปุ่มย้อนกลับ
+                ElevatedButton(
+                  onPressed: () {
+                    // back
+                    setState(() {
+                      activeIndex--;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainRed,
+                    minimumSize: const Size(
+                      150,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'ย้อนกลับ',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-              child: Text(
-                'ถัดไป',
-                style: GoogleFonts.sarabun(
-                  fontWeight: FontWeight.bold,
+
+                // ปุ่มถัดไป
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      activeIndex++;
+                    });
+                    // if (basicFormKey.currentState?.validate() ?? false) {
+                    //   // next
+                    //   setState(() {
+                    //     activeIndex++;
+                    //   });
+                    // }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainGreen,
+                    minimumSize: const Size(
+                      150,
+                      40,
+                    ),
+                  ),
+                  child: Text(
+                    'ถัดไป',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -656,31 +743,64 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 alignment: Alignment.center,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
-                      clubSubmit();
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      // ปุ่มย้อนกลับ
+                      ElevatedButton(
+                        onPressed: () {
+                          // back
+                          setState(() {
+                            activeIndex--;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainRed,
+                          minimumSize: const Size(
+                            150,
+                            40,
+                          ),
+                        ),
+                        child: Text(
+                          'ย้อนกลับ',
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
 
-                      Fluttertoast.showToast(
-                        msg: "สร้างคลับเรียบร้อย",
-                        backgroundColor: mainGreen,
-                        fontSize: 17,
-                      );
-                      Get.to(ScreensPage(getToken: widget.getToken));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: mainGreen,
-                      minimumSize: const Size(
-                        300,
-                        40,
+                      // ปุ่มถัดไป
+                      ElevatedButton(
+                        onPressed: () {
+                          //ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
+                          clubSubmit();
+
+                          Fluttertoast.showToast(
+                            msg: "สร้างคลับเรียบร้อย",
+                            backgroundColor: mainGreen,
+                            fontSize: 17,
+                          );
+                          Get.to(ScreensPage(
+                            getToken: widget.getToken,
+                            isSOS: false,
+                            pageIndex: 4,
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainGreen,
+                          minimumSize: const Size(
+                            150,
+                            40,
+                          ),
+                        ),
+                        child: Text(
+                          'สร้างคลับ',
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'สร้างคลับ',
-                      style: GoogleFonts.sarabun(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ),

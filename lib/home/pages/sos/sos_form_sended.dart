@@ -22,7 +22,11 @@ class SOSFormSended extends StatelessWidget {
             size: 30,
           ),
           onPressed: () {
-            Get.to(() => ScreensPage(getToken: token));
+            Get.to(() => ScreensPage(
+                  getToken: token,
+                  isSOS: true,
+                  pageIndex: 2,
+                ));
           },
         ),
         backgroundColor: Colors.transparent,
@@ -50,7 +54,11 @@ class SOSFormSended extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.to(() => ScreensPage(getToken: token));
+                Get.to(() => ScreensPage(
+                      getToken: token,
+                      isSOS: true,
+                      pageIndex: 2,
+                    ));
               },
               style: ElevatedButton.styleFrom(backgroundColor: mainGreen),
               child: const Text('กลับหน้าแรก'),
