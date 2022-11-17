@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/sos/stepthere_qrcode.dart';
+import 'package:rac_road/home/screens.dart';
 
 class Pricing extends StatelessWidget {
-  final String token;
-  const Pricing({super.key, required this.token});
+  final String getToken;
+  const Pricing({super.key, required this.getToken});
 
   @override
   Widget build(BuildContext context) {
@@ -261,13 +262,15 @@ class Pricing extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    // await Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const ScreensPage(),
-                    //   ),
-                    // );
+                  onPressed: () {
+                    Get.to(
+                      () => ScreensPage(
+                        getToken: getToken,
+                        pageIndex: 3,
+                        isSOS: false,
+                        isConfirm: false,
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,
@@ -284,11 +287,13 @@ class Pricing extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ScanQRcode(),
+                  onPressed: () {
+                    Get.to(
+                      () => ScreensPage(
+                        getToken: getToken,
+                        pageIndex: 3,
+                        isSOS: true,
+                        isConfirm: true,
                       ),
                     );
                   },

@@ -38,7 +38,6 @@ class _SOSFormPageState extends State<SOSFormPage> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -251,7 +250,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                           const EdgeInsetsDirectional.fromSTEB(
                                               10, 0, 0, 0),
                                       child: Text(
-                                        '(จะขึ้นเฉพาะ เลือกที่อยู่แล้ว)',
+                                        '(จะขึ้นเฉพาะเลือก ที่อยู่ แล้ว)',
                                         style: GoogleFonts.sarabun(),
                                       ),
                                     ),

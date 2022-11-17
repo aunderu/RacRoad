@@ -52,7 +52,7 @@ class _SOSPageState extends State<SOSPage> {
                             child: Stack(
                               children: [
                                 const Align(
-                                  alignment: AlignmentDirectional(0.7, -1),
+                                  alignment: AlignmentDirectional(0.8, -1),
                                   child: Icon(
                                     Icons.new_releases_sharp,
                                     color: Color(0x47FF6767),
@@ -60,14 +60,19 @@ class _SOSPageState extends State<SOSPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.all(16),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                    30,
+                                    16,
+                                    30,
+                                    16,
+                                  ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       AutoSizeText(
-                                        'ติดตามสถานะ',
+                                        'ติดตามสถานะ Timeline',
                                         style: GoogleFonts.sarabun(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold,

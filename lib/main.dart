@@ -113,6 +113,7 @@ class _CheckLoginState extends State<CheckLogin> {
           () => ScreensPage(
             getToken: token,
             isSOS: false,
+            isConfirm: false,
             pageIndex: 0,
           ),
         ),

@@ -15,11 +15,14 @@ class ScreensPage extends StatefulWidget {
   final String getToken;
   int pageIndex;
   final bool isSOS;
+  final bool isConfirm;
   // final GoogleSignInAccount user;
   ScreensPage({
     Key? key,
     required this.getToken,
-    required this.pageIndex, required this.isSOS,
+    required this.pageIndex,
+    required this.isSOS,
+    required this.isConfirm,
     // required this.user,
   }) : super(key: key);
 
@@ -39,7 +42,11 @@ class _ScreensPageState extends State<ScreensPage> {
       token: widget.getToken,
       isSOS: widget.isSOS,
     ),
-    NotificationsPage(token: widget.getToken),
+    NotificationsPage(
+      token: widget.getToken,
+      isSOS: widget.isSOS,
+      isConfirm: widget.isConfirm,
+    ),
     ProfilePage(token: widget.getToken),
   ];
 
@@ -238,7 +245,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.notifications_outlined,
                     size: 40,
                   ),
-                  _isNoti
+                  widget.isSOS
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -261,7 +268,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.notifications,
                     size: 40,
                   ),
-                  _isNoti
+                  widget.isSOS
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,

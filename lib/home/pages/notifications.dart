@@ -2,11 +2,18 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/home/pages/sos/steptwo_pricing.dart';
+import 'package:rac_road/home/pages/sos/pricing.dart';
 
 class NotificationsPage extends StatefulWidget {
   final String token;
-  const NotificationsPage({super.key, required this.token});
+  final bool isSOS;
+  final bool isConfirm;
+  const NotificationsPage({
+    super.key,
+    required this.token,
+    required this.isSOS,
+    required this.isConfirm,
+  });
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -105,7 +112,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: [
-                    listTile(widget.token),
+                    widget.isConfirm
+                        ? listTile(widget.token, 'assets/imgs/oparator.png',
+                            'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!')
+                        : SizedBox.shrink(),
+                    widget.isSOS
+                        ? listTile(widget.token, 'assets/imgs/oparator.png',
+                            'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ')
+                        : SizedBox.shrink(),
                   ],
                 ),
               )
@@ -117,20 +131,20 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 }
 
-Widget listTile(String token) {
+Widget listTile(String token, String imgUrl, String title) {
   return Padding(
     padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 5),
     child: GestureDetector(
       onTap: () {
-        Get.to(() => Pricing(token: token));
+        Get.to(() => Pricing(getToken: token));
       },
       child: ListTile(
-        leading: const CircleAvatar(
-          backgroundImage: AssetImage('assets/imgs/oparator.png'),
+        leading: CircleAvatar(
+          backgroundImage: AssetImage(imgUrl),
           radius: 25,
         ),
         title: Text(
-          'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ',
+          title,
           style: GoogleFonts.sarabun(
             fontSize: 16,
             fontWeight: FontWeight.bold,

@@ -25,6 +25,7 @@ class SOSFormSended extends StatelessWidget {
             Get.to(() => ScreensPage(
                   getToken: token,
                   isSOS: true,
+                  isConfirm: false,
                   pageIndex: 2,
                 ));
           },
@@ -57,6 +58,7 @@ class SOSFormSended extends StatelessWidget {
                 Get.to(() => ScreensPage(
                       getToken: token,
                       isSOS: true,
+                      isConfirm: false,
                       pageIndex: 2,
                     ));
               },

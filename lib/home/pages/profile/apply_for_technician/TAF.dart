@@ -688,6 +688,7 @@ Widget formCompleted(String token) {
             Get.to(() => ScreensPage(
                   getToken: token,
                   isSOS: false,
+                  isConfirm: false,
                   pageIndex: 4,
                 ));
           },
