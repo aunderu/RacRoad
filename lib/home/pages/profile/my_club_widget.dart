@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/home/pages/profile/create_club/on_boarding.dart';
 
+import 'package:rac_road/home/pages/profile/create_club/on_boarding.dart';
 import '../../../colors.dart';
 
 class MyClubWidget extends StatefulWidget {

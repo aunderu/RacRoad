@@ -2,6 +2,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:rac_road/home/pages/sos/pricing.dart';
 
 class NotificationsPage extends StatefulWidget {

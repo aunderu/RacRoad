@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/loading/skelton.dart';
+import 'package:rac_road/services/remote_service.dart';
 
-import '../controller/models_controller.dart';
 import 'pages/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
@@ -69,7 +69,8 @@ class _ScreensPageState extends State<ScreensPage> {
               floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 FutureBuilder(
-                  future: getUserProfile(widget.getToken),
+                  // future: getUserProfile(widget.getToken),
+                  future: RemoteService().getUserProfile(widget.getToken),
                   builder: (context, snapshot) {
                     var result = snapshot.data;
                     if (result != null) {

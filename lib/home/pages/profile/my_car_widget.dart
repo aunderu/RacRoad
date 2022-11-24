@@ -2,9 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import 'package:rac_road/home/pages/profile/add_car/add_car.dart';
 import 'package:rac_road/home/pages/profile/car_details.dart';
-
+import 'package:rac_road/models/my_car_models.dart';
+import 'package:rac_road/services/remote_service.dart';
 import '../../../colors.dart';
 
 class MyCarWidget extends StatefulWidget {
@@ -16,11 +18,39 @@ class MyCarWidget extends StatefulWidget {
 }
 
 class _MyCarWidgetState extends State<MyCarWidget> {
-  final bool _haveCar = false;
+  MyCar? myCar;
+  var isLoaded = false;
+  bool _haveCar = false;
   final bool _isMultiCar = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // ดึงข้อมูล
+    getData(widget.getToken);
+  }
+
+  getData(String token) async {
+    myCar = await RemoteService().getMyCar(token);
+    if (myCar != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
+  haveCar() {
+    if (myCar!.data.mycarData.isNotEmpty) {
+      setState(() {
+        _haveCar = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (!_haveCar) {
+    if (_haveCar) {
       return Center(
         child: Column(
           children: [

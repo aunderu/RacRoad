@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/controller/models_controller.dart';
 import 'package:rac_road/home/pages/account_setting.dart';
 import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
 import 'package:rac_road/loading/skelton.dart';
+
+import '../../services/remote_service.dart';
 
 class ProfilePage extends StatefulWidget {
   // final GoogleSignInAccount user;
@@ -85,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 FutureBuilder(
-                  future: getUserProfile(widget.token),
+                  future: RemoteService().getUserProfile(widget.token),
                   builder: (context, snapshot) {
                     var result = snapshot.data;
                     if (result != null) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/pricing.dart';
 
@@ -36,6 +37,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
           mainAxisSize: MainAxisSize.max,
           children: [
             const SizedBox(height: 100),
+            //เสร็จสิ้น
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
               child: Row(
@@ -155,6 +157,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
+            
+            //ผู้ใช้โอนเงินค่าบริการ
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
               child: Row(
@@ -292,6 +296,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
+            
+            //ส่ง qr code
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
               child: Row(
@@ -433,6 +439,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
+            
+            //ช่างได้เสร็จงานเรียบร้อยแล้ว
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
               child: Row(
@@ -500,6 +508,124 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 0, 20, 0),
                                 child: Text(
+                                  'ช่างได้เสร็จงานเรียบร้อยแล้ว',
+                                  style: GoogleFonts.sarabun(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 4, 0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Container(
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
+                                    child: Image.asset(
+                                      'assets/imgs/oparator.png',
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      8, 0, 0, 0),
+                                  child: Text(
+                                    'เจ้าหน้าที่ Racroad',
+                                    style: GoogleFonts.sarabun(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            //ช่างได้ยืนยันรับงาน และกำลังไป
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: const BoxDecoration(
+                            color: darkGray,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Container(
+                          width: 2,
+                          height: 120,
+                          decoration: const BoxDecoration(
+                            color: darkGray,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    decoration: BoxDecoration(
+                      color: const Color(0x352F44CA),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '29/10/65 22.13',
+                                style: GoogleFonts.sarabun(),
+                              ),
+                            ],
+                          ),
+                          const Divider(
+                            thickness: 1,
+                            color: Color(0x392E2E2E),
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 0, 20, 0),
+                                child: Text(
                                   'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!',
                                   style: GoogleFonts.sarabun(
                                     fontWeight: FontWeight.bold,
@@ -549,6 +675,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
+            
+            //ผู้ยืนยันค่าบริการดังกล่าว
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
               child: Row(
@@ -661,6 +789,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
+            
+            //รายละเอียดค่าบริการ
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
               child: Row(
@@ -792,6 +922,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
+            
+            //ผู้ใช้แจ้งเหตุการณ์
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
               child: Row(

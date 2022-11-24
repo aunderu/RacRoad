@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/controller/models_controller.dart';
 import 'package:rac_road/home/pages/sos/sos_form_sended.dart';
+
+import '../../../services/remote_service.dart';
 
 class SOSFormPage extends StatefulWidget {
   final String getToken;
@@ -47,7 +49,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
               key: formKey,
               autovalidateMode: AutovalidateMode.disabled,
               child: FutureBuilder(
-                future: getUserProfile(widget.getToken),
+                future: RemoteService().getUserProfile(widget.getToken),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return const Align(

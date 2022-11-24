@@ -5,9 +5,9 @@ import 'package:rac_road/colors.dart';
 import 'package:rac_road/loading/account_setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../controller/models_controller.dart';
 import '../../login/api/google_sign_in_api.dart';
 import '../../login/login_main_page.dart';
+import '../../services/remote_service.dart';
 
 class AccountSetting extends StatelessWidget {
   final String getToken;
@@ -64,7 +64,7 @@ class AccountSetting extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
                     child: FutureBuilder(
-                      future: getUserProfile(getToken),
+                      future: RemoteService().getUserProfile(getToken),
                       builder: (context, snapshot) {
                         var result = snapshot.data;
                         if (result != null) {
