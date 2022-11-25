@@ -94,7 +94,7 @@ class _ScreensPageState extends State<ScreensPage> {
                               placeholder: (context, url) =>
                                   Image.asset('assets/imgs/profile.png'),
                               errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                                  const Icon(Icons.error),
                             ),
                           ),
                         ),

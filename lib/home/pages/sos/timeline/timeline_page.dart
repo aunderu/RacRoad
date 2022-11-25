@@ -133,7 +133,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   ),
                                   child: Container(
                                     decoration:
-                                        BoxDecoration(color: Colors.white),
+                                        const BoxDecoration(color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -415,7 +415,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   ),
                                   child: Container(
                                     decoration:
-                                        BoxDecoration(color: Colors.white),
+                                        const BoxDecoration(color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -533,7 +533,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   ),
                                   child: Container(
                                     decoration:
-                                        BoxDecoration(color: Colors.white),
+                                        const BoxDecoration(color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -651,7 +651,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   ),
                                   child: Container(
                                     decoration:
-                                        BoxDecoration(color: Colors.white),
+                                        const BoxDecoration(color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -898,7 +898,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   ),
                                   child: Container(
                                     decoration:
-                                        BoxDecoration(color: Colors.white),
+                                        const BoxDecoration(color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),

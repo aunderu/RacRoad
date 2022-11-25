@@ -92,7 +92,7 @@ class AccountSetting extends StatelessWidget {
                                           Image.asset(
                                               'assets/imgs/profile.png'),
                                       errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                          const Icon(Icons.error),
                                     ),
                                   ),
                                 ),

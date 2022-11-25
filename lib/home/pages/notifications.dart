@@ -116,11 +116,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     widget.isConfirm
                         ? listTile(widget.token, 'assets/imgs/oparator.png',
                             'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!')
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     widget.isSOS
                         ? listTile(widget.token, 'assets/imgs/oparator.png',
                             'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ')
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                   ],
                 ),
               )

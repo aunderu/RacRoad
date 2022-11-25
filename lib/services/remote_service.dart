@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rac_road/models/club_details.dart';
 
 import '../models/my_car_models.dart';
+import '../models/my_club_models.dart';
 import '../models/user_profile_model.dart';
 
 UserProfile? resultUserProfile;
 MyCar? resultMyCar;
+MyClub? resultMyClub;
+ClubDetails? resultClubDetails;
 
 const url = "https://api.racroad.com/api";
 const testurl = "https://api-racroad.chabafarm.com/api";
@@ -30,6 +34,7 @@ class RemoteService {
     return resultUserProfile;
   }
 
+  // ################################ MyCar #################################
   Future<MyCar?> getMyCar(String token) async {
     try {
       final response = await http.get(Uri.parse("$url/mycar/all/$token"));
@@ -43,5 +48,37 @@ class RemoteService {
       print(e);
     }
     return resultMyCar;
+  }
+
+  // ################################ MyClub #################################
+  Future<MyClub?> getMyClub(String token) async {
+    try {
+      final response = await http.get(Uri.parse("$url/my/club/$token"));
+      if (response.statusCode == 200) {
+        final itemMyClub = json.decode(response.body);
+        resultMyClub = MyClub.fromJson(itemMyClub);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      print(e);
+    }
+    return resultMyClub;
+  }
+
+  // ################################ ClubDetails #################################
+  Future<ClubDetails?> getClubDetails(String clubId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/club/approve/detail/$clubId"));
+      if (response.statusCode == 200) {
+        final itemClubDetails = json.decode(response.body);
+        resultClubDetails = ClubDetails.fromJson(itemClubDetails);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      print(e);
+    }
+    return resultClubDetails;
   }
 }

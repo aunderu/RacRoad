@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/profile/apply_for_technician/TAF.dart';
+import 'package:rac_road/home/pages/profile/apply_for_technician/tech_app_form.dart';
 
 class MyJobWidget extends StatefulWidget {
   final String getToken;

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +8,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 
 import 'package:rac_road/home/pages/club/view_calentar.dart';
+import 'package:rac_road/models/club_details.dart';
+import 'package:rac_road/services/remote_service.dart';
+
+import '../../../colors.dart';
+import '../../../loading/skelton.dart';
+import '../account_setting.dart';
 
 class ClubDetailsPage extends StatefulWidget {
-  const ClubDetailsPage({super.key});
+  final String getToken;
+  final String clubId;
+  const ClubDetailsPage({
+    super.key,
+    required this.getToken,
+    required this.clubId,
+  });
 
   @override
   State<ClubDetailsPage> createState() => _ClubDetailsPageState();
@@ -68,60 +81,118 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
         child: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: false,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              title: Row(
-                children: [
-                  Container(
-                    width: 35,
-                    height: 35,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
+            FutureBuilder(
+              future: RemoteService().getUserProfile(widget.getToken),
+              builder: (context, snapshot) {
+                var result = snapshot.data;
+                if (result != null) {
+                  return SliverAppBar(
+                    floating: true,
+                    snap: true,
+                    backgroundColor: Colors.white,
+                    automaticallyImplyLeading: false,
+                    leading: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    child: Image.asset(
-                      'assets/imgs/profile.png',
-                      fit: BoxFit.contain,
+                    title: Row(
+                      children: [
+                        Container(
+                          width: 35,
+                          height: 35,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: result.data.myProfile.avatar,
+                            placeholder: (context, url) =>
+                                Image.asset('assets/imgs/profile.png'),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          result.data.myProfile.name,
+                          style: GoogleFonts.sarabun(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    'User Name',
-                    style: GoogleFonts.sarabun(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                  child: IconButton(
-                    hoverColor: Colors.transparent,
-                    iconSize: 60,
+                    actions: [
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                        child: IconButton(
+                          hoverColor: Colors.transparent,
+                          iconSize: 60,
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                    centerTitle: false,
+                    elevation: 0,
+                  );
+                }
+                return SliverAppBar(
+                  floating: true,
+                  snap: true,
+                  backgroundColor: Colors.white,
+                  automaticallyImplyLeading: false,
+                  leading: IconButton(
                     icon: const Icon(
-                      Icons.settings,
+                      Icons.arrow_back_ios_new,
                       color: Colors.black,
-                      size: 30,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                ),
-              ],
-              centerTitle: false,
-              elevation: 0,
+                  title: const Skelton(
+                    width: 200,
+                    height: 20,
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                      child: IconButton(
+                        hoverColor: Colors.transparent,
+                        iconSize: 60,
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AccountSetting(
+                                getToken: widget.getToken,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                  centerTitle: false,
+                  elevation: 0,
+                );
+              },
             ),
           ],
           body: GestureDetector(
@@ -193,7 +264,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                       ],
                     ),
                   ),
-                  clubDetails(context, size),
+                  clubDetails(context, size, widget.clubId),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                     child: Text(
@@ -229,7 +300,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
   }
 }
 
-Widget clubDetails(BuildContext context, Size size) {
+Widget clubDetails(BuildContext context, Size size, String clubId) {
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
       size.width * 0.03,
@@ -237,287 +308,311 @@ Widget clubDetails(BuildContext context, Size size) {
       size.width * 0.03,
       size.height * 0.01,
     ),
-    child: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.all(5),
-                child: Column(
+    child: FutureBuilder<ClubDetails?>(
+      future: RemoteService().getClubDetails(clubId),
+      builder: (context, snapshot) {
+        var result = snapshot.data;
+        if (result != null) {
+          Data dataClubDetails = result.data;
+          return Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: const Color(0xFFEBEBEB),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Stack(
-                      alignment: const AlignmentDirectional(1, 1),
-                      children: [
-                        Align(
-                          alignment: const AlignmentDirectional(0, 0),
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            // child: Image.network(
-                            //   '',
-                            // ),
-                            child: Container(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: const AlignmentDirectional(0, 0),
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.photo_library,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                      child: Text(
-                        'Club Name',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Container(
-                      width: size.width * 0.25,
-                      height: size.height * 0.04,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Text(
-                        'Q&A',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Container(
-                      width: size.width * 0.25,
-                      height: size.height * 0.04,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Text(
-                        'Join',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  0,
-                  size.height * 0.01,
-                  size.width * 0.03,
-                  size.height * 0.01,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Material(
-                      child: InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ViewCalentarPage(),
-                            ),
-                          );
-                        },
-                        child: Ink(
-                          width: size.width * 0.6,
-                          height: size.height * 0.2,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 4,
-                                color: Color(0x33000000),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: const Color(0xFFEBEBEB),
-                            ),
-                          ),
-                          child: Stack(
-                            alignment: const AlignmentDirectional(1, -1),
+                      padding: const EdgeInsetsDirectional.all(5),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            alignment: const AlignmentDirectional(1, 1),
                             children: [
-                              const Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                                child: Icon(
-                                  Icons.add_circle_outline,
-                                  color: Colors.black,
-                                  size: 24,
-                                ),
-                              ),
                               Align(
-                                alignment: const AlignmentDirectional(0, -1),
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.all(5),
-                                  child: Text(
-                                    'Calendar',
-                                    style: GoogleFonts.sarabun(
-                                      fontWeight: FontWeight.bold,
+                                alignment: const AlignmentDirectional(0, 0),
+                                child: Container(
+                                  width: 100,
+                                  height: 100,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  // child: Image.network(
+                                  //   '',
+                                  // ),
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: const Icon(
+                                      Icons.group,
+                                      size: 50,
+                                      color: darkGray,
                                     ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                  top: size.height * 0.02,
+                              Align(
+                                alignment: const AlignmentDirectional(0, 0),
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.photo_library,
+                                    color: Colors.black,
+                                    size: 24,
+                                  ),
                                 ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 5, 0, 0),
+                            child: Text(
+                              dataClubDetails.clubApproveDetail.clubName,
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          Container(
+                            width: size.width * 0.25,
+                            height: size.height * 0.04,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Text(
+                              'Q&A',
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          Container(
+                            width: size.width * 0.25,
+                            height: size.height * 0.04,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Text(
+                              'Join',
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                        0,
+                        size.height * 0.01,
+                        size.width * 0.03,
+                        size.height * 0.01,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Material(
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ViewCalentarPage(),
+                                  ),
+                                );
+                              },
+                              child: Ink(
+                                width: size.width * 0.6,
+                                height: size.height * 0.2,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x33000000),
+                                      offset: Offset(0, 2),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: const Color(0xFFEBEBEB),
+                                  ),
+                                ),
+                                child: Stack(
+                                  alignment: const AlignmentDirectional(1, -1),
                                   children: [
+                                    const Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          5, 5, 5, 5),
+                                      child: Icon(
+                                        Icons.add_circle_outline,
+                                        color: Colors.black,
+                                        size: 24,
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment:
+                                          const AlignmentDirectional(0, -1),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.all(5),
+                                        child: Text(
+                                          'Calendar',
+                                          style: GoogleFonts.sarabun(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.only(
-                                        start: size.width * 0.02,
+                                        top: size.height * 0.02,
                                       ),
-                                      child: Column(
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text(
-                                            'Day',
-                                            style: GoogleFonts.sarabun(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                                          Padding(
+                                            padding: EdgeInsetsDirectional.only(
+                                              start: size.width * 0.02,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Day',
+                                                  style: GoogleFonts.sarabun(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Date',
+                                                  style: GoogleFonts.sarabun(
+                                                    fontSize: 50,
+                                                    height: 0.8,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Event Today',
+                                                  style: GoogleFonts.sarabun(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Text(
-                                            'Date',
-                                            style: GoogleFonts.sarabun(
-                                              fontSize: 50,
-                                              height: 0.8,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Event Today',
-                                            style: GoogleFonts.sarabun(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey,
+                                          Expanded(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                size.width * 0.01,
+                                                size.height * 0.03,
+                                                0,
+                                                size.height * 0.03,
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '10 event',
+                                                    style: GoogleFonts.sarabun(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '10 event',
+                                                    style: GoogleFonts.sarabun(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '10 event',
+                                                    style: GoogleFonts.sarabun(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '10 event',
+                                                    style: GoogleFonts.sarabun(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '10 event',
+                                                    style: GoogleFonts.sarabun(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                          size.width * 0.01,
-                                          size.height * 0.03,
-                                          0,
-                                          size.height * 0.03,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(top: 5),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text(
-                            '4.5K',
-                            style: GoogleFonts.sarabun(
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            'Members',
-                            style: GoogleFonts.sarabun(
-                              color: Colors.grey,
-                              height: 0.8,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(top: 5),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(
+                                  '0',
+                                  style: GoogleFonts.sarabun(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Members',
+                                  style: GoogleFonts.sarabun(
+                                    color: Colors.grey,
+                                    height: 0.8,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -525,78 +620,72 @@ Widget clubDetails(BuildContext context, Size size) {
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 8),
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Container(
-                width: double.infinity,
-                color: Colors.white,
-                child: ExpandableNotifier(
-                  initialExpanded: false,
-                  child: ExpandablePanel(
-                    header: Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        'Description About Club',
-                        style: GoogleFonts.sarabun(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 27,
-                        ),
-                      ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 8),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
                     ),
-                    collapsed: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
-                        child: Text(
-                          'Description in Collapsed Mode Tap anywhere to Expand ..',
-                          style: GoogleFonts.sarabun(
-                            color: const Color(0x8A000000),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    expanded: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5, right: 5),
-                          child: Text(
-                            'Description in Collapsed Mode Tap anywhere to Expand \n\nYey you just Expanded! \n\n now what..',
-                            style: GoogleFonts.sarabun(
-                              color: const Color(0x8A000000),
-                              fontWeight: FontWeight.bold,
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.white,
+                      child: ExpandableNotifier(
+                        initialExpanded: false,
+                        child: ExpandablePanel(
+                          header: Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text(
+                              'คำอธิบายเกี่ยวกับคลับ',
+                              style: GoogleFonts.sarabun(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 27,
+                              ),
                             ),
                           ),
+                          collapsed: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          expanded: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 5, right: 5),
+                                child: Text(
+                                  dataClubDetails.clubApproveDetail.description,
+                                  style: GoogleFonts.sarabun(
+                                    color: const Color(0x8A000000),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          theme: const ExpandableThemeData(
+                            tapHeaderToExpand: true,
+                            tapBodyToExpand: true,
+                            tapBodyToCollapse: true,
+                            headerAlignment:
+                                ExpandablePanelHeaderAlignment.center,
+                            hasIcon: true,
+                          ),
                         ),
-                      ],
-                    ),
-                    theme: const ExpandableThemeData(
-                      tapHeaderToExpand: true,
-                      tapBodyToExpand: true,
-                      tapBodyToCollapse: true,
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                      hasIcon: true,
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     ),
   );
 }

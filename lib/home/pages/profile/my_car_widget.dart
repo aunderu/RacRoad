@@ -34,23 +34,21 @@ class _MyCarWidgetState extends State<MyCarWidget> {
   getData(String token) async {
     myCar = await RemoteService().getMyCar(token);
     if (myCar != null) {
-      setState(() {
-        isLoaded = true;
-      });
-    }
-  }
-
-  haveCar() {
-    if (myCar!.data.mycarData.isNotEmpty) {
-      setState(() {
-        _haveCar = true;
-      });
+      final bool? haveData = myCar?.data.mycarData.isNotEmpty;
+      if (haveData == true) {
+        setState(() {
+          _haveCar = true;
+          isLoaded = true;
+        });
+      } else {
+          _haveCar = false;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_haveCar) {
+    if (_haveCar == false) {
       return Center(
         child: Column(
           children: [

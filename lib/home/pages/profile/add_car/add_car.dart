@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/screens.dart';
 
 class AddCarPage extends StatefulWidget {
   const AddCarPage({super.key});

@@ -54,9 +54,13 @@ class _CreateClubPageState extends State<CreateClubPage> {
         'club_zone': clubZoneController!.text,
       },
     );
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
+    try {
+      if (response.statusCode == 200) {
+        var encodefirst = json.encode(response.body);
+        var data = json.decode(encodefirst);
+        return data;
+      }
+    } catch (e) {
       throw Exception(jsonDecode(response.body));
     }
   }
@@ -780,12 +784,12 @@ class _CreateClubPageState extends State<CreateClubPage> {
                             backgroundColor: mainGreen,
                             fontSize: 17,
                           );
-                          Get.to(ScreensPage(
-                            getToken: widget.getToken,
-                            isSOS: false,
-                            isConfirm: false,
-                            pageIndex: 4,
-                          ));
+                          Get.to(() => ScreensPage(
+                                getToken: widget.getToken,
+                                isSOS: false,
+                                isConfirm: false,
+                                pageIndex: 4,
+                              ));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainGreen,
