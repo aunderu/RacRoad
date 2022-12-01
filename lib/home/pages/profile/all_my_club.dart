@@ -16,12 +16,14 @@ class AllMyClub extends StatefulWidget {
   final String token;
   final String clubId;
   final String clubName;
+  final String clubStatus;
 
   const AllMyClub({
     super.key,
     required this.clubName,
     required this.token,
     required this.clubId,
+    required this.clubStatus,
   });
 
   @override
@@ -61,12 +63,16 @@ class _AllMyClubState extends State<AllMyClub> {
     return Material(
       child: InkWell(
         onTap: () {
-          Get.to(
-            () => ClubDetailsPage(
-              clubId: widget.clubId,
-              getToken: widget.token,
-            ),
-          );
+          if (widget.clubStatus != "รอการอนุมัติ") {
+            Get.to(
+              () => ClubDetailsPage(
+                clubId: widget.clubId,
+                getToken: widget.token,
+              ),
+            );
+          } else {
+            Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
+          }
         },
         child: Ink(
           width: 100,

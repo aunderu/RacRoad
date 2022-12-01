@@ -54,18 +54,21 @@ class ClubAll {
     required this.id,
     required this.clubName,
     required this.clubZone,
+    required this.status,
     required this.admin,
   });
 
   String id;
   String clubName;
   String clubZone;
+  String status;
   String admin;
 
   factory ClubAll.fromJson(Map<String, dynamic> json) => ClubAll(
         id: json["id"],
         clubName: json["club_name"],
         clubZone: json["club_zone"],
+        status: json["status"],
         admin: json["admin"],
       );
 
@@ -73,6 +76,7 @@ class ClubAll {
         "id": id,
         "club_name": clubName,
         "club_zone": clubZone,
+        "status": status,
         "admin": admin,
       };
 }

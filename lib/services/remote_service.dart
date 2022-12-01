@@ -7,7 +7,7 @@ import '../models/my_car_models.dart';
 import '../models/my_club_models.dart';
 import '../models/user_profile_model.dart';
 
-UserProfile? resultUserProfile;
+MyProfile? resultUserProfile;
 MyCar? resultMyCar;
 MyClub? resultMyClub;
 ClubDetails? resultClubDetails;
@@ -17,14 +17,14 @@ const testurl = "https://api-racroad.chabafarm.com/api";
 
 class RemoteService {
   // ################################ UserProfile #################################
-  Future<UserProfile?> getUserProfile(String token) async {
+  Future<MyProfile?> getUserProfile(String token) async {
     try {
       final response = await http.get(
         Uri.parse("$url/my/profile/$token"),
       );
       if (response.statusCode == 200) {
         final itemUserProfile = json.decode(response.body);
-        resultUserProfile = UserProfile.fromJson(itemUserProfile);
+        resultUserProfile = MyProfile.fromJson(itemUserProfile);
       } else {
         throw Exception(jsonDecode(response.body));
       }

@@ -39,40 +39,24 @@ class _TimeLinePageState extends State<TimeLinePage> {
             const SizedBox(height: 100),
             //เสร็จสิ้น
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF39D2C0),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 160,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 185, 195, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x352F44CA),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(-3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x352F44CA),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -132,8 +116,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Container(
-                                    decoration:
-                                        const BoxDecoration(color: Colors.white),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -157,44 +141,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //ผู้ใช้โอนเงินค่าบริการ
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 570,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 182, 235, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x3571DAFF),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x3571DAFF),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -296,44 +264,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //ส่ง qr code
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 520,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 185, 195, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x352F44CA),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(-3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x352F44CA),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -414,8 +366,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Container(
-                                    decoration:
-                                        const BoxDecoration(color: Colors.white),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -439,44 +391,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //ช่างได้เสร็จงานเรียบร้อยแล้ว
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 120,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 185, 195, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x352F44CA),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(-3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x352F44CA),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -532,8 +468,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Container(
-                                    decoration:
-                                        const BoxDecoration(color: Colors.white),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -557,44 +493,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //ช่างได้ยืนยันรับงาน และกำลังไป
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 120,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 185, 195, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x352F44CA),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(-3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x352F44CA),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -650,8 +570,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Container(
-                                    decoration:
-                                        const BoxDecoration(color: Colors.white),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -675,44 +595,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //ผู้ยืนยันค่าบริการดังกล่าว
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 120,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 182, 235, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x3571DAFF),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x3571DAFF),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -789,44 +693,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //รายละเอียดค่าบริการ
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 2,
-                          height: 190,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 185, 195, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x352F44CA),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(-3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x352F44CA),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:
@@ -897,8 +785,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Container(
-                                    decoration:
-                                        const BoxDecoration(color: Colors.white),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
                                     child: Image.asset(
                                       'assets/imgs/oparator.png',
                                     ),
@@ -922,37 +810,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                 ],
               ),
             ),
-            
+
             //ผู้ใช้แจ้งเหตุการณ์
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: darkGray,
-                            shape: BoxShape.circle,
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 182, 235, 255),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x3571DAFF),
+                          spreadRadius: 3,
+                          blurRadius: 2,
+                          offset: Offset(3, 3), // changes position of shadow
                         ),
                       ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: const Color(0x3571DAFF),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding:

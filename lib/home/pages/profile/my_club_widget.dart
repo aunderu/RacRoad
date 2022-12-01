@@ -19,7 +19,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
   MyClub? myClub;
   bool _haveClub = false;
   bool isLoaded = false;
-  final bool _haveBookMark = false;
+  final bool _haveBookMark = true;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
           isLoaded = true;
         });
       } else {
-          _haveClub = false;
+        _haveClub = false;
       }
     }
   }
@@ -87,26 +87,68 @@ class _MyClubWidgetState extends State<MyClubWidget> {
         ),
       );
     } else {
-      return Column(
-        children: [
-          if (_haveBookMark == true)
-            Column(
+      return FutureBuilder(
+        future: RemoteService().getMyClub(widget.getToken),
+        builder: (context, snapshot) {
+          var result = snapshot.data;
+          if (result != null) {
+            List<ClubAll> dataMyClub = result.data.clubAll;
+            return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Book Mark',
-                      style: GoogleFonts.sarabun(
-                        fontWeight: FontWeight.bold,
+                  padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 10),
+                        child: Text(
+                          'คลับรอการอนุมัติ',
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
                       ),
-                    ),
+                      GridView.builder(
+                        itemCount: dataMyClub.length,
+                        physics: const ScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 1,
+                        ),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          if (dataMyClub[index].status == "รอการอนุมัติ") {
+                            return AllMyClub(
+                              token: widget.getToken,
+                              clubId: dataMyClub[index].id,
+                              clubName: dataMyClub[index].clubName,
+                              clubStatus: dataMyClub[index].status,
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                      ),
+                    ],
                   ),
+                ),
+                const Divider(
+                  height: 30,
+                  thickness: 1,
+                  indent: 20,
+                  endIndent: 20,
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                  child: GridView(
+                  child: GridView.builder(
+                    itemCount: dataMyClub.length,
                     physics: const ScrollPhysics(),
                     padding: EdgeInsets.zero,
                     gridDelegate:
@@ -118,139 +160,58 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                     ),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFEBEBEB),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Stack(
-                          children: [
-                            const Align(
-                              alignment: AlignmentDirectional(1, -1),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                                child: Icon(
-                                  Icons.keyboard_control,
-                                  color: Colors.black,
-                                  size: 24,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: const AlignmentDirectional(0, 1),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 0, 5),
-                                child: Text(
-                                  'Club Name',
-                                  style: GoogleFonts.sarabun(),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: const AlignmentDirectional(0, -0.05),
-                              child: Container(
-                                width: 120,
-                                height: 120,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                // child: Image.network(
-                                //   '',
-                                // ),
-                                child: Container(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    itemBuilder: (context, index) {
+                      if (dataMyClub[index].status == "อนุมัติ") {
+                        return AllMyClub(
+                          token: widget.getToken,
+                          clubId: dataMyClub[index].id,
+                          clubName: dataMyClub[index].clubName,
+                          clubStatus: dataMyClub[index].status,
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                 ),
-                const Divider(
-                  thickness: 1,
-                  indent: 20,
-                  endIndent: 20,
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Material(
+                      child: InkWell(
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  OnBoardingPage(getToken: widget.getToken),
+                            ),
+                          );
+                        },
+                        child: Ink(
+                          width: 40,
+                          height: 40,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
-            )
-          else
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-              child: FutureBuilder<MyClub?>(
-                  future: RemoteService().getMyClub(widget.getToken),
-                  builder: (context, snapshot) {
-                    var result = snapshot.data;
-                    if (result != null) {
-                      if (result.data.clubAll.isNotEmpty) {
-                        List<ClubAll> dataMyClub = result.data.clubAll;
-                        return GridView.builder(
-                          itemCount: dataMyClub.length,
-                          physics: const ScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 1,
-                          ),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) {
-                            return AllMyClub(
-                              token: widget.getToken,
-                              clubId: dataMyClub[index].id,
-                              clubName: dataMyClub[index].clubName,
-                            );
-                          },
-                        );
-                      }
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }),
-            ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Material(
-                child: InkWell(
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            OnBoardingPage(getToken: widget.getToken),
-                      ),
-                    );
-                  },
-                  child: Ink(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       );
     }
   }
