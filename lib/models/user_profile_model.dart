@@ -47,7 +47,7 @@ class Data {
       );
 
   Map<String, dynamic> toJson() => {
-        "my_profile": myProfile.toJson(),
+        "my_profile": myProfile.toJson(), 
         "interest": List<dynamic>.from(interest.map((x) => x)),
       };
 }

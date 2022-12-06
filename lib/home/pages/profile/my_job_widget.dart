@@ -7,10 +7,14 @@ import 'package:rac_road/home/pages/profile/apply_for_technician/tech_app_form.d
 import 'package:rac_road/models/my_job_models.dart';
 
 import '../../../services/remote_service.dart';
+import 'my_job/job_widget.dart';
 
 class MyJobWidget extends StatefulWidget {
   final String getToken;
-  const MyJobWidget({super.key, required this.getToken});
+  const MyJobWidget({
+    super.key,
+    required this.getToken,
+  });
 
   @override
   State<MyJobWidget> createState() => _MyJobWidgetState();
@@ -18,7 +22,8 @@ class MyJobWidget extends StatefulWidget {
 
 class _MyJobWidgetState extends State<MyJobWidget> {
   MyJob? myJob;
-  bool _haveJob = false;
+
+  bool haveJob = false;
   bool isLoaded = false;
 
   @override
@@ -26,27 +31,29 @@ class _MyJobWidgetState extends State<MyJobWidget> {
     super.initState();
 
     // ดึงข้อมูล
-    getData(widget.getToken);
+    getMyJobData(widget.getToken);
   }
 
-  getData(String token) async {
+  getMyJobData(String token) async {
     myJob = await RemoteService().getMyJob(token);
     if (myJob != null) {
       final bool? haveData = myJob?.data.myTechnician.isNotEmpty;
       if (haveData == true) {
-        setState(() {
-          _haveJob = true;
-          isLoaded = true;
-        });
+        if (mounted) {
+          setState(() {
+            haveJob = true;
+            isLoaded = true;
+          });
+        }
       } else {
-        _haveJob = false;
+        haveJob = false;
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_haveJob == false) {
+    if (haveJob == false) {
       return Center(
         child: Column(
           children: [
@@ -89,8 +96,69 @@ class _MyJobWidgetState extends State<MyJobWidget> {
         ),
       );
     } else {
-      return const Center(
-        child: Text('คุณได้สมัครเป็นช่างแล้ว!'),
+      return Column(
+        children: [
+          FutureBuilder(
+            future: RemoteService().getMyJob(widget.getToken),
+            builder: (context, snapshot) {
+              var result = snapshot.data;
+              if (result != null) {
+                List<MyTechnician> dataMyJob = result.data.myTechnician;
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: dataMyJob.length,
+                  primary: false,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return JobWidget(
+                      getToken: widget.getToken,
+                      clubProfile: "assets/imgs/mechanic.png",
+                      tncName: dataMyJob[index].tncName,
+                      jobZone: dataMyJob[index].serviceZone,
+                      status: dataMyJob[index].status,
+                    );
+                  },
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: const Duration(milliseconds: 200),
+                        reverseDuration: const Duration(milliseconds: 100),
+                        child: TAFpage(getToken: widget.getToken),
+                      ),
+                    );
+                  },
+                  child: Ink(
+                    width: 40,
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     }
   }

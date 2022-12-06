@@ -60,92 +60,94 @@ class _AllMyClubState extends State<AllMyClub> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          if (widget.clubStatus != "รอการอนุมัติ") {
-            Get.to(
-              () => ClubDetailsPage(
-                clubId: widget.clubId,
-                getToken: widget.token,
-              ),
-            );
-          } else {
-            Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
-          }
-        },
-        child: Ink(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: const Color(0xFFEBEBEB),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Stack(
-            children: [
-              const Align(
-                alignment: AlignmentDirectional(-1, -1),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
-                  child: Icon(
-                    Icons.star_border_rounded,
-                    color: darkGray,
-                    size: 24,
-                  ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            if (widget.clubStatus != "รอการอนุมัติ") {
+              Get.to(
+                () => ClubDetailsPage(
+                  clubId: widget.clubId,
+                  getToken: widget.token,
                 ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(1, -1),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                  child: PopupMenuButton<CustomMenuItem>(
-                    onSelected: (item) => onSelected(context, item),
-                    itemBuilder: (context) => [
-                      ...MenuItems.itemsFirst.map(buildItem).toList(),
-                      const PopupMenuDivider(),
-                      ...MenuItems.itemsSecond.map(buildItem).toList(),
-                    ],
-                    child: const Icon(
-                      Icons.keyboard_control,
-                      color: Colors.black,
+              );
+            } else {
+              Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
+            }
+          },
+          child: Ink(
+            width: 100,
+            height: 100,
+            decoration: const BoxDecoration(
+              color: Color(0xFFEBEBEB),
+            ),
+            child: Stack(
+              children: [
+                const Align(
+                  alignment: AlignmentDirectional(-1, -1),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
+                    child: Icon(
+                      Icons.star_border_rounded,
+                      color: darkGray,
                       size: 24,
                     ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(0, 1),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                  child: Text(
-                    widget.clubName,
-                    style: GoogleFonts.sarabun(),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(0, -0.05),
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  // child: Image.network(
-                  //   '',
-                  // ),
-                  child: Container(
-                    color: Colors.white,
-                    child: const Icon(
-                      Icons.group,
-                      size: 50,
-                      color: darkGray,
+                Align(
+                  alignment: const AlignmentDirectional(1, -1),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                    child: PopupMenuButton<CustomMenuItem>(
+                      onSelected: (item) => onSelected(context, item),
+                      itemBuilder: (context) => [
+                        ...MenuItems.itemsFirst.map(buildItem).toList(),
+                        const PopupMenuDivider(),
+                        ...MenuItems.itemsSecond.map(buildItem).toList(),
+                      ],
+                      child: const Icon(
+                        Icons.keyboard_control,
+                        color: Colors.black,
+                        size: 24,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                Align(
+                  alignment: const AlignmentDirectional(0, 1),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                    child: Text(
+                      widget.clubName,
+                      style: GoogleFonts.sarabun(),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: const AlignmentDirectional(0, -0.05),
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    // child: Image.network(
+                    //   '',
+                    // ),
+                    child: Container(
+                      color: Colors.white,
+                      child: const Icon(
+                        Icons.group,
+                        size: 50,
+                        color: darkGray,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

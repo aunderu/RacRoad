@@ -47,7 +47,7 @@ class _ScreensPageState extends State<ScreensPage> {
       isSOS: widget.isSOS,
       isConfirm: widget.isConfirm,
     ),
-    ProfilePage(token: widget.getToken),
+    ProfilePage(getToken: widget.getToken),
   ];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();

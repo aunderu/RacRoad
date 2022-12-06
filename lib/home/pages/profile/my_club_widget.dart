@@ -9,7 +9,7 @@ import '../../../services/remote_service.dart';
 
 class MyClubWidget extends StatefulWidget {
   final String getToken;
-  const MyClubWidget({super.key, required this.getToken});
+  const MyClubWidget({super.key, required this.getToken,});
 
   @override
   State<MyClubWidget> createState() => _MyClubWidgetState();
@@ -17,7 +17,8 @@ class MyClubWidget extends StatefulWidget {
 
 class _MyClubWidgetState extends State<MyClubWidget> {
   MyClub? myClub;
-  bool _haveClub = false;
+
+  bool haveClub = false;
   bool isLoaded = false;
   final bool _haveBookMark = true;
 
@@ -26,27 +27,29 @@ class _MyClubWidgetState extends State<MyClubWidget> {
     super.initState();
 
     // ดึงข้อมูล
-    getData(widget.getToken);
+    getMyClubData(widget.getToken);
   }
 
-  getData(String token) async {
+  getMyClubData(String token) async {
     myClub = await RemoteService().getMyClub(token);
     if (myClub != null) {
       final bool? haveData = myClub?.data.clubAll.isNotEmpty;
       if (haveData == true) {
-        setState(() {
-          _haveClub = true;
-          isLoaded = true;
-        });
+        if (mounted) {
+          setState(() {
+            haveClub = true;
+            isLoaded = true;
+          });
+        }
       } else {
-        _haveClub = false;
+        haveClub = false;
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_haveClub == false) {
+    if (haveClub == false) {
       return Center(
         child: Column(
           children: [

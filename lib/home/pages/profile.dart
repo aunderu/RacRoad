@@ -9,14 +9,16 @@ import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
 import 'package:rac_road/loading/skelton.dart';
 
+import '../../models/my_club_models.dart';
+import '../../models/my_job_models.dart';
 import '../../services/remote_service.dart';
 
 class ProfilePage extends StatefulWidget {
   // final GoogleSignInAccount user;
-  final String token;
+  final String getToken;
   const ProfilePage({
     Key? key,
-    required this.token,
+    required this.getToken,
     // required this.user,
   }) : super(key: key);
 
@@ -35,9 +37,13 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
 
   late final List pages = [
-    MyCarWidget(getToken: widget.token),
-    MyClubWidget(getToken: widget.token),
-    MyJobWidget(getToken: widget.token),
+    MyCarWidget(getToken: widget.getToken),
+    MyClubWidget(
+      getToken: widget.getToken,
+    ),
+    MyJobWidget(
+      getToken: widget.getToken,
+    ),
   ];
 
   @override
@@ -66,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        AccountSetting(getToken: widget.token),
+                        AccountSetting(getToken: widget.getToken),
                   ),
                 );
               },
@@ -87,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 FutureBuilder(
-                  future: RemoteService().getUserProfile(widget.token),
+                  future: RemoteService().getUserProfile(widget.getToken),
                   builder: (context, snapshot) {
                     var result = snapshot.data;
                     if (result != null) {

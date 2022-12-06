@@ -88,9 +88,14 @@ class _TAFpageState extends State<TAFpage> {
             'std_history': stdHistoryController!.text,
           },
         );
-        if (response.statusCode == 200) {
-          return jsonDecode(response.body);
-        } else {
+        try {
+          if (response.statusCode == 200) {
+            var encodefirst = json.encode(response.body);
+            var data = json.decode(encodefirst);
+            return data;
+            // print("complete");
+          }
+        } catch (e) {
           throw Exception(jsonDecode(response.body));
         }
       }
@@ -141,7 +146,6 @@ class _TAFpageState extends State<TAFpage> {
                         techSubmit();
                         setState(() {
                           isCompleted = true;
-                          print('Completed');
                         });
                       }
                     } else {
