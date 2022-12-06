@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/club_details.dart';
+import 'package:rac_road/models/my_job_models.dart';
 
 import '../models/my_car_models.dart';
 import '../models/my_club_models.dart';
@@ -11,6 +12,7 @@ MyProfile? resultUserProfile;
 MyCar? resultMyCar;
 MyClub? resultMyClub;
 ClubDetails? resultClubDetails;
+MyJob? resultMyJob;
 
 const url = "https://api.racroad.com/api";
 const testurl = "https://api-racroad.chabafarm.com/api";
@@ -69,7 +71,8 @@ class RemoteService {
   // ################################ ClubDetails #################################
   Future<ClubDetails?> getClubDetails(String clubId) async {
     try {
-      final response = await http.get(Uri.parse("$url/club/approve/detail/$clubId"));
+      final response =
+          await http.get(Uri.parse("$url/club/approve/detail/$clubId"));
       if (response.statusCode == 200) {
         final itemClubDetails = json.decode(response.body);
         resultClubDetails = ClubDetails.fromJson(itemClubDetails);
@@ -80,5 +83,21 @@ class RemoteService {
       print(e);
     }
     return resultClubDetails;
+  }
+
+  // ################################ MyClub #################################
+  Future<MyJob?> getMyJob(String token) async {
+    try {
+      final response = await http.get(Uri.parse("$url/my/technician/$token"));
+      if (response.statusCode == 200) {
+        final itemMyJob = json.decode(response.body);
+        resultMyJob = MyJob.fromJson(itemMyJob);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      print(e);
+    }
+    return resultMyJob;
   }
 }
