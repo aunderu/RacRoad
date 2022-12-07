@@ -66,7 +66,7 @@ class MyTechnician {
     factory MyTechnician.fromJson(Map<String, dynamic> json) => MyTechnician(
         tncId: json["tnc_id"],
         name: json["name"],
-        tncName: json["tnc_name"] == null ? null : json["tnc_name"],
+        tncName: json["tnc_name"],
         serviceZone: json["service_zone"],
         status: json["status"],
     );
@@ -74,7 +74,7 @@ class MyTechnician {
     Map<String, dynamic> toJson() => {
         "tnc_id": tncId,
         "name": name,
-        "tnc_name": tncName == null ? null : tncName,
+        "tnc_name": tncName,
         "service_zone": serviceZone,
         "status": status,
     };

@@ -153,7 +153,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 182, 235, 255),
+                      color: const Color.fromARGB(255, 182, 235, 255),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: const [
                         BoxShadow(
@@ -607,7 +607,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 182, 235, 255),
+                      color: const Color.fromARGB(255, 182, 235, 255),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: const [
                         BoxShadow(
@@ -705,7 +705,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 185, 195, 255),
+                      color: const Color.fromARGB(255, 185, 195, 255),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: const [
                         BoxShadow(
@@ -822,7 +822,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 182, 235, 255),
+                      color: const Color.fromARGB(255, 182, 235, 255),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: const [
                         BoxShadow(

@@ -8,7 +8,6 @@ import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/club/club_details.dart';
 import 'package:rac_road/home/pages/club/club_settings.dart';
 import 'package:rac_road/home/screens.dart';
-import 'package:rac_road/models/club_details.dart';
 import 'package:rac_road/models/data/menu_items.dart';
 import 'package:rac_road/models/menu_item.dart';
 

@@ -8,9 +8,6 @@ import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
 import 'package:rac_road/loading/skelton.dart';
-
-import '../../models/my_club_models.dart';
-import '../../models/my_job_models.dart';
 import '../../services/remote_service.dart';
 
 class ProfilePage extends StatefulWidget {

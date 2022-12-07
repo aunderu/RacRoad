@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/club_details.dart';
 import 'package:rac_road/models/my_job_models.dart';
@@ -31,7 +32,9 @@ class RemoteService {
         throw Exception(jsonDecode(response.body));
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return resultUserProfile;
   }
@@ -47,7 +50,9 @@ class RemoteService {
         throw Exception(jsonDecode(response.body));
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return resultMyCar;
   }
@@ -63,7 +68,9 @@ class RemoteService {
         throw Exception(jsonDecode(response.body));
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return resultMyClub;
   }
@@ -80,7 +87,9 @@ class RemoteService {
         throw Exception(jsonDecode(response.body));
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return resultClubDetails;
   }
@@ -96,7 +105,9 @@ class RemoteService {
         throw Exception(jsonDecode(response.body));
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return resultMyJob;
   }
