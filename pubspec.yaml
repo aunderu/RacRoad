@@ -61,7 +61,9 @@ dependencies:
   form_field_validator: ^1.1.0
   im_stepper: ^1.0.1+1
   geolocator: ^9.0.2
-  timeline_tile: ^2.0.0
+  geocoding: ^2.0.5
+  url_launcher: ^6.1.7
+
 
 dev_dependencies:
   flutter_test:

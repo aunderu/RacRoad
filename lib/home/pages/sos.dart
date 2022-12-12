@@ -104,8 +104,10 @@ class _SOSPageState extends State<SOSPage> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            SOSFormPage(getToken: widget.token),
+                        builder: (context) => SOSFormPage(
+                          getToken: widget.token,
+                          sosTitle: "เปลี่ยนล้อ ใส่ลมยาง",
+                        ),
                       ),
                     );
                   },
@@ -129,11 +131,6 @@ class _SOSPageState extends State<SOSPage> {
                         Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                          // child: Icon(
-                          //   Icons.settings_outlined,
-                          //   color: Colors.white,
-                          //   size: 60,
-                          // ),
                           child: Image.asset(
                             'assets/icons/wheel.png',
                             color: Colors.white,
@@ -168,7 +165,17 @@ class _SOSPageState extends State<SOSPage> {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SOSFormPage(
+                          getToken: widget.token,
+                          sosTitle: "บริการยกรถ รถลาก",
+                        ),
+                      ),
+                    );
+                  },
                   child: Ink(
                     width: double.infinity,
                     height: 70,
@@ -189,11 +196,6 @@ class _SOSPageState extends State<SOSPage> {
                         Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                          // child: Icon(
-                          //   Icons.settings_outlined,
-                          //   color: Colors.white,
-                          //   size: 60,
-                          // ),
                           child: Image.asset(
                             'assets/icons/towcar.png',
                             color: Colors.white,
@@ -228,7 +230,17 @@ class _SOSPageState extends State<SOSPage> {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SOSFormPage(
+                          getToken: widget.token,
+                          sosTitle: "น้ำมันหมด เติมน้ำมัน",
+                        ),
+                      ),
+                    );
+                  },
                   child: Ink(
                     width: double.infinity,
                     height: 70,
@@ -288,7 +300,17 @@ class _SOSPageState extends State<SOSPage> {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SOSFormPage(
+                          getToken: widget.token,
+                          sosTitle: "เปลี่ยนแบตเตอรี่",
+                        ),
+                      ),
+                    );
+                  },
                   child: Ink(
                     width: double.infinity,
                     height: 70,
@@ -348,7 +370,17 @@ class _SOSPageState extends State<SOSPage> {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SOSFormPage(
+                          getToken: widget.token,
+                          sosTitle: "บริการอื่น ๆ",
+                        ),
+                      ),
+                    );
+                  },
                   child: Ink(
                     width: double.infinity,
                     height: 70,

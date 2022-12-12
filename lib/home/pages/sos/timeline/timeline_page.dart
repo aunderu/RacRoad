@@ -241,10 +241,11 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   clipBehavior: Clip.antiAlias,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
+                                    color: Colors.white,
                                   ),
-                                  child: Image.network(
-                                    'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  ),
+                                  // child: Image.network(
+                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
+                                  // ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -671,9 +672,9 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Image.network(
-                                    'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  ),
+                                  // child: Image.network(
+                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
+                                  // ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -890,9 +891,9 @@ class _TimeLinePageState extends State<TimeLinePage> {
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Image.network(
-                                    'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  ),
+                                  // child: Image.network(
+                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
+                                  // ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
