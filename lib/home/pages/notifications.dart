@@ -3,17 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:rac_road/home/pages/sos/pricing.dart';
 
 class NotificationsPage extends StatefulWidget {
   final String token;
-  final bool isSOS;
-  final bool isConfirm;
   const NotificationsPage({
     super.key,
     required this.token,
-    required this.isSOS,
-    required this.isConfirm,
   });
 
   @override
@@ -113,14 +108,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   children: [
-                    widget.isConfirm
-                        ? listTile(widget.token, 'assets/imgs/oparator.png',
-                            'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!')
-                        : const SizedBox.shrink(),
-                    widget.isSOS
-                        ? listTile(widget.token, 'assets/imgs/oparator.png',
-                            'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ')
-                        : const SizedBox.shrink(),
+                    listTile(widget.token, 'assets/imgs/oparator.png',
+                        'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!'),
+                    listTile(widget.token, 'assets/imgs/oparator.png',
+                        'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ'),
                   ],
                 ),
               )
@@ -137,7 +128,7 @@ Widget listTile(String token, String imgUrl, String title) {
     padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 5),
     child: GestureDetector(
       onTap: () {
-        Get.to(() => Pricing(getToken: token));
+        // Get.to(() => Pricing(getToken: token));
       },
       child: ListTile(
         leading: CircleAvatar(

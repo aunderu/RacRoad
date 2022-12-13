@@ -786,8 +786,6 @@ class _CreateClubPageState extends State<CreateClubPage> {
                           );
                           Get.to(() => ScreensPage(
                                 getToken: widget.getToken,
-                                isSOS: false,
-                                isConfirm: false,
                                 pageIndex: 4,
                               ));
                         },

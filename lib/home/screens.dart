@@ -14,15 +14,11 @@ import 'pages/sos.dart';
 class ScreensPage extends StatefulWidget {
   final String getToken;
   int pageIndex;
-  final bool isSOS;
-  final bool isConfirm;
   // final GoogleSignInAccount user;
   ScreensPage({
     Key? key,
     required this.getToken,
     required this.pageIndex,
-    required this.isSOS,
-    required this.isConfirm,
     // required this.user,
   }) : super(key: key);
 
@@ -38,15 +34,8 @@ class _ScreensPageState extends State<ScreensPage> {
   late final _screens = <Widget>[
     HomePage(token: widget.getToken),
     ClubPage(token: widget.getToken),
-    SOSPage(
-      token: widget.getToken,
-      isSOS: widget.isSOS,
-    ),
-    NotificationsPage(
-      token: widget.getToken,
-      isSOS: widget.isSOS,
-      isConfirm: widget.isConfirm,
-    ),
+    SOSPage(token: widget.getToken),
+    NotificationsPage(token: widget.getToken),
     ProfilePage(getToken: widget.getToken),
   ];
 
@@ -246,7 +235,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.notifications_outlined,
                     size: 40,
                   ),
-                  widget.isSOS
+                  true
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -269,7 +258,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.notifications,
                     size: 40,
                   ),
-                  widget.isSOS
+                  true
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,

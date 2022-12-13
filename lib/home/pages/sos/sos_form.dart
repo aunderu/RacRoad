@@ -1,12 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/sos_form_sended.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../services/remote_service.dart';
 
@@ -33,6 +40,24 @@ class _SOSFormPageState extends State<SOSFormPage> {
   var _latitude = "";
   var _longitude = "";
   var _address = "";
+
+  File? imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    userNameController = TextEditingController();
+    userPhoneNumContoller = TextEditingController();
+    userProblemController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    userNameController?.dispose();
+    userPhoneNumContoller?.dispose();
+    userProblemController?.dispose();
+    super.dispose();
+  }
 
   Future<void> _getCurrentLocation() async {
     Position pos = await _determindePosition();
@@ -74,6 +99,123 @@ class _SOSFormPageState extends State<SOSFormPage> {
     await canLaunchUrlString(googleURL)
         ? await launchUrlString(googleURL)
         : throw 'Could not launch $googleURL';
+  }
+
+  void showImageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('กรุณาเลือกรูป'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: () {
+                  getFromCamera();
+                },
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.camera_alt_rounded,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      'กล้อง',
+                      style: GoogleFonts.sarabun(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  getFromGallery();
+                },
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.image,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      'รูปภาพ',
+                      style: GoogleFonts.sarabun(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void getFromGallery() async {
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'คุณยังไม่ได้เลือกรูป',
+        backgroundColor: Colors.yellow[100],
+        textColor: Colors.black,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+    Navigator.pop(context);
+  }
+
+  void getFromCamera() async {
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'คุณยังไม่ได้เลือกรูป',
+        backgroundColor: Colors.yellow[100],
+        textColor: Colors.black,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+    Navigator.pop(context);
+  }
+
+  Future<bool> sosSend(String filePath) async {
+    Map<String, String> headers = {"Context-Type": "multipart/formdata"};
+    var requset = http.MultipartRequest(
+        "POST", Uri.parse("https://api.racroad.com/api/event/sos"))
+      ..fields.addAll({
+        "user_id": widget.getToken,
+        "problem": widget.sosTitle,
+        "problem_detail": userProblemController!.text,
+        "location": _address,
+        "latitude": _latitude,
+        "longitude": _longitude,
+      })
+      ..headers.addAll(headers)
+      ..files.add(await http.MultipartFile.fromPath('image', filePath));
+    var response = await requset.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception(jsonDecode(response.toString()));
+    }
   }
 
   @override
@@ -260,17 +402,6 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                   child: Material(
                                     child: InkWell(
                                       onTap: () {
-                                        // _getCurrentLocation().then((value) {
-                                        //   _latitude = '${value.latitude}';
-                                        //   _longitude = '${value.longitude}';
-                                        //   setState(() {
-                                        //     locationMessage =
-                                        //         "latitude: $_latitude , longitude: $_longitude";
-                                        //   });
-                                        //   _liveLocation();
-                                        //   // _openMap(lat, long);
-                                        // });
-
                                         _getCurrentLocation().then((value) {
                                           setState(() {
                                             locationMessage = _address;
@@ -344,7 +475,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 16, 0, 0),
+                                    16, 0, 0, 0),
                                 child: Text(
                                   'ปัญหา',
                                   style: GoogleFonts.sarabun(
@@ -399,35 +530,78 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                   keyboardType: TextInputType.multiline,
                                 ),
                               ),
+                              imageFile == null
+                                  ? Align(
+                                      alignment:
+                                          const AlignmentDirectional(0, 0),
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 16, 0, 0),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            PermissionStatus cameraStatus =
+                                                await Permission.camera
+                                                    .request();
+                                            if (cameraStatus ==
+                                                PermissionStatus.granted) {
+                                              showImageDialog();
+                                            }
+                                            if (cameraStatus ==
+                                                PermissionStatus.denied) {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "This permission is recommended");
+                                            }
+                                            if (cameraStatus ==
+                                                PermissionStatus
+                                                    .permanentlyDenied) {
+                                              openAppSettings();
+                                            }
+                                          },
+                                          child: Ink(
+                                            width: 100,
+                                            height: 100,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFEFEFEF),
+                                            ),
+                                            child: const Icon(
+                                              Icons.add,
+                                              color: Color(0xFF9D9D9D),
+                                              size: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.only(top: 16),
+                                      child: Center(
+                                        child: InkWell(
+                                          onTap: showImageDialog,
+                                          child: Image.file(
+                                            imageFile!,
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                               Align(
                                 alignment: const AlignmentDirectional(0, 0),
                                 child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 16, 0, 0),
-                                  child: Container(
-                                    width: 100,
-                                    height: 100,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFEFEFEF),
-                                    ),
-                                    child: const Icon(
-                                      Icons.add,
-                                      color: Color(0xFF9D9D9D),
-                                      size: 40,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: const AlignmentDirectional(0, 0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Get.to(
-                                        () => SOSFormSended(
-                                            token: widget.getToken),
-                                      );
+                                      if (_address != "" && imageFile != null) {
+                                        sosSend(
+                                          imageFile!.path,
+                                        );
+                                        Get.to(
+                                          () => SOSFormSended(
+                                              token: widget.getToken),
+                                        );
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: mainGreen,

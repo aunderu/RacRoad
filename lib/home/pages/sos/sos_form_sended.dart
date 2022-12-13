@@ -23,8 +23,6 @@ class SOSFormSended extends StatelessWidget {
           onPressed: () {
             Get.to(() => ScreensPage(
                   getToken: token,
-                  isSOS: true,
-                  isConfirm: false,
                   pageIndex: 2,
                 ));
           },
@@ -56,8 +54,6 @@ class SOSFormSended extends StatelessWidget {
               onPressed: () {
                 Get.to(() => ScreensPage(
                       getToken: token,
-                      isSOS: true,
-                      isConfirm: false,
                       pageIndex: 2,
                     ));
               },

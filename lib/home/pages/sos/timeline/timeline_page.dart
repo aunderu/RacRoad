@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/sos/pricing.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_1.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_2.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_3.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_4.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_5.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_6.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_7.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/step_8.dart';
+import 'package:rac_road/models/sos_details_models.dart';
+import 'package:rac_road/services/remote_service.dart';
 
 class TimeLinePage extends StatefulWidget {
   final String getToken;
-  const TimeLinePage({super.key, required this.getToken});
+  final String sos_id;
+  const TimeLinePage({
+    super.key,
+    required this.getToken,
+    required this.sos_id,
+  });
 
   @override
   State<TimeLinePage> createState() => _TimeLinePageState();
@@ -33,887 +44,214 @@ class _TimeLinePageState extends State<TimeLinePage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(height: 100),
-            //เสร็จสิ้น
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 185, 195, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x352F44CA),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(-3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 23.10',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Divider(
-                                thickness: 1,
-                                color: Color(0x392E2E2E),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'เสร็จสิ้น',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'แอดมินตรวจการเงินและโอนเงินให้ช่างภายใน 24 ชั่วโมง',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
-                                    child: Image.asset(
-                                      'assets/imgs/oparator.png',
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'เจ้าหน้าที่ Racroad',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //ผู้ใช้โอนเงินค่าบริการ
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 182, 235, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x3571DAFF),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 23.00',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'โอนเงินค่าบริการ',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'ให้ดาวช่าง : 4.5\nรีวิว : ช่างทำงานได้ดีมากครับ',
-                                  style: GoogleFonts.sarabun(),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 5, 0, 5),
-                              child: InteractiveViewer(
-                                panEnabled: false,
-                                minScale: 0.5,
-                                maxScale: 2,
-                                child: Image.network(
-                                  'https://inex.co.th/home/wp-content/uploads/2022/08/สลิปโอนเงิน-inex.jpg',
-                                  width: 300,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  // child: Image.network(
-                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  // ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'สุธาวี สะอะ',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //ส่ง qr code
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 185, 195, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x352F44CA),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(-3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 22.50',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'QR Code',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'QR code สำหรับโอนเงินให้ผู้ใช้',
-                                  style: GoogleFonts.sarabun(),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 5, 0, 5),
-                              child: InteractiveViewer(
-                                panEnabled: false,
-                                minScale: 0.5,
-                                maxScale: 2,
-                                child: Image.network(
-                                  'https://www.trekkingthai.com/wp-content/uploads/2015/01/386931-240x300.jpg',
-                                  width: 300,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
-                                    child: Image.asset(
-                                      'assets/imgs/oparator.png',
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'เจ้าหน้าที่ Racroad',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //ช่างได้เสร็จงานเรียบร้อยแล้ว
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 185, 195, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x352F44CA),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(-3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 23.00',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'ช่างได้เสร็จงานเรียบร้อยแล้ว',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
-                                    child: Image.asset(
-                                      'assets/imgs/oparator.png',
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'เจ้าหน้าที่ Racroad',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //ช่างได้ยืนยันรับงาน และกำลังไป
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 185, 195, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x352F44CA),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(-3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 22.13',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
-                                    child: Image.asset(
-                                      'assets/imgs/oparator.png',
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'เจ้าหน้าที่ Racroad',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //ผู้ยืนยันค่าบริการดังกล่าว
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 182, 235, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x3571DAFF),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 22.10',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'ฉันยืนยันค่าบริการดังกล่าว',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  // child: Image.network(
-                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  // ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'สุธาวี สะอะ',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //รายละเอียดค่าบริการ
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 185, 195, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x352F44CA),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(-3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 22.00',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(
-                                      () => Pricing(getToken: widget.getToken));
-                                },
-                                child: const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: darkGray,
-                                  size: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'รายละเอียดค่าบริการ',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'รายละเอียดค่าบริการ\nค่าช่าง 30 บาท\nค่าล้อรถ 150 บาท\nรวมเป็นเงิน 170 บาท',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
-                                    child: Image.asset(
-                                      'assets/imgs/oparator.png',
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'เจ้าหน้าที่ Racroad',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //ผู้ใช้แจ้งเหตุการณ์
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 182, 235, 255),
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x3571DAFF),
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: Offset(3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '29/10/65 21.30',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0x392E2E2E),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
-                                child: Text(
-                                  'เเจ้งเหตุการณ์',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'ชื่อผู้ใช้ : นาย สุธาวี สะอะ\nเบอร์โทร : 06560785\nปัญหา : แบตเตอรี่หมด\nที่เกิดเหตุ : ปัตตานี ดอนยาง สาย 8',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 4, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  // child: Image.network(
-                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  // ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    'สุธาวี สะอะ',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: FutureBuilder<SosDetails?>(
+          future: RemoteService().getSosDetails(widget.sos_id),
+          builder: (context, snapshot) {
+            var result = snapshot.data;
+            if (result != null) {
+              switch ("step6") {
+                case "step1":
+                  return StepOne(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "เบอร์",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                  );
+                case "step2":
+                  return StepTwo(
+                    getToken: widget.getToken,
+                    sosId: result.data.sos.sosId,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "เบอร์",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                  );
+                case "step3":
+                  return StepThree(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "เบอร์",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                  );
+                case "step4":
+                  return StepFour(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "result.data.sos.userTel",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                    tncName: result.data.sos.tncName!,
+                    tncStatus: result.data.sos.tncStatus!,
+                    tncProfile: result.data.sos.tncAvatar,
+                    imgBfwork: result.data.imgBfwork == null
+                        ? null
+                        : result.data.imgBfwork![0].image,
+                  );
+                case "step5":
+                  return StepFive(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "result.data.sos.userTel",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                    tncName: result.data.sos.tncName!,
+                    tncStatus: result.data.sos.tncStatus!,
+                    tncProfile: result.data.sos.tncAvatar,
+                    imgBfwork: result.data.imgBfwork == null
+                        ? null
+                        : result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork == null
+                        ? null
+                        : result.data.imgAfwork![0].image,
+                  );
+                case "step6":
+                  return StepSix(
+                    getToken: widget.getToken,
+                    sosId: result.data.sos.sosId,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "result.data.sos.userTel",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
+                    stepSixTimeStamp: result.data.sos.tuStep6.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                    tncName: result.data.sos.tncName!,
+                    tncStatus: result.data.sos.tncStatus!,
+                    tncProfile: result.data.sos.tncAvatar,
+                    imgBfwork: result.data.imgBfwork == null
+                        ? null
+                        : result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork == null
+                        ? null
+                        : result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode == null
+                        ? null
+                        : result.data.qrCode![0].image,
+                  );
+                case "step7":
+                  return StepSeven(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "result.data.sos.userTel",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
+                    stepSixTimeStamp: result.data.sos.tuStep6.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                    tncName: result.data.sos.tncName!,
+                    tncStatus: result.data.sos.tncStatus!,
+                    tncProfile: result.data.sos.tncAvatar,
+                    imgBfwork: result.data.imgBfwork == null
+                        ? null
+                        : result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork == null
+                        ? null
+                        : result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode == null
+                        ? null
+                        : result.data.qrCode![0].image,
+                  );
+                case "step8":
+                  return StepEight(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    // userTel: result.data.sos.userTel,
+                    userTel: "result.data.sos.userTel",
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
+                    stepSixTimeStamp: result.data.sos.tuStep6.toString(),
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                    tncName: result.data.sos.tncName!,
+                    tncStatus: result.data.sos.tncStatus!,
+                    tncProfile: result.data.sos.tncAvatar,
+                    imgBfwork: result.data.imgBfwork == null
+                        ? null
+                        : result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork == null
+                        ? null
+                        : result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode == null
+                        ? null
+                        : result.data.qrCode![0].image,
+                  );
+                default:
+                  const Text('test');
+              }
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );

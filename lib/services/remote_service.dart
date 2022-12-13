@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/club_details.dart';
+import 'package:rac_road/models/my_current_sos_models.dart';
 import 'package:rac_road/models/my_job_models.dart';
+import 'package:rac_road/models/sos_details_models.dart';
 
 import '../models/my_car_models.dart';
 import '../models/my_club_models.dart';
@@ -14,6 +16,8 @@ MyCar? resultMyCar;
 MyClub? resultMyClub;
 ClubDetails? resultClubDetails;
 MyJob? resultMyJob;
+MyCurrentSos? resultMyCurrentSOS;
+SosDetails? resultSosDetails;
 
 const url = "https://api.racroad.com/api";
 const testurl = "https://api-racroad.chabafarm.com/api";
@@ -110,5 +114,43 @@ class RemoteService {
       }
     }
     return resultMyJob;
+  }
+
+  // ################################ MyCurrentSOS #################################
+  Future<MyCurrentSos?> getMyCurrentSOS(String token) async {
+    try {
+      final response =
+          await http.get(Uri.parse("$url/my/sos/in/progress/$token"));
+      if (response.statusCode == 200) {
+        final itemMyCurrentSOS = json.decode(response.body);
+        resultMyCurrentSOS = MyCurrentSos.fromJson(itemMyCurrentSOS);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultMyCurrentSOS;
+  }
+
+  // ################################ SosDetails #################################
+  Future<SosDetails?> getSosDetails(String sosId) async {
+    try {
+      final response =
+          await http.get(Uri.parse("$url/sos/detail/33"));
+      if (response.statusCode == 200) {
+        final itemSosDetails = json.decode(response.body);
+        resultSosDetails = SosDetails.fromJson(itemSosDetails);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultSosDetails;
   }
 }
