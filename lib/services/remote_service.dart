@@ -139,7 +139,7 @@ class RemoteService {
   Future<SosDetails?> getSosDetails(String sosId) async {
     try {
       final response =
-          await http.get(Uri.parse("$url/sos/detail/33"));
+          await http.get(Uri.parse("$url/sos/detail/$sosId"));
       if (response.statusCode == 200) {
         final itemSosDetails = json.decode(response.body);
         resultSosDetails = SosDetails.fromJson(itemSosDetails);

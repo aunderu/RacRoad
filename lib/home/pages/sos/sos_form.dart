@@ -46,18 +46,18 @@ class _SOSFormPageState extends State<SOSFormPage> {
   @override
   void initState() {
     super.initState();
-    userNameController = TextEditingController();
+    // userNameController = TextEditingController();
     userPhoneNumContoller = TextEditingController();
     userProblemController = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    userNameController?.dispose();
-    userPhoneNumContoller?.dispose();
-    userProblemController?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   userNameController?.dispose();
+  //   userPhoneNumContoller?.dispose();
+  //   userProblemController?.dispose();
+  //   super.dispose();
+  // }
 
   Future<void> _getCurrentLocation() async {
     Position pos = await _determindePosition();
@@ -580,8 +580,10 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                           onTap: showImageDialog,
                                           child: Image.file(
                                             imageFile!,
-                                            height: 100,
-                                            width: 100,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.9,
                                             fit: BoxFit.cover,
                                           ),
                                         ),

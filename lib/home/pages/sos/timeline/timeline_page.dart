@@ -49,14 +49,13 @@ class _TimeLinePageState extends State<TimeLinePage> {
           builder: (context, snapshot) {
             var result = snapshot.data;
             if (result != null) {
-              switch ("step6") {
+              switch (result.data.sos.sosStatus) {
                 case "step1":
                   return StepOne(
                     getToken: widget.getToken,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "เบอร์",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -69,8 +68,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     sosId: result.data.sos.sosId,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "เบอร์",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -85,8 +83,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     getToken: widget.getToken,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "เบอร์",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -102,8 +99,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     getToken: widget.getToken,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "result.data.sos.userTel",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -117,17 +113,16 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     tncName: result.data.sos.tncName!,
                     tncStatus: result.data.sos.tncStatus!,
                     tncProfile: result.data.sos.tncAvatar,
-                    imgBfwork: result.data.imgBfwork == null
-                        ? null
-                        : result.data.imgBfwork![0].image,
+                    imgBfwork: result.data.sos.tncStatus == "ช่างถึงหน้างานแล้ว"
+                        ? result.data.imgBfwork![0].image
+                        : null
                   );
                 case "step5":
                   return StepFive(
                     getToken: widget.getToken,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "result.data.sos.userTel",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -142,12 +137,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     tncName: result.data.sos.tncName!,
                     tncStatus: result.data.sos.tncStatus!,
                     tncProfile: result.data.sos.tncAvatar,
-                    imgBfwork: result.data.imgBfwork == null
-                        ? null
-                        : result.data.imgBfwork![0].image,
-                    imgAfwork: result.data.imgAfwork == null
-                        ? null
-                        : result.data.imgAfwork![0].image,
+                    imgBfwork: result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork![0].image,
                   );
                 case "step6":
                   return StepSix(
@@ -155,8 +146,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     sosId: result.data.sos.sosId,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "result.data.sos.userTel",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -187,8 +177,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     getToken: widget.getToken,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "result.data.sos.userTel",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
@@ -219,8 +208,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     getToken: widget.getToken,
                     timeStamp: result.data.sos.createdAt,
                     userName: result.data.sos.userName,
-                    // userTel: result.data.sos.userTel,
-                    userTel: "result.data.sos.userTel",
+                    userTel: result.data.sos.userTel.toString(),
                     problem: result.data.sos.problem,
                     problemDetails: result.data.sos.problemDetail,
                     location: result.data.sos.location,
