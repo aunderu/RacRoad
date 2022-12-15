@@ -49,6 +49,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
           builder: (context, snapshot) {
             var result = snapshot.data;
             if (result != null) {
+              print(result.data.sos.sosId);
               switch (result.data.sos.sosStatus) {
                 case "step1":
                   return StepOne(
@@ -96,27 +97,27 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   );
                 case "step4":
                   return StepFour(
-                    getToken: widget.getToken,
-                    timeStamp: result.data.sos.createdAt,
-                    userName: result.data.sos.userName,
-                    userTel: result.data.sos.userTel.toString(),
-                    problem: result.data.sos.problem,
-                    problemDetails: result.data.sos.problemDetail,
-                    location: result.data.sos.location,
-                    userProfile: result.data.sos.avatar,
-                    imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
-                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
-                    repairPrice: result.data.sos.repairPrice.toString(),
-                    repairDetails: result.data.sos.repairDetail!,
-                    tncName: result.data.sos.tncName!,
-                    tncStatus: result.data.sos.tncStatus!,
-                    tncProfile: result.data.sos.tncAvatar,
-                    imgBfwork: result.data.sos.tncStatus == "ช่างถึงหน้างานแล้ว"
-                        ? result.data.imgBfwork![0].image
-                        : null
-                  );
+                      getToken: widget.getToken,
+                      timeStamp: result.data.sos.createdAt,
+                      userName: result.data.sos.userName,
+                      userTel: result.data.sos.userTel.toString(),
+                      problem: result.data.sos.problem,
+                      problemDetails: result.data.sos.problemDetail,
+                      location: result.data.sos.location,
+                      userProfile: result.data.sos.avatar,
+                      imgIncident: result.data.imgIncident![0].image,
+                      stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                      stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                      stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                      repairPrice: result.data.sos.repairPrice.toString(),
+                      repairDetails: result.data.sos.repairDetail!,
+                      tncName: result.data.sos.tncName!,
+                      tncStatus: result.data.sos.tncStatus!,
+                      tncProfile: result.data.sos.tncAvatar,
+                      imgBfwork:
+                          result.data.sos.tncStatus != "ช่างถึงหน้างานแล้ว"
+                              ? result.data.imgBfwork![0].image
+                              : null);
                 case "step5":
                   return StepFive(
                     getToken: widget.getToken,
@@ -162,15 +163,9 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     tncName: result.data.sos.tncName!,
                     tncStatus: result.data.sos.tncStatus!,
                     tncProfile: result.data.sos.tncAvatar,
-                    imgBfwork: result.data.imgBfwork == null
-                        ? null
-                        : result.data.imgBfwork![0].image,
-                    imgAfwork: result.data.imgAfwork == null
-                        ? null
-                        : result.data.imgAfwork![0].image,
-                    qrCode: result.data.qrCode == null
-                        ? null
-                        : result.data.qrCode![0].image,
+                    imgBfwork: result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode![0].image,
                   );
                 case "step7":
                   return StepSeven(
@@ -183,25 +178,23 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     location: result.data.sos.location,
                     userProfile: result.data.sos.avatar,
                     imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
-                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
-                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
-                    stepSixTimeStamp: result.data.sos.tuStep6.toString(),
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
+                    stepFourTimeStamp: result.data.sos.tuStep4!,
+                    stepFiveTimeStamp: result.data.sos.tuStep5!,
+                    stepSixTimeStamp: result.data.sos.tuStep6!,
+                    stepSevenTimeStamp: result.data.sos.tuStep7!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                     tncName: result.data.sos.tncName!,
                     tncStatus: result.data.sos.tncStatus!,
                     tncProfile: result.data.sos.tncAvatar,
-                    imgBfwork: result.data.imgBfwork == null
-                        ? null
-                        : result.data.imgBfwork![0].image,
-                    imgAfwork: result.data.imgAfwork == null
-                        ? null
-                        : result.data.imgAfwork![0].image,
-                    qrCode: result.data.qrCode == null
-                        ? null
-                        : result.data.qrCode![0].image,
+                    imgBfwork: result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode![0].image,
+                    rate: result.data.sos.rate!,
+                    review: result.data.sos.review!,
+                    userSlip: result.data.userSlip![0].image,
                   );
                 case "step8":
                   return StepEight(
@@ -214,25 +207,24 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     location: result.data.sos.location,
                     userProfile: result.data.sos.avatar,
                     imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
-                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
-                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
-                    stepSixTimeStamp: result.data.sos.tuStep6.toString(),
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
+                    stepFourTimeStamp: result.data.sos.tuStep4!,
+                    stepFiveTimeStamp: result.data.sos.tuStep5!,
+                    stepSixTimeStamp: result.data.sos.tuStep6!,
+                    stepSevenTimeStamp: result.data.sos.tuStep7!,
+                    stepEightTimeStamp: result.data.sos.tuStep8!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                     tncName: result.data.sos.tncName!,
                     tncStatus: result.data.sos.tncStatus!,
                     tncProfile: result.data.sos.tncAvatar,
-                    imgBfwork: result.data.imgBfwork == null
-                        ? null
-                        : result.data.imgBfwork![0].image,
-                    imgAfwork: result.data.imgAfwork == null
-                        ? null
-                        : result.data.imgAfwork![0].image,
-                    qrCode: result.data.qrCode == null
-                        ? null
-                        : result.data.qrCode![0].image,
+                    imgBfwork: result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode![0].image,
+                    rate: result.data.sos.rate!,
+                    review: result.data.sos.review!,
+                    userSlip: result.data.userSlip![0].image,
                   );
                 default:
                   const Text('test');

@@ -40,6 +40,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
   var _latitude = "";
   var _longitude = "";
   var _address = "";
+  var _isLoading = false;
 
   File? imageFile;
 
@@ -253,9 +254,11 @@ class _SOSFormPageState extends State<SOSFormPage> {
                 future: RemoteService().getUserProfile(widget.getToken),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
-                    return const Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: CircularProgressIndicator(),
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.3,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   } else {
                     return Column(
@@ -401,18 +404,27 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                   borderRadius: BorderRadius.circular(50),
                                   child: Material(
                                     child: InkWell(
-                                      onTap: () {
-                                        _getCurrentLocation().then((value) {
-                                          setState(() {
-                                            locationMessage = _address;
-                                          });
-                                        });
-                                      },
+                                      onTap: _isLoading
+                                          ? null
+                                          : () {
+                                              setState(
+                                                () => _isLoading = true,
+                                              );
+                                              _getCurrentLocation()
+                                                  .then((value) {
+                                                setState(() {
+                                                  locationMessage = _address;
+                                                  _isLoading = false;
+                                                });
+                                              });
+                                            },
                                       child: Ink(
                                         width: double.infinity,
                                         height: 50,
                                         decoration: BoxDecoration(
-                                          color: const Color(0x6939D2C0),
+                                          color: _isLoading
+                                              ? lightGrey
+                                              : const Color(0x6939D2C0),
                                           borderRadius:
                                               BorderRadius.circular(50),
                                         ),
@@ -424,12 +436,27 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              const Icon(
-                                                Icons.location_on_sharp,
-                                                color: Color.fromARGB(
-                                                    105, 1, 61, 54),
-                                                size: 24,
-                                              ),
+                                              _isLoading
+                                                  ? Container(
+                                                      width: 20,
+                                                      height: 20,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              2.0),
+                                                      child:
+                                                          const CircularProgressIndicator(
+                                                        color: Color.fromARGB(
+                                                            105, 1, 61, 54),
+                                                        strokeWidth: 3,
+                                                      ),
+                                                    )
+                                                  : const Icon(
+                                                      Icons.location_on_sharp,
+                                                      color: Color.fromARGB(
+                                                          105, 1, 61, 54),
+                                                      size: 24,
+                                                    ),
+                                              const SizedBox(width: 5),
                                               Expanded(
                                                 child: Text(
                                                   'เลือกที่อยู่ของคุณ',

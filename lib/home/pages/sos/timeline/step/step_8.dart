@@ -14,11 +14,13 @@ class StepEight extends StatefulWidget {
   final String location;
   final String userProfile;
   final String imgIncident;
-  final String stepTwoTimeStamp;
-  final String stepThreeTimeStamp;
-  final String stepFourTimeStamp;
-  final String stepFiveTimeStamp;
-  final String stepSixTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepFiveTimeStamp;
+  final DateTime stepSixTimeStamp;
+  final DateTime stepSevenTimeStamp;
+  final DateTime stepEightTimeStamp;
   final String repairPrice;
   final String repairDetails;
   final String tncName;
@@ -27,6 +29,9 @@ class StepEight extends StatefulWidget {
   final String? imgBfwork;
   final String? imgAfwork;
   final String? qrCode;
+  final String rate;
+  final String review;
+  final String userSlip;
   const StepEight({
     super.key,
     required this.getToken,
@@ -51,6 +56,11 @@ class StepEight extends StatefulWidget {
     this.imgBfwork,
     this.imgAfwork,
     this.qrCode,
+    required this.stepSevenTimeStamp,
+    required this.rate,
+    required this.review,
+    required this.userSlip,
+    required this.stepEightTimeStamp,
   });
 
   @override
@@ -97,7 +107,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '29/10/65 23.10',
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepEightTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -217,7 +227,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '29/10/65 23.00',
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepSevenTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -245,7 +255,7 @@ class _StepEightState extends State<StepEight> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0, 0, 20, 0),
                             child: Text(
-                              'ให้ดาวช่าง : 4.5\nรีวิว : ช่างทำงานได้ดีมากครับ',
+                              'ให้ดาวช่าง : ${widget.rate}\nรีวิว : ${widget.review}',
                               style: GoogleFonts.sarabun(),
                             ),
                           ),
@@ -260,10 +270,12 @@ class _StepEightState extends State<StepEight> {
                             panEnabled: false,
                             minScale: 0.5,
                             maxScale: 2,
-                            child: Image.network(
-                              'https://inex.co.th/home/wp-content/uploads/2022/08/สลิปโอนเงิน-inex.jpg',
-                              width: 300,
+                            child: CachedNetworkImage(
+                              imageUrl: widget.userSlip,
+                              height: 300,
                               fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                           ),
                         ),
@@ -283,15 +295,15 @@ class _StepEightState extends State<StepEight> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   8, 0, 0, 0),
                               child: Text(
-                                'สุธาวี สะอะ',
+                                widget.userName,
                                 style: GoogleFonts.sarabun(),
                               ),
                             ),
@@ -339,7 +351,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepSixTimeStamp,
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepSixTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -456,7 +468,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepFiveTimeStamp,
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepFiveTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -624,7 +636,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepFourTimeStamp,
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepFourTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -648,13 +660,30 @@ class _StepEightState extends State<StepEight> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 10, 20, 0),
-                            child: Text(
-                              "widget.tncName",
-                              style: GoogleFonts.sarabun(),
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                widget.tncName,
+                                style: GoogleFonts.sarabun(),
+                              ),
+                              const SizedBox(width: 5),
+                              Container(
+                                width: 30,
+                                height: 30,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Container(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.white),
+                                  child: Image.network(
+                                    widget.tncProfile ??
+                                        'https://racroad.com/img/admin.71db083f.jpg',
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -733,7 +762,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepThreeTimeStamp,
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepThreeTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -834,7 +863,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepThreeTimeStamp,
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepThreeTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -874,15 +903,15 @@ class _StepEightState extends State<StepEight> {
                               clipBehavior: Clip.antiAlias,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   8, 0, 0, 0),
                               child: Text(
-                                'สุธาวี สะอะ',
+                                widget.userName,
                                 style: GoogleFonts.sarabun(),
                               ),
                             ),
@@ -930,7 +959,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepTwoTimeStamp,
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepTwoTimeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                           // GestureDetector(
@@ -1046,8 +1075,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('yyyy-MM-dd KK:mm:ss')
-                                .format(widget.timeStamp),
+                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.timeStamp)} น.',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -1105,9 +1133,9 @@ class _StepEightState extends State<StepEight> {
                               clipBehavior: Clip.antiAlias,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

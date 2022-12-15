@@ -126,6 +126,7 @@ class Sos {
         this.tuStep5,
         this.tuStep6,
         this.tuStep7,
+        this.tuStep8,
         this.tuSc,
     });
 
@@ -161,6 +162,7 @@ class Sos {
     DateTime? tuStep5;
     DateTime? tuStep6;
     DateTime? tuStep7;
+    DateTime? tuStep8;
     DateTime? tuSc;
 
     factory Sos.fromJson(Map<String, dynamic> json) => Sos(
@@ -196,6 +198,7 @@ class Sos {
         tuStep5: json["tu_step5"] == null ? null : DateTime.parse(json["tu_step5"]),
         tuStep6: json["tu_step6"] == null ? null : DateTime.parse(json["tu_step6"]),
         tuStep7: json["tu_step7"] == null ? null : DateTime.parse(json["tu_step7"]),
+        tuStep8: json["tu_step8"] == null ? null : DateTime.parse(json["tu_step8"]),
         tuSc: json["tu_sc"] == null ? null : DateTime.parse(json["tu_sc"]),
     );
 
@@ -232,6 +235,7 @@ class Sos {
         "tu_step5": tuStep5 == null ? null : tuStep5!.toIso8601String(),
         "tu_step6": tuStep6 == null ? null : tuStep6!.toIso8601String(),
         "tu_step7": tuStep7 == null ? null : tuStep7!.toIso8601String(),
+        "tu_step8": tuStep8 == null ? null : tuStep8!.toIso8601String(),
         "tu_sc": tuSc == null ? null : tuSc!.toIso8601String(),
     };
 }

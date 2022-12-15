@@ -253,13 +253,30 @@ class _StepFourState extends State<StepFour> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 10, 20, 0),
-                            child: Text(
-                              "widget.tncName",
-                              style: GoogleFonts.sarabun(),
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                widget.tncName,
+                                style: GoogleFonts.sarabun(),
+                              ),
+                              const SizedBox(width: 5),
+                              Container(
+                                width: 30,
+                                height: 30,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Container(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.white),
+                                  child: Image.network(
+                                    widget.tncProfile ??
+                                        'https://racroad.com/img/admin.71db083f.jpg',
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

@@ -133,9 +133,9 @@ class _StepOneState extends State<StepOne> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
