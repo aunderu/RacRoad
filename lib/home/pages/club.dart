@@ -5,6 +5,7 @@ import 'package:rac_road/home/pages/club/club_widget.dart';
 import 'package:rac_road/models/my_club_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 
+import '../../colors.dart';
 import 'profile/create_club/on_boarding.dart';
 
 class ClubPage extends StatefulWidget {
@@ -131,7 +132,10 @@ class _ClubPageState extends State<ClubPage> {
                       return SizedBox.fromSize();
                     }
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                        strokeWidth: 8,
+                      ),
                     );
                   },
                 ),

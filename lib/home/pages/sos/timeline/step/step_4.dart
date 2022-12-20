@@ -14,9 +14,9 @@ class StepFour extends StatefulWidget {
   final String location;
   final String userProfile;
   final String imgIncident;
-  final String stepTwoTimeStamp;
-  final String stepThreeTimeStamp;
-  final String stepFourTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepFourTimeStamp;
   final String repairPrice;
   final String repairDetails;
   final String tncName;
@@ -90,7 +90,8 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepFourTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -122,7 +123,7 @@ class _StepFourState extends State<StepFour> {
                               style: GoogleFonts.sarabun(),
                             ),
                           ),
-                          widget.imgBfwork == null
+                          widget.tncStatus != "ช่างถึงหน้างานเเล้ว"
                               ? const SizedBox.shrink()
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,7 +230,8 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepFourTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -355,7 +357,8 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepThreeTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -456,7 +459,8 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepThreeTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -498,9 +502,9 @@ class _StepFourState extends State<StepFour> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -554,7 +558,8 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepTwoTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                           // GestureDetector(
@@ -670,7 +675,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('yyyy-MM-dd KK:mm:ss')
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -731,9 +736,9 @@ class _StepFourState extends State<StepFour> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

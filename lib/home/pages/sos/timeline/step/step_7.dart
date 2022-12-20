@@ -130,13 +130,22 @@ class _StepSevenState extends State<StepSeven> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 0, 20, 0),
-                            child: Text(
-                              'ให้ดาวช่าง : ${widget.rate}\nรีวิว : ${widget.review}',
-                              style: GoogleFonts.sarabun(),
-                            ),
+                          Text(
+                            'ให้ดาวช่าง : ${widget.rate}',
+                            style: GoogleFonts.sarabun(),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'รีวิว : ${widget.review}',
+                                style: GoogleFonts.sarabun(),
+                              ),
+                              const SizedBox(width: 1),
+                              const Icon(
+                                Icons.star,
+                                size: 15,
+                              )
+                            ],
                           ),
                         ],
                       ),

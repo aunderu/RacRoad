@@ -9,7 +9,10 @@ import '../../../services/remote_service.dart';
 
 class MyClubWidget extends StatefulWidget {
   final String getToken;
-  const MyClubWidget({super.key, required this.getToken,});
+  const MyClubWidget({
+    super.key,
+    required this.getToken,
+  });
 
   @override
   State<MyClubWidget> createState() => _MyClubWidgetState();
@@ -211,8 +214,14 @@ class _MyClubWidgetState extends State<MyClubWidget> {
               ],
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 2.3,
+            child: const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                strokeWidth: 8,
+              ),
+            ),
           );
         },
       );

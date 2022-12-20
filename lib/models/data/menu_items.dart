@@ -16,7 +16,7 @@ class MenuItems {
   );
 
   static const itemDelete = CustomMenuItem(
-    text: 'ลบคลับ',
+    text: 'ลบ',
     icon: Icons.group_off,
   );
 }

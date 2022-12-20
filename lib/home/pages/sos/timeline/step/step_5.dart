@@ -14,10 +14,10 @@ class StepFive extends StatefulWidget {
   final String location;
   final String userProfile;
   final String imgIncident;
-  final String stepTwoTimeStamp;
-  final String stepThreeTimeStamp;
-  final String stepFourTimeStamp;
-  final String stepFiveTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepFiveTimeStamp;
   final String repairPrice;
   final String repairDetails;
   final String tncName;
@@ -94,7 +94,8 @@ class _StepFiveState extends State<StepFive> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepFiveTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepFiveTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -262,7 +263,8 @@ class _StepFiveState extends State<StepFive> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepFourTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -286,34 +288,30 @@ class _StepFiveState extends State<StepFive> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 10, 20, 0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  widget.tncName,
-                                  style: GoogleFonts.sarabun(),
+                          Row(
+                            children: [
+                              Text(
+                                widget.tncName,
+                                style: GoogleFonts.sarabun(),
+                              ),
+                              const SizedBox(width: 5),
+                              Container(
+                                width: 30,
+                                height: 30,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
                                 ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    ),
-                                    child: Image.network(
-                                      widget.tncProfile!,
-                                    ),
+                                child: Container(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.white),
+                                  child: Image.network(
+                                    widget.tncProfile ??
+                                        'https://racroad.com/img/admin.71db083f.jpg',
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -392,7 +390,8 @@ class _StepFiveState extends State<StepFive> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepThreeTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -493,7 +492,8 @@ class _StepFiveState extends State<StepFive> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepThreeTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -535,9 +535,9 @@ class _StepFiveState extends State<StepFive> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -591,7 +591,8 @@ class _StepFiveState extends State<StepFive> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.stepTwoTimeStamp,
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                                .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                           // GestureDetector(
@@ -707,7 +708,7 @@ class _StepFiveState extends State<StepFive> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('yyyy-MM-dd KK:mm:ss')
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -768,9 +769,9 @@ class _StepFiveState extends State<StepFive> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

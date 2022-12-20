@@ -489,7 +489,10 @@ class _SOSPageState extends State<SOSPage> {
             }
             return const Align(
               alignment: Alignment(0, 0),
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                strokeWidth: 8,
+              ),
             );
           },
         ),

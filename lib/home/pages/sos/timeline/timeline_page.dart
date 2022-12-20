@@ -49,7 +49,6 @@ class _TimeLinePageState extends State<TimeLinePage> {
           builder: (context, snapshot) {
             var result = snapshot.data;
             if (result != null) {
-              print(result.data.sos.sosId);
               switch (result.data.sos.sosStatus) {
                 case "step1":
                   return StepOne(
@@ -75,7 +74,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     location: result.data.sos.location,
                     userProfile: result.data.sos.avatar,
                     imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                   );
@@ -90,8 +89,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     location: result.data.sos.location,
                     userProfile: result.data.sos.avatar,
                     imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                   );
@@ -106,16 +105,16 @@ class _TimeLinePageState extends State<TimeLinePage> {
                       location: result.data.sos.location,
                       userProfile: result.data.sos.avatar,
                       imgIncident: result.data.imgIncident![0].image,
-                      stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                      stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
-                      stepFourTimeStamp: result.data.sos.tuStep4.toString(),
+                      stepTwoTimeStamp: result.data.sos.tuStep2!,
+                      stepThreeTimeStamp: result.data.sos.tuStep3!,
+                      stepFourTimeStamp: result.data.sos.tuStep4!,
                       repairPrice: result.data.sos.repairPrice.toString(),
                       repairDetails: result.data.sos.repairDetail!,
                       tncName: result.data.sos.tncName!,
                       tncStatus: result.data.sos.tncStatus!,
                       tncProfile: result.data.sos.tncAvatar,
                       imgBfwork:
-                          result.data.sos.tncStatus != "ช่างถึงหน้างานแล้ว"
+                          result.data.sos.tncStatus == "ช่างถึงหน้างานเเล้ว"
                               ? result.data.imgBfwork![0].image
                               : null);
                 case "step5":
@@ -129,10 +128,10 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     location: result.data.sos.location,
                     userProfile: result.data.sos.avatar,
                     imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
-                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
-                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
+                    stepFourTimeStamp: result.data.sos.tuStep4!,
+                    stepFiveTimeStamp: result.data.sos.tuStep5!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                     tncName: result.data.sos.tncName!,
@@ -153,11 +152,11 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     location: result.data.sos.location,
                     userProfile: result.data.sos.avatar,
                     imgIncident: result.data.imgIncident![0].image,
-                    stepTwoTimeStamp: result.data.sos.tuStep2.toString(),
-                    stepThreeTimeStamp: result.data.sos.tuStep3.toString(),
-                    stepFourTimeStamp: result.data.sos.tuStep4.toString(),
-                    stepFiveTimeStamp: result.data.sos.tuStep5.toString(),
-                    stepSixTimeStamp: result.data.sos.tuStep6.toString(),
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
+                    stepFourTimeStamp: result.data.sos.tuStep4!,
+                    stepFiveTimeStamp: result.data.sos.tuStep5!,
+                    stepSixTimeStamp: result.data.sos.tuStep6!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                     tncName: result.data.sos.tncName!,

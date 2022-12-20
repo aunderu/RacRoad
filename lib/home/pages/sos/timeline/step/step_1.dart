@@ -72,7 +72,7 @@ class _StepOneState extends State<StepOne> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd-MM-yyyy KK:mm:ss')
+                            DateFormat('dd/MM/yyyy KK:mm:ss')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),

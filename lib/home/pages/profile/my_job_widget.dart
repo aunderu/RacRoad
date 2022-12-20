@@ -112,6 +112,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                   itemBuilder: (context, index) {
                     return JobWidget(
                       getToken: widget.getToken,
+                      jobId: dataMyJob[index].tncId,
                       clubProfile: "assets/imgs/mechanic.png",
                       tncName: dataMyJob[index].tncName,
                       jobZone: dataMyJob[index].serviceZone,
@@ -120,43 +121,16 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                   },
                 );
               }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Material(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        duration: const Duration(milliseconds: 200),
-                        reverseDuration: const Duration(milliseconds: 100),
-                        child: TAFpage(getToken: widget.getToken),
-                      ),
-                    );
-                  },
-                  child: Ink(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 24,
-                    ),
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 2.3,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                    strokeWidth: 8,
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       );

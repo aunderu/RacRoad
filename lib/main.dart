@@ -73,6 +73,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: mainGreen,
         scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: mainGreen),
       ),
       home: const CheckLogin(),
     );

@@ -257,7 +257,10 @@ class _SOSFormPageState extends State<SOSFormPage> {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height / 1.3,
                       child: const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                          strokeWidth: 8,
+                        ),
                       ),
                     );
                   } else {

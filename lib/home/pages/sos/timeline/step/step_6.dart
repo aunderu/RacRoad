@@ -27,11 +27,11 @@ class StepSix extends StatefulWidget {
   final String location;
   final String userProfile;
   final String imgIncident;
-  final String stepTwoTimeStamp;
-  final String stepThreeTimeStamp;
-  final String stepFourTimeStamp;
-  final String stepFiveTimeStamp;
-  final String stepSixTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepFiveTimeStamp;
+  final DateTime stepSixTimeStamp;
   final String repairPrice;
   final String repairDetails;
   final String tncName;
@@ -84,12 +84,6 @@ class _StepSixState extends State<StepSix> {
     userReviewController = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    userReviewController?.dispose();
-    super.dispose();
-  }
-
   void getFromGallery() async {
     XFile? pickedFile = await ImagePicker()
         .pickImage(source: ImageSource.gallery, imageQuality: 50);
@@ -108,16 +102,21 @@ class _StepSixState extends State<StepSix> {
     }
   }
 
-  Future<bool> sosPayAndReview(String sosId, String filePath) async {
+  Future<bool> sosPayAndReview(
+    String sosId,
+    String userReview,
+    String userRating,
+    String imgPath,
+  ) async {
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
     var requset = http.MultipartRequest(
         "POST", Uri.parse("https://api.racroad.com/api/sos/step/$sosId"))
       ..fields.addAll({
-        "review": userReviewController!.text,
-        "rate": rating.toString(),
+        "rate": userRating,
+        "review": userReview,
       })
       ..headers.addAll(headers)
-      ..files.add(await http.MultipartFile.fromPath('image', filePath));
+      ..files.add(await http.MultipartFile.fromPath('image', imgPath));
     var response = await requset.send();
 
     if (response.statusCode == 200) {
@@ -334,7 +333,9 @@ class _StepSixState extends State<StepSix> {
                                     false) {
                                   if (imageFile != null && rating != 0) {
                                     sosPayAndReview(
-                                      widget.getToken,
+                                      widget.sosId,
+                                      rating.toString(),
+                                      userReviewController!.text,
                                       imageFile!.path,
                                     );
                                     Get.to(
@@ -440,7 +441,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.stepSixTimeStamp,
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                    .format(widget.stepSixTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
                             ],
@@ -559,7 +561,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.stepFiveTimeStamp,
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                    .format(widget.stepFiveTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
                             ],
@@ -732,7 +735,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.stepFourTimeStamp,
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                    .format(widget.stepFourTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
                             ],
@@ -859,7 +863,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.stepThreeTimeStamp,
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                    .format(widget.stepThreeTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
                             ],
@@ -961,7 +966,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.stepThreeTimeStamp,
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                    .format(widget.stepThreeTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
                             ],
@@ -1000,11 +1006,12 @@ class _StepSixState extends State<StepSix> {
                                   height: 30,
                                   clipBehavior: Clip.antiAlias,
                                   decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white),
-                                  // child: Image.network(
-                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  // ),
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Image.network(
+                                    widget.userProfile,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1059,7 +1066,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.stepTwoTimeStamp,
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                    .format(widget.stepTwoTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
                               // GestureDetector(
@@ -1176,7 +1184,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('yyyy-MM-dd KK:mm:ss')
+                                DateFormat('dd/MM/yyyy KK:mm:ss')
                                     .format(widget.timeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -1234,11 +1242,12 @@ class _StepSixState extends State<StepSix> {
                                   height: 30,
                                   clipBehavior: Clip.antiAlias,
                                   decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white),
-                                  // child: Image.network(
-                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  // ),
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Image.network(
+                                    widget.userProfile,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
