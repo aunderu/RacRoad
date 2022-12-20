@@ -32,8 +32,8 @@ class SOSFormPage extends StatefulWidget {
 
 class _SOSFormPageState extends State<SOSFormPage> {
   String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
-  TextEditingController? userNameController;
-  TextEditingController? userPhoneNumContoller;
+  // TextEditingController? userNameController;
+  // TextEditingController? userPhoneNumContoller;
   TextEditingController? userProblemController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -48,7 +48,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
   void initState() {
     super.initState();
     // userNameController = TextEditingController();
-    userPhoneNumContoller = TextEditingController();
+    // userPhoneNumContoller = TextEditingController();
     userProblemController = TextEditingController();
   }
 
@@ -196,14 +196,14 @@ class _SOSFormPageState extends State<SOSFormPage> {
     Navigator.pop(context);
   }
 
-  Future<bool> sosSend(String filePath) async {
+  Future<bool> sosSend(String filePath, String userProblem) async {
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
     var requset = http.MultipartRequest(
         "POST", Uri.parse("https://api.racroad.com/api/event/sos"))
       ..fields.addAll({
         "user_id": widget.getToken,
         "problem": widget.sosTitle,
-        "problem_detail": userProblemController!.text,
+        "problem_detail": userProblem,
         "location": _address,
         "latitude": _latitude,
         "longitude": _longitude,
@@ -273,119 +273,121 @@ class _SOSFormPageState extends State<SOSFormPage> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 0, 0, 0),
-                                child: Text(
-                                  'ข้อมูลติดต่อ',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 16, 16, 0),
-                                child: TextFormField(
-                                  controller: userNameController,
-                                  obscureText: false,
-                                  initialValue:
-                                      snapshot.data!.data.myProfile.name,
-                                  decoration: InputDecoration(
-                                    labelText: 'ชื่อ',
-                                    labelStyle: GoogleFonts.sarabun(
-                                      color: darkGray,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: lightGrey,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: mainGreen,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            20, 32, 20, 12),
-                                  ),
-                                  style: GoogleFonts.sarabun(),
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 10, 16, 0),
-                                child: TextFormField(
-                                  controller: userPhoneNumContoller,
-                                  obscureText: false,
-                                  initialValue:
-                                      snapshot.data!.data.myProfile.tel,
-                                  decoration: InputDecoration(
-                                    labelText: 'เบอร์โทร',
-                                    labelStyle: GoogleFonts.sarabun(
-                                      color: darkGray,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: lightGrey,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: mainGreen,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            20, 32, 20, 12),
-                                  ),
-                                  style: GoogleFonts.sarabun(),
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  keyboardType: TextInputType.phone,
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsetsDirectional.fromSTEB(
+                              //       16, 0, 0, 0),
+                              //   child: Text(
+                              //     'ข้อมูลติดต่อ',
+                              //     style: GoogleFonts.sarabun(
+                              //       fontWeight: FontWeight.bold,
+                              //     ),
+                              //   ),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsetsDirectional.fromSTEB(
+                              //       16, 16, 16, 0),
+                              //   child: TextFormField(
+                              //     controller: userNameController,
+                              //     initialValue:
+                              //         snapshot.data!.data.myProfile.name,
+                              //     obscureText: false,
+                              //     decoration: InputDecoration(
+                              //       labelText: 'ชื่อ',
+                              //       labelStyle: GoogleFonts.sarabun(
+                              //         color: darkGray,
+                              //         fontWeight: FontWeight.normal,
+                              //       ),
+                              //       enabledBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: lightGrey,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       focusedBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: mainGreen,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       errorBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: Color(0x00000000),
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       focusedErrorBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: Color(0x00000000),
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       contentPadding:
+                              //           const EdgeInsetsDirectional.fromSTEB(
+                              //               20, 32, 20, 12),
+                              //     ),
+                              //     style: GoogleFonts.sarabun(),
+                              //     textAlign: TextAlign.start,
+                              //     maxLines: 1,
+                              //   ),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsetsDirectional.fromSTEB(
+                              //       16, 10, 16, 0),
+                              //   child: TextFormField(
+                              //     controller: userPhoneNumContoller,
+                              //     initialValue:
+                              //         snapshot.data!.data.myProfile.tel,
+                              //     obscureText: false,
+                              //     // initialValue:
+                              //     //     snapshot.data?.data.myProfile.tel,
+                              //     decoration: InputDecoration(
+                              //       labelText: 'เบอร์โทร',
+                              //       labelStyle: GoogleFonts.sarabun(
+                              //         color: darkGray,
+                              //         fontWeight: FontWeight.normal,
+                              //       ),
+                              //       enabledBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: lightGrey,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       focusedBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: mainGreen,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       errorBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: Color(0x00000000),
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       focusedErrorBorder: OutlineInputBorder(
+                              //         borderSide: const BorderSide(
+                              //           color: Color(0x00000000),
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(8),
+                              //       ),
+                              //       contentPadding:
+                              //           const EdgeInsetsDirectional.fromSTEB(
+                              //               20, 32, 20, 12),
+                              //     ),
+                              //     style: GoogleFonts.sarabun(),
+                              //     textAlign: TextAlign.start,
+                              //     maxLines: 1,
+                              //     keyboardType: TextInputType.phone,
+                              //   ),
+                              // ),
                               const Divider(
                                 height: 50,
                                 thickness: 1,
@@ -628,6 +630,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                       if (_address != "" && imageFile != null) {
                                         sosSend(
                                           imageFile!.path,
+                                          userProblemController!.text,
                                         );
                                         Get.to(
                                           () => SOSFormSended(

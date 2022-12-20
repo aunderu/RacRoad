@@ -235,7 +235,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.notifications_outlined,
                     size: 40,
                   ),
-                  true
+                  false
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -258,7 +258,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.notifications,
                     size: 40,
                   ),
-                  true
+                  false
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -284,7 +284,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.person_outline,
                     size: 40,
                   ),
-                  _isNoti
+                  false
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -307,7 +307,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.person,
                     size: 40,
                   ),
-                  _isNoti
+                  false
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
