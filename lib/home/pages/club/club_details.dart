@@ -13,7 +13,7 @@ import 'package:rac_road/services/remote_service.dart';
 
 import '../../../colors.dart';
 import '../../../loading/skelton.dart';
-import '../account_setting.dart';
+import '../profile/account_setting.dart';
 
 class ClubDetailsPage extends StatefulWidget {
   final String getToken;

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/loading/skelton.dart';
 import 'package:rac_road/services/remote_service.dart';
 
-import 'pages/account_setting.dart';
+import 'pages/profile/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
 import 'pages/notifications.dart';

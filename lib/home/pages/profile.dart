@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/account_setting.dart';
+import 'package:rac_road/home/pages/profile/account_setting.dart';
 import 'package:rac_road/home/pages/profile/my_car_widget.dart';
 import 'package:rac_road/home/pages/profile/my_club_widget.dart';
 import 'package:rac_road/home/pages/profile/my_job_widget.dart';
@@ -96,49 +96,24 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (result != null) {
                       return Column(
                         children: [
-                          Stack(
-                            alignment: const AlignmentDirectional(0.2, 1),
-                            children: [
-                              Align(
-                                alignment: const AlignmentDirectional(0, 0),
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: CachedNetworkImage(
-                                    imageUrl: result.data.myProfile.avatar,
-                                    placeholder: (context, url) =>
-                                        Image.asset('assets/imgs/profile.png'),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                  // child: Container(color: Colors.grey),
-                                ),
+                          Align(
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
                               ),
-                              Container(
-                                width: 35,
-                                height: 35,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      color: Color(0x33000000),
-                                      offset: Offset(0, 2),
-                                    )
-                                  ],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.photo_library,
-                                  color: Colors.black,
-                                  size: 20,
-                                ),
+                              child: CachedNetworkImage(
+                                imageUrl: result.data.myProfile.avatar,
+                                placeholder: (context, url) =>
+                                    Image.asset('assets/imgs/profile.png'),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
-                            ],
+                              // child: Container(color: Colors.grey),
+                            ),
                           ),
                           SizedBox(height: size.height * 0.02),
                           Text(
