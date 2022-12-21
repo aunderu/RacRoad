@@ -130,14 +130,10 @@ class _StepSevenState extends State<StepSeven> {
                               ),
                             ),
                           ),
-                          Text(
-                            'ให้ดาวช่าง : ${widget.rate}',
-                            style: GoogleFonts.sarabun(),
-                          ),
                           Row(
                             children: [
                               Text(
-                                'รีวิว : ${widget.review}',
+                                'ให้ดาวช่าง : ${widget.rate}',
                                 style: GoogleFonts.sarabun(),
                               ),
                               const SizedBox(width: 1),
@@ -146,6 +142,10 @@ class _StepSevenState extends State<StepSeven> {
                                 size: 15,
                               )
                             ],
+                          ),
+                          Text(
+                            'รีวิว : ${widget.review}',
+                            style: GoogleFonts.sarabun(),
                           ),
                         ],
                       ),
@@ -791,15 +791,15 @@ class _StepSevenState extends State<StepSeven> {
                               clipBehavior: Clip.antiAlias,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   8, 0, 0, 0),
                               child: Text(
-                                'สุธาวี สะอะ',
+                                widget.userName,
                                 style: GoogleFonts.sarabun(),
                               ),
                             ),
@@ -1022,9 +1022,9 @@ class _StepSevenState extends State<StepSeven> {
                               clipBehavior: Clip.antiAlias,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              // child: Image.network(
-                              //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                              // ),
+                              child: Image.network(
+                                widget.userProfile,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

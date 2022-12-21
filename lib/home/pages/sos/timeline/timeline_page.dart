@@ -49,7 +49,6 @@ class _TimeLinePageState extends State<TimeLinePage> {
           builder: (context, snapshot) {
             var result = snapshot.data;
             if (result != null) {
-              print(result.data.sos.sosStatus);
               switch (result.data.sos.sosStatus) {
                 case "step1":
                   return StepOne(

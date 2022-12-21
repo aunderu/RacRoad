@@ -104,8 +104,8 @@ class _StepSixState extends State<StepSix> {
 
   Future<bool> sosPayAndReview(
     String sosId,
-    String userReview,
     String userRating,
+    String userReview,
     String imgPath,
   ) async {
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
@@ -124,6 +124,7 @@ class _StepSixState extends State<StepSix> {
     } else {
       throw Exception(jsonDecode(response.toString()));
     }
+
   }
 
   @override
@@ -338,6 +339,7 @@ class _StepSixState extends State<StepSix> {
                                       userReviewController!.text,
                                       imageFile!.path,
                                     );
+
                                     Get.to(
                                       () => ScreensPage(
                                         getToken: widget.getToken,
@@ -1017,7 +1019,7 @@ class _StepSixState extends State<StepSix> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       8, 0, 0, 0),
                                   child: Text(
-                                    'สุธาวี สะอะ',
+                                    widget.userName,
                                     style: GoogleFonts.sarabun(),
                                   ),
                                 ),

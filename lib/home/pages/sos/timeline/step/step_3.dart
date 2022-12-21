@@ -233,7 +233,7 @@ class _StepThreeState extends State<StepThree> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   8, 0, 0, 0),
                               child: Text(
-                                'สุธาวี สะอะ',
+                                widget.userName,
                                 style: GoogleFonts.sarabun(),
                               ),
                             ),
