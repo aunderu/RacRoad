@@ -322,9 +322,9 @@ class _TncStepTwoState extends State<TncStepTwo> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   widget.tncAvatar,
-                              // ),
+                              child: Image.network(
+                                widget.tncAvatar,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

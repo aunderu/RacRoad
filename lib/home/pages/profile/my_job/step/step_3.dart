@@ -159,12 +159,15 @@ class _TncStepThreeState extends State<TncStepThree> {
                             panEnabled: false,
                             minScale: 0.5,
                             maxScale: 2,
-                            child: CachedNetworkImage(
-                              imageUrl: widget.racroadSlip,
-                              height: 300,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.racroadSlip,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
                           ),
                         ),
@@ -467,9 +470,9 @@ class _TncStepThreeState extends State<TncStepThree> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   widget.tncAvatar,
-                              // ),
+                              child: Image.network(
+                                widget.tncAvatar,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(

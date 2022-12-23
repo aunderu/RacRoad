@@ -385,15 +385,15 @@ class _StepSixState extends State<StepSix> {
                                     shape: BoxShape.circle,
                                     color: Colors.white,
                                   ),
-                                  // child: Image.network(
-                                  //   'https://racroad.com/img/aun.8c5fc0f9.jpg',
-                                  // ),
+                                  child: Image.network(
+                                    widget.userProfile,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       8, 0, 0, 0),
                                   child: Text(
-                                    'สุธาวี สะอะ',
+                                    widget.userName,
                                     style: GoogleFonts.sarabun(),
                                   ),
                                 ),
@@ -478,11 +478,14 @@ class _StepSixState extends State<StepSix> {
                                     padding:
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0, 5, 0, 5),
-                                    child: CachedNetworkImage(
-                                      imageUrl: widget.qrCode.toString(),
-                                      width: 300,
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(
+                                        imageUrl: widget.qrCode.toString(),
+                                        width: 300,
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -614,13 +617,16 @@ class _StepSixState extends State<StepSix> {
                                           child: Padding(
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 5, 0, 5),
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  widget.imgBfwork.toString(),
-                                              height: 200,
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    widget.imgBfwork.toString(),
+                                                height: 200,
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -645,13 +651,16 @@ class _StepSixState extends State<StepSix> {
                                           child: Padding(
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 5, 0, 5),
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  widget.imgAfwork.toString(),
-                                              height: 200,
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    widget.imgAfwork.toString(),
+                                                height: 200,
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -1209,15 +1218,18 @@ class _StepSixState extends State<StepSix> {
                           ),
                           const SizedBox(height: 10),
                           Align(
-                            alignment: Alignment.topLeft,
+                            alignment: Alignment.topCenter,
                             child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0, 5, 0, 5),
-                              child: CachedNetworkImage(
-                                imageUrl: widget.imgIncident,
-                                height: 200,
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.imgIncident,
+                                  height: 200,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
                               ),
                             ),
                           ),

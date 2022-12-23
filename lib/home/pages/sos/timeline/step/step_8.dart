@@ -107,7 +107,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepEightTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepEightTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -227,7 +228,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepSevenTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepSevenTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -270,12 +272,15 @@ class _StepEightState extends State<StepEight> {
                             panEnabled: false,
                             minScale: 0.5,
                             maxScale: 2,
-                            child: CachedNetworkImage(
-                              imageUrl: widget.userSlip,
-                              height: 300,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.userSlip,
+                                height: 300,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
                           ),
                         ),
@@ -351,7 +356,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepSixTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepSixTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -385,11 +391,14 @@ class _StepEightState extends State<StepEight> {
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 5, 0, 5),
-                                child: CachedNetworkImage(
-                                  imageUrl: widget.qrCode.toString(),
-                                  width: 300,
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.qrCode.toString(),
+                                    width: 300,
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
                                 ),
                               ),
                             ),
@@ -468,7 +477,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepFiveTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepFiveTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -519,11 +529,17 @@ class _StepEightState extends State<StepEight> {
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(0, 5, 0, 5),
-                                        child: CachedNetworkImage(
-                                          imageUrl: widget.imgBfwork.toString(),
-                                          height: 200,
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                widget.imgBfwork.toString(),
+                                            height: 200,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -548,11 +564,17 @@ class _StepEightState extends State<StepEight> {
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(0, 5, 0, 5),
-                                        child: CachedNetworkImage(
-                                          imageUrl: widget.imgAfwork.toString(),
-                                          height: 200,
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                widget.imgAfwork.toString(),
+                                            height: 200,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -636,7 +658,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepFourTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -762,7 +785,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                           DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepThreeTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -863,7 +887,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepThreeTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -959,7 +984,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepTwoTimeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                           // GestureDetector(
@@ -1075,7 +1101,8 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.timeStamp),
+                            DateFormat('d MMMM y เวลา KK:mm น.')
+                                .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -1108,15 +1135,18 @@ class _StepEightState extends State<StepEight> {
                       ),
                       const SizedBox(height: 10),
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.topCenter,
                         child: Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imgIncident,
-                            height: 200,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              imageUrl: widget.imgIncident,
+                              height: 200,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
                           ),
                         ),
                       ),

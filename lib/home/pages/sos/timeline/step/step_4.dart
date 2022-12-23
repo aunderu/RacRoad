@@ -709,15 +709,18 @@ class _StepFourState extends State<StepFour> {
                       ),
                       const SizedBox(height: 10),
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.topCenter,
                         child: Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imgIncident,
-                            height: 200,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              imageUrl: widget.imgIncident,
+                              height: 200,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
                           ),
                         ),
                       ),

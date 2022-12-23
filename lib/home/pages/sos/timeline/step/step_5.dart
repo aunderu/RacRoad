@@ -595,16 +595,6 @@ class _StepFiveState extends State<StepFive> {
                                 .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     Get.to(() => Pricing(getToken: widget.getToken));
-                          //   },
-                          //   child: const Icon(
-                          //     Icons.arrow_forward_ios,
-                          //     color: darkGray,
-                          //     size: 16,
-                          //   ),
-                          // ),
                         ],
                       ),
                       const Divider(
@@ -742,7 +732,7 @@ class _StepFiveState extends State<StepFive> {
                       ),
                       const SizedBox(height: 10),
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.topCenter,
                         child: Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),

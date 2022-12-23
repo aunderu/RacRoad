@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rac_road/home/pages/profile/my_job/step/step_page.dart';
+import 'package:rac_road/home/screens.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:http/http.dart' as http;
 
@@ -345,9 +346,9 @@ class _TncStepOneState extends State<TncStepOne> {
                                                   imgFile!.path,
                                                 );
                                                 Get.to(
-                                                  () => StepPage(
+                                                  () => ScreensPage(
                                                     getToken: widget.getToken,
-                                                    sosId: widget.sosId,
+                                                    pageIndex: 4,
                                                   ),
                                                 );
                                               } else {
@@ -529,10 +530,10 @@ class _TncStepOneState extends State<TncStepOne> {
                                                       imgFile!.path,
                                                     );
                                                     Get.to(
-                                                      () => StepPage(
+                                                      () => ScreensPage(
                                                         getToken:
                                                             widget.getToken,
-                                                        sosId: widget.sosId,
+                                                        pageIndex: 4,
                                                       ),
                                                     );
                                                   } else {
@@ -581,9 +582,9 @@ class _TncStepOneState extends State<TncStepOne> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              // child: Image.network(
-                              //   widget.tncAvatar,
-                              // ),
+                              child: Image.network(
+                                widget.tncAvatar,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
