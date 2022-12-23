@@ -8,17 +8,18 @@ import 'package:rac_road/home/pages/sos/timeline/step/step_5.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_6.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_7.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_8.dart';
+import 'package:rac_road/home/pages/sos/timeline/step/user_reject.dart';
 import 'package:rac_road/loading/timeline.dart';
 import 'package:rac_road/models/sos_details_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 
 class TimeLinePage extends StatefulWidget {
   final String getToken;
-  final String sos_id;
+  final String sosId;
   const TimeLinePage({
     super.key,
     required this.getToken,
-    required this.sos_id,
+    required this.sosId,
   });
 
   @override
@@ -46,7 +47,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<SosDetails?>(
-          future: RemoteService().getSosDetails(widget.sos_id),
+          future: RemoteService().getSosDetails(widget.sosId),
           builder: (context, snapshot) {
             var result = snapshot.data;
             if (result != null) {
@@ -214,6 +215,52 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     stepSixTimeStamp: result.data.sos.tuStep6!,
                     stepSevenTimeStamp: result.data.sos.tuStep7!,
                     stepEightTimeStamp: result.data.sos.tuStep8!,
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                    tncName: result.data.sos.tncName!,
+                    tncStatus: result.data.sos.tncStatus!,
+                    tncProfile: result.data.sos.tncAvatar,
+                    imgBfwork: result.data.imgBfwork![0].image,
+                    imgAfwork: result.data.imgAfwork![0].image,
+                    qrCode: result.data.qrCode![0].image,
+                    rate: result.data.sos.rate!,
+                    review: result.data.sos.review!,
+                    userSlip: result.data.userSlip![0].image,
+                  );
+                case "user_reject_deal":
+                  return UserReject(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    userTel: result.data.sos.userTel.toString(),
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
+                    repairPrice: result.data.sos.repairPrice.toString(),
+                    repairDetails: result.data.sos.repairDetail!,
+                  );
+                case "success":
+                  return StepEight(
+                    getToken: widget.getToken,
+                    timeStamp: result.data.sos.createdAt,
+                    userName: result.data.sos.userName,
+                    userTel: result.data.sos.userTel.toString(),
+                    problem: result.data.sos.problem,
+                    problemDetails: result.data.sos.problemDetail,
+                    location: result.data.sos.location,
+                    userProfile: result.data.sos.avatar,
+                    imgIncident: result.data.imgIncident![0].image,
+                    stepTwoTimeStamp: result.data.sos.tuStep2!,
+                    stepThreeTimeStamp: result.data.sos.tuStep3!,
+                    stepFourTimeStamp: result.data.sos.tuStep4!,
+                    stepFiveTimeStamp: result.data.sos.tuStep5!,
+                    stepSixTimeStamp: result.data.sos.tuStep6!,
+                    stepSevenTimeStamp: result.data.sos.tuStep7!,
+                    stepEightTimeStamp: result.data.sos.tuSc!,
                     repairPrice: result.data.sos.repairPrice.toString(),
                     repairDetails: result.data.sos.repairDetail!,
                     tncName: result.data.sos.tncName!,

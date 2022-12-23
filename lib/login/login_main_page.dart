@@ -122,7 +122,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
         if (login.status == true) {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           preferences.setString("token", login.data.id);
-          Get.to(() => CheckLogin());
+          Get.to(() => const CheckLogin());
         }
       },
       label: Align(

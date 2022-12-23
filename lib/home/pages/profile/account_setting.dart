@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/profile/edit_profile.dart';
-import 'package:rac_road/loading/account_setting.dart';
+import 'package:rac_road/home/pages/profile/my_sos_history.dart';
 import 'package:rac_road/models/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -206,6 +206,68 @@ class _AccountSettingState extends State<AccountSetting> {
                                             12, 0, 0, 0),
                                     child: Text(
                                       'แก้ไข ข้อมูลโปรไฟล์ของฉัน',
+                                      style: GoogleFonts.sarabun(),
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.9, 0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: darkGray,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(
+                              () => MySosHistory(
+                                getToken: widget.getToken,
+                              ),
+                            );
+                          },
+                          child: Ink(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 5,
+                                  color: Color(0x3416202A),
+                                  offset: Offset(0, 2),
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(12),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  8, 8, 8, 8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Icon(
+                                    Icons.sos_outlined,
+                                    color: darkGray,
+                                    size: 24,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 0, 0),
+                                    child: Text(
+                                      'ประวัติการแจ้งเหตุฉุกเฉินของฉัน',
                                       style: GoogleFonts.sarabun(),
                                     ),
                                   ),

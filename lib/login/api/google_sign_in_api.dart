@@ -12,7 +12,7 @@ class GoogleSignInApi {
       try {
         await _googleSignIn.signIn();
       } catch (error) {
-        print(error);
+        rethrow;
       }
       return _googleSignIn;
     }

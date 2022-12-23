@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:rac_road/models/all_my_sos_models.dart';
 import 'package:rac_road/models/all_my_tnc_sos_models.dart';
 import 'package:rac_road/models/club_details.dart';
 import 'package:rac_road/models/my_current_sos_models.dart';
@@ -22,6 +23,7 @@ MyCurrentSos? resultMyCurrentSOS;
 SosDetails? resultSosDetails;
 CurrentTncSos? resultCurrentTncSos;
 AllMyTncSos? resultAllMyTncSos;
+AllMySos? resultAllMySos;
 
 const url = "https://api.racroad.com/api";
 const testurl = "https://api-racroad.chabafarm.com/api";
@@ -179,8 +181,7 @@ class RemoteService {
   // ################################ AllMyTncSos #################################
   Future<AllMyTncSos?> getAllMyTncSos(String tncId) async {
     try {
-      final response =
-          await http.get(Uri.parse("$url/my/tnc/sos/$tncId"));
+      final response = await http.get(Uri.parse("$url/my/tnc/sos/$tncId"));
       if (response.statusCode == 200) {
         final itemAllMyTncSos = json.decode(response.body);
         resultAllMyTncSos = AllMyTncSos.fromJson(itemAllMyTncSos);
@@ -193,5 +194,24 @@ class RemoteService {
       }
     }
     return resultAllMyTncSos;
+  }
+
+  // ################################ AllMySos #################################
+  Future<AllMySos?> getAllMySos(String token) async {
+    try {
+      final response =
+          await http.get(Uri.parse("$url/my/user/sos/$token"));
+      if (response.statusCode == 200) {
+        final itemAllMySos = json.decode(response.body);
+        resultAllMySos = AllMySos.fromJson(itemAllMySos);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultAllMySos;
   }
 }

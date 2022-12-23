@@ -41,8 +41,8 @@ class _MyJobWidgetState extends State<MyJobWidget> {
 
   getData(String token) async {
     myJob = await RemoteService().getMyJob(token);
-    myTncSos =
-        await RemoteService().getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
+    myTncSos = await RemoteService()
+        .getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
     if (myJob != null && myTncSos != null) {
       final bool? haveMyJobData = myJob?.data.myTechnician.isNotEmpty;
       if (haveMyJobData == true) {

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -341,7 +340,7 @@ class _StepSevenState extends State<StepSeven> {
               Container(
                 width: MediaQuery.of(context).size.width * 0.75,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 239, 185),
+                  color: const Color.fromARGB(255, 255, 239, 185),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: const [
                     BoxShadow(

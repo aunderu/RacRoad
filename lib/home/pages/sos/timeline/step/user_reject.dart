@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-class StepThree extends StatefulWidget {
+class UserReject extends StatefulWidget {
   final String getToken;
   final DateTime timeStamp;
   final String userName;
@@ -17,7 +17,7 @@ class StepThree extends StatefulWidget {
   final DateTime stepThreeTimeStamp;
   final String repairPrice;
   final String repairDetails;
-  const StepThree({
+  const UserReject({
     super.key,
     required this.getToken,
     required this.timeStamp,
@@ -35,119 +35,17 @@ class StepThree extends StatefulWidget {
   });
 
   @override
-  State<StepThree> createState() => _StepThreeState();
+  State<UserReject> createState() => _UserRejectState();
 }
 
-class _StepThreeState extends State<StepThree> {
+class _UserRejectState extends State<UserReject> {
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
         const SizedBox(height: 100),
-        // เรียบร้อย เรากำลังหาช่างให้คุณ
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 185, 195, 255),
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x352F44CA),
-                      spreadRadius: 3,
-                      blurRadius: 2,
-                      offset: Offset(-3, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.')
-                                .format(widget.stepThreeTimeStamp),
-                            style: GoogleFonts.sarabun(),
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                        color: Color(0x392E2E2E),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 0, 20, 0),
-                            child: Text(
-                              'เรียบร้อย! เรากำลังหาช่างในพื้นที่ใกล้เคียงให้คุณ',
-                              style: GoogleFonts.sarabun(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 30,
-                              height: 30,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Container(
-                                decoration:
-                                    const BoxDecoration(color: Colors.white),
-                                child: Image.asset(
-                                  'assets/imgs/oparator.png',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  8, 0, 0, 0),
-                              child: Text(
-                                'เจ้าหน้าที่ Racroad',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        //ผู้ยืนยันค่าบริการดังกล่าว
+        //ผู้ยืนยันค่าบริการ
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
           child: Row(
@@ -193,13 +91,13 @@ class _StepThreeState extends State<StepThree> {
                       ),
                       Column(
                         mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0, 0, 20, 0),
                             child: Text(
-                              'ฉันยืนยันค่าบริการดังกล่าว',
+                              'ฉันปฏิเสธค่าบริการดังกล่าว',
                               style: GoogleFonts.sarabun(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -208,7 +106,7 @@ class _StepThreeState extends State<StepThree> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       Padding(
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
@@ -284,16 +182,6 @@ class _StepThreeState extends State<StepThree> {
                                 .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     Get.to(() => Pricing(getToken: widget.getToken));
-                          //   },
-                          //   child: const Icon(
-                          //     Icons.arrow_forward_ios,
-                          //     color: darkGray,
-                          //     size: 16,
-                          //   ),
-                          // ),
                         ],
                       ),
                       const Divider(

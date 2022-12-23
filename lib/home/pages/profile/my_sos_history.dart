@@ -2,31 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/profile/my_job/tnc_sos_history_widget.dart';
-import 'package:rac_road/models/all_my_tnc_sos_models.dart';
+import 'package:rac_road/models/all_my_sos_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 
-class MyJobHistory extends StatefulWidget {
+import 'my_sos_history_widget.dart';
+
+class MySosHistory extends StatefulWidget {
   final String getToken;
-  final String tncId;
-  const MyJobHistory({
+  const MySosHistory({
     super.key,
     required this.getToken,
-    required this.tncId,
   });
 
   @override
-  State<MyJobHistory> createState() => _MyJobHistoryState();
+  State<MySosHistory> createState() => _MySosHistoryState();
 }
 
-class _MyJobHistoryState extends State<MyJobHistory> {
-  late Future<AllMyTncSos?> dataFuture;
+class _MySosHistoryState extends State<MySosHistory> {
+  late Future<AllMySos?> dataFuture;
 
   @override
   void initState() {
     super.initState();
 
-    dataFuture = RemoteService().getAllMyTncSos(widget.tncId);
+    dataFuture = RemoteService().getAllMySos(widget.getToken);
   }
 
   @override
@@ -49,7 +48,7 @@ class _MyJobHistoryState extends State<MyJobHistory> {
               ),
             ),
             Text(
-              'การทำงานของคุณที่ผ่านมา',
+              'การแจ้งเหตุฉุกเฉินของคุณที่ผ่านมา',
               style: GoogleFonts.sarabun(
                 color: Colors.black,
                 fontSize: 16,
@@ -105,7 +104,7 @@ class _MyJobHistoryState extends State<MyJobHistory> {
           ),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
-            child: FutureBuilder<AllMyTncSos?>(
+            child: FutureBuilder<AllMySos?>(
               future: dataFuture,
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
@@ -117,7 +116,7 @@ class _MyJobHistoryState extends State<MyJobHistory> {
                             scrollDirection: Axis.vertical,
                             reverse: true,
                             itemBuilder: (context, index) {
-                              return TncSosHistoryWidget(
+                              return MySosHistoryWidget(
                                 getToken: widget.getToken,
                                 sosId: snapshot.data!.data.sos![index].sosId,
                                 userAvatar:
@@ -152,7 +151,7 @@ class _MyJobHistoryState extends State<MyJobHistory> {
                         scrollDirection: Axis.vertical,
                         reverse: true,
                         itemBuilder: (context, index) {
-                          return TncSosHistoryWidget(
+                          return MySosHistoryWidget(
                             getToken: widget.getToken,
                             sosId: snapshot.data!.data.sos![index].sosId,
                             userAvatar: snapshot.data!.data.sos![index].avatar,

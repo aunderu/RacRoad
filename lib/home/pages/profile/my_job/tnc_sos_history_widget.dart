@@ -7,14 +7,14 @@ import 'package:rac_road/home/pages/profile/my_job/step/step_page.dart';
 
 import '../../../../colors.dart';
 
-class HistoryWidget extends StatelessWidget {
+class TncSosHistoryWidget extends StatelessWidget {
   final String getToken;
   final String sosId;
   final String userAvatar;
   final String userName;
   final String sosStatus;
   final DateTime timeStamp;
-  const HistoryWidget({
+  const TncSosHistoryWidget({
     super.key,
     required this.userAvatar,
     required this.userName,
@@ -50,7 +50,7 @@ class HistoryWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
                     child: Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       color: primaryBGColor,
@@ -59,7 +59,7 @@ class HistoryWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
+                        padding: const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: CachedNetworkImage(
@@ -76,7 +76,7 @@ class HistoryWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                      padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +95,7 @@ class HistoryWidget extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                     child: Text(
                       DateFormat('yMMMMd').format(timeStamp),
                       style: GoogleFonts.sarabun(),

@@ -206,7 +206,7 @@ class _JobWidgetState extends State<JobWidget> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("ลบหรือไม่?"),
+            title: const Text("ลบหรือไม่?"),
             content: const Text(
                 'ข้อมูลนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
             actions: <Widget>[

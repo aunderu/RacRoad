@@ -52,7 +52,7 @@ class _SOSPageState extends State<SOSPage> {
                                     onTap: () {
                                       Get.to(() => TimeLinePage(
                                             getToken: widget.token,
-                                            sos_id: result.data
+                                            sosId: result.data
                                                 .mySosInProgress[index].sosId,
                                           ));
                                     },

@@ -12,7 +12,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/sos/sos_form_sended.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../services/remote_service.dart';

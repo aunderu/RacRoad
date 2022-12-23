@@ -541,7 +541,7 @@ class _StepSixState extends State<StepSix> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 239, 185),
+                      color: const Color.fromARGB(255, 255, 239, 185),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: const [
                         BoxShadow(

@@ -122,7 +122,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           placeholder: (context, url) =>
                               Image.asset('assets/imgs/profile.png'),
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
                         // child: Container(color: Colors.grey),
                       ),
