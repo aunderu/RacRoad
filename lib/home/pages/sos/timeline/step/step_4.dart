@@ -90,7 +90,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -230,7 +230,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -357,7 +357,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -459,7 +459,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -558,7 +558,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -675,7 +675,7 @@ class _StepFourState extends State<StepFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),

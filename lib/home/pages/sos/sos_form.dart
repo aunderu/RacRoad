@@ -94,14 +94,6 @@ class _SOSFormPageState extends State<SOSFormPage> {
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<void> _openMap(String _latitude, String _longitude) async {
-    String googleURL =
-        'https://www.google.co.th/maps/search/?api=1&query=$_latitude,$_longitude';
-    await canLaunchUrlString(googleURL)
-        ? await launchUrlString(googleURL)
-        : throw 'Could not launch $googleURL';
-  }
-
   void showImageDialog() {
     showDialog(
       context: context,

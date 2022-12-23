@@ -1,10 +1,14 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/home/pages/profile/apply_for_technician/tech_app_form.dart';
+import 'package:rac_road/home/pages/profile/my_job/step/step_page.dart';
 import 'package:rac_road/models/my_job_models.dart';
+import 'package:rac_road/models/current_tnc_sos_models.dart';
 
 import '../../../services/remote_service.dart';
 import 'my_job/job_widget.dart';
@@ -22,6 +26,7 @@ class MyJobWidget extends StatefulWidget {
 
 class _MyJobWidgetState extends State<MyJobWidget> {
   MyJob? myJob;
+  CurrentTncSos? myTncSos;
 
   bool haveJob = false;
   bool isLoaded = false;
@@ -31,14 +36,16 @@ class _MyJobWidgetState extends State<MyJobWidget> {
     super.initState();
 
     // ดึงข้อมูล
-    getMyJobData(widget.getToken);
+    getData(widget.getToken);
   }
 
-  getMyJobData(String token) async {
+  getData(String token) async {
     myJob = await RemoteService().getMyJob(token);
-    if (myJob != null) {
-      final bool? haveData = myJob?.data.myTechnician.isNotEmpty;
-      if (haveData == true) {
+    myTncSos =
+        await RemoteService().getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
+    if (myJob != null && myTncSos != null) {
+      final bool? haveMyJobData = myJob?.data.myTechnician.isNotEmpty;
+      if (haveMyJobData == true) {
         if (mounted) {
           setState(() {
             haveJob = true;
@@ -95,44 +102,101 @@ class _MyJobWidgetState extends State<MyJobWidget> {
           ],
         ),
       );
-    } else {
-      return Column(
-        children: [
-          FutureBuilder(
-            future: RemoteService().getMyJob(widget.getToken),
-            builder: (context, snapshot) {
-              var result = snapshot.data;
-              if (result != null) {
-                List<MyTechnician> dataMyJob = result.data.myTechnician;
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: dataMyJob.length,
-                  primary: false,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return JobWidget(
-                      getToken: widget.getToken,
-                      jobId: dataMyJob[index].tncId,
-                      clubProfile: "assets/imgs/mechanic.png",
-                      tncName: dataMyJob[index].tncName,
-                      jobZone: dataMyJob[index].serviceZone,
-                      status: dataMyJob[index].status,
+    }
+    if (myTncSos?.count == 1) {
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => StepPage(
+                        getToken: widget.getToken,
+                        sosId: myTncSos!.data.sos![0].sosId,
+                      ),
                     );
                   },
-                );
-              }
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 2.3,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
-                    strokeWidth: 8,
+                  child: Ink(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: whiteGrey,
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              30, 16, 30, 16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                'ติดตามงานของคุณ',
+                                style: GoogleFonts.sarabun(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              AutoSizeText(
+                                'ดูเหมือนคุณมีงานที่ต้องทำให้เสร็จ',
+                                style: GoogleFonts.sarabun(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Align(
+                          alignment: AlignmentDirectional(1, 0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                            child: Icon(
+                              Icons.feedback,
+                              color: Color.fromARGB(255, 255, 103, 103),
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            JobWidget(
+              getToken: widget.getToken,
+              jobId: myJob!.data.myTechnician[0].tncId,
+              clubProfile: "assets/imgs/mechanic.png",
+              tncId: myJob!.data.myTechnician[0].tncId,
+              tncName: myJob!.data.myTechnician[0].tncName,
+              jobZone: myJob!.data.myTechnician[0].serviceZone,
+              status: myJob!.data.myTechnician[0].status,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: JobWidget(
+          getToken: widget.getToken,
+          jobId: myJob!.data.myTechnician[0].tncId,
+          clubProfile: "assets/imgs/mechanic.png",
+          tncId: myJob!.data.myTechnician[0].tncId,
+          tncName: myJob!.data.myTechnician[0].tncName,
+          jobZone: myJob!.data.myTechnician[0].serviceZone,
+          status: myJob!.data.myTechnician[0].status,
+        ),
       );
     }
   }

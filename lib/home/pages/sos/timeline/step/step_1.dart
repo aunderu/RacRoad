@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:rac_road/colors.dart';
 
 class StepOne extends StatefulWidget {
   final String getToken;
@@ -72,7 +71,7 @@ class _StepOneState extends State<StepOne> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),

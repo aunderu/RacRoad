@@ -8,6 +8,7 @@ import 'package:rac_road/home/pages/sos/timeline/step/step_5.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_6.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_7.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_8.dart';
+import 'package:rac_road/loading/timeline.dart';
 import 'package:rac_road/models/sos_details_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 
@@ -226,10 +227,10 @@ class _TimeLinePageState extends State<TimeLinePage> {
                     userSlip: result.data.userSlip![0].image,
                   );
                 default:
-                  const Text('test');
+                  const LoadingTimeLine();
               }
             }
-            return const SizedBox();
+            return const LoadingTimeLine();
           },
         ),
       ),

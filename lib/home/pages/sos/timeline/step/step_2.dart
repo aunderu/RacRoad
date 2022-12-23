@@ -241,7 +241,7 @@ class _StepTwoState extends State<StepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -358,7 +358,7 @@ class _StepTwoState extends State<StepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss')
+                            DateFormat('d MMMM y เวลา KK:mm น.')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),

@@ -124,7 +124,6 @@ class _StepSixState extends State<StepSix> {
     } else {
       throw Exception(jsonDecode(response.toString()));
     }
-
   }
 
   @override
@@ -443,7 +442,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.stepSixTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -563,7 +562,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.stepFiveTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -737,7 +736,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.stepFourTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -865,7 +864,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.stepThreeTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -968,7 +967,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.stepThreeTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -1068,20 +1067,10 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.stepTwoTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     Get.to(() => Pricing(getToken: widget.getToken));
-                              //   },
-                              //   child: const Icon(
-                              //     Icons.arrow_forward_ios,
-                              //     color: darkGray,
-                              //     size: 16,
-                              //   ),
-                              // ),
                             ],
                           ),
                           const Divider(
@@ -1186,7 +1175,7 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('dd/MM/yyyy KK:mm:ss')
+                                DateFormat('d MMMM y เวลา KK:mm น.')
                                     .format(widget.timeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),

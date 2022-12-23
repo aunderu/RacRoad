@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/loading/skelton.dart';
 import 'package:rac_road/services/remote_service.dart';
 
+import '../models/my_job_models.dart';
+import '../models/current_tnc_sos_models.dart';
 import 'pages/profile/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
@@ -28,8 +30,10 @@ class ScreensPage extends StatefulWidget {
 
 class _ScreensPageState extends State<ScreensPage> {
   TextEditingController? searchController;
+  MyJob? myJob;
+  CurrentTncSos? myTncSos;
   // int index = 0;
-  final bool _isNoti = true;
+  bool _isProfileNoti = true;
 
   late final _screens = <Widget>[
     HomePage(token: widget.getToken),
@@ -45,6 +49,21 @@ class _ScreensPageState extends State<ScreensPage> {
   void initState() {
     super.initState();
     searchController = TextEditingController();
+  }
+
+  getData(String token) async {
+    myJob = await RemoteService().getMyJob(token);
+    myTncSos =
+        await RemoteService().getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
+      if (myTncSos?.count == 1) {
+        if (mounted) {
+          setState(() {
+            _isProfileNoti = true;
+          });
+        }
+      } else {
+        _isProfileNoti = false;
+      }
   }
 
   @override
@@ -284,7 +303,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.person_outline,
                     size: 40,
                   ),
-                  false
+                  _isProfileNoti
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -307,7 +326,7 @@ class _ScreensPageState extends State<ScreensPage> {
                     Icons.person,
                     size: 40,
                   ),
-                  false
+                  _isProfileNoti
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,

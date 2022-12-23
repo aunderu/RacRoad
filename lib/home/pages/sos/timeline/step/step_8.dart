@@ -107,7 +107,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepEightTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepEightTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -227,7 +227,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepSevenTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepSevenTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -351,7 +351,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepSixTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepSixTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -468,7 +468,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepFiveTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepFiveTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -636,7 +636,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepFourTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepFourTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -762,7 +762,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepThreeTimeStamp)} น.',
+                           DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -863,7 +863,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepThreeTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepThreeTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -959,7 +959,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepTwoTimeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                           // GestureDetector(
@@ -1075,7 +1075,7 @@ class _StepEightState extends State<StepEight> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.timeStamp)} น.',
+                            DateFormat('d MMMM y เวลา KK:mm น.').format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
