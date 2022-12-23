@@ -33,7 +33,7 @@ class _ScreensPageState extends State<ScreensPage> {
   MyJob? myJob;
   CurrentTncSos? myTncSos;
   // int index = 0;
-  bool _isProfileNoti = true;
+  bool _isProfileNoti = false;
 
   late final _screens = <Widget>[
     HomePage(token: widget.getToken),
@@ -49,21 +49,25 @@ class _ScreensPageState extends State<ScreensPage> {
   void initState() {
     super.initState();
     searchController = TextEditingController();
+
+    getData(widget.getToken);
   }
 
   getData(String token) async {
     myJob = await RemoteService().getMyJob(token);
-    myTncSos =
-        await RemoteService().getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
-      if (myTncSos?.count == 1) {
-        if (mounted) {
-          setState(() {
-            _isProfileNoti = true;
-          });
-        }
-      } else {
-        _isProfileNoti = false;
+    myTncSos = await RemoteService()
+        .getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
+    if (myTncSos?.count == 1) {
+      if (mounted) {
+        setState(() {
+          _isProfileNoti = true;
+        });
       }
+    } else {
+      setState(() {
+        _isProfileNoti = false;
+      });
+    }
   }
 
   @override
