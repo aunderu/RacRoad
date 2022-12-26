@@ -102,7 +102,7 @@ class MySosHistoryWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                     child: Text(
-                      DateFormat('yMMMMd').format(timeStamp),
+                      DateFormat('d MMMM y').format(timeStamp),
                       style: GoogleFonts.sarabun(),
                     ),
                   ),
