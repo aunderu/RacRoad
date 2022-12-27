@@ -14,7 +14,7 @@ class _LoadingTimeLineState extends State<LoadingTimeLine> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        const SizedBox(height: 100),
+        const SizedBox(height: 30),
         //ผู้ยืนยันค่าบริการ
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),

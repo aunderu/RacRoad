@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -135,7 +136,7 @@ class _StepSixState extends State<StepSix> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            const SizedBox(height: 100),
+            const SizedBox(height: 30),
             //ผู้ใช้โอนเงินค่าบริการ
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
@@ -339,12 +340,16 @@ class _StepSixState extends State<StepSix> {
                                       imageFile!.path,
                                     );
 
-                                    Get.to(
-                                      () => ScreensPage(
-                                        getToken: widget.getToken,
-                                        pageIndex: 2,
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ScreensPage(
+                                          getToken: widget.getToken,
+                                          pageIndex: 2,
+                                        ),
                                       ),
                                     );
+
                                     Fluttertoast.showToast(
                                       msg:
                                           "ส่งสลิปโอนเงินค่าบริการและรีวิว เรียบร้อย!",
@@ -442,7 +447,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.stepSixTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.stepSixTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -565,7 +571,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.stepFiveTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.stepFiveTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -618,7 +625,8 @@ class _StepSixState extends State<StepSix> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 5, 0, 5),
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                               child: CachedNetworkImage(
                                                 imageUrl:
                                                     widget.imgBfwork.toString(),
@@ -652,7 +660,8 @@ class _StepSixState extends State<StepSix> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 5, 0, 5),
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                               child: CachedNetworkImage(
                                                 imageUrl:
                                                     widget.imgAfwork.toString(),
@@ -745,7 +754,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.stepFourTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.stepFourTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -761,7 +771,7 @@ class _StepSixState extends State<StepSix> {
                             children: [
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 20, 0),
+                                    0, 0, 0, 10),
                                 child: Text(
                                   'ช่างที่เลือก',
                                   style: GoogleFonts.sarabun(
@@ -770,30 +780,36 @@ class _StepSixState extends State<StepSix> {
                                   ),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.tncName,
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white),
-                                      child: Image.network(
-                                        widget.tncProfile ??
-                                            'https://racroad.com/img/admin.71db083f.jpg',
+                              Card(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                              color: Colors.white),
+                                          child: Image.network(
+                                            widget.tncProfile ??
+                                                'https://racroad.com/img/admin.71db083f.jpg',
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        widget.tncName,
+                                        style: GoogleFonts.sarabun(),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ],
                           ),
@@ -873,7 +889,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.stepThreeTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.stepThreeTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -976,7 +993,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.stepThreeTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.stepThreeTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -1076,7 +1094,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.stepTwoTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.stepTwoTimeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -1094,16 +1113,52 @@ class _StepSixState extends State<StepSix> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 0, 20, 0),
                                 child: Text(
-                                  'เสนอค่าบริการซ่อม',
+                                  'เสนอบริการค่าซ่อม',
                                   style: GoogleFonts.sarabun(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
                                 ),
                               ),
-                              Text(
-                                'ราคาการซ่อม : ${widget.repairPrice}\nรายละเอียดเพิ่มเติม : ${widget.repairDetails}',
-                                style: GoogleFonts.sarabun(),
+                              const SizedBox(height: 5),
+                              Card(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'รายละเอียดเพิ่มเติม :',
+                                        style: GoogleFonts.sarabun(),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        widget.repairDetails,
+                                        style: GoogleFonts.sarabun(),
+                                      ),
+                                      const SizedBox(height: 15),
+                                      const Divider(
+                                        thickness: 1,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'รวมทั้งหมด :',
+                                              style: GoogleFonts.sarabun(),
+                                            ),
+                                          ),
+                                          Text(
+                                            "${widget.repairPrice} บาท",
+                                            style: GoogleFonts.sarabun(),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -1184,7 +1239,8 @@ class _StepSixState extends State<StepSix> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                DateFormat('d MMMM y เวลา KK:mm น.')
+                                DateFormat(
+                                        'd MMMM พ.ศ.${widget.timeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                     .format(widget.timeStamp),
                                 style: GoogleFonts.sarabun(),
                               ),
@@ -1211,7 +1267,7 @@ class _StepSixState extends State<StepSix> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'ชื่อผู้ใช้ : ${widget.userName}\nเบอร์โทร : ${widget.userTel}\n\nปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
+                                'ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
                                 style: GoogleFonts.sarabun(),
                               ),
                             ],

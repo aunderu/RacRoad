@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:rac_road/home/screens.dart';
 import 'package:http/http.dart' as http;
+import 'package:rac_road/services/remote_service.dart';
 
 import '../../../../../colors.dart';
 
@@ -65,7 +67,7 @@ class _StepTwoState extends State<StepTwo> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        const SizedBox(height: 100),
+        const SizedBox(height: 30),
         //ผู้ยืนยันค่าบริการ
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
@@ -120,10 +122,13 @@ class _StepTwoState extends State<StepTwo> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     userSendDeal(widget.sosId, "no");
-                                    Get.to(
-                                      () => ScreensPage(
-                                        getToken: widget.getToken,
-                                        pageIndex: 2,
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ScreensPage(
+                                          getToken: widget.getToken,
+                                          pageIndex: 2,
+                                        ),
                                       ),
                                     );
                                   },
@@ -146,10 +151,13 @@ class _StepTwoState extends State<StepTwo> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     userSendDeal(widget.sosId, "yes");
-                                    Get.to(
-                                      () => ScreensPage(
-                                        getToken: widget.getToken,
-                                        pageIndex: 2,
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ScreensPage(
+                                          getToken: widget.getToken,
+                                          pageIndex: 2,
+                                        ),
                                       ),
                                     );
                                   },
@@ -241,20 +249,11 @@ class _StepTwoState extends State<StepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.')
+                            DateFormat(
+                                    'd MMMM พ.ศ.${widget.stepTwoTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                 .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     Get.to(() => Pricing(getToken: widget.getToken));
-                          //   },
-                          //   child: const Icon(
-                          //     Icons.arrow_forward_ios,
-                          //     color: darkGray,
-                          //     size: 16,
-                          //   ),
-                          // ),
                         ],
                       ),
                       const Divider(
@@ -269,16 +268,51 @@ class _StepTwoState extends State<StepTwo> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0, 0, 20, 0),
                             child: Text(
-                              'เสนอค่าบริการซ่อม',
+                              'เสนอบริการค่าซ่อม',
                               style: GoogleFonts.sarabun(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
                             ),
                           ),
-                          Text(
-                            'ราคาการซ่อม : ${widget.repairPrice}\nรายละเอียดเพิ่มเติม : ${widget.repairDetails}',
-                            style: GoogleFonts.sarabun(),
+                          const SizedBox(height: 5),
+                          Card(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'รายละเอียดเพิ่มเติม :',
+                                    style: GoogleFonts.sarabun(),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    widget.repairDetails,
+                                    style: GoogleFonts.sarabun(),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  const Divider(
+                                    thickness: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'รวมทั้งหมด :',
+                                          style: GoogleFonts.sarabun(),
+                                        ),
+                                      ),
+                                      Text(
+                                        "${widget.repairPrice} บาท",
+                                        style: GoogleFonts.sarabun(),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -358,7 +392,8 @@ class _StepTwoState extends State<StepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.')
+                            DateFormat(
+                                    'd MMMM พ.ศ.${widget.timeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -385,7 +420,7 @@ class _StepTwoState extends State<StepTwo> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'ชื่อผู้ใช้ : ${widget.userName}\nเบอร์โทร : ${widget.userTel}\n\nปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
+                            'ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],

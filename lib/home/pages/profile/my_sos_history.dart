@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/models/all_my_sos_models.dart';
 import 'package:rac_road/services/remote_service.dart';
@@ -34,6 +33,7 @@ class _MySosHistoryState extends State<MySosHistory> {
       appBar: AppBar(
         backgroundColor: secondaryBGColor,
         automaticallyImplyLeading: false,
+        shadowColor: mainGreen,
         toolbarHeight: 80,
         title: Column(
           mainAxisSize: MainAxisSize.max,
@@ -85,93 +85,121 @@ class _MySosHistoryState extends State<MySosHistory> {
           )
         ],
         centerTitle: false,
-        elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-              child: LinearPercentIndicator(
-                percent: 1,
-                width: MediaQuery.of(context).size.width,
-                lineHeight: 12,
-                animation: true,
-                progressColor: mainGreen,
-                backgroundColor: mainGreen,
-                barRadius: const Radius.circular(0),
-                padding: EdgeInsets.zero,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
-              child: FutureBuilder<AllMySos?>(
-                future: dataFuture,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return snapshot.hasData
-                          ? ListView.builder(
-                              itemCount: snapshot.data!.count,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              reverse: true,
-                              itemBuilder: (context, index) {
-                                return MySosHistoryWidget(
-                                  getToken: widget.getToken,
-                                  sosId: snapshot.data!.data.sos![index].sosId,
-                                  userAvatar:
-                                      snapshot.data!.data.sos![index].avatar,
-                                  userName:
-                                      snapshot.data!.data.sos![index].userName,
-                                  sosStatus:
-                                      snapshot.data!.data.sos![index].sosStatus,
-                                  timeStamp:
-                                      snapshot.data!.data.sos![index].createdAt,
-                                );
-                              },
-                            )
-                          : SizedBox(
-                              height: MediaQuery.of(context).size.height / 1.5,
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation<Color>(mainGreen),
-                                  strokeWidth: 8,
-                                ),
-                              ),
-                            );
-                    case ConnectionState.done:
-                    default:
-                      if (snapshot.hasError) {
-                        return const Text("ดูเหมือนมีอะไรผิดปกติ :(");
-                      } else if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.count,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            return MySosHistoryWidget(
-                              getToken: widget.getToken,
-                              sosId: snapshot.data!.data.sos![index].sosId,
-                              userAvatar: snapshot.data!.data.sos![index].avatar,
-                              userName: snapshot.data!.data.sos![index].userName,
-                              sosStatus:
-                                  snapshot.data!.data.sos![index].sosStatus,
-                              timeStamp:
-                                  snapshot.data!.data.sos![index].createdAt,
-                            );
-                          },
-                        );
-                      } else {
-                        return const Text('ดูเหมือนคุณยังไม่มีข้อมูลนะ');
-                      }
-                  }
-                },
-              ),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
+        child: FutureBuilder<AllMySos?>(
+          future: dataFuture,
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return snapshot.hasData
+                    ? ListView.builder(
+                        itemCount: snapshot.data!.count,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return MySosHistoryWidget(
+                            getToken: widget.getToken,
+                            sosId: snapshot
+                                .data!
+                                .data
+                                .sos![
+                                    snapshot.data!.data.sos!.length - 1 - index]
+                                .sosId,
+                            imgAccident: snapshot
+                                .data!
+                                .data
+                                .sos![
+                                    snapshot.data!.data.sos!.length - 1 - index]
+                                .avatar,
+                            userName: snapshot
+                                .data!
+                                .data
+                                .sos![
+                                    snapshot.data!.data.sos!.length - 1 - index]
+                                .userName,
+                            sosStatus: snapshot
+                                .data!
+                                .data
+                                .sos![
+                                    snapshot.data!.data.sos!.length - 1 - index]
+                                .sosStatus,
+                            userProblem: snapshot
+                                .data!
+                                .data
+                                .sos![
+                                    snapshot.data!.data.sos!.length - 1 - index]
+                                .problem,
+                            timeStamp: snapshot
+                                .data!
+                                .data
+                                .sos![
+                                    snapshot.data!.data.sos!.length - 1 - index]
+                                .createdAt,
+                          );
+                        },
+                      )
+                    : SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.5,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(mainGreen),
+                            strokeWidth: 8,
+                          ),
+                        ),
+                      );
+              case ConnectionState.done:
+              default:
+                if (snapshot.hasError) {
+                  return const Text("ดูเหมือนมีอะไรผิดปกติ :(");
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.count,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return MySosHistoryWidget(
+                        getToken: widget.getToken,
+                        sosId: snapshot
+                            .data!
+                            .data
+                            .sos![snapshot.data!.data.sos!.length - 1 - index]
+                            .sosId,
+                        imgAccident: snapshot
+                            .data!
+                            .data
+                            .sos![snapshot.data!.data.sos!.length - 1 - index]
+                            .avatar,
+                        userName: snapshot
+                            .data!
+                            .data
+                            .sos![snapshot.data!.data.sos!.length - 1 - index]
+                            .userName,
+                        sosStatus: snapshot
+                            .data!
+                            .data
+                            .sos![snapshot.data!.data.sos!.length - 1 - index]
+                            .sosStatus,
+                        userProblem: snapshot
+                            .data!
+                            .data
+                            .sos![snapshot.data!.data.sos!.length - 1 - index]
+                            .problem,
+                        timeStamp: snapshot
+                            .data!
+                            .data
+                            .sos![snapshot.data!.data.sos!.length - 1 - index]
+                            .createdAt,
+                      );
+                    },
+                  );
+                } else {
+                  return const Text('ดูเหมือนคุณยังไม่มีข้อมูลนะ');
+                }
+            }
+          },
         ),
       ),
     );

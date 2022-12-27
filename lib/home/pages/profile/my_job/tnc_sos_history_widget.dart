@@ -1,3 +1,4 @@
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,13 +12,13 @@ class TncSosHistoryWidget extends StatelessWidget {
   final String getToken;
   final String sosId;
   final String userAvatar;
-  final String userName;
+  final String userProblem;
   final String sosStatus;
   final DateTime timeStamp;
   const TncSosHistoryWidget({
     super.key,
     required this.userAvatar,
-    required this.userName,
+    required this.userProblem,
     required this.sosStatus,
     required this.timeStamp,
     required this.getToken,
@@ -26,6 +27,8 @@ class TncSosHistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var thTimeStamp = timeStamp.yearInBuddhistCalendar;
+
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: ClipRRect(
@@ -59,7 +62,8 @@ class TncSosHistoryWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: CachedNetworkImage(
@@ -76,28 +80,36 @@ class TncSosHistoryWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            userName,
-                            style: GoogleFonts.sarabun(),
+                            userProblem,
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             sosStatus,
-                            style: GoogleFonts.sarabun(),
+                            style: GoogleFonts.sarabun(
+                              color: darkGray,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                     child: Text(
-                      DateFormat('yMMMMd').format(timeStamp),
+                      DateFormat('d MMMM พ.ศ.$thTimeStamp').format(timeStamp),
                       style: GoogleFonts.sarabun(),
                     ),
                   ),

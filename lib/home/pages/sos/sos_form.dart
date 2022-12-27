@@ -19,10 +19,16 @@ import '../../../services/remote_service.dart';
 class SOSFormPage extends StatefulWidget {
   final String getToken;
   final String sosTitle;
-  const SOSFormPage({
+  String location;
+  String latitude;
+  String longitude;
+  SOSFormPage({
     super.key,
     required this.getToken,
     required this.sosTitle,
+    required this.location,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
@@ -36,9 +42,6 @@ class _SOSFormPageState extends State<SOSFormPage> {
   TextEditingController? userProblemController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  var _latitude = "";
-  var _longitude = "";
-  var _address = "";
   var _isLoading = false;
 
   File? imageFile;
@@ -49,6 +52,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
     // userNameController = TextEditingController();
     // userPhoneNumContoller = TextEditingController();
     userProblemController = TextEditingController();
+    locationMessage = widget.location;
   }
 
   // @override
@@ -64,9 +68,9 @@ class _SOSFormPageState extends State<SOSFormPage> {
     List<Placemark> pm =
         await placemarkFromCoordinates(pos.latitude, pos.longitude);
     setState(() {
-      _latitude = pos.latitude.toString();
-      _longitude = pos.longitude.toString();
-      _address =
+      widget.latitude = pos.latitude.toString();
+      widget.longitude = pos.longitude.toString();
+      widget.location =
           "${pm.reversed.last.street}, ${pm.reversed.last.subLocality} ${pm.reversed.last.subAdministrativeArea} ${pm.reversed.last.administrativeArea}, ${pm.reversed.last.postalCode}";
     });
   }
@@ -195,9 +199,9 @@ class _SOSFormPageState extends State<SOSFormPage> {
         "user_id": widget.getToken,
         "problem": widget.sosTitle,
         "problem_detail": userProblem,
-        "location": _address,
-        "latitude": _latitude,
-        "longitude": _longitude,
+        "location": widget.location,
+        "latitude": widget.latitude,
+        "longitude": widget.longitude,
       })
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('image', filePath));
@@ -409,7 +413,8 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                               _getCurrentLocation()
                                                   .then((value) {
                                                 setState(() {
-                                                  locationMessage = _address;
+                                                  locationMessage =
+                                                      widget.location;
                                                   _isLoading = false;
                                                 });
                                               });
@@ -455,7 +460,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                               const SizedBox(width: 5),
                                               Expanded(
                                                 child: Text(
-                                                  'เลือกที่อยู่ของคุณ',
+                                                  'เลือกที่อยู่ของคุณผ่าน GPS',
                                                   style: GoogleFonts.sarabun(
                                                     color: const Color.fromARGB(
                                                         105, 1, 61, 54),
@@ -618,7 +623,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                   padding: const EdgeInsets.all(10.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      if (_address != "" && imageFile != null) {
+                                      if (imageFile != null) {
                                         sosSend(
                                           imageFile!.path,
                                           userProblemController!.text,

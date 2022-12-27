@@ -1,3 +1,4 @@
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -98,7 +99,9 @@ class _TncStepTwoState extends State<TncStepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy KK:mm:ss').format(widget.stepTwoTimeStamp)} น.',
+                            DateFormat(
+                                    'd MMMM พ.ศ.${widget.stepTwoTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
+                                .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
@@ -214,7 +217,8 @@ class _TncStepTwoState extends State<TncStepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss น.')
+                            DateFormat(
+                                    'd MMMM พ.ศ.${widget.stepTwoTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                 .format(widget.stepTwoTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -344,7 +348,7 @@ class _TncStepTwoState extends State<TncStepTwo> {
             ],
           ),
         ),
-        //รายละเอียดค่าบริการ
+        //รายละเอียด
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 16),
           child: Row(
@@ -378,7 +382,8 @@ class _TncStepTwoState extends State<TncStepTwo> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('dd/MM/yyyy KK:mm:ss น.')
+                            DateFormat(
+                                    'd MMMM พ.ศ.${widget.stepOneTimeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                 .format(widget.stepOneTimeStamp),
                             style: GoogleFonts.sarabun(),
                           ),

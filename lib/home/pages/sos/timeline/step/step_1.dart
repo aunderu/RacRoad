@@ -1,3 +1,4 @@
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +38,7 @@ class _StepOneState extends State<StepOne> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        const SizedBox(height: 100),
+        const SizedBox(height: 30),
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
           child: Row(
@@ -71,7 +72,8 @@ class _StepOneState extends State<StepOne> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            DateFormat('d MMMM y เวลา KK:mm น.')
+                            DateFormat(
+                                    'd MMMM พ.ศ.${widget.timeStamp.yearInBuddhistCalendar} เวลา KK:mm น.')
                                 .format(widget.timeStamp),
                             style: GoogleFonts.sarabun(),
                           ),
@@ -98,7 +100,7 @@ class _StepOneState extends State<StepOne> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'ชื่อผู้ใช้ : ${widget.userName}\nเบอร์โทร : ${widget.userTel}\n\nปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
+                            'ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
                             style: GoogleFonts.sarabun(),
                           ),
                         ],
