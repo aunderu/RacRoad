@@ -11,10 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/home/pages/sos/sos_form_sended.dart';
 import 'package:http/http.dart' as http;
+import 'package:rac_road/home/pages/sos/list_problem_models.dart';
 
 import '../../../services/remote_service.dart';
+import '../../screens.dart';
 
 class SOSFormPage extends StatefulWidget {
   final String getToken;
@@ -37,8 +38,6 @@ class SOSFormPage extends StatefulWidget {
 
 class _SOSFormPageState extends State<SOSFormPage> {
   String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
-  // TextEditingController? userNameController;
-  // TextEditingController? userPhoneNumContoller;
   TextEditingController? userProblemController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -49,19 +48,13 @@ class _SOSFormPageState extends State<SOSFormPage> {
   @override
   void initState() {
     super.initState();
-    // userNameController = TextEditingController();
-    // userPhoneNumContoller = TextEditingController();
     userProblemController = TextEditingController();
     locationMessage = widget.location;
   }
 
-  // @override
-  // void dispose() {
-  //   userNameController?.dispose();
-  //   userPhoneNumContoller?.dispose();
-  //   userProblemController?.dispose();
-  //   super.dispose();
-  // }
+  final problemLists = [];
+
+  List<ProblemModel?> selectedProblems = [];
 
   Future<void> _getCurrentLocation() async {
     Position pos = await _determindePosition();
@@ -227,7 +220,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
             size: 30,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context, false);
           },
         ),
         title: Text(
@@ -245,418 +238,283 @@ class _SOSFormPageState extends State<SOSFormPage> {
             child: Form(
               key: formKey,
               autovalidateMode: AutovalidateMode.disabled,
-              child: FutureBuilder(
-                future: RemoteService().getUserProfile(widget.getToken),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height / 1.3,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
-                          strokeWidth: 8,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Column(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Padding(
-                              //   padding: const EdgeInsetsDirectional.fromSTEB(
-                              //       16, 0, 0, 0),
-                              //   child: Text(
-                              //     'ข้อมูลติดต่อ',
-                              //     style: GoogleFonts.sarabun(
-                              //       fontWeight: FontWeight.bold,
-                              //     ),
-                              //   ),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsetsDirectional.fromSTEB(
-                              //       16, 16, 16, 0),
-                              //   child: TextFormField(
-                              //     controller: userNameController,
-                              //     initialValue:
-                              //         snapshot.data!.data.myProfile.name,
-                              //     obscureText: false,
-                              //     decoration: InputDecoration(
-                              //       labelText: 'ชื่อ',
-                              //       labelStyle: GoogleFonts.sarabun(
-                              //         color: darkGray,
-                              //         fontWeight: FontWeight.normal,
-                              //       ),
-                              //       enabledBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: lightGrey,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       focusedBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: mainGreen,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       errorBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: Color(0x00000000),
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       focusedErrorBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: Color(0x00000000),
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       contentPadding:
-                              //           const EdgeInsetsDirectional.fromSTEB(
-                              //               20, 32, 20, 12),
-                              //     ),
-                              //     style: GoogleFonts.sarabun(),
-                              //     textAlign: TextAlign.start,
-                              //     maxLines: 1,
-                              //   ),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsetsDirectional.fromSTEB(
-                              //       16, 10, 16, 0),
-                              //   child: TextFormField(
-                              //     controller: userPhoneNumContoller,
-                              //     initialValue:
-                              //         snapshot.data!.data.myProfile.tel,
-                              //     obscureText: false,
-                              //     // initialValue:
-                              //     //     snapshot.data?.data.myProfile.tel,
-                              //     decoration: InputDecoration(
-                              //       labelText: 'เบอร์โทร',
-                              //       labelStyle: GoogleFonts.sarabun(
-                              //         color: darkGray,
-                              //         fontWeight: FontWeight.normal,
-                              //       ),
-                              //       enabledBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: lightGrey,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       focusedBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: mainGreen,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       errorBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: Color(0x00000000),
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       focusedErrorBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //           color: Color(0x00000000),
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(8),
-                              //       ),
-                              //       contentPadding:
-                              //           const EdgeInsetsDirectional.fromSTEB(
-                              //               20, 32, 20, 12),
-                              //     ),
-                              //     style: GoogleFonts.sarabun(),
-                              //     textAlign: TextAlign.start,
-                              //     maxLines: 1,
-                              //     keyboardType: TextInputType.phone,
-                              //   ),
-                              // ),
-                              const Divider(
-                                height: 50,
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 0, 0, 0),
-                                child: Text(
-                                  'ที่อยู่',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
+                        const Divider(
+                          height: 50,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                          child: Text(
+                            'ที่อยู่',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 10, 16, 0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Material(
+                              child: InkWell(
+                                onTap: _isLoading
+                                    ? null
+                                    : () {
+                                        setState(
+                                          () => _isLoading = true,
+                                        );
+                                        _getCurrentLocation().then((value) {
+                                          setState(() {
+                                            locationMessage = widget.location;
+                                            _isLoading = false;
+                                          });
+                                        });
+                                      },
+                                child: Ink(
+                                  width: double.infinity,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: _isLoading
+                                        ? lightGrey
+                                        : const Color(0x6939D2C0),
+                                    borderRadius: BorderRadius.circular(50),
                                   ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 10, 16, 0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Material(
-                                    child: InkWell(
-                                      onTap: _isLoading
-                                          ? null
-                                          : () {
-                                              setState(
-                                                () => _isLoading = true,
-                                              );
-                                              _getCurrentLocation()
-                                                  .then((value) {
-                                                setState(() {
-                                                  locationMessage =
-                                                      widget.location;
-                                                  _isLoading = false;
-                                                });
-                                              });
-                                            },
-                                      child: Ink(
-                                        width: double.infinity,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          color: _isLoading
-                                              ? lightGrey
-                                              : const Color(0x6939D2C0),
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(10, 0, 10, 0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              _isLoading
-                                                  ? Container(
-                                                      width: 20,
-                                                      height: 20,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              2.0),
-                                                      child:
-                                                          const CircularProgressIndicator(
-                                                        color: Color.fromARGB(
-                                                            105, 1, 61, 54),
-                                                        strokeWidth: 3,
-                                                      ),
-                                                    )
-                                                  : const Icon(
-                                                      Icons.location_on_sharp,
-                                                      color: Color.fromARGB(
-                                                          105, 1, 61, 54),
-                                                      size: 24,
-                                                    ),
-                                              const SizedBox(width: 5),
-                                              Expanded(
-                                                child: Text(
-                                                  'เลือกที่อยู่ของคุณผ่าน GPS',
-                                                  style: GoogleFonts.sarabun(
-                                                    color: const Color.fromARGB(
-                                                        105, 1, 61, 54),
-                                                  ),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 0, 10, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        _isLoading
+                                            ? Container(
+                                                width: 20,
+                                                height: 20,
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child:
+                                                    const CircularProgressIndicator(
+                                                  color: Color.fromARGB(
+                                                      105, 1, 61, 54),
+                                                  strokeWidth: 3,
                                                 ),
-                                              ),
-                                              const Icon(
-                                                Icons.arrow_forward_ios,
+                                              )
+                                            : const Icon(
+                                                Icons.location_on_sharp,
                                                 color: Color.fromARGB(
                                                     105, 1, 61, 54),
                                                 size: 24,
                                               ),
-                                            ],
+                                        const SizedBox(width: 5),
+                                        Expanded(
+                                          child: Text(
+                                            'เลือกที่อยู่ของคุณผ่าน GPS',
+                                            style: GoogleFonts.sarabun(
+                                              color: const Color.fromARGB(
+                                                  105, 1, 61, 54),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color.fromARGB(105, 1, 61, 54),
+                                          size: 24,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 10, 0, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "ที่อยู่ : $locationMessage",
-                                        style: GoogleFonts.sarabun(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Divider(
-                                height: 50,
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 0, 0, 0),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 10, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
                                 child: Text(
-                                  'ปัญหา',
-                                  style: GoogleFonts.sarabun(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 10, 16, 0),
-                                child: TextFormField(
-                                  controller: userProblemController,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    hintText: 'ปัญหาที่พบ',
-                                    hintStyle: GoogleFonts.sarabun(),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: lightGrey,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: mainGreen,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            20, 32, 20, 12),
-                                  ),
+                                  "ที่อยู่ : $locationMessage",
                                   style: GoogleFonts.sarabun(),
-                                  textAlign: TextAlign.start,
-                                  maxLines: 4,
-                                  keyboardType: TextInputType.multiline,
-                                ),
-                              ),
-                              imageFile == null
-                                  ? Align(
-                                      alignment:
-                                          const AlignmentDirectional(0, 0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 16, 0, 0),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            PermissionStatus cameraStatus =
-                                                await Permission.camera
-                                                    .request();
-                                            if (cameraStatus ==
-                                                PermissionStatus.granted) {
-                                              showImageDialog();
-                                            }
-                                            if (cameraStatus ==
-                                                PermissionStatus.denied) {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      "This permission is recommended");
-                                            }
-                                            if (cameraStatus ==
-                                                PermissionStatus
-                                                    .permanentlyDenied) {
-                                              openAppSettings();
-                                            }
-                                          },
-                                          child: Ink(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xFFEFEFEF),
-                                            ),
-                                            child: const Icon(
-                                              Icons.add,
-                                              color: Color(0xFF9D9D9D),
-                                              size: 40,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(top: 16),
-                                      child: Center(
-                                        child: InkWell(
-                                          onTap: showImageDialog,
-                                          child: Image.file(
-                                            imageFile!,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.9,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              Align(
-                                alignment: const AlignmentDirectional(0, 0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (imageFile != null) {
-                                        sosSend(
-                                          imageFile!.path,
-                                          userProblemController!.text,
-                                        );
-                                        Get.to(
-                                          () => SOSFormSended(
-                                              token: widget.getToken),
-                                        );
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: mainGreen,
-                                      minimumSize: const Size(
-                                        300,
-                                        40,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'ยืนยัน',
-                                      style: GoogleFonts.sarabun(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        const Divider(
+                          height: 50,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                          child: Text(
+                            'รายละเอียดที่พบ',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 10, 16, 0),
+                          child: TextFormField(
+                            controller: userProblemController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              hintText: 'ปัญหาที่พบ',
+                              hintStyle: GoogleFonts.sarabun(),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: lightGrey,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: mainGreen,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              contentPadding:
+                                  const EdgeInsetsDirectional.fromSTEB(
+                                      20, 32, 20, 12),
+                            ),
+                            style: GoogleFonts.sarabun(),
+                            textAlign: TextAlign.start,
+                            maxLines: 4,
+                            keyboardType: TextInputType.multiline,
+                          ),
+                        ),
+                        imageFile == null
+                            ? Align(
+                                alignment: const AlignmentDirectional(0, 0),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 16, 0, 0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      PermissionStatus cameraStatus =
+                                          await Permission.camera.request();
+                                      if (cameraStatus ==
+                                          PermissionStatus.granted) {
+                                        showImageDialog();
+                                      }
+                                      if (cameraStatus ==
+                                          PermissionStatus.denied) {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "This permission is recommended");
+                                      }
+                                      if (cameraStatus ==
+                                          PermissionStatus.permanentlyDenied) {
+                                        openAppSettings();
+                                      }
+                                    },
+                                    child: Ink(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Color(0xFF9D9D9D),
+                                        size: 40,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Center(
+                                  child: InkWell(
+                                    onTap: showImageDialog,
+                                    child: Image.file(
+                                      imageFile!,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        Align(
+                          alignment: const AlignmentDirectional(0, 0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (imageFile != null) {
+                                  sosSend(
+                                    imageFile!.path,
+                                    userProblemController!.text,
+                                  );
+
+                                  // Get.to(
+                                  //   () => ScreensPage(
+                                  //     getToken: widget.getToken,
+                                  //     pageIndex: 2,
+                                  //     current: 0,
+                                  //   ),
+                                  // );
+
+                                  Navigator.pop(context, true);
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mainGreen,
+                                minimumSize: const Size(
+                                  300,
+                                  40,
+                                ),
+                              ),
+                              child: Text(
+                                'ยืนยัน',
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
-                    );
-                  }
-                },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -149,7 +149,7 @@ class _MyJobHistoryState extends State<MyJobHistory> {
               default:
                 if (snapshot.hasError) {
                   return const Text("ดูเหมือนมีอะไรผิดปกติ :(");
-                } else if (snapshot.hasData) {
+                } else if (snapshot.data!.count != 0) {
                   return ListView.builder(
                     itemCount: snapshot.data!.count,
                     shrinkWrap: true,
@@ -186,7 +186,13 @@ class _MyJobHistoryState extends State<MyJobHistory> {
                     },
                   );
                 } else {
-                  return const Text('ดูเหมือนคุณยังไม่มีข้อมูลนะ');
+                  return Center(
+                    child: Text(
+                      'ดูเหมือนคุณยังไม่มีข้อมูลอะไรนะ',
+                      style: GoogleFonts.sarabun(),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
                 }
             }
           },

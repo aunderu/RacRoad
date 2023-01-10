@@ -114,6 +114,7 @@ class _CheckLoginState extends State<CheckLogin> {
           () => ScreensPage(
             getToken: token,
             pageIndex: 0,
+            current: 0,
           ),
         ),
       );

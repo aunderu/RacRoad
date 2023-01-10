@@ -42,6 +42,7 @@ class _AllMyClubState extends State<AllMyClub> {
           builder: (context) => ScreensPage(
             getToken: widget.token,
             pageIndex: 4,
+            current: 1,
           ),
         ),
       );

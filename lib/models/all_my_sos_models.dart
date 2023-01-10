@@ -58,6 +58,7 @@ class So {
         required this.userId,
         required this.userName,
         required this.avatar,
+        required this.imageIncident,
         required this.problem,
         required this.sosStatus,
         required this.createdAt,
@@ -75,6 +76,7 @@ class So {
     String userId;
     String userName;
     String avatar;
+    List<ImageIncident> imageIncident;
     String problem;
     String sosStatus;
     DateTime createdAt;
@@ -89,9 +91,10 @@ class So {
 
     factory So.fromJson(Map<String, dynamic> json) => So(
         sosId: json["sos_id"],
-        userId: json["user_id"],
+        userId:  json["user_id"],
         userName: json["user_name"],
         avatar: json["avatar"],
+        imageIncident: List<ImageIncident>.from(json["image_incident"].map((x) => ImageIncident.fromJson(x))),
         problem: json["problem"],
         sosStatus: json["sos_status"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -110,6 +113,7 @@ class So {
         "user_id": userId,
         "user_name": userName,
         "avatar": avatar,
+        "image_incident": List<dynamic>.from(imageIncident.map((x) => x.toJson())),
         "problem": problem,
         "sos_status": sosStatus,
         "created_at": createdAt.toIso8601String(),
@@ -121,5 +125,25 @@ class So {
         "tu_step7": tuStep7 == null ? null : tuStep7!.toIso8601String(),
         "tu_step8": tuStep8 == null ? null : tuStep8!.toIso8601String(),
         "tu_sc": tuSc == null ? null : tuSc!.toIso8601String(),
+    };
+}
+
+class ImageIncident {
+    ImageIncident({
+        required this.id,
+        required this.image,
+    });
+
+    String id;
+    String image;
+
+    factory ImageIncident.fromJson(Map<String, dynamic> json) => ImageIncident(
+        id: json["id"],
+        image: json["image"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "image": image,
     };
 }

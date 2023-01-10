@@ -13,9 +13,11 @@ import '../../services/remote_service.dart';
 class ProfilePage extends StatefulWidget {
   // final GoogleSignInAccount user;
   final String getToken;
-  const ProfilePage({
+  int current;
+  ProfilePage({
     Key? key,
     required this.getToken,
+    required this.current,
     // required this.user,
   }) : super(key: key);
 
@@ -25,7 +27,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  int current = 0;
 
   List<String> items = [
     "My Car",
@@ -214,7 +215,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    current = index;
+                                    widget.current = index;
                                   });
                                 },
                                 child: AnimatedContainer(
@@ -223,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 110,
                                   height: 40,
                                   decoration: BoxDecoration(
-                                    color: current == index
+                                    color: widget.current == index
                                         ? mainGreen
                                         : Colors.white,
                                     borderRadius: BorderRadius.circular(20),
@@ -232,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Text(
                                     items[index],
                                     style: GoogleFonts.sarabun(
-                                      color: current == index
+                                      color: widget.current == index
                                           ? Colors.white
                                           : Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -252,7 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   indent: 20,
                   endIndent: 20,
                 ),
-                pages[current],
+                pages[widget.current],
               ],
             ),
           ),

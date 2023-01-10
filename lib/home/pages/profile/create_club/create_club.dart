@@ -787,6 +787,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                           Get.to(() => ScreensPage(
                                 getToken: widget.getToken,
                                 pageIndex: 4,
+                                current: 1,
                               ));
                         },
                         style: ElevatedButton.styleFrom(

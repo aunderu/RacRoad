@@ -377,7 +377,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               );
                               Get.to(
                                 () => ScreensPage(
-                                    getToken: widget.getToken, pageIndex: 0),
+                                  getToken: widget.getToken,
+                                  pageIndex: 0,
+                                  current: 0,
+                                ),
                               );
                               Fluttertoast.showToast(
                                 msg: "แก้ไขข้อมูลโปรไฟล์ เรียบร้อย!",

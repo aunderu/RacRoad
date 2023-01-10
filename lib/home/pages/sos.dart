@@ -24,8 +24,33 @@ class _SOSPageState extends State<SOSPage> {
   var _latitude = "";
   var _longitude = "";
   var _address = "";
+  var _dataCurrentSos;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  _fetchData() {
+    setState(() {
+      _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);
+    });
+  }
 
   Future<void> _getCurrentLocation(String sosTitle) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+            strokeWidth: 8,
+          ),
+        );
+      },
+    );
+
     Position pos = await _determindePosition();
     List<Placemark> pm =
         await placemarkFromCoordinates(pos.latitude, pos.longitude);
@@ -36,16 +61,35 @@ class _SOSPageState extends State<SOSPage> {
           "${pm.reversed.last.street}, ${pm.reversed.last.subLocality} ${pm.reversed.last.subAdministrativeArea} ${pm.reversed.last.administrativeArea}, ${pm.reversed.last.postalCode}";
     });
 
-    Get.to(
-      () => SOSFormPage(
-        getToken: widget.token,
-        sosTitle: sosTitle,
-        location: _address,
-        latitude: _latitude,
-        longitude: _longitude,
+    Navigator.of(context).pop();
+
+    if (!mounted) return;
+    bool isRefresh = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SOSFormPage(
+          getToken: widget.token,
+          sosTitle: sosTitle,
+          location: _address,
+          latitude: _latitude,
+          longitude: _longitude,
+        ),
       ),
     );
-    
+    if (isRefresh) {
+      _fetchData();
+    }
+
+    // Get.to(
+    //   () => SOSFormPage(
+    //     getToken: widget.token,
+    //     sosTitle: sosTitle,
+    //     location: _address,
+    //     latitude: _latitude,
+    //     longitude: _longitude,
+    //   ),
+    // );
+
     // await Navigator.push(
     //   context,
     //   MaterialPageRoute(
@@ -91,7 +135,7 @@ class _SOSPageState extends State<SOSPage> {
       body: Padding(
         padding: const EdgeInsetsDirectional.all(10),
         child: FutureBuilder<MyCurrentSos?>(
-          future: RemoteService().getMyCurrentSOS(widget.token),
+          future: _dataCurrentSos,
           builder: (context, snapshot) {
             var result = snapshot.data;
             if (result != null) {

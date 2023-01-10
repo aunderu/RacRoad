@@ -346,6 +346,7 @@ class _StepSixState extends State<StepSix> {
                                         builder: (context) => ScreensPage(
                                           getToken: widget.getToken,
                                           pageIndex: 2,
+                                          current: 0,
                                         ),
                                       ),
                                     );

@@ -128,6 +128,7 @@ class _StepTwoState extends State<StepTwo> {
                                         builder: (context) => ScreensPage(
                                           getToken: widget.getToken,
                                           pageIndex: 2,
+                                          current: 0,
                                         ),
                                       ),
                                     );
@@ -157,6 +158,7 @@ class _StepTwoState extends State<StepTwo> {
                                         builder: (context) => ScreensPage(
                                           getToken: widget.getToken,
                                           pageIndex: 2,
+                                          current: 0,
                                         ),
                                       ),
                                     );

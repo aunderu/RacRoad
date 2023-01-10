@@ -692,6 +692,7 @@ Widget formCompleted(String token) {
             Get.to(() => ScreensPage(
                   getToken: token,
                   pageIndex: 4,
+                  current: 2,
                 ));
           },
           style: ElevatedButton.styleFrom(backgroundColor: mainGreen),

@@ -112,7 +112,8 @@ class _MySosHistoryState extends State<MySosHistory> {
                                 .data
                                 .sos![
                                     snapshot.data!.data.sos!.length - 1 - index]
-                                .avatar,
+                                .imageIncident[0]
+                                .image,
                             userName: snapshot
                                 .data!
                                 .data
@@ -154,7 +155,7 @@ class _MySosHistoryState extends State<MySosHistory> {
               default:
                 if (snapshot.hasError) {
                   return const Text("ดูเหมือนมีอะไรผิดปกติ :(");
-                } else if (snapshot.hasData) {
+                } else if (snapshot.data!.count != 0) {
                   return ListView.builder(
                     itemCount: snapshot.data!.count,
                     shrinkWrap: true,
@@ -171,7 +172,8 @@ class _MySosHistoryState extends State<MySosHistory> {
                             .data!
                             .data
                             .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .avatar,
+                            .imageIncident[0]
+                            .image,
                         userName: snapshot
                             .data!
                             .data
@@ -196,7 +198,13 @@ class _MySosHistoryState extends State<MySosHistory> {
                     },
                   );
                 } else {
-                  return const Text('ดูเหมือนคุณยังไม่มีข้อมูลนะ');
+                  return Center(
+                    child: Text(
+                      'ดูเหมือนคุณยังไม่ได้แจ้งอะไรนะ',
+                      style: GoogleFonts.sarabun(),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
                 }
             }
           },

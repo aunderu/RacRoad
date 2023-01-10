@@ -81,7 +81,7 @@ class _TncStepOneState extends State<TncStepOne> {
 
   Future<void> _openMap(String latitude, String longitude) async {
     String googleURL =
-        'https://www.google.co.th/maps/search/?api=1&query=$latitude,$longitude';
+        'https://www.google.co.th/maps/search/$latitude,$longitude';
     await canLaunchUrlString(googleURL)
         ? await launchUrlString(googleURL)
         : throw 'Could not launch $googleURL';
@@ -212,6 +212,7 @@ class _TncStepOneState extends State<TncStepOne> {
                                             () => ScreensPage(
                                               getToken: widget.getToken,
                                               pageIndex: 4,
+                                              current: 2,
                                             ),
                                           );
                                         },
@@ -349,6 +350,7 @@ class _TncStepOneState extends State<TncStepOne> {
                                                   () => ScreensPage(
                                                     getToken: widget.getToken,
                                                     pageIndex: 4,
+                                                    current: 2,
                                                   ),
                                                 );
                                               } else {
@@ -534,6 +536,7 @@ class _TncStepOneState extends State<TncStepOne> {
                                                         getToken:
                                                             widget.getToken,
                                                         pageIndex: 4,
+                                                        current: 2,
                                                       ),
                                                     );
                                                   } else {
@@ -668,26 +671,26 @@ class _TncStepOneState extends State<TncStepOne> {
                             'ชื่อผู้ใช้ : ${widget.userName}\nเบอร์โทร : ${widget.userTel}\n\nปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
                             style: GoogleFonts.sarabun(),
                           ),
-                          const SizedBox(height: 10),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                _openMap(widget.latitude, widget.longitude);
-                              },
-                              icon: const Icon(Icons.pin_drop),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: mainGreen,
-                                minimumSize: const Size(200, 40),
-                              ),
-                              label: Text(
-                                "ดูใน Google Map",
-                                style: GoogleFonts.sarabun(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // const SizedBox(height: 10),
+                          // Align(
+                          //   alignment: Alignment.topCenter,
+                          //   child: ElevatedButton.icon(
+                          //     onPressed: () {
+                          //       _openMap(widget.latitude, widget.longitude);
+                          //     },
+                          //     icon: const Icon(Icons.pin_drop),
+                          //     style: ElevatedButton.styleFrom(
+                          //       backgroundColor: mainGreen,
+                          //       minimumSize: const Size(200, 40),
+                          //     ),
+                          //     label: Text(
+                          //       "ดูใน Google Map",
+                          //       style: GoogleFonts.sarabun(
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           const SizedBox(height: 10),
                           Align(
                             alignment: Alignment.topCenter,

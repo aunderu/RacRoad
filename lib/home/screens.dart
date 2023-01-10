@@ -17,10 +17,12 @@ class ScreensPage extends StatefulWidget {
   final String getToken;
   int pageIndex;
   // final GoogleSignInAccount user;
+  int current;
   ScreensPage({
     Key? key,
     required this.getToken,
     required this.pageIndex,
+    required this.current,
     // required this.user,
   }) : super(key: key);
 
@@ -40,7 +42,10 @@ class _ScreensPageState extends State<ScreensPage> {
     ClubPage(token: widget.getToken),
     SOSPage(token: widget.getToken),
     NotificationsPage(token: widget.getToken),
-    ProfilePage(getToken: widget.getToken),
+    ProfilePage(
+      getToken: widget.getToken,
+      current: widget.current,
+    ),
   ];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -161,10 +166,6 @@ class _ScreensPageState extends State<ScreensPage> {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          // child: Image.network(
-                          //   'photoUrl',
-                          //   fit: BoxFit.contain,
-                          // ),
                           child: const Skelton(),
                         ),
                       ),
@@ -218,8 +219,9 @@ class _ScreensPageState extends State<ScreensPage> {
         ),
         child: NavigationBar(
           selectedIndex: widget.pageIndex,
-          onDestinationSelected: (index) =>
-              setState(() => widget.pageIndex = index),
+          onDestinationSelected: (index) => setState(
+            () => widget.pageIndex = index,
+          ),
           destinations: [
             const NavigationDestination(
               icon: Icon(

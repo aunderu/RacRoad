@@ -48,6 +48,7 @@ class _JobWidgetState extends State<JobWidget> {
           builder: (context) => ScreensPage(
             getToken: widget.getToken,
             pageIndex: 4,
+            current: 2,
           ),
         ),
       );
