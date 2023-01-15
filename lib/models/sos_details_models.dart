@@ -6,6 +6,9 @@ import 'dart:convert';
 
 SosDetails sosDetailsFromJson(String str) => SosDetails.fromJson(json.decode(str));
 
+// List<SosDetails> sosDetailsFromJson(String str) => List<SosDetails>.from(
+//     json.decode(str).map((x) => SosDetails.fromJson(x)).toList());
+
 String sosDetailsToJson(SosDetails data) => json.encode(data.toJson());
 
 class SosDetails {
@@ -119,6 +122,7 @@ class Sos {
         this.sosCheck,
         required this.createdAt,
         required this.updatedAt,
+        required this.tuStep1,
         this.tuStep2,
         this.tuStep3,
         this.tuUrd,
@@ -155,6 +159,7 @@ class Sos {
     String? sosCheck;
     DateTime createdAt;
     DateTime updatedAt;
+    DateTime tuStep1;
     DateTime? tuStep2;
     DateTime? tuStep3;
     DateTime? tuUrd;
@@ -191,6 +196,7 @@ class Sos {
         sosCheck: json["sos_check"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        tuStep1: DateTime.parse(json["tu_step1"]),
         tuStep2: json["tu_step2"] == null ? null : DateTime.parse(json["tu_step2"]),
         tuStep3: json["tu_step3"] == null ? null : DateTime.parse(json["tu_step3"]),
         tuUrd: json["tu_urd"] == null ? null : DateTime.parse(json["tu_urd"]),
@@ -228,6 +234,7 @@ class Sos {
         "sos_check": sosCheck,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "tu_step1": tuStep1.toIso8601String(),
         "tu_step2": tuStep2 == null ? null : tuStep2!.toIso8601String(),
         "tu_step3": tuStep3 == null ? null : tuStep3!.toIso8601String(),
         "tu_urd": tuUrd == null ? null : tuUrd!.toIso8601String(),

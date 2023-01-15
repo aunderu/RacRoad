@@ -29,13 +29,7 @@ class _SOSPageState extends State<SOSPage> {
   @override
   void initState() {
     super.initState();
-    _fetchData();
-  }
-
-  _fetchData() {
-    setState(() {
-      _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);
-    });
+    _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);
   }
 
   Future<void> _getCurrentLocation(String sosTitle) async {
@@ -63,32 +57,15 @@ class _SOSPageState extends State<SOSPage> {
 
     Navigator.of(context).pop();
 
-    if (!mounted) return;
-    bool isRefresh = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SOSFormPage(
-          getToken: widget.token,
-          sosTitle: sosTitle,
-          location: _address,
-          latitude: _latitude,
-          longitude: _longitude,
-        ),
+    Get.to(
+      () => SOSFormPage(
+        getToken: widget.token,
+        sosTitle: sosTitle,
+        location: _address,
+        latitude: _latitude,
+        longitude: _longitude,
       ),
     );
-    if (isRefresh) {
-      _fetchData();
-    }
-
-    // Get.to(
-    //   () => SOSFormPage(
-    //     getToken: widget.token,
-    //     sosTitle: sosTitle,
-    //     location: _address,
-    //     latitude: _latitude,
-    //     longitude: _longitude,
-    //   ),
-    // );
 
     // await Navigator.push(
     //   context,

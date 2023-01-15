@@ -154,7 +154,7 @@ class _MySosHistoryState extends State<MySosHistory> {
               case ConnectionState.done:
               default:
                 if (snapshot.hasError) {
-                  return const Text("ดูเหมือนมีอะไรผิดปกติ :(");
+                  return const Center(child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
                 } else if (snapshot.data!.count != 0) {
                   return ListView.builder(
                     itemCount: snapshot.data!.count,

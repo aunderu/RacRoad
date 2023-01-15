@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:rac_road/home/pages/sos/timeline/step/step_1.dart';
 import 'package:rac_road/home/pages/sos/timeline/step/step_2.dart';
@@ -27,20 +28,36 @@ class MyHistorySosDetails extends StatefulWidget {
 }
 
 class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  var _dataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _dataFuture = RemoteService().getSosDetails(widget.sosId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        automaticallyImplyLeading: true,
         iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 70),
-        child: SingleChildScrollView(
+      extendBodyBehindAppBar: true,
+      body: SmartRefresher(
+        enablePullDown: false,
+        enablePullUp: false,
+        controller: _refreshController,
+        reverse: true,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50),
           child: FutureBuilder<SosDetails?>(
-            future: RemoteService().getSosDetails(widget.sosId),
+            future: _dataFuture,
             builder: (context, snapshot) {
               var result = snapshot.data;
               if (result != null) {
@@ -48,7 +65,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "step1":
                     return StepOne(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -61,7 +78,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                     return StepTwo(
                       getToken: widget.getToken,
                       sosId: result.data.sos.sosId,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -76,7 +93,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "step3":
                     return StepThree(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -92,7 +109,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "step4":
                     return StepFour(
                         getToken: widget.getToken,
-                        timeStamp: result.data.sos.createdAt,
+                        stepOnetimeStamp: result.data.sos.tuStep1,
                         userName: result.data.sos.userName,
                         userTel: result.data.sos.userTel.toString(),
                         problem: result.data.sos.problem,
@@ -115,7 +132,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "step5":
                     return StepFive(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -139,7 +156,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                     return StepSix(
                       getToken: widget.getToken,
                       sosId: result.data.sos.sosId,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -164,7 +181,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "step7":
                     return StepSeven(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -193,7 +210,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "step8":
                     return StepEight(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -223,7 +240,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "user_reject_deal":
                     return UserReject(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,
@@ -239,7 +256,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                   case "success":
                     return StepEight(
                       getToken: widget.getToken,
-                      timeStamp: result.data.sos.createdAt,
+                      stepOnetimeStamp: result.data.sos.tuStep1,
                       userName: result.data.sos.userName,
                       userTel: result.data.sos.userTel.toString(),
                       problem: result.data.sos.problem,

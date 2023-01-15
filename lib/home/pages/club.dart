@@ -165,7 +165,7 @@ class _ClubPageState extends State<ClubPage> {
                     child: Align(
                       alignment: const AlignmentDirectional(0, 0),
                       child: Text(
-                        'Create Club',
+                        'สร้างคลับ',
                         style: GoogleFonts.sarabun(
                           fontWeight: FontWeight.bold,
                         ),

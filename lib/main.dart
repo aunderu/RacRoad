@@ -37,6 +37,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   GoogleSignInAccount? _currentUser;
+  String token = "";
 
   @override
   void initState() {
@@ -46,6 +47,8 @@ class _MyAppState extends State<MyApp> {
         _currentUser = account;
       });
     });
+
+    getToken();
     // googleSigninSilently();
   }
 
@@ -63,6 +66,10 @@ class _MyAppState extends State<MyApp> {
   //     print(error);
   //   }
   // }
+  Future<void> getToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    token = preferences.getString("token")!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +77,66 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'RacRoad',
+      initialRoute: "/",
+      getPages: [
+        GetPage(name: '/', page: () => const MyApp()),
+        GetPage(
+          name: "/home",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 0,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/club",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 1,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/sos",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 2,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/notification",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 3,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/profile",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 4,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/profile-myclub",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 4,
+            current: 1,
+          ),
+        ),
+        GetPage(
+          name: "/profile-myjob",
+          page: () => ScreensPage(
+            getToken: token,
+            pageIndex: 4,
+            current: 2,
+          ),
+        ),
+      ],
       theme: ThemeData(
         primaryColor: mainGreen,
         scaffoldBackgroundColor: Colors.white,

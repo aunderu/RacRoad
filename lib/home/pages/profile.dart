@@ -51,41 +51,13 @@ class _ProfilePageState extends State<ProfilePage> {
       extendBodyBehindAppBar: true,
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-            child: IconButton(
-              hoverColor: Colors.transparent,
-              iconSize: 60,
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.black,
-                size: 30,
-              ),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        AccountSetting(getToken: widget.getToken),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-        elevation: 0,
-      ),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(top: size.height * 0.1),
+            padding: EdgeInsets.only(top: size.height * 0.05),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,

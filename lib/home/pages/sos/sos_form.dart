@@ -14,7 +14,6 @@ import 'package:rac_road/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/home/pages/sos/list_problem_models.dart';
 
-import '../../../services/remote_service.dart';
 import '../../screens.dart';
 
 class SOSFormPage extends StatefulWidget {
@@ -95,26 +94,36 @@ class _SOSFormPageState extends State<SOSFormPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('กรุณาเลือกรูป'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+          title: const Text('กรุณาเลือกรูป', textAlign: TextAlign.center),
+          titleTextStyle: GoogleFonts.sarabun(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+          alignment: Alignment.center,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               InkWell(
                 onTap: () {
                   getFromCamera();
                 },
-                child: Row(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(
-                        Icons.camera_alt_rounded,
+                        Icons.camera_alt_outlined,
                         color: Colors.black,
+                        size: 65,
                       ),
                     ),
                     Text(
                       'กล้อง',
-                      style: GoogleFonts.sarabun(color: Colors.black),
+                      style: GoogleFonts.sarabun(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -123,18 +132,23 @@ class _SOSFormPageState extends State<SOSFormPage> {
                 onTap: () {
                   getFromGallery();
                 },
-                child: Row(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(
-                        Icons.image,
+                        Icons.image_outlined,
                         color: Colors.black,
+                        size: 65,
                       ),
                     ),
                     Text(
                       'รูปภาพ',
-                      style: GoogleFonts.sarabun(color: Colors.black),
+                      style: GoogleFonts.sarabun(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -484,15 +498,15 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                     userProblemController!.text,
                                   );
 
-                                  // Get.to(
-                                  //   () => ScreensPage(
+                                  Get.toNamed("/sos");
+
+                                  // Get.offAll(
+                                  //   ScreensPage(
                                   //     getToken: widget.getToken,
                                   //     pageIndex: 2,
                                   //     current: 0,
                                   //   ),
                                   // );
-
-                                  Navigator.pop(context, true);
                                 }
                               },
                               style: ElevatedButton.styleFrom(
