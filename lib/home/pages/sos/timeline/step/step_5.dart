@@ -137,7 +137,6 @@ class _StepFiveState extends State<StepFive> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -149,7 +148,6 @@ class _StepFiveState extends State<StepFive> {
           "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPrice} บาท",
           style: GoogleFonts.sarabun(),
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -161,7 +159,6 @@ class _StepFiveState extends State<StepFive> {
           "โปรดรอสักครู่",
           style: GoogleFonts.sarabun(),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -199,7 +196,6 @@ class _StepFiveState extends State<StepFive> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -288,7 +284,6 @@ class _StepFiveState extends State<StepFive> {
                   ),
           ],
         ),
-        
         widget.tncProfile!,
         widget.tncName,
         "3",
@@ -306,9 +301,10 @@ class _StepFiveState extends State<StepFive> {
       useStickyGroupSeparators: true,
       floatingHeader: true,
       shrinkWrap: true,
-      groupBy: (message) => DateTime(
-        widget.stepOnetimeStamp.hour,
-        widget.stepOnetimeStamp.day,
+      groupBy: (timelines) => DateTime(
+        timelines.timestamp.month,
+        timelines.timestamp.day,
+        timelines.timestamp.hour,
       ),
       groupHeaderBuilder: (Timelines timelines) => SizedBox(
         height: 40,

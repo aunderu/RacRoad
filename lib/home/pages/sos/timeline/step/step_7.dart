@@ -156,7 +156,6 @@ class _StepSevenState extends State<StepSeven> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -168,7 +167,6 @@ class _StepSevenState extends State<StepSeven> {
           "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPrice} บาท",
           style: GoogleFonts.sarabun(),
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -180,7 +178,6 @@ class _StepSevenState extends State<StepSeven> {
           "โปรดรอสักครู่",
           style: GoogleFonts.sarabun(),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -218,7 +215,6 @@ class _StepSevenState extends State<StepSeven> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -307,7 +303,6 @@ class _StepSevenState extends State<StepSeven> {
                   ),
           ],
         ),
-        
         widget.tncProfile!,
         widget.tncName,
         "3",
@@ -352,7 +347,6 @@ class _StepSevenState extends State<StepSeven> {
                   ),
                 ],
               ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -393,7 +387,6 @@ class _StepSevenState extends State<StepSeven> {
             ),
           ],
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -411,9 +404,10 @@ class _StepSevenState extends State<StepSeven> {
       useStickyGroupSeparators: true,
       floatingHeader: true,
       shrinkWrap: true,
-      groupBy: (message) => DateTime(
-        widget.stepOnetimeStamp.hour,
-        widget.stepOnetimeStamp.day,
+      groupBy: (timelines) => DateTime(
+        timelines.timestamp.month,
+        timelines.timestamp.day,
+        timelines.timestamp.hour,
       ),
       groupHeaderBuilder: (Timelines timelines) => SizedBox(
         height: 40,
@@ -478,8 +472,8 @@ class _StepSevenState extends State<StepSeven> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          10, 10, 10, 10),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -535,9 +529,8 @@ class _StepSevenState extends State<StepSeven> {
                                       : Image.asset(timelines.profile),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          8, 0, 0, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      8, 0, 0, 0),
                                   child: Text(
                                     timelines.name,
                                     style: GoogleFonts.sarabun(),

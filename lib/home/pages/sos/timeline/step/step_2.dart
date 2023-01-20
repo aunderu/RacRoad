@@ -148,7 +148,6 @@ class _StepTwoState extends State<StepTwo> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -188,7 +187,7 @@ class _StepTwoState extends State<StepTwo> {
             ElevatedButton(
               onPressed: () {
                 userSendDeal(widget.sosId, "yes");
-                Get.offAllNamed('/sos');
+                Get.offNamed('/sos');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: mainGreen,
@@ -203,7 +202,6 @@ class _StepTwoState extends State<StepTwo> {
             ),
           ],
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -221,9 +219,10 @@ class _StepTwoState extends State<StepTwo> {
       floatingHeader: true,
       shrinkWrap: true,
       order: GroupedListOrder.DESC,
-      groupBy: (message) => DateTime(
-        widget.stepOnetimeStamp.day,
-        widget.stepOnetimeStamp.hour,
+      groupBy: (timelines) => DateTime(
+        timelines.timestamp.month,
+        timelines.timestamp.day,
+        timelines.timestamp.hour,
       ),
       groupHeaderBuilder: (Timelines timelines) => SizedBox(
         height: 40,

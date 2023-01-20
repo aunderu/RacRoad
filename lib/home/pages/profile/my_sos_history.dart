@@ -86,7 +86,7 @@ class _MySosHistoryState extends State<MySosHistory> {
         ],
         centerTitle: false,
       ),
-      body: Padding(
+      body: Padding( 
         padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
         child: FutureBuilder<AllMySos?>(
           future: dataFuture,

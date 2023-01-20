@@ -436,9 +436,10 @@ class _StepEightState extends State<StepEight> {
         floatingHeader: true,
         shrinkWrap: true,
         padding: const EdgeInsets.only(top: 0),
-        groupBy: (message) => DateTime(
-          widget.stepOnetimeStamp.hour,
-          widget.stepOnetimeStamp.day,
+        groupBy: (timelines) => DateTime(
+          timelines.timestamp.month,
+          timelines.timestamp.day,
+          timelines.timestamp.hour,
         ),
         groupHeaderBuilder: (Timelines timelines) => SizedBox(
           height: 40,

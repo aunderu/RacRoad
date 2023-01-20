@@ -91,9 +91,10 @@ class _StepOneState extends State<StepOne> {
         elements: timelines,
         reverse: true,
         order: GroupedListOrder.DESC,
-        groupBy: (message) => DateTime(
-          widget.stepOnetimeStamp.day,
-          widget.stepOnetimeStamp.hour,
+        groupBy: (timelines) => DateTime(
+          timelines.timestamp.month,
+          timelines.timestamp.day,
+          timelines.timestamp.hour,
         ),
         groupHeaderBuilder: (Timelines timelines) => SizedBox(
           height: 40,

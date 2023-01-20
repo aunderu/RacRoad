@@ -1,8 +1,8 @@
-class ProblemModel {
-  final String id;
+class Problems {
+  final int id;
   final String problem;
 
-  ProblemModel({
+  Problems({
     required this.id,
     required this.problem,
   });

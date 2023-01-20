@@ -165,7 +165,6 @@ class _StepSixState extends State<StepSix> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -177,7 +176,6 @@ class _StepSixState extends State<StepSix> {
           "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPrice} บาท",
           style: GoogleFonts.sarabun(),
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -189,7 +187,6 @@ class _StepSixState extends State<StepSix> {
           "โปรดรอสักครู่",
           style: GoogleFonts.sarabun(),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -227,7 +224,6 @@ class _StepSixState extends State<StepSix> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -316,7 +312,6 @@ class _StepSixState extends State<StepSix> {
                   ),
           ],
         ),
-        
         widget.tncProfile!,
         widget.tncName,
         "3",
@@ -361,7 +356,6 @@ class _StepSixState extends State<StepSix> {
                   ),
                 ],
               ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -574,7 +568,6 @@ class _StepSixState extends State<StepSix> {
             ),
           ],
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -639,9 +632,10 @@ class _StepSixState extends State<StepSix> {
           useStickyGroupSeparators: true,
           floatingHeader: true,
           shrinkWrap: true,
-          groupBy: (message) => DateTime(
-            widget.stepOnetimeStamp.hour,
-            widget.stepOnetimeStamp.day,
+          groupBy: (timelines) => DateTime(
+            timelines.timestamp.month,
+            timelines.timestamp.day,
+            timelines.timestamp.hour,
           ),
           groupHeaderBuilder: (Timelines timelines) => SizedBox(
             height: 40,
@@ -730,8 +724,7 @@ class _StepSixState extends State<StepSix> {
                                     ),
                                   ),
                                   const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 1),
+                                    padding: EdgeInsets.symmetric(vertical: 1),
                                     child: Divider(
                                       thickness: 1,
                                       color: Color(0x392E2E2E),
@@ -765,8 +758,9 @@ class _StepSixState extends State<StepSix> {
                                           : Image.asset(timelines.profile),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(8, 0, 0, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              8, 0, 0, 0),
                                       child: Text(
                                         timelines.name,
                                         style: GoogleFonts.sarabun(),

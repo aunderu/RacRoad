@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
@@ -12,13 +13,11 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:rac_road/colors.dart';
 import 'package:http/http.dart' as http;
-import 'package:rac_road/home/pages/sos/list_problem_models.dart';
-
-import '../../screens.dart';
 
 class SOSFormPage extends StatefulWidget {
   final String getToken;
   final String sosTitle;
+  final List<String> problems;
   String location;
   String latitude;
   String longitude;
@@ -26,6 +25,7 @@ class SOSFormPage extends StatefulWidget {
     super.key,
     required this.getToken,
     required this.sosTitle,
+    required this.problems,
     required this.location,
     required this.latitude,
     required this.longitude,
@@ -42,6 +42,9 @@ class _SOSFormPageState extends State<SOSFormPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var _isLoading = false;
 
+  int tag = 1;
+  List<String> _isSelected = [];
+
   File? imageFile;
 
   @override
@@ -51,9 +54,11 @@ class _SOSFormPageState extends State<SOSFormPage> {
     locationMessage = widget.location;
   }
 
-  final problemLists = [];
-
-  List<ProblemModel?> selectedProblems = [];
+  // static final List<Problems> _problemList = [
+  //   Problems(id: 1, problem: "ล้อยางแบน"),
+  //   Problems(id: 2, problem: "ล้อยางระเบิด"),
+  //   Problems(id: 3, problem: "ล้อหลุด"),
+  // ];
 
   Future<void> _getCurrentLocation() async {
     Position pos = await _determindePosition();
@@ -408,20 +413,6 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
                               contentPadding:
                                   const EdgeInsetsDirectional.fromSTEB(
                                       20, 32, 20, 12),
@@ -431,6 +422,28 @@ class _SOSFormPageState extends State<SOSFormPage> {
                             maxLines: 4,
                             keyboardType: TextInputType.multiline,
                           ),
+                        ),
+                        ChipsChoice<String>.multiple(
+                          value: _isSelected,
+                          onChanged: (value) =>
+                              setState(() => _isSelected = value),
+                          choiceItems: C2Choice.listFrom(
+                            source: widget.problems,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                          ),
+                          choiceCheckmark: true,
+                          choiceStyle: C2ChipStyle.toned(
+                            selectedStyle: const C2ChipStyle(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25),
+                              ),
+                              foregroundColor: mainGreen,
+                              backgroundColor: mainGreen,
+                            ),
+                          ),
+                          wrapped: true,
+                          textDirection: TextDirection.ltr,
                         ),
                         imageFile == null
                             ? Align(
@@ -498,7 +511,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                     userProblemController!.text,
                                   );
 
-                                  Get.toNamed("/sos");
+                                  Get.offNamed('/sos');
 
                                   // Get.offAll(
                                   //   ScreensPage(
@@ -507,6 +520,12 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                   //     current: 0,
                                   //   ),
                                   // );
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: "กรุณาแนบรูปภาพมาด้วย",
+                                    backgroundColor: Colors.yellowAccent,
+                                    textColor: Colors.black,
+                                  );
                                 }
                               },
                               style: ElevatedButton.styleFrom(

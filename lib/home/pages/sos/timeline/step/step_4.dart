@@ -137,7 +137,6 @@ class _StepFourState extends State<StepFour> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -149,7 +148,6 @@ class _StepFourState extends State<StepFour> {
           "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPrice} บาท",
           style: GoogleFonts.sarabun(),
         ),
-        
         widget.userProfile,
         widget.userName,
         "1",
@@ -161,7 +159,6 @@ class _StepFourState extends State<StepFour> {
           "โปรดรอสักครู่",
           style: GoogleFonts.sarabun(),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -199,7 +196,6 @@ class _StepFourState extends State<StepFour> {
             ),
           ),
         ),
-        
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -255,7 +251,6 @@ class _StepFourState extends State<StepFour> {
                   ),
           ],
         ),
-        
         widget.tncProfile!,
         widget.tncName,
         "3",
@@ -263,7 +258,7 @@ class _StepFourState extends State<StepFour> {
     ].toList();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GroupedListView<Timelines, DateTime>(
@@ -273,9 +268,11 @@ class _StepFourState extends State<StepFour> {
       useStickyGroupSeparators: true,
       floatingHeader: true,
       shrinkWrap: true,
-      groupBy: (message) => DateTime(
-        widget.stepOnetimeStamp.hour,
-        widget.stepOnetimeStamp.day,
+      groupBy: (timelines) => DateTime(
+        timelines.timestamp.month,
+        timelines.timestamp.day,
+        timelines.timestamp.hour,
+        
       ),
       groupHeaderBuilder: (Timelines timelines) => SizedBox(
         height: 40,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -30,9 +32,22 @@ class _SOSPageState extends State<SOSPage> {
   void initState() {
     super.initState();
     _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);
+
+    setUpTimedFetch();
   }
 
-  Future<void> _getCurrentLocation(String sosTitle) async {
+  setUpTimedFetch() {
+    Timer.periodic(const Duration(milliseconds: 5000), (timer) {
+      if (mounted) {
+        setState(() {
+          _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);
+        });
+      }
+    });
+  }
+
+  Future<void> _getCurrentLocation(
+      String sosTitle, List<String> problems) async {
     showDialog(
       context: context,
       builder: (context) {
@@ -61,6 +76,7 @@ class _SOSPageState extends State<SOSPage> {
       () => SOSFormPage(
         getToken: widget.token,
         sosTitle: sosTitle,
+        problems: problems,
         location: _address,
         latitude: _latitude,
         longitude: _longitude,
@@ -131,8 +147,16 @@ class _SOSPageState extends State<SOSPage> {
                             child: InkWell(
                               splashColor: mainGreen,
                               onTap: () async {
-                                _getCurrentLocation("เปลี่ยนล้อ ใส่ลมยาง")
-                                    .then((value) {
+                                _getCurrentLocation(
+                                  "เปลี่ยนล้อ ใส่ลมยาง",
+                                  [
+                                    "ล้อยางแบน",
+                                    "test1",
+                                    "test2",
+                                    "test3",
+                                    "test4"
+                                  ],
+                                ).then((value) {
                                   setState(() {
                                     locationMessage = _address;
                                   });
@@ -194,8 +218,10 @@ class _SOSPageState extends State<SOSPage> {
                             child: InkWell(
                               splashColor: mainGreen,
                               onTap: () async {
-                                _getCurrentLocation("บริการยกรถ รถลาก")
-                                    .then((value) {
+                                _getCurrentLocation(
+                                  "บริการยกรถ รถลาก",
+                                  ["เครื่องเสีย"],
+                                ).then((value) {
                                   setState(() {
                                     locationMessage = _address;
                                   });
@@ -257,8 +283,10 @@ class _SOSPageState extends State<SOSPage> {
                             child: InkWell(
                               splashColor: mainGreen,
                               onTap: () async {
-                                _getCurrentLocation("น้ำมันหมด เติมน้ำมัน")
-                                    .then((value) {
+                                _getCurrentLocation(
+                                  "น้ำมันหมด เติมน้ำมัน",
+                                  ["น้ำมันหมด"],
+                                ).then((value) {
                                   setState(() {
                                     locationMessage = _address;
                                   });
@@ -325,8 +353,10 @@ class _SOSPageState extends State<SOSPage> {
                             child: InkWell(
                               splashColor: mainGreen,
                               onTap: () async {
-                                _getCurrentLocation("เปลี่ยนแบตเตอรี่")
-                                    .then((value) {
+                                _getCurrentLocation(
+                                  "เปลี่ยนแบตเตอรี่",
+                                  ["แบตเตอรี่เสื่อม"],
+                                ).then((value) {
                                   setState(() {
                                     locationMessage = _address;
                                   });
@@ -393,8 +423,10 @@ class _SOSPageState extends State<SOSPage> {
                             child: InkWell(
                               splashColor: mainGreen,
                               onTap: () async {
-                                _getCurrentLocation("บริการอื่น ๆ")
-                                    .then((value) {
+                                _getCurrentLocation(
+                                  "บริการอื่น ๆ",
+                                  ["อื่น ๆ"],
+                                ).then((value) {
                                   setState(() {
                                     locationMessage = _address;
                                   });

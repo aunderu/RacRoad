@@ -534,9 +534,10 @@ class _TncStepOneState extends State<TncStepOne> {
         shrinkWrap: true,
         order: GroupedListOrder.DESC,
         padding: const EdgeInsets.only(top: 0),
-        groupBy: (message) => DateTime(
-          widget.stepOneTimeStamp.day,
-          widget.stepOneTimeStamp.hour,
+        groupBy: (timelines) => DateTime(
+          timelines.timestamp.month,
+          timelines.timestamp.day,
+          timelines.timestamp.hour,
         ),
         groupHeaderBuilder: (Timelines timelines) => SizedBox(
           height: 40,
