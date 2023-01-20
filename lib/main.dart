@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:rac_road/home/screens.dart';
+import 'package:rac_road/screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'colors.dart';
