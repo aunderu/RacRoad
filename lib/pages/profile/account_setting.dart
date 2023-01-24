@@ -520,13 +520,17 @@ class _AccountSettingState extends State<AccountSetting> {
                           onTap: () async {
                             final SharedPreferences sharedPreferences =
                                 await SharedPreferences.getInstance();
+
                             sharedPreferences.remove("token");
+
                             await GoogleSignInApi.handleSignOut();
 
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => const LoginMainPage(),
-                            ));
+                            // Navigator.of(context)
+                            //     .pushReplacement(MaterialPageRoute(
+                            //   builder: (context) => const LoginMainPage(),
+                            // ));
+
+                            Get.offNamedUntil("/", (route) => false);
                           },
                           child: Container(
                             alignment: Alignment.center,
