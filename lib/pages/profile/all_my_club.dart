@@ -64,15 +64,17 @@ class _AllMyClubState extends State<AllMyClub> {
       child: Material(
         child: InkWell(
           onTap: () {
-            if (widget.clubStatus != "รอการอนุมัติ") {
+            if (widget.clubStatus == "รอการอนุมัติ") {
+              Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
+            } else if (widget.clubStatus == "ไม่อนุมัติ") {
+              Fluttertoast.showToast(msg: "คลับไม่ได้รับการอนุมัติ");
+            } else {
               Get.to(
                 () => ClubDetailsPage(
                   clubId: widget.clubId,
                   getToken: widget.token,
                 ),
               );
-            } else {
-              Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
             }
           },
           child: Ink(

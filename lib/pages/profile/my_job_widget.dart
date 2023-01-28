@@ -55,6 +55,13 @@ class _MyJobWidgetState extends State<MyJobWidget> {
             isLoaded = false;
           });
         }
+      } else {
+        if (mounted) {
+          setState(() {
+            haveJob = false;
+            isLoaded = false;
+          });
+        }
       }
     }
   }

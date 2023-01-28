@@ -2,20 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:rac_road/models/all_car_models.dart';
 import 'package:rac_road/models/all_my_sos_models.dart';
 import 'package:rac_road/models/all_my_tnc_sos_models.dart';
 import 'package:rac_road/models/club_details.dart';
+import 'package:rac_road/models/my_car_models.dart';
 import 'package:rac_road/models/my_current_sos_models.dart';
 import 'package:rac_road/models/my_job_models.dart';
 import 'package:rac_road/models/current_tnc_sos_models.dart';
 import 'package:rac_road/models/sos_details_models.dart';
 
-import '../models/my_car_models.dart';
 import '../models/my_club_models.dart';
 import '../models/user_profile_model.dart';
 
 MyProfile? resultUserProfile;
-MyCar? resultMyCar;
+AllMyCar? resultMyCar;
 MyClub? resultMyClub;
 ClubDetails? resultClubDetails;
 MyJob? resultMyJob;
@@ -24,6 +25,7 @@ SosDetails? resultSosDetails;
 CurrentTncSos? resultCurrentTncSos;
 AllMyTncSos? resultAllMyTncSos;
 AllMySos? resultAllMySos;
+AllCarModel? resultAllCar;
 
 const url = "https://api.racroad.com/api";
 const testurl = "https://api-racroad.chabafarm.com/api";
@@ -50,12 +52,12 @@ class RemoteService {
   }
 
   // ################################ MyCar #################################
-  Future<MyCar?> getMyCar(String token) async {
+  Future<AllMyCar?> getMyCar(String token) async {
     try {
       final response = await http.get(Uri.parse("$url/mycar/all/$token"));
       if (response.statusCode == 200) {
         final itemMyCar = json.decode(response.body);
-        resultMyCar = MyCar.fromJson(itemMyCar);
+        resultMyCar = AllMyCar.fromJson(itemMyCar);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -199,8 +201,7 @@ class RemoteService {
   // ################################ AllMySos #################################
   Future<AllMySos?> getAllMySos(String token) async {
     try {
-      final response =
-          await http.get(Uri.parse("$url/my/user/sos/$token"));
+      final response = await http.get(Uri.parse("$url/my/user/sos/$token"));
       if (response.statusCode == 200) {
         final itemAllMySos = json.decode(response.body);
         resultAllMySos = AllMySos.fromJson(itemAllMySos);
@@ -213,5 +214,23 @@ class RemoteService {
       }
     }
     return resultAllMySos;
+  }
+
+  // ################################ AllCar #################################
+  Future<AllCarModel?> getAllCar() async {
+    try {
+      final response = await http.get(Uri.parse("$url/car/data"));
+      if (response.statusCode == 200) {
+        final itemAllCar = json.decode(response.body);
+        resultAllCar = AllCarModel.fromJson(itemAllCar);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultAllCar;
   }
 }

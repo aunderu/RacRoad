@@ -1,49 +1,89 @@
 // To parse this JSON data, do
 //
-//     final myCar = myCarFromJson(jsonString);
+//     final allMyCar = allMyCarFromJson(jsonString);
 
 import 'dart:convert';
 
-MyCar myCarFromJson(String str) => MyCar.fromJson(json.decode(str));
+AllMyCar allMyCarFromJson(String str) => AllMyCar.fromJson(json.decode(str));
 
-String myCarToJson(MyCar data) => json.encode(data.toJson());
+String allMyCarToJson(AllMyCar data) => json.encode(data.toJson());
 
-class MyCar {
-    MyCar({
-        required this.status,
-        required this.data,
-        required this.message,
+class AllMyCar {
+    AllMyCar({
+        this.status,
+        this.data,
+        this.message,
     });
 
-    bool status;
-    Data data;
-    String message;
+    bool? status;
+    Data? data;
+    String? message;
 
-    factory MyCar.fromJson(Map<String, dynamic> json) => MyCar(
+    factory AllMyCar.fromJson(Map<String, dynamic> json) => AllMyCar(
         status: json["status"],
-        data: Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
         message: json["message"],
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
-        "data": data.toJson(),
+        "data": data?.toJson(),
         "message": message,
     };
 }
 
 class Data {
     Data({
-        required this.mycarData,
+        this.mycarData,
     });
 
-    List<dynamic> mycarData;
+    List<MycarDatum>? mycarData;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        mycarData: List<dynamic>.from(json["mycar_data"].map((x) => x)),
+        mycarData: json["mycar_data"] == null ? [] : List<MycarDatum>.from(json["mycar_data"]!.map((x) => MycarDatum.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "mycar_data": List<dynamic>.from(mycarData.map((x) => x)),
+        "mycar_data": mycarData == null ? [] : List<dynamic>.from(mycarData!.map((x) => x.toJson())),
+    };
+}
+
+class MycarDatum {
+    MycarDatum({
+        this.mycarId,
+        this.carBrand,
+        this.carModel,
+        this.carMakeover,
+        this.carSubversion,
+        this.carFuel,
+        this.ownerName,
+    });
+
+    String? mycarId;
+    String? carBrand;
+    String? carModel;
+    String? carMakeover;
+    String? carSubversion;
+    String? carFuel;
+    String? ownerName;
+
+    factory MycarDatum.fromJson(Map<String, dynamic> json) => MycarDatum(
+        mycarId: json["mycar_id"],
+        carBrand: json["car_brand"],
+        carModel: json["car_model"],
+        carMakeover: json["car_makeover"],
+        carSubversion: json["car_subversion"],
+        carFuel: json["car_fuel"],
+        ownerName: json["owner_name"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "mycar_id": mycarId,
+        "car_brand": carBrand,
+        "car_model": carModel,
+        "car_makeover": carMakeover,
+        "car_subversion": carSubversion,
+        "car_fuel": carFuel,
+        "owner_name": ownerName,
     };
 }
