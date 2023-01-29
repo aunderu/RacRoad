@@ -94,9 +94,9 @@ class _JobWidgetState extends State<JobWidget> {
                     child: PopupMenuButton<CustomMenuItem>(
                       onSelected: (item) => onSelected(context, item),
                       itemBuilder: (context) => [
-                        ...MenuItems.itemsFirst.map(buildItem).toList(),
+                        ...JobMenuItems.itemsFirst.map(buildItem).toList(),
                         const PopupMenuDivider(),
-                        ...MenuItems.itemsSecond.map(buildItem).toList(),
+                        ...JobMenuItems.itemsSecond.map(buildItem).toList(),
                       ],
                       child: const Icon(
                         Icons.keyboard_control,
@@ -200,10 +200,10 @@ class _JobWidgetState extends State<JobWidget> {
 
   void onSelected(BuildContext context, CustomMenuItem item) {
     switch (item) {
-      case MenuItems.itemEdit:
+      case JobMenuItems.itemEdit:
         Get.to(() => const JobSettings());
         break;
-      case MenuItems.itemDelete:
+      case JobMenuItems.itemDelete:
         showDialog(
           context: context,
           builder: (context) => AlertDialog(

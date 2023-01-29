@@ -14,6 +14,7 @@ import 'pages/home_page.dart';
 import 'pages/notifications.dart';
 import 'pages/profile.dart';
 import 'pages/sos.dart';
+import 'pages/test_page.dart';
 
 class ScreensPage extends StatefulWidget {
   final String getToken;
@@ -52,6 +53,7 @@ class _ScreensPageState extends State<ScreensPage> {
       getToken: widget.getToken,
       current: widget.current,
     ),
+    // TestPage(),
   ];
 
   @override
@@ -336,6 +338,14 @@ class _ScreensPageState extends State<ScreensPage> {
                       ),
                       label: 'Profile',
                     ),
+                    // NavigationDestination(
+                    //   icon: Icon(
+                    //     Icons.app_registration_sharp,
+                    //     color: Colors.yellow[700],
+                    //     size: 40,
+                    //   ),
+                    //   label: 'Test',
+                    // ),
                   ],
                 ),
               ),
