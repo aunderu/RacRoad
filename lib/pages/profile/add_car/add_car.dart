@@ -14,21 +14,28 @@ import 'package:rac_road/models/all_car_models.dart';
 import '../../../services/remote_service.dart';
 
 class AddCarPage extends StatefulWidget {
-  final String getToken;
   const AddCarPage({super.key, required this.getToken});
+
+  final String getToken;
 
   @override
   State<AddCarPage> createState() => _AddCarPageState();
 }
 
 class _AddCarPageState extends State<AddCarPage> {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AllCarModel? allCar;
-  bool haveCar = false;
-  bool isLoaded = false;
-
-  TextEditingController? searchController;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<CarDatum>? foundCars;
+  bool haveCar = false;
+  File? imageFile;
+  bool isLoaded = false;
+  TextEditingController? searchController;
+
+  @override
+  void dispose() {
+    searchController?.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -36,12 +43,6 @@ class _AddCarPageState extends State<AddCarPage> {
     searchController = TextEditingController();
 
     getCarData();
-  }
-
-  @override
-  void dispose() {
-    searchController?.dispose();
-    super.dispose();
   }
 
   getCarData() async {
@@ -70,24 +71,6 @@ class _AddCarPageState extends State<AddCarPage> {
     }
   }
 
-  void _runFilter(String enterdKeyword) {
-    List<CarDatum> result;
-    if (enterdKeyword.isEmpty) {
-      result = allCar!.data.carData;
-    } else {
-      result = allCar!.data.carData
-          .where((car) =>
-              car.model.toLowerCase().contains(enterdKeyword.toLowerCase()) ||
-              car.brand.toLowerCase().contains(enterdKeyword.toLowerCase()))
-          .toList();
-    }
-
-    setState(() {
-      foundCars = result;
-    });
-  }
-
-  File? imageFile;
   void showImageDialog(String carId) {
     showDialog(
       context: context,
@@ -223,6 +206,23 @@ class _AddCarPageState extends State<AddCarPage> {
     } else {
       throw Exception(jsonDecode(response.toString()));
     }
+  }
+
+  void _runFilter(String enterdKeyword) {
+    List<CarDatum> result;
+    if (enterdKeyword.isEmpty) {
+      result = allCar!.data.carData;
+    } else {
+      result = allCar!.data.carData
+          .where((car) =>
+              car.model.toLowerCase().contains(enterdKeyword.toLowerCase()) ||
+              car.brand.toLowerCase().contains(enterdKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      foundCars = result;
+    });
   }
 
   @override

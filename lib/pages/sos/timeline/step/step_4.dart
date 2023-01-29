@@ -1,34 +1,14 @@
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:rac_road/controller/sosDetailsController.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class StepFour extends StatefulWidget {
-  final String getToken;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final DateTime stepFourTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
-  final String tncName;
-  final String tncStatus;
-  final String? tncProfile;
-  final String? imgBfwork;
   const StepFour({
     super.key,
     required this.getToken,
@@ -51,14 +31,33 @@ class StepFour extends StatefulWidget {
     required this.imgBfwork,
   });
 
+  final String getToken;
+  final String? imgBfwork;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String repairDetails;
+  final String repairPrice;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String tncName;
+  final String? tncProfile;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userTel;
+
   @override
   State<StepFour> createState() => _StepFourState();
 }
 
 class _StepFourState extends State<StepFour> {
-  final SosDetailsController sosDetailsController =
-      Get.put(SosDetailsController());
+
   late List<Timelines> timelines;
+
   @override
   void initState() {
     super.initState();

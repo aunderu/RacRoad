@@ -15,6 +15,7 @@ class SetInterestsPage extends StatefulWidget {
 
 class _SetInterestsPageState extends State<SetInterestsPage> {
   List<Category> pickInterest = [];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

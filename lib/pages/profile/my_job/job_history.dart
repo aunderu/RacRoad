@@ -8,13 +8,14 @@ import 'package:rac_road/services/remote_service.dart';
 import 'tnc_sos_history_widget.dart';
 
 class MyJobHistory extends StatefulWidget {
-  final String getToken;
-  final String tncId;
   const MyJobHistory({
     super.key,
     required this.getToken,
     required this.tncId,
   });
+
+  final String getToken;
+  final String tncId;
 
   @override
   State<MyJobHistory> createState() => _MyJobHistoryState();

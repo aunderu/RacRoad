@@ -16,23 +16,23 @@ import '../profile/account_setting.dart';
 import 'view_calentar.dart';
 
 class ClubDetailsPage extends StatefulWidget {
-  final String getToken;
-  final String clubId;
   const ClubDetailsPage({
     super.key,
     required this.getToken,
     required this.clubId,
   });
 
+  final String clubId;
+  final String getToken;
+
   @override
   State<ClubDetailsPage> createState() => _ClubDetailsPageState();
 }
 
 class _ClubDetailsPageState extends State<ClubDetailsPage> {
-  TextEditingController? searchController;
   bool isFabVisible = true;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController? searchController;
 
   @override
   void initState() {

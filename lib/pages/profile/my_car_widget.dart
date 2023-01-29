@@ -16,16 +16,18 @@ import 'add_car/add_car.dart';
 import 'car_details.dart';
 
 class MyCarWidget extends StatefulWidget {
-  final String getToken;
   const MyCarWidget({super.key, required this.getToken});
+
+  final String getToken;
 
   @override
   State<MyCarWidget> createState() => _MyCarWidgetState();
 }
 
 class _MyCarWidgetState extends State<MyCarWidget> {
-  AllMyCar? myCar;
   bool isLoaded = true;
+  AllMyCar? myCar;
+
   bool _haveCar = false;
   final bool _isMultiCar = false;
 
@@ -77,6 +79,60 @@ class _MyCarWidgetState extends State<MyCarWidget> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+    }
+  }
+
+  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
+      PopupMenuItem<CustomMenuItem>(
+        value: item,
+        child: Row(
+          children: [
+            Icon(
+              item.icon,
+              color: Colors.black,
+              size: 20,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              item.text,
+              style: GoogleFonts.sarabun(),
+            ),
+          ],
+        ),
+      );
+
+  void onSelected(BuildContext context, CustomMenuItem item) {
+    switch (item) {
+      case CarMenuItems.itemDelete:
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(
+              "ลบข้อมูลรถของคุณ",
+              style: GoogleFonts.sarabun(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: const Text(
+                'ข้อมูลรถนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  deleteCar(myCar!.data!.mycarData![0].mycarId!);
+                },
+                child: const Text('ลบข้อมูลรถ'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('ยกเลิก'),
+              ),
+            ],
+            elevation: 24,
+          ),
+        );
+
+        break;
     }
   }
 
@@ -1083,60 +1139,6 @@ class _MyCarWidgetState extends State<MyCarWidget> {
           ),
         );
       }
-    }
-  }
-
-  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
-      PopupMenuItem<CustomMenuItem>(
-        value: item,
-        child: Row(
-          children: [
-            Icon(
-              item.icon,
-              color: Colors.black,
-              size: 20,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              item.text,
-              style: GoogleFonts.sarabun(),
-            ),
-          ],
-        ),
-      );
-
-  void onSelected(BuildContext context, CustomMenuItem item) {
-    switch (item) {
-      case CarMenuItems.itemDelete:
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(
-              "ลบข้อมูลรถของคุณ",
-              style: GoogleFonts.sarabun(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            content: const Text(
-                'ข้อมูลรถนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  deleteCar(myCar!.data!.mycarData![0].mycarId!);
-                },
-                child: const Text('ลบข้อมูลรถ'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('ยกเลิก'),
-              ),
-            ],
-            elevation: 24,
-          ),
-        );
-
-        break;
     }
   }
 }

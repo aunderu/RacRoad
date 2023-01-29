@@ -9,19 +9,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class UserReject extends StatefulWidget {
-  final String getToken;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
   const UserReject({
     super.key,
     required this.getToken,
@@ -39,12 +26,27 @@ class UserReject extends StatefulWidget {
     required this.repairDetails,
   });
 
+  final String getToken;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String repairDetails;
+  final String repairPrice;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String userName;
+  final String userProfile;
+  final String userTel;
+
   @override
   State<UserReject> createState() => _UserRejectState();
 }
 
 class _UserRejectState extends State<UserReject> {
   late List<Timelines> timelines;
+
   @override
   void initState() {
     super.initState();

@@ -15,15 +15,15 @@ class AllCarModel {
         required this.message,
     });
 
-    bool status;
-    Data data;
-    String message;
-
     factory AllCarModel.fromJson(Map<String, dynamic> json) => AllCarModel(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
     );
+
+    Data data;
+    String message;
+    bool status;
 
     Map<String, dynamic> toJson() => {
         "status": status,
@@ -37,11 +37,11 @@ class Data {
         required this.carData,
     });
 
-    List<CarDatum> carData;
-
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         carData: List<CarDatum>.from(json["car_data"].map((x) => CarDatum.fromJson(x))),
     );
+
+    List<CarDatum> carData;
 
     Map<String, dynamic> toJson() => {
         "car_data": List<dynamic>.from(carData.map((x) => x.toJson())),
@@ -67,22 +67,6 @@ class CarDatum {
         required this.updatedAt,
     });
 
-    String carId;
-    String brand;
-    String model;
-    String makeover;
-    String subversion;
-    String fuel;
-    String brakeFluid;
-    String powerOil;
-    String engineOil;
-    String brakePads;
-    String carTire;
-    String battery;
-    String air;
-    DateTime createdAt;
-    DateTime updatedAt;
-
     factory CarDatum.fromJson(Map<String, dynamic> json) => CarDatum(
         carId: json["car_id"],
         brand: json["brand"],
@@ -100,6 +84,22 @@ class CarDatum {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );
+
+    String air;
+    String battery;
+    String brakeFluid;
+    String brakePads;
+    String brand;
+    String carId;
+    String carTire;
+    DateTime createdAt;
+    String engineOil;
+    String fuel;
+    String makeover;
+    String model;
+    String powerOil;
+    String subversion;
+    DateTime updatedAt;
 
     Map<String, dynamic> toJson() => {
         "car_id": carId,

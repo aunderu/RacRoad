@@ -36,8 +36,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GoogleSignInAccount? _currentUser;
   String? token;
+
+  GoogleSignInAccount? _currentUser;
 
   @override
   void initState() {
@@ -155,6 +156,11 @@ class CheckLogin extends StatefulWidget {
 }
 
 class _CheckLoginState extends State<CheckLogin> {
+  @override
+  void didChangeDependencies() {
+    precacheImage(const AssetImage('assets/imgs/MainLoginBG-min.jpg'), context);
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -162,7 +168,6 @@ class _CheckLoginState extends State<CheckLogin> {
 
     checkLogin();
   }
-
 
   void checkLogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -187,12 +192,6 @@ class _CheckLoginState extends State<CheckLogin> {
         ),
       );
     }
-  }
-
-  @override
-  void didChangeDependencies() {
-    precacheImage(const AssetImage('assets/imgs/MainLoginBG-min.jpg'), context);
-    super.didChangeDependencies();
   }
 
   @override

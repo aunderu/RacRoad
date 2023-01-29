@@ -4,19 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class NotificationsPage extends StatefulWidget {
-  final String token;
   const NotificationsPage({
     super.key,
     required this.token,
   });
+
+  final String token;
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  TextEditingController? searchController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController? searchController;
 
   @override
   void initState() {

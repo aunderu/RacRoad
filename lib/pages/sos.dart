@@ -14,20 +14,22 @@ import 'sos/sos_form.dart';
 import 'sos/timeline/timeline_page.dart';
 
 class SOSPage extends StatefulWidget {
-  final String token;
   const SOSPage({super.key, required this.token});
+
+  final String token;
 
   @override
   State<SOSPage> createState() => _SOSPageState();
 }
 
 class _SOSPageState extends State<SOSPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
-  var _latitude = "";
-  var _longitude = "";
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   var _address = "";
   var _dataCurrentSos;
+  var _latitude = "";
+  var _longitude = "";
 
   @override
   void initState() {

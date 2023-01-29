@@ -12,13 +12,6 @@ import 'job_history.dart';
 import 'job_setting.dart';
 
 class JobWidget extends StatefulWidget {
-  final String getToken;
-  final String jobId;
-  final String clubProfile;
-  final String tncId;
-  final String tncName;
-  final String jobZone;
-  final String status;
   const JobWidget({
     super.key,
     required this.getToken,
@@ -29,6 +22,14 @@ class JobWidget extends StatefulWidget {
     required this.jobZone,
     required this.status,
   });
+
+  final String clubProfile;
+  final String getToken;
+  final String jobId;
+  final String jobZone;
+  final String status;
+  final String tncId;
+  final String tncName;
 
   @override
   State<JobWidget> createState() => _JobWidgetState();
@@ -62,6 +63,64 @@ class _JobWidgetState extends State<JobWidget> {
     }
   }
 
+  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
+      PopupMenuItem<CustomMenuItem>(
+        value: item,
+        child: Row(
+          children: [
+            Icon(
+              item.icon,
+              color: Colors.black,
+              size: 20,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              item.text,
+              style: GoogleFonts.sarabun(),
+            ),
+          ],
+        ),
+      );
+
+  void onSelected(BuildContext context, CustomMenuItem item) {
+    switch (item) {
+      case JobMenuItems.itemEdit:
+        Get.to(() => const JobSettings());
+        break;
+      case JobMenuItems.itemDelete:
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("ลบหรือไม่?"),
+            content: const Text(
+                'ข้อมูลนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // missionUpdate(dataNewMission[index].id, "ปฏิเสธ");
+                  deleteJob(widget.jobId);
+                  // Get.to(() => ScreensPage(
+                  //       getToken: widget.token,
+                  //       pageIndex: 4,
+                  //       isSOS: false,
+                  //       isConfirm: false,
+                  //     ));
+                },
+                child: const Text('ลบ'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('ยกเลิก'),
+              ),
+            ],
+            elevation: 24,
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -83,7 +142,7 @@ class _JobWidgetState extends State<JobWidget> {
           child: Ink(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: widget.status == "รอการอนุมัติ" ? lightGrey : whiteGreen,
+              color: widget.status == "รอการอนุมัติ" ? lightGrey : whiteGrey,
             ),
             child: Stack(
               children: [
@@ -177,63 +236,5 @@ class _JobWidgetState extends State<JobWidget> {
         ),
       ),
     );
-  }
-
-  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
-      PopupMenuItem<CustomMenuItem>(
-        value: item,
-        child: Row(
-          children: [
-            Icon(
-              item.icon,
-              color: Colors.black,
-              size: 20,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              item.text,
-              style: GoogleFonts.sarabun(),
-            ),
-          ],
-        ),
-      );
-
-  void onSelected(BuildContext context, CustomMenuItem item) {
-    switch (item) {
-      case JobMenuItems.itemEdit:
-        Get.to(() => const JobSettings());
-        break;
-      case JobMenuItems.itemDelete:
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("ลบหรือไม่?"),
-            content: const Text(
-                'ข้อมูลนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // missionUpdate(dataNewMission[index].id, "ปฏิเสธ");
-                  deleteJob(widget.jobId);
-                  // Get.to(() => ScreensPage(
-                  //       getToken: widget.token,
-                  //       pageIndex: 4,
-                  //       isSOS: false,
-                  //       isConfirm: false,
-                  //     ));
-                },
-                child: const Text('ลบ'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('ยกเลิก'),
-              ),
-            ],
-            elevation: 24,
-          ),
-        );
-        break;
-    }
   }
 }

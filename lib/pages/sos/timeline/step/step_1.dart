@@ -8,15 +8,6 @@ import 'package:rac_road/colors.dart';
 import 'package:rac_road/models/data/timeline_models.dart';
 
 class StepOne extends StatefulWidget {
-  final String getToken;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
   const StepOne({
     super.key,
     required this.getToken,
@@ -29,6 +20,16 @@ class StepOne extends StatefulWidget {
     required this.userProfile,
     required this.imgIncident,
   });
+
+  final String getToken;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final DateTime stepOnetimeStamp;
+  final String userName;
+  final String userProfile;
+  final String userTel;
 
   @override
   State<StepOne> createState() => _StepOneState();

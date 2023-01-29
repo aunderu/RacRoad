@@ -19,29 +19,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class StepSix extends StatefulWidget {
-  final String getToken;
-  final String sosId;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final DateTime stepFourTimeStamp;
-  final DateTime stepFiveTimeStamp;
-  final DateTime stepSixTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
-  final String tncName;
-  final String tncStatus;
-  final String? tncProfile;
-  final String? imgBfwork;
-  final String? imgAfwork;
-  final String? qrCode;
   const StepSix({
     super.key,
     required this.getToken,
@@ -69,17 +46,41 @@ class StepSix extends StatefulWidget {
     this.qrCode,
   });
 
+  final String getToken;
+  final String? imgAfwork;
+  final String? imgBfwork;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String? qrCode;
+  final String repairDetails;
+  final String repairPrice;
+  final String sosId;
+  final DateTime stepFiveTimeStamp;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepSixTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String tncName;
+  final String? tncProfile;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userTel;
+
   @override
   State<StepSix> createState() => _StepSixState();
 }
 
 class _StepSixState extends State<StepSix> {
   GlobalKey<FormState> basicFormKey = GlobalKey<FormState>();
-  TextEditingController? userReviewController;
-  double rating = 0;
-
   File? imageFile;
+  double rating = 0;
   late List<Timelines> timelines;
+  TextEditingController? userReviewController;
+
   @override
   void initState() {
     super.initState();

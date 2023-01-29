@@ -1,9 +1,9 @@
 class Category {
-  final int id;
-  final String title;
-  final String logo;
-
   Category(this.id, this.title, this.logo);
+
+  final int id;
+  final String logo;
+  final String title;
 }
 
 List<Category> categoryList = [

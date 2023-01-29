@@ -16,22 +16,23 @@ import '../sos/timeline/step/step_8.dart';
 import '../sos/timeline/step/user_reject.dart';
 
 class MyHistorySosDetails extends StatefulWidget {
-  final String getToken;
-  final String sosId;
   const MyHistorySosDetails({
     super.key,
     required this.getToken,
     required this.sosId,
   });
 
+  final String getToken;
+  final String sosId;
+
   @override
   State<MyHistorySosDetails> createState() => _MyHistorySosDetailsState();
 }
 
 class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
+  var _dataFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  var _dataFuture;
 
   @override
   void initState() {

@@ -17,6 +17,7 @@ class StepOneWithPhoneNumber extends StatefulWidget {
 
 class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
   String dropdownValue = list.first;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

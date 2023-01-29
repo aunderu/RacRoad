@@ -16,6 +16,7 @@ class StepTwoOTPPage extends StatefulWidget {
 
 class _StepTwoOTPPageState extends State<StepTwoOTPPage> {
   String dropdownValue = list.first;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

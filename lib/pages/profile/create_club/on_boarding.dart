@@ -9,8 +9,9 @@ import 'create_club.dart';
 
 
 class OnBoardingPage extends StatefulWidget {
-  final String getToken;
   const OnBoardingPage({super.key, required this.getToken});
+
+  final String getToken;
 
   @override
   State<OnBoardingPage> createState() => _OnBoardingPageState();

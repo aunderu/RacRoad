@@ -9,12 +9,6 @@ import '../../../../colors.dart';
 import 'step/step_page.dart';
 
 class TncSosHistoryWidget extends StatelessWidget {
-  final String getToken;
-  final String sosId;
-  final String userAvatar;
-  final String userProblem;
-  final String sosStatus;
-  final DateTime timeStamp;
   const TncSosHistoryWidget({
     super.key,
     required this.userAvatar,
@@ -24,6 +18,13 @@ class TncSosHistoryWidget extends StatelessWidget {
     required this.getToken,
     required this.sosId,
   });
+
+  final String getToken;
+  final String sosId;
+  final String sosStatus;
+  final DateTime timeStamp;
+  final String userAvatar;
+  final String userProblem;
 
   @override
   Widget build(BuildContext context) {

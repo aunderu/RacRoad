@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Timelines {
-  DateTime timestamp;
-  String? title;
-  Widget body;
-  String profile;
-  String name;
-  String isSentByMe;
-
   Timelines(
     this.timestamp,
     this.title,
@@ -16,4 +9,11 @@ class Timelines {
     this.name,
     this.isSentByMe,
   );
+
+  Widget body;
+  String isSentByMe;
+  String name;
+  String profile;
+  DateTime timestamp;
+  String? title;
 }

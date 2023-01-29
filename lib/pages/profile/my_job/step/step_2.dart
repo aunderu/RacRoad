@@ -10,24 +10,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class TncStepTwo extends StatefulWidget {
-  final DateTime stepOneTimeStamp;
-  final DateTime stepTwoTimeStamp;
-  final String getToken;
-  final String sosId;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final String tncName;
-  final String tncAvatar;
-  final String tncStatus;
-  final String latitude;
-  final String longitude;
-  final String imgBfwork;
-  final String imgAfwork;
   const TncStepTwo({
     super.key,
     required this.stepOneTimeStamp,
@@ -49,6 +31,25 @@ class TncStepTwo extends StatefulWidget {
     required this.imgBfwork,
     required this.imgAfwork,
   });
+
+  final String getToken;
+  final String imgAfwork;
+  final String imgBfwork;
+  final String imgIncident;
+  final String latitude;
+  final String location;
+  final String longitude;
+  final String problem;
+  final String problemDetails;
+  final String sosId;
+  final DateTime stepOneTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String tncAvatar;
+  final String tncName;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userTel;
 
   @override
   State<TncStepTwo> createState() => _TncStepTwoState();

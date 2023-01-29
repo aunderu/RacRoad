@@ -10,28 +10,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class TncStepThree extends StatefulWidget {
-  final DateTime stepOneTimeStamp;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final String getToken;
-  final String sosId;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final String tncName;
-  final String tncAvatar;
-  final String tncStatus;
-  final String latitude;
-  final String longitude;
-  final String imgBfwork;
-  final String imgAfwork;
-  final String userReview;
-  final String userRate;
-  final String racroadSlip;
   const TncStepThree({
     super.key,
     required this.stepOneTimeStamp,
@@ -57,6 +35,29 @@ class TncStepThree extends StatefulWidget {
     required this.userRate,
     required this.racroadSlip,
   });
+
+  final String getToken;
+  final String imgAfwork;
+  final String imgBfwork;
+  final String imgIncident;
+  final String latitude;
+  final String location;
+  final String longitude;
+  final String problem;
+  final String problemDetails;
+  final String racroadSlip;
+  final String sosId;
+  final DateTime stepOneTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String tncAvatar;
+  final String tncName;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userRate;
+  final String userReview;
+  final String userTel;
 
   @override
   State<TncStepThree> createState() => _TncStepThreeState();

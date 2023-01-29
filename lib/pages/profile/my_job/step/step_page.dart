@@ -13,22 +13,23 @@ import 'step_2.dart';
 import 'step_3.dart';
 
 class StepPage extends StatefulWidget {
-  final String getToken;
-  final String sosId;
   const StepPage({
     super.key,
     required this.getToken,
     required this.sosId,
   });
 
+  final String getToken;
+  final String sosId;
+
   @override
   State<StepPage> createState() => _StepPageState();
 }
 
 class _StepPageState extends State<StepPage> {
+  var _dataFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  var _dataFuture;
 
   @override
   void initState() {

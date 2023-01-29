@@ -15,15 +15,15 @@ class UserLogin {
     required this.message,
   });
 
-  bool status;
-  Data data;
-  String message;
-
   factory UserLogin.fromJson(Map<String, dynamic> json) => UserLogin(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
       );
+
+  Data data;
+  String message;
+  bool status;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -39,15 +39,15 @@ class Data {
     required this.email,
   });
 
-  String id;
-  String name;
-  String email;
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         name: json["name"],
         email: json["email"],
       );
+
+  String email;
+  String id;
+  String name;
 
   Map<String, dynamic> toJson() => {
         "id": id,

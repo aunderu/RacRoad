@@ -5,22 +5,22 @@ import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  final String token;
   const HomePage({
     Key? key,
     required this.token,
   }) : super(key: key);
+
+  final String token;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  bool circular = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController? searchController;
   late SharedPreferences sharedPreferences;
-
-  bool circular = true;
 
   @override
   void initState() {

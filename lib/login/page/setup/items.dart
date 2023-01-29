@@ -5,8 +5,6 @@ import '../../../colors.dart';
 import '../../../models/category.dart';
 
 class Items extends StatefulWidget {
-  final Category category;
-  final ValueChanged<bool> onSelected;
   const Items({
     Key? key,
     required this.size,
@@ -14,6 +12,8 @@ class Items extends StatefulWidget {
     required this.onSelected,
   }) : super(key: key);
 
+  final Category category;
+  final ValueChanged<bool> onSelected;
   final Size size;
 
   @override
@@ -22,6 +22,7 @@ class Items extends StatefulWidget {
 
 class _ItemsState extends State<Items> {
   bool _isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

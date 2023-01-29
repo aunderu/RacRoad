@@ -15,12 +15,6 @@ import 'package:rac_road/colors.dart';
 import 'package:http/http.dart' as http;
 
 class SOSFormPage extends StatefulWidget {
-  final String getToken;
-  final String sosTitle;
-  final List<String> problems;
-  String location;
-  String latitude;
-  String longitude;
   SOSFormPage({
     super.key,
     required this.getToken,
@@ -31,67 +25,33 @@ class SOSFormPage extends StatefulWidget {
     required this.longitude,
   });
 
+  final String getToken;
+  String latitude;
+  String location;
+  String longitude;
+  final List<String> problems;
+  final String sosTitle;
+
   @override
   State<SOSFormPage> createState() => _SOSFormPageState();
 }
 
 class _SOSFormPageState extends State<SOSFormPage> {
-  String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
-  TextEditingController? userProblemController;
   final formKey = GlobalKey<FormState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  var _isLoading = false;
-
-  int tag = 1;
-  List<String> _isSelected = [];
-
   File? imageFile;
+  String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  int tag = 1;
+  TextEditingController? userProblemController;
+
+  var _isLoading = false;
+  List<String> _isSelected = [];
 
   @override
   void initState() {
     super.initState();
     userProblemController = TextEditingController();
     locationMessage = widget.location;
-  }
-
-  // static final List<Problems> _problemList = [
-  //   Problems(id: 1, problem: "ล้อยางแบน"),
-  //   Problems(id: 2, problem: "ล้อยางระเบิด"),
-  //   Problems(id: 3, problem: "ล้อหลุด"),
-  // ];
-
-  Future<void> _getCurrentLocation() async {
-    Position pos = await _determindePosition();
-    List<Placemark> pm =
-        await placemarkFromCoordinates(pos.latitude, pos.longitude);
-    setState(() {
-      widget.latitude = pos.latitude.toString();
-      widget.longitude = pos.longitude.toString();
-      widget.location =
-          "${pm.reversed.last.street}, ${pm.reversed.last.subLocality} ${pm.reversed.last.subAdministrativeArea} ${pm.reversed.last.administrativeArea}, ${pm.reversed.last.postalCode}";
-    });
-  }
-
-  // เอาโลเคชันของผู้ใช้ รับเป็น ละติจุด ลองติจุด
-  Future<Position> _determindePosition() async {
-    bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!isServiceEnabled) {
-      return Future.error('บริการระบุตำแหน่งปิดใช้งานอยู่');
-    }
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error("สิทธิ์ในการระบุตำแหน่งถูกปฏิเสธ");
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'สิทธิ์เข้าถึงตำแหน่งถูกปฏิเสธอย่างถาวร พวกเราไม่สามารถเข้าถึงการระบุตำแหน่งได้');
-    }
-
-    return await Geolocator.getCurrentPosition();
   }
 
   void showImageDialog() {
@@ -224,6 +184,46 @@ class _SOSFormPageState extends State<SOSFormPage> {
     } else {
       throw Exception(jsonDecode(response.toString()));
     }
+  }
+
+  // static final List<Problems> _problemList = [
+  //   Problems(id: 1, problem: "ล้อยางแบน"),
+  //   Problems(id: 2, problem: "ล้อยางระเบิด"),
+  //   Problems(id: 3, problem: "ล้อหลุด"),
+  // ];
+
+  Future<void> _getCurrentLocation() async {
+    Position pos = await _determindePosition();
+    List<Placemark> pm =
+        await placemarkFromCoordinates(pos.latitude, pos.longitude);
+    setState(() {
+      widget.latitude = pos.latitude.toString();
+      widget.longitude = pos.longitude.toString();
+      widget.location =
+          "${pm.reversed.last.street}, ${pm.reversed.last.subLocality} ${pm.reversed.last.subAdministrativeArea} ${pm.reversed.last.administrativeArea}, ${pm.reversed.last.postalCode}";
+    });
+  }
+
+  // เอาโลเคชันของผู้ใช้ รับเป็น ละติจุด ลองติจุด
+  Future<Position> _determindePosition() async {
+    bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isServiceEnabled) {
+      return Future.error('บริการระบุตำแหน่งปิดใช้งานอยู่');
+    }
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error("สิทธิ์ในการระบุตำแหน่งถูกปฏิเสธ");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'สิทธิ์เข้าถึงตำแหน่งถูกปฏิเสธอย่างถาวร พวกเราไม่สามารถเข้าถึงการระบุตำแหน่งได้');
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 
   @override

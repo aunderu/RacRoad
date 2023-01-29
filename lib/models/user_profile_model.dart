@@ -15,15 +15,15 @@ class MyProfile {
     required this.message,
   });
 
-  bool status;
-  Data data;
-  String message;
-
   factory MyProfile.fromJson(Map<String, dynamic> json) => MyProfile(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
       );
+
+  Data data;
+  String message;
+  bool status;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -38,13 +38,13 @@ class Data {
     required this.interest,
   });
 
-  MyProfileClass myProfile;
-  List<dynamic> interest;
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         myProfile: MyProfileClass.fromJson(json["my_profile"]),
         interest: List<dynamic>.from(json["interest"].map((x) => x)),
       );
+
+  List<dynamic> interest;
+  MyProfileClass myProfile;
 
   Map<String, dynamic> toJson() => {
         "my_profile": myProfile.toJson(), 
@@ -73,24 +73,6 @@ class MyProfileClass {
     this.zipCode,
   });
 
-  String id;
-  String name;
-  dynamic tel;
-  String email;
-  dynamic cardId;
-  String role;
-  String avatar;
-  String address;
-  dynamic county;
-  dynamic road;
-  dynamic alley;
-  dynamic houseNumber;
-  dynamic groupNo;
-  dynamic subDistrict;
-  dynamic district;
-  dynamic province;
-  dynamic zipCode;
-
   factory MyProfileClass.fromJson(Map<String, dynamic> json) => MyProfileClass(
         id: json["id"],
         name: json["name"],
@@ -110,6 +92,24 @@ class MyProfileClass {
         province: json["province"],
         zipCode: json["ZIP_code"],
       );
+
+  String address;
+  dynamic alley;
+  String avatar;
+  dynamic cardId;
+  dynamic county;
+  dynamic district;
+  String email;
+  dynamic groupNo;
+  dynamic houseNumber;
+  String id;
+  String name;
+  dynamic province;
+  dynamic road;
+  String role;
+  dynamic subDistrict;
+  dynamic tel;
+  dynamic zipCode;
 
   Map<String, dynamic> toJson() => {
         "id": id,

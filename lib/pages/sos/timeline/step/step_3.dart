@@ -6,23 +6,9 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../colors.dart';
-import '../../../../screens.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class StepThree extends StatefulWidget {
-  final String getToken;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
   const StepThree({
     super.key,
     required this.getToken,
@@ -40,12 +26,27 @@ class StepThree extends StatefulWidget {
     required this.repairDetails,
   });
 
+  final String getToken;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String repairDetails;
+  final String repairPrice;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String userName;
+  final String userProfile;
+  final String userTel;
+
   @override
   State<StepThree> createState() => _StepThreeState();
 }
 
 class _StepThreeState extends State<StepThree> {
   late List<Timelines> timelines;
+
   @override
   void initState() {
     super.initState();

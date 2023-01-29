@@ -9,16 +9,17 @@ import 'club/club_widget.dart';
 import 'profile/create_club/on_boarding.dart';
 
 class ClubPage extends StatefulWidget {
-  final String token;
   const ClubPage({super.key, required this.token});
+
+  final String token;
 
   @override
   State<ClubPage> createState() => _ClubPageState();
 }
 
 class _ClubPageState extends State<ClubPage> {
-  TextEditingController? searchController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController? searchController;
 
   @override
   void initState() {

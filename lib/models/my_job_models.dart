@@ -15,15 +15,15 @@ class MyJob {
         required this.message,
     });
 
-    bool status;
-    Data data;
-    String message;
-
     factory MyJob.fromJson(Map<String, dynamic> json) => MyJob(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
     );
+
+    Data data;
+    String message;
+    bool status;
 
     Map<String, dynamic> toJson() => {
         "status": status,
@@ -37,11 +37,11 @@ class Data {
         required this.myTechnician,
     });
 
-    List<MyTechnician> myTechnician;
-
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         myTechnician: List<MyTechnician>.from(json["my_technician"].map((x) => MyTechnician.fromJson(x))),
     );
+
+    List<MyTechnician> myTechnician;
 
     Map<String, dynamic> toJson() => {
         "my_technician": List<dynamic>.from(myTechnician.map((x) => x.toJson())),
@@ -57,12 +57,6 @@ class MyTechnician {
         required this.status,
     });
 
-    String tncId;
-    String name;
-    String tncName;
-    String serviceZone;
-    String status;
-
     factory MyTechnician.fromJson(Map<String, dynamic> json) => MyTechnician(
         tncId: json["tnc_id"],
         name: json["name"],
@@ -70,6 +64,12 @@ class MyTechnician {
         serviceZone: json["service_zone"],
         status: json["status"],
     );
+
+    String name;
+    String serviceZone;
+    String status;
+    String tncId;
+    String tncName;
 
     Map<String, dynamic> toJson() => {
         "tnc_id": tncId,

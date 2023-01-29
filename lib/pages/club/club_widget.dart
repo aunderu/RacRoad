@@ -5,11 +5,6 @@ import '../../../colors.dart';
 import 'club_details.dart';
 
 class ClubWidget extends StatelessWidget {
-  final String getToken;
-  final String clubId;
-  final String clubName;
-  final String clubAdmin;
-  final String clubZone;
   const ClubWidget({
     super.key,
     required this.clubName,
@@ -17,6 +12,12 @@ class ClubWidget extends StatelessWidget {
     required this.clubAdmin,
     required this.getToken, required this.clubId,
   });
+
+  final String clubAdmin;
+  final String clubId;
+  final String clubName;
+  final String clubZone;
+  final String getToken;
 
   @override
   Widget build(BuildContext context) {

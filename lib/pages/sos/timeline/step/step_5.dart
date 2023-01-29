@@ -9,26 +9,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class StepFive extends StatefulWidget {
-  final String getToken;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final DateTime stepFourTimeStamp;
-  final DateTime stepFiveTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
-  final String tncName;
-  final String tncStatus;
-  final String? tncProfile;
-  final String? imgBfwork;
-  final String? imgAfwork;
   const StepFive({
     super.key,
     required this.getToken,
@@ -53,12 +33,34 @@ class StepFive extends StatefulWidget {
     this.imgAfwork,
   });
 
+  final String getToken;
+  final String? imgAfwork;
+  final String? imgBfwork;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String repairDetails;
+  final String repairPrice;
+  final DateTime stepFiveTimeStamp;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String tncName;
+  final String? tncProfile;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userTel;
+
   @override
   State<StepFive> createState() => _StepFiveState();
 }
 
 class _StepFiveState extends State<StepFive> {
   late List<Timelines> timelines;
+
   @override
   void initState() {
     super.initState();

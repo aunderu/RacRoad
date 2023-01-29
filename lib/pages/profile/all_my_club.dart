@@ -13,11 +13,6 @@ import '../club/club_details.dart';
 import '../club/club_settings.dart';
 
 class AllMyClub extends StatefulWidget {
-  final String token;
-  final String clubId;
-  final String clubName;
-  final String clubStatus;
-
   const AllMyClub({
     super.key,
     required this.clubName,
@@ -25,6 +20,11 @@ class AllMyClub extends StatefulWidget {
     required this.clubId,
     required this.clubStatus,
   });
+
+  final String clubId;
+  final String clubName;
+  final String clubStatus;
+  final String token;
 
   @override
   State<AllMyClub> createState() => _AllMyClubState();
@@ -54,6 +54,64 @@ class _AllMyClubState extends State<AllMyClub> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+    }
+  }
+
+  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
+      PopupMenuItem<CustomMenuItem>(
+        value: item,
+        child: Row(
+          children: [
+            Icon(
+              item.icon,
+              color: Colors.black,
+              size: 20,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              item.text,
+              style: GoogleFonts.sarabun(),
+            ),
+          ],
+        ),
+      );
+
+  void onSelected(BuildContext context, CustomMenuItem item) {
+    switch (item) {
+      case ClubMenuItems.itemEdit:
+        Get.to(() => const ClubSettings());
+        break;
+      case ClubMenuItems.itemDelete:
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("ลบคลับ ${widget.clubName}"),
+            content: const Text(
+                'คลับนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // missionUpdate(dataNewMission[index].id, "ปฏิเสธ");
+                  deleteClub(widget.clubId);
+                  // Get.to(() => ScreensPage(
+                  //       getToken: widget.token,
+                  //       pageIndex: 4,
+                  //       isSOS: false,
+                  //       isConfirm: false,
+                  //     ));
+                },
+                child: const Text('ลบคลับ'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('ยกเลิก'),
+              ),
+            ],
+            elevation: 24,
+          ),
+        );
+        break;
     }
   }
 
@@ -153,63 +211,5 @@ class _AllMyClubState extends State<AllMyClub> {
         ),
       ),
     );
-  }
-
-  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
-      PopupMenuItem<CustomMenuItem>(
-        value: item,
-        child: Row(
-          children: [
-            Icon(
-              item.icon,
-              color: Colors.black,
-              size: 20,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              item.text,
-              style: GoogleFonts.sarabun(),
-            ),
-          ],
-        ),
-      );
-
-  void onSelected(BuildContext context, CustomMenuItem item) {
-    switch (item) {
-      case ClubMenuItems.itemEdit:
-        Get.to(() => const ClubSettings());
-        break;
-      case ClubMenuItems.itemDelete:
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text("ลบคลับ ${widget.clubName}"),
-            content: const Text(
-                'คลับนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // missionUpdate(dataNewMission[index].id, "ปฏิเสธ");
-                  deleteClub(widget.clubId);
-                  // Get.to(() => ScreensPage(
-                  //       getToken: widget.token,
-                  //       pageIndex: 4,
-                  //       isSOS: false,
-                  //       isConfirm: false,
-                  //     ));
-                },
-                child: const Text('ลบคลับ'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('ยกเลิก'),
-              ),
-            ],
-            elevation: 24,
-          ),
-        );
-        break;
-    }
   }
 }

@@ -14,22 +14,22 @@ import 'my_job/job_widget.dart';
 import 'my_job/step/step_page.dart';
 
 class MyJobWidget extends StatefulWidget {
-  final String getToken;
   const MyJobWidget({
     super.key,
     required this.getToken,
   });
+
+  final String getToken;
 
   @override
   State<MyJobWidget> createState() => _MyJobWidgetState();
 }
 
 class _MyJobWidgetState extends State<MyJobWidget> {
-  MyJob? myJob;
-  CurrentTncSos? myTncSos;
-
   bool haveJob = false;
   bool isLoaded = false;
+  MyJob? myJob;
+  CurrentTncSos? myTncSos;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                         child: Ink(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: lightGreen,
                             border: Border.all(
                               color: whiteGrey,
                               width: 5,
@@ -113,7 +113,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                             children: [
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    30, 16, 30, 16),
+                                    16, 13, 30, 16),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,12 +123,28 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                                       style: GoogleFonts.sarabun(
                                         fontSize: 30,
                                         fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        shadows: <Shadow>[
+                                          const Shadow(
+                                            offset: Offset(1.0, 1.0),
+                                            blurRadius: 5.0,
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     AutoSizeText(
                                       'ดูเหมือนคุณมีงานที่ต้องทำให้เสร็จ',
                                       style: GoogleFonts.sarabun(
                                         fontSize: 20,
+                                        color: Colors.white,
+                                        shadows: <Shadow>[
+                                          const Shadow(
+                                            offset: Offset(1.0, 1.0),
+                                            blurRadius: 5.0,
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -137,12 +153,18 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                               const Align(
                                 alignment: AlignmentDirectional(1, 0),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 0),
+                                  padding: EdgeInsetsDirectional.all(5),
                                   child: Icon(
-                                    Icons.feedback,
-                                    color: Color.fromARGB(255, 255, 103, 103),
+                                    Icons.feedback_rounded,
+                                    color: Colors.white,
                                     size: 50,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                        offset: Offset(1.0, 1.0),
+                                        blurRadius: 5.0,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

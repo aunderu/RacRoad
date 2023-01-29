@@ -12,8 +12,9 @@ import '../../../screens.dart';
 
 // TAF = Technician application form
 class TAFpage extends StatefulWidget {
-  final String getToken;
   const TAFpage({Key? key, required this.getToken}) : super(key: key);
+
+  final String getToken;
 
   @override
   State<TAFpage> createState() => _TAFpageState();
@@ -21,33 +22,18 @@ class TAFpage extends StatefulWidget {
 
 class _TAFpageState extends State<TAFpage> {
   TextEditingController? addressController;
+  int currentStep = 0;
+  final formKeys = GlobalKey<FormState>();
+  bool isCompleted = false;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController? serviceTimeController;
   TextEditingController? serviceTypeController;
-  TextEditingController? workHistoryController;
-  TextEditingController? tel1Controller;
-  TextEditingController? tel2Controller;
   TextEditingController? serviceZoneController;
   TextEditingController? stdHistoryController;
+  TextEditingController? tel1Controller;
+  TextEditingController? tel2Controller;
   TextEditingController? tncNameController;
-  final formKeys = GlobalKey<FormState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  int currentStep = 0;
-  bool isCompleted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    addressController = TextEditingController();
-    serviceTimeController = TextEditingController();
-    serviceTypeController = TextEditingController();
-    workHistoryController = TextEditingController();
-    tel1Controller = TextEditingController();
-    tel2Controller = TextEditingController();
-    serviceZoneController = TextEditingController();
-    stdHistoryController = TextEditingController();
-    tncNameController = TextEditingController();
-  }
+  TextEditingController? workHistoryController;
 
   @override
   void dispose() {
@@ -64,111 +50,17 @@ class _TAFpageState extends State<TAFpage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Future<void> techSubmit() async {
-      if (workHistoryController?.text != "" ||
-          stdHistoryController?.text != "" ||
-          tncNameController?.text != "" ||
-          tel1Controller?.text != "" ||
-          addressController?.text != "" ||
-          serviceTypeController?.text != "" ||
-          serviceZoneController?.text != "" ||
-          serviceTimeController?.text != "") {
-        final response = await http.post(
-          Uri.parse("https://api.racroad.com/api/technician/store"),
-          body: {
-            'user_id': widget.getToken,
-            'address': addressController!.text,
-            'tel1': tel1Controller!.text,
-            'tel2': tel2Controller?.text,
-            'service_zone': serviceZoneController!.text,
-            'service_time': serviceTimeController!.text,
-            'service_type': serviceTypeController!.text,
-            'work_history': workHistoryController!.text,
-            'tnc_name': tncNameController!.text,
-            'std_history': stdHistoryController!.text,
-          },
-        );
-        try {
-          if (response.statusCode == 200) {
-            var encodefirst = json.encode(response.body);
-            var data = json.decode(encodefirst);
-            return data;
-            // print("complete");
-          }
-        } catch (e) {
-          throw Exception(jsonDecode(response.body));
-        }
-      }
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.black,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: isCompleted
-          ? formCompleted(widget.getToken)
-          : Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              key: formKeys,
-              child: Theme(
-                data: ThemeData(
-                  colorScheme: Theme.of(context).colorScheme.copyWith(
-                        primary: mainGreen,
-                      ),
-                ),
-                child: Stepper(
-                  type: StepperType.vertical,
-                  steps: getSteps(),
-                  currentStep: currentStep,
-                  onStepContinue: () {
-                    final isLastStep = currentStep == getSteps().length - 1;
-
-                    if (isLastStep) {
-                      if (workHistoryController?.text != "" ||
-                          stdHistoryController?.text != "" ||
-                          tncNameController?.text != "" ||
-                          tel1Controller?.text != "" ||
-                          addressController?.text != "" ||
-                          serviceTypeController?.text != "" ||
-                          serviceZoneController?.text != "" ||
-                          serviceTimeController?.text != "") {
-                        techSubmit();
-                        setState(() {
-                          isCompleted = true;
-                        });
-                      }
-                    } else {
-                      // if (_formKeys[currentStep].currentState!.validate()) {
-                      //   setState(
-                      //     () => currentStep += 1,
-                      //   );
-                      // }
-                      setState(
-                        () => currentStep += 1,
-                      );
-                    }
-                  },
-                  onStepCancel: currentStep == 0
-                      ? null
-                      : () => setState(
-                            () => currentStep -= 1,
-                          ),
-                ),
-              ),
-            ),
-    );
+  void initState() {
+    super.initState();
+    addressController = TextEditingController();
+    serviceTimeController = TextEditingController();
+    serviceTypeController = TextEditingController();
+    workHistoryController = TextEditingController();
+    tel1Controller = TextEditingController();
+    tel2Controller = TextEditingController();
+    serviceZoneController = TextEditingController();
+    stdHistoryController = TextEditingController();
+    tncNameController = TextEditingController();
   }
 
   List<Step> getSteps() => [
@@ -656,6 +548,114 @@ class _TAFpageState extends State<TAFpage> {
           ),
         ),
       ];
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> techSubmit() async {
+      if (workHistoryController?.text != "" ||
+          stdHistoryController?.text != "" ||
+          tncNameController?.text != "" ||
+          tel1Controller?.text != "" ||
+          addressController?.text != "" ||
+          serviceTypeController?.text != "" ||
+          serviceZoneController?.text != "" ||
+          serviceTimeController?.text != "") {
+        final response = await http.post(
+          Uri.parse("https://api.racroad.com/api/technician/store"),
+          body: {
+            'user_id': widget.getToken,
+            'address': addressController!.text,
+            'tel1': tel1Controller!.text,
+            'tel2': tel2Controller?.text,
+            'service_zone': serviceZoneController!.text,
+            'service_time': serviceTimeController!.text,
+            'service_type': serviceTypeController!.text,
+            'work_history': workHistoryController!.text,
+            'tnc_name': tncNameController!.text,
+            'std_history': stdHistoryController!.text,
+          },
+        );
+        try {
+          if (response.statusCode == 200) {
+            var encodefirst = json.encode(response.body);
+            var data = json.decode(encodefirst);
+            return data;
+            // print("complete");
+          }
+        } catch (e) {
+          throw Exception(jsonDecode(response.body));
+        }
+      }
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: isCompleted
+          ? formCompleted(widget.getToken)
+          : Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: formKeys,
+              child: Theme(
+                data: ThemeData(
+                  colorScheme: Theme.of(context).colorScheme.copyWith(
+                        primary: mainGreen,
+                      ),
+                ),
+                child: Stepper(
+                  type: StepperType.vertical,
+                  steps: getSteps(),
+                  currentStep: currentStep,
+                  onStepContinue: () {
+                    final isLastStep = currentStep == getSteps().length - 1;
+
+                    if (isLastStep) {
+                      if (workHistoryController?.text != "" ||
+                          stdHistoryController?.text != "" ||
+                          tncNameController?.text != "" ||
+                          tel1Controller?.text != "" ||
+                          addressController?.text != "" ||
+                          serviceTypeController?.text != "" ||
+                          serviceZoneController?.text != "" ||
+                          serviceTimeController?.text != "") {
+                        techSubmit();
+                        setState(() {
+                          isCompleted = true;
+                        });
+                      }
+                    } else {
+                      // if (_formKeys[currentStep].currentState!.validate()) {
+                      //   setState(
+                      //     () => currentStep += 1,
+                      //   );
+                      // }
+                      setState(
+                        () => currentStep += 1,
+                      );
+                    }
+                  },
+                  onStepCancel: currentStep == 0
+                      ? null
+                      : () => setState(
+                            () => currentStep -= 1,
+                          ),
+                ),
+              ),
+            ),
+    );
+  }
 }
 
 Widget formCompleted(String token) {

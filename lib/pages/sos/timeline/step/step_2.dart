@@ -14,19 +14,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class StepTwo extends StatefulWidget {
-  final String getToken;
-  final String sosId;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
   const StepTwo({
     super.key,
     required this.getToken,
@@ -44,12 +31,33 @@ class StepTwo extends StatefulWidget {
     required this.repairDetails,
   });
 
+  final String getToken;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String repairDetails;
+  final String repairPrice;
+  final String sosId;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String userName;
+  final String userProfile;
+  final String userTel;
+
   @override
   State<StepTwo> createState() => _StepTwoState();
 }
 
 class _StepTwoState extends State<StepTwo> {
   late List<Timelines> timelines;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getTimelines();
+  }
 
   Future<void> userSendDeal(String sosId, String userDeal) async {
     final response = await http.post(
@@ -63,13 +71,6 @@ class _StepTwoState extends State<StepTwo> {
     } else {
       throw Exception(jsonDecode(response.body));
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    getTimelines();
   }
 
   void getTimelines() {

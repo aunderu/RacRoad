@@ -8,23 +8,25 @@ import 'all_my_club.dart';
 import 'create_club/on_boarding.dart';
 
 class MyClubWidget extends StatefulWidget {
-  final String getToken;
   const MyClubWidget({
     super.key,
     required this.getToken,
   });
+
+  final String getToken;
 
   @override
   State<MyClubWidget> createState() => _MyClubWidgetState();
 }
 
 class _MyClubWidgetState extends State<MyClubWidget> {
-  MyClub? myClub;
-  List<ClubAll>? clubWaiting;
   List<ClubAll>? clubApproved;
   List<ClubAll>? clubRejected;
+  List<ClubAll>? clubWaiting;
   bool haveClub = false;
   bool isLoaded = false;
+  MyClub? myClub;
+
   final bool _haveBookMark = true;
 
   @override

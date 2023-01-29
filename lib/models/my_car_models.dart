@@ -15,15 +15,15 @@ class AllMyCar {
         this.message,
     });
 
-    bool? status;
-    Data? data;
-    String? message;
-
     factory AllMyCar.fromJson(Map<String, dynamic> json) => AllMyCar(
         status: json["status"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         message: json["message"],
     );
+
+    Data? data;
+    String? message;
+    bool? status;
 
     Map<String, dynamic> toJson() => {
         "status": status,
@@ -37,11 +37,11 @@ class Data {
         this.mycarData,
     });
 
-    List<MycarDatum>? mycarData;
-
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         mycarData: json["mycar_data"] == null ? [] : List<MycarDatum>.from(json["mycar_data"]!.map((x) => MycarDatum.fromJson(x))),
     );
+
+    List<MycarDatum>? mycarData;
 
     Map<String, dynamic> toJson() => {
         "mycar_data": mycarData == null ? [] : List<dynamic>.from(mycarData!.map((x) => x.toJson())),
@@ -59,14 +59,6 @@ class MycarDatum {
         this.ownerName,
     });
 
-    String? mycarId;
-    String? carBrand;
-    String? carModel;
-    String? carMakeover;
-    String? carSubversion;
-    String? carFuel;
-    String? ownerName;
-
     factory MycarDatum.fromJson(Map<String, dynamic> json) => MycarDatum(
         mycarId: json["mycar_id"],
         carBrand: json["car_brand"],
@@ -76,6 +68,14 @@ class MycarDatum {
         carFuel: json["car_fuel"],
         ownerName: json["owner_name"],
     );
+
+    String? carBrand;
+    String? carFuel;
+    String? carMakeover;
+    String? carModel;
+    String? carSubversion;
+    String? mycarId;
+    String? ownerName;
 
     Map<String, dynamic> toJson() => {
         "mycar_id": mycarId,

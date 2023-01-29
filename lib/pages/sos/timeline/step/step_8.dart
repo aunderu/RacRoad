@@ -11,33 +11,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class StepEight extends StatefulWidget {
-  final String getToken;
-  final DateTime stepOnetimeStamp;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final DateTime stepTwoTimeStamp;
-  final DateTime stepThreeTimeStamp;
-  final DateTime stepFourTimeStamp;
-  final DateTime stepFiveTimeStamp;
-  final DateTime stepSixTimeStamp;
-  final DateTime stepSevenTimeStamp;
-  final DateTime stepEightTimeStamp;
-  final String repairPrice;
-  final String repairDetails;
-  final String tncName;
-  final String tncStatus;
-  final String? tncProfile;
-  final String? imgBfwork;
-  final String? imgAfwork;
-  final String? qrCode;
-  final String rate;
-  final String review;
-  final String userSlip;
   const StepEight({
     super.key,
     required this.getToken,
@@ -68,6 +41,34 @@ class StepEight extends StatefulWidget {
     required this.userSlip,
     required this.stepEightTimeStamp,
   });
+
+  final String getToken;
+  final String? imgAfwork;
+  final String? imgBfwork;
+  final String imgIncident;
+  final String location;
+  final String problem;
+  final String problemDetails;
+  final String? qrCode;
+  final String rate;
+  final String repairDetails;
+  final String repairPrice;
+  final String review;
+  final DateTime stepEightTimeStamp;
+  final DateTime stepFiveTimeStamp;
+  final DateTime stepFourTimeStamp;
+  final DateTime stepOnetimeStamp;
+  final DateTime stepSevenTimeStamp;
+  final DateTime stepSixTimeStamp;
+  final DateTime stepThreeTimeStamp;
+  final DateTime stepTwoTimeStamp;
+  final String tncName;
+  final String? tncProfile;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userSlip;
+  final String userTel;
 
   @override
   State<StepEight> createState() => _StepEightState();

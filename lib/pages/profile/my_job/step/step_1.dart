@@ -18,22 +18,6 @@ import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 
 class TncStepOne extends StatefulWidget {
-  final DateTime stepOneTimeStamp;
-  final String getToken;
-  final String sosId;
-  final String userName;
-  final String userTel;
-  final String problem;
-  final String problemDetails;
-  final String location;
-  final String userProfile;
-  final String imgIncident;
-  final String tncName;
-  final String tncAvatar;
-  final String tncStatus;
-  final String latitude;
-  final String longitude;
-  final String? imgBfwork;
   const TncStepOne({
     super.key,
     required this.stepOneTimeStamp,
@@ -53,6 +37,23 @@ class TncStepOne extends StatefulWidget {
     required this.longitude,
     required this.imgBfwork,
   });
+
+  final String getToken;
+  final String? imgBfwork;
+  final String imgIncident;
+  final String latitude;
+  final String location;
+  final String longitude;
+  final String problem;
+  final String problemDetails;
+  final String sosId;
+  final DateTime stepOneTimeStamp;
+  final String tncAvatar;
+  final String tncName;
+  final String tncStatus;
+  final String userName;
+  final String userProfile;
+  final String userTel;
 
   @override
   State<TncStepOne> createState() => _TncStepOneState();
@@ -461,14 +462,6 @@ class _TncStepOneState extends State<TncStepOne> {
     }
   }
 
-  Future<void> _openMap(String latitude, String longitude) async {
-    String googleURL =
-        'https://www.google.co.th/maps/search/$latitude,$longitude';
-    await canLaunchUrlString(googleURL)
-        ? await launchUrlString(googleURL)
-        : throw 'Could not launch $googleURL';
-  }
-
   Future<void> tncSendStatus(String sosId, String tncSendStatus) async {
     final response = await http.post(
       Uri.parse("https://api.racroad.com/api/sos/step/$sosId"),
@@ -517,6 +510,14 @@ class _TncStepOneState extends State<TncStepOne> {
     } else {
       throw Exception(jsonDecode(response.toString()));
     }
+  }
+
+  Future<void> _openMap(String latitude, String longitude) async {
+    String googleURL =
+        'https://www.google.co.th/maps/search/$latitude,$longitude';
+    await canLaunchUrlString(googleURL)
+        ? await launchUrlString(googleURL)
+        : throw 'Could not launch $googleURL';
   }
 
   @override

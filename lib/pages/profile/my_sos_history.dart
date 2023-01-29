@@ -7,11 +7,12 @@ import 'package:rac_road/services/remote_service.dart';
 import 'my_sos_history_widget.dart';
 
 class MySosHistory extends StatefulWidget {
-  final String getToken;
   const MySosHistory({
     super.key,
     required this.getToken,
   });
+
+  final String getToken;
 
   @override
   State<MySosHistory> createState() => _MySosHistoryState();

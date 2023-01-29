@@ -12,11 +12,6 @@ import '../../../colors.dart';
 import '../../screens.dart';
 
 class EditProfilePage extends StatefulWidget {
-  final String getToken;
-  final String userAvatar;
-  final String userEmail;
-  final String userName;
-  final String userTel;
   const EditProfilePage({
     super.key,
     required this.userAvatar,
@@ -26,23 +21,21 @@ class EditProfilePage extends StatefulWidget {
     required this.getToken,
   });
 
+  final String getToken;
+  final String userAvatar;
+  final String userEmail;
+  final String userName;
+  final String userTel;
+
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  GlobalKey<FormState> basicFormKey = GlobalKey<FormState>();
   TextEditingController? userEmailController;
   TextEditingController? userNameController;
   TextEditingController? userTelController;
-  GlobalKey<FormState> basicFormKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    userEmailController = TextEditingController(text: widget.userEmail);
-    userNameController = TextEditingController(text: widget.userName);
-    userTelController = TextEditingController(text: widget.userTel);
-  }
 
   @override
   void dispose() {
@@ -50,6 +43,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     userNameController?.dispose();
     userTelController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userEmailController = TextEditingController(text: widget.userEmail);
+    userNameController = TextEditingController(text: widget.userName);
+    userTelController = TextEditingController(text: widget.userTel);
   }
 
   Future<void> editProfile(

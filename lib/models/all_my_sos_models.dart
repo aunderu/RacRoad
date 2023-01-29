@@ -16,17 +16,17 @@ class AllMySos {
         required this.message,
     });
 
-    bool status;
-    int count;
-    Data data;
-    String message;
-
     factory AllMySos.fromJson(Map<String, dynamic> json) => AllMySos(
         status: json["status"],
         count: json["count"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
     );
+
+    int count;
+    Data data;
+    String message;
+    bool status;
 
     Map<String, dynamic> toJson() => {
         "status": status,
@@ -41,11 +41,11 @@ class Data {
         this.sos,
     });
 
-    List<So>? sos;
-
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         sos: json["sos"] == null ? null : List<So>.from(json["sos"].map((x) => So.fromJson(x))),
     );
+
+    List<So>? sos;
 
     Map<String, dynamic> toJson() => {
         "sos": sos == null ? null : List<dynamic>.from(sos!.map((x) => x.toJson())),
@@ -72,23 +72,6 @@ class So {
         this.tuSc,
     });
 
-    String sosId;
-    String userId;
-    String userName;
-    String avatar;
-    List<ImageIncident> imageIncident;
-    String problem;
-    String sosStatus;
-    DateTime createdAt;
-    DateTime? tuStep2;
-    DateTime? tuStep3;
-    DateTime? tuStep4;
-    DateTime? tuStep5;
-    DateTime? tuStep6;
-    DateTime? tuStep7;
-    DateTime? tuStep8;
-    DateTime? tuSc;
-
     factory So.fromJson(Map<String, dynamic> json) => So(
         sosId: json["sos_id"],
         userId:  json["user_id"],
@@ -107,6 +90,23 @@ class So {
         tuStep8: json["tu_step8"] == null ? null : DateTime.parse(json["tu_step8"]),
         tuSc: json["tu_sc"] == null ? null : DateTime.parse(json["tu_sc"]),
     );
+
+    String avatar;
+    DateTime createdAt;
+    List<ImageIncident> imageIncident;
+    String problem;
+    String sosId;
+    String sosStatus;
+    DateTime? tuSc;
+    DateTime? tuStep2;
+    DateTime? tuStep3;
+    DateTime? tuStep4;
+    DateTime? tuStep5;
+    DateTime? tuStep6;
+    DateTime? tuStep7;
+    DateTime? tuStep8;
+    String userId;
+    String userName;
 
     Map<String, dynamic> toJson() => {
         "sos_id": sosId,
@@ -134,13 +134,13 @@ class ImageIncident {
         required this.image,
     });
 
-    String id;
-    String image;
-
     factory ImageIncident.fromJson(Map<String, dynamic> json) => ImageIncident(
         id: json["id"],
         image: json["image"],
     );
+
+    String id;
+    String image;
 
     Map<String, dynamic> toJson() => {
         "id": id,

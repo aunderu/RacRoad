@@ -19,22 +19,23 @@ import 'step/step_8.dart';
 import 'step/user_reject.dart';
 
 class TimeLinePage extends StatefulWidget {
-  final String getToken;
-  final String sosId;
   const TimeLinePage({
     super.key,
     required this.getToken,
     required this.sosId,
   });
 
+  final String getToken;
+  final String sosId;
+
   @override
   State<TimeLinePage> createState() => _TimeLinePageState();
 }
 
 class _TimeLinePageState extends State<TimeLinePage> {
+  var _dataFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  var _dataFuture;
 
   @override
   void initState() {

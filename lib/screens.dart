@@ -17,10 +17,6 @@ import 'pages/sos.dart';
 import 'pages/test_page.dart';
 
 class ScreensPage extends StatefulWidget {
-  final String getToken;
-  int pageIndex;
-  // final GoogleSignInAccount user;
-  int current;
   ScreensPage({
     Key? key,
     required this.getToken,
@@ -29,20 +25,26 @@ class ScreensPage extends StatefulWidget {
     // required this.user,
   }) : super(key: key);
 
+  // final GoogleSignInAccount user;
+  int current;
+
+  final String getToken;
+  int pageIndex;
+
   @override
   State<ScreensPage> createState() => _ScreensPageState();
 }
 
 class _ScreensPageState extends State<ScreensPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController? searchController;
   MyJob? myJob;
   CurrentTncSos? myTncSos;
-  // int index = 0;
-  bool _isProfileNoti = false;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController? searchController;
   String? token;
 
   late Future<MyProfile?> _dataFuture;
+  // int index = 0;
+  bool _isProfileNoti = false;
 
   late final _screens = <Widget>[
     HomePage(token: widget.getToken),

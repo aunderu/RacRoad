@@ -14,27 +14,24 @@ import '../../../../models/category.dart';
 import '../../../screens.dart';
 
 class CreateClubPage extends StatefulWidget {
-  final String getToken;
   const CreateClubPage({super.key, required this.getToken});
+
+  final String getToken;
 
   @override
   State<CreateClubPage> createState() => _CreateClubPageState();
 }
 
 class _CreateClubPageState extends State<CreateClubPage> {
+  int activeIndex = 0;
   GlobalKey<FormState> basicFormKey = GlobalKey<FormState>();
-
-  TextEditingController? clubNameController;
   TextEditingController? clubDescriptionController;
+  TextEditingController? clubNameController;
   TextEditingController? clubZoneController;
+  List<Category> pickInterest = [];
+  int totalIndex = 4;
 
-  @override
-  void initState() {
-    super.initState();
-    clubNameController = TextEditingController();
-    clubDescriptionController = TextEditingController();
-    clubZoneController = TextEditingController();
-  }
+  int _itemTotal = 0;
 
   @override
   void dispose() {
@@ -42,6 +39,14 @@ class _CreateClubPageState extends State<CreateClubPage> {
     clubDescriptionController?.dispose();
     clubZoneController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    clubNameController = TextEditingController();
+    clubDescriptionController = TextEditingController();
+    clubZoneController = TextEditingController();
   }
 
   Future<void> clubSubmit() async {
@@ -63,44 +68,6 @@ class _CreateClubPageState extends State<CreateClubPage> {
     } catch (e) {
       throw Exception(jsonDecode(response.body));
     }
-  }
-
-  int activeIndex = 0;
-  int totalIndex = 4;
-  List<Category> pickInterest = [];
-  int _itemTotal = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return WillPopScope(
-      onWillPop: () async {
-        if (activeIndex != 0) {
-          activeIndex--;
-          setState(() {});
-          return true;
-        }
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.black,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: bodyBuilder(size),
-      ),
-    );
   }
 
   Widget bodyBuilder(Size size) {
@@ -812,6 +779,39 @@ class _CreateClubPageState extends State<CreateClubPage> {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return WillPopScope(
+      onWillPop: () async {
+        if (activeIndex != 0) {
+          activeIndex--;
+          setState(() {});
+          return true;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: bodyBuilder(size),
+      ),
     );
   }
 }

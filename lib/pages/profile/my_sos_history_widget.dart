@@ -9,13 +9,6 @@ import '../../../../colors.dart';
 import 'my_history_sos_details.dart';
 
 class MySosHistoryWidget extends StatelessWidget {
-  final String getToken;
-  final String sosId;
-  final String imgAccident;
-  final String userName;
-  final String userProblem;
-  final String sosStatus;
-  final DateTime timeStamp;
   const MySosHistoryWidget({
     super.key,
     required this.imgAccident,
@@ -26,6 +19,14 @@ class MySosHistoryWidget extends StatelessWidget {
     required this.getToken,
     required this.sosId,
   });
+
+  final String getToken;
+  final String imgAccident;
+  final String sosId;
+  final String sosStatus;
+  final DateTime timeStamp;
+  final String userName;
+  final String userProblem;
 
   @override
   Widget build(BuildContext context) {

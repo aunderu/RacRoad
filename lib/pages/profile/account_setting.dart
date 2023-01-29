@@ -13,8 +13,9 @@ import 'edit_profile.dart';
 import 'my_sos_history.dart';
 
 class AccountSetting extends StatefulWidget {
-  final String getToken;
   const AccountSetting({Key? key, required this.getToken}) : super(key: key);
+
+  final String getToken;
 
   @override
   State<AccountSetting> createState() => _AccountSettingState();

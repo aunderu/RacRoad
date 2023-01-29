@@ -15,15 +15,15 @@ class MyClub {
     required this.message,
   });
 
-  bool status;
-  Data data;
-  String message;
-
   factory MyClub.fromJson(Map<String, dynamic> json) => MyClub(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
       );
+
+  Data data;
+  String message;
+  bool status;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -37,12 +37,12 @@ class Data {
     required this.clubAll,
   });
 
-  List<ClubAll> clubAll;
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         clubAll: List<ClubAll>.from(
             json["club_all"].map((x) => ClubAll.fromJson(x))),
       );
+
+  List<ClubAll> clubAll;
 
   Map<String, dynamic> toJson() => {
         "club_all": List<dynamic>.from(clubAll.map((x) => x.toJson())),
@@ -58,12 +58,6 @@ class ClubAll {
     required this.admin,
   });
 
-  String id;
-  String clubName;
-  String clubZone;
-  String status;
-  String admin;
-
   factory ClubAll.fromJson(Map<String, dynamic> json) => ClubAll(
         id: json["id"],
         clubName: json["club_name"],
@@ -71,6 +65,12 @@ class ClubAll {
         status: json["status"],
         admin: json["admin"],
       );
+
+  String admin;
+  String clubName;
+  String clubZone;
+  String id;
+  String status;
 
   Map<String, dynamic> toJson() => {
         "id": id,

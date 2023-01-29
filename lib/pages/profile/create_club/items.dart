@@ -5,9 +5,6 @@ import '../../../../colors.dart';
 import '../../../../models/category.dart';
 
 class Items extends StatefulWidget {
-  final Category category;
-  final ValueChanged<bool> onSelected;
-  final int itemTotal;
   const Items({
     Key? key,
     required this.size,
@@ -16,6 +13,9 @@ class Items extends StatefulWidget {
     required this.itemTotal,
   }) : super(key: key);
 
+  final Category category;
+  final int itemTotal;
+  final ValueChanged<bool> onSelected;
   final Size size;
 
   @override

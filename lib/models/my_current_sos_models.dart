@@ -17,17 +17,17 @@ class MyCurrentSos {
     required this.data,
   });
 
-  bool status;
-  int count;
-  String message;
-  Data data;
-
   factory MyCurrentSos.fromJson(Map<String, dynamic> json) => MyCurrentSos(
         status: json["status"],
         count: json["count"],
         message: json["message"],
         data: Data.fromJson(json["data"]),
       );
+
+  int count;
+  Data data;
+  String message;
+  bool status;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -42,12 +42,12 @@ class Data {
     required this.mySosInProgress,
   });
 
-  List<MySosInProgress> mySosInProgress;
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         mySosInProgress: List<MySosInProgress>.from(
             json["my_sos_in_progress"].map((x) => MySosInProgress.fromJson(x))),
       );
+
+  List<MySosInProgress> mySosInProgress;
 
   Map<String, dynamic> toJson() => {
         "my_sos_in_progress":
@@ -74,22 +74,6 @@ class MySosInProgress {
     this.tuSc,
   });
 
-  String sosId;
-  String userId;
-  String userName;
-  String avatar;
-  String problem;
-  String sosStatus;
-  DateTime createdAt;
-  dynamic tuStep2;
-  dynamic tuStep3;
-  dynamic tuStep4;
-  dynamic tuStep5;
-  dynamic tuStep6;
-  dynamic tuStep7;
-  dynamic tuStep8;
-  dynamic tuSc;
-
   factory MySosInProgress.fromJson(Map<String, dynamic> json) =>
       MySosInProgress(
         sosId: json["sos_id"],
@@ -108,6 +92,22 @@ class MySosInProgress {
         tuStep8: json["tu_step8"],
         tuSc: json["tu_sc"],
       );
+
+  String avatar;
+  DateTime createdAt;
+  String problem;
+  String sosId;
+  String sosStatus;
+  dynamic tuSc;
+  dynamic tuStep2;
+  dynamic tuStep3;
+  dynamic tuStep4;
+  dynamic tuStep5;
+  dynamic tuStep6;
+  dynamic tuStep7;
+  dynamic tuStep8;
+  String userId;
+  String userName;
 
   Map<String, dynamic> toJson() => {
         "sos_id": sosId,

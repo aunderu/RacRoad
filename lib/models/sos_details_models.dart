@@ -18,15 +18,15 @@ class SosDetails {
         required this.message,
     });
 
-    bool status;
-    Data data;
-    String message;
-
     factory SosDetails.fromJson(Map<String, dynamic> json) => SosDetails(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
     );
+
+    Data data;
+    String message;
+    bool status;
 
     Map<String, dynamic> toJson() => {
         "status": status,
@@ -46,14 +46,6 @@ class Data {
         this.racroadSlip,
     });
 
-    Sos sos;
-    List<ImgAfwork>? imgIncident;
-    List<ImgAfwork>? imgBfwork;
-    List<ImgAfwork>? imgAfwork;
-    List<ImgAfwork>? qrCode;
-    List<ImgAfwork>? userSlip;
-    List<ImgAfwork>? racroadSlip;
-
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         sos: Sos.fromJson(json["sos"]),
         imgIncident: json["img_incident"] == null ? null : List<ImgAfwork>.from(json["img_incident"].map((x) => ImgAfwork.fromJson(x))),
@@ -63,6 +55,14 @@ class Data {
         userSlip: json["user_slip"] == null ? null : List<ImgAfwork>.from(json["user_slip"].map((x) => ImgAfwork.fromJson(x))),
         racroadSlip: json["racroad_slip"] == null ? null : List<ImgAfwork>.from(json["racroad_slip"].map((x) => ImgAfwork.fromJson(x))),
     );
+
+    List<ImgAfwork>? imgAfwork;
+    List<ImgAfwork>? imgBfwork;
+    List<ImgAfwork>? imgIncident;
+    List<ImgAfwork>? qrCode;
+    List<ImgAfwork>? racroadSlip;
+    Sos sos;
+    List<ImgAfwork>? userSlip;
 
     Map<String, dynamic> toJson() => {
         "sos": sos.toJson(),
@@ -81,13 +81,13 @@ class ImgAfwork {
         required this.image,
     });
 
-    String id;
-    String image;
-
     factory ImgAfwork.fromJson(Map<String, dynamic> json) => ImgAfwork(
         id: json["id"],
         image: json["image"]
     );
+
+    String id;
+    String image;
 
     Map<String, dynamic> toJson() => {
         "id": id,
@@ -134,42 +134,6 @@ class Sos {
         this.tuSc,
     });
 
-    String sosId;
-    String problem;
-    String userId;
-    String userName;
-    dynamic userTel;
-    String avatar;
-    dynamic crimeScene;
-    String problemDetail;
-    String location;
-    String latitude;
-    String longitude;
-    String? repairPrice;
-    String? repairDetail;
-    String? userDeal;
-    String? tncId;
-    String? tncName;
-    String? tncAvatar;
-    String? tncStatus;
-    dynamic tncDeal;
-    String? rate;
-    String? review;
-    String sosStatus;
-    String? sosCheck;
-    DateTime createdAt;
-    DateTime updatedAt;
-    DateTime tuStep1;
-    DateTime? tuStep2;
-    DateTime? tuStep3;
-    DateTime? tuUrd;
-    DateTime? tuStep4;
-    DateTime? tuStep5;
-    DateTime? tuStep6;
-    DateTime? tuStep7;
-    DateTime? tuStep8;
-    DateTime? tuSc;
-
     factory Sos.fromJson(Map<String, dynamic> json) => Sos(
         sosId: json["sos_id"],
         problem: json["problem"],
@@ -207,6 +171,42 @@ class Sos {
         tuStep8: json["tu_step8"] == null ? null : DateTime.parse(json["tu_step8"]),
         tuSc: json["tu_sc"] == null ? null : DateTime.parse(json["tu_sc"]),
     );
+
+    String avatar;
+    DateTime createdAt;
+    dynamic crimeScene;
+    String latitude;
+    String location;
+    String longitude;
+    String problem;
+    String problemDetail;
+    String? rate;
+    String? repairDetail;
+    String? repairPrice;
+    String? review;
+    String? sosCheck;
+    String sosId;
+    String sosStatus;
+    String? tncAvatar;
+    dynamic tncDeal;
+    String? tncId;
+    String? tncName;
+    String? tncStatus;
+    DateTime? tuSc;
+    DateTime tuStep1;
+    DateTime? tuStep2;
+    DateTime? tuStep3;
+    DateTime? tuStep4;
+    DateTime? tuStep5;
+    DateTime? tuStep6;
+    DateTime? tuStep7;
+    DateTime? tuStep8;
+    DateTime? tuUrd;
+    DateTime updatedAt;
+    String? userDeal;
+    String userId;
+    String userName;
+    dynamic userTel;
 
     Map<String, dynamic> toJson() => {
         "sos_id": sosId,

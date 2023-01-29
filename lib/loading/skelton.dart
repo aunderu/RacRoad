@@ -4,8 +4,9 @@ import 'package:shimmer/shimmer.dart';
 import '../colors.dart';
 
 class Skelton extends StatelessWidget {
-  final double? height, width;
   const Skelton({super.key, this.height, this.width});
+
+  final double? height, width;
 
   @override
   Widget build(BuildContext context) {

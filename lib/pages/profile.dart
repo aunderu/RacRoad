@@ -10,9 +10,6 @@ import 'profile/my_club_widget.dart';
 import 'profile/my_job_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  // final GoogleSignInAccount user;
-  final String getToken;
-  int current;
   ProfilePage({
     Key? key,
     required this.getToken,
@@ -20,13 +17,15 @@ class ProfilePage extends StatefulWidget {
     // required this.user,
   }) : super(key: key);
 
+  int current;
+  // final GoogleSignInAccount user;
+  final String getToken;
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
   List<String> items = [
     "My Car",
     "My Club",
@@ -42,6 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
       getToken: widget.getToken,
     ),
   ];
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
