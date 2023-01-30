@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/loading/skelton.dart';
 import 'package:rac_road/models/user_profile_model.dart';
 import 'package:rac_road/services/remote_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/my_job_models.dart';
 import '../models/current_tnc_sos_models.dart';
