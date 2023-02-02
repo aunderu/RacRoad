@@ -8,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/main.dart';
 import 'package:rac_road/models/user_login.dart';
+import 'package:rac_road/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
@@ -81,13 +82,20 @@ class _LoginMainPageState extends State<LoginMainPage> {
   Widget loginWithGoogle(BuildContext context, Size size) {
     bool isTel = true;
     const url = "https://api.racroad.com/api";
-    const testurl = "https://api-racroad.chabafarm.com/api";
 
     Future<UserLogin> googleSignIn() async {
       final result = await _googleSignIn.signIn();
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
       if (result != null) {
         final response = await http.post(
-          Uri.parse('$url/google/login'), 
+          Uri.parse('$url/google/login'),
           body: {
             'email': result.email,
             'name': result.displayName,
@@ -96,11 +104,14 @@ class _LoginMainPageState extends State<LoginMainPage> {
         );
         if (response.statusCode == 200) {
           String responseString = response.body;
+          if (mounted) Navigator.pop(context);
           return userLoginFromJson(responseString);
         } else {
+          if (mounted) Navigator.pop(context);
           throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
         }
       } else {
+        if (mounted) Navigator.pop(context);
         throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
       }
     }
@@ -120,8 +131,14 @@ class _LoginMainPageState extends State<LoginMainPage> {
       onPressed: () async {
         final UserLogin login = await googleSignIn();
         if (login.status == true) {
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          preferences.setString("token", login.data.id);
+          await UserPreferences.setToken(login.data.id);
+          await UserPreferences.setName(login.data.name);
+          await UserPreferences.setEmail(login.data.email);
+          await UserPreferences.setAvatar(login.data.avatar);
+          // prefUserId.setString("token", login.data.id);
+          // prefUserName.setString("name", login.data.name);
+          // prefUserEmail.setString("email", login.data.email);
+          // prefUserProfile.setString("profile", login.data.avatar);
           Get.to(() => const CheckLogin());
         }
       },

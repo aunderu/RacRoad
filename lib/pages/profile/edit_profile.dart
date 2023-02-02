@@ -378,7 +378,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               );
                               Get.to(
                                 () => ScreensPage(
-                                  getToken: widget.getToken,
                                   pageIndex: 0,
                                   current: 0,
                                 ),

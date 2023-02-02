@@ -47,7 +47,6 @@ class _JobWidgetState extends State<JobWidget> {
         context,
         MaterialPageRoute(
           builder: (context) => ScreensPage(
-            getToken: widget.getToken,
             pageIndex: 4,
             current: 2,
           ),
@@ -193,7 +192,7 @@ class _JobWidgetState extends State<JobWidget> {
                             children: [
                               Text(
                                 widget.tncName,
-                                style: GoogleFonts.sarabun(
+                                style: GoogleFonts.kanit(
                                   fontSize: 25,
                                 ),
                               ),
@@ -202,11 +201,11 @@ class _JobWidgetState extends State<JobWidget> {
                                 children: [
                                   Text(
                                     'Zone : ',
-                                    style: GoogleFonts.sarabun(),
+                                    style: GoogleFonts.kanit(),
                                   ),
                                   Text(
                                     widget.jobZone,
-                                    style: GoogleFonts.sarabun(),
+                                    style: GoogleFonts.kanit(),
                                   ),
                                 ],
                               ),
@@ -215,11 +214,11 @@ class _JobWidgetState extends State<JobWidget> {
                                 children: [
                                   Text(
                                     'Status : ',
-                                    style: GoogleFonts.sarabun(),
+                                    style: GoogleFonts.kanit(),
                                   ),
                                   Text(
                                     widget.status,
-                                    style: GoogleFonts.sarabun(),
+                                    style: GoogleFonts.kanit(),
                                   ),
                                 ],
                               ),

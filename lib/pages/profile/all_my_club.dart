@@ -41,7 +41,6 @@ class _AllMyClubState extends State<AllMyClub> {
         context,
         MaterialPageRoute(
           builder: (context) => ScreensPage(
-            getToken: widget.token,
             pageIndex: 4,
             current: 1,
           ),

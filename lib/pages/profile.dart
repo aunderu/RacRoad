@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/loading/skelton.dart';
+import 'package:rac_road/utils/user_preferences.dart';
 import '../../services/remote_service.dart';
 import 'profile/my_car_widget.dart';
 import 'profile/my_club_widget.dart';
@@ -26,12 +27,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String? avatar;
+  String? email;
   List<String> items = [
     "My Car",
     "My Club",
     "My Job",
   ];
 
+  String? name;
   late final List pages = [
     MyCarWidget(getToken: widget.getToken),
     MyClubWidget(
@@ -43,6 +47,14 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    name = UserPreferences.getName() ?? '';
+    email = UserPreferences.getEmail() ?? '';
+    avatar = UserPreferences.getAvatar() ?? 'assets/imgs/profile.png';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,108 +74,46 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                FutureBuilder(
-                  future: RemoteService().getUserProfile(widget.getToken),
-                  builder: (context, snapshot) {
-                    var result = snapshot.data;
-                    if (result != null) {
-                      return Column(
-                        children: [
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl: result.data.myProfile.avatar,
-                                placeholder: (context, url) =>
-                                    Image.asset('assets/imgs/profile.png'),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              ),
-                              // child: Container(color: Colors.grey),
-                            ),
-                          ),
-                          SizedBox(height: size.height * 0.02),
-                          Text(
-                            result.data.myProfile.name,
-                            style: GoogleFonts.sarabun(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
-                          ),
-                          SizedBox(height: size.height * 0.005),
-                          Text(
-                            result.data.myProfile.email,
-                            style: GoogleFonts.sarabun(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    return Column(
-                      children: [
-                        Stack(
-                          alignment: const AlignmentDirectional(0.2, 1),
-                          children: [
-                            Align(
-                              alignment: const AlignmentDirectional(0, 0),
-                              child: Container(
-                                width: 100,
-                                height: 100,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                // child: Image.network(
-                                //   widget.user.photoUrl!,
-                                // ),
-                                child: const Skelton(),
-                              ),
-                            ),
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.photo_library,
-                                color: Colors.black,
-                                size: 20,
-                              ),
-                            ),
-                          ],
+                Column(
+                  children: [
+                    Align(
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
                         ),
-                        SizedBox(height: size.height * 0.02),
-                        const Skelton(
-                          height: 18,
-                          width: 120,
+                        child: CachedNetworkImage(
+                          imageUrl: avatar!,
+                          placeholder: (context, url) =>
+                              Image.asset('assets/imgs/profile.png'),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
-                        SizedBox(height: size.height * 0.005),
-                        const Skelton(
-                          height: 18,
-                          width: 250,
-                        ),
-                      ],
-                    );
-                  },
+                        // child: Container(color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    Text(
+                      name!,
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.005),
+                    Text(
+                      email!,
+                      style: GoogleFonts.sarabun(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),

@@ -57,6 +57,7 @@ class MycarDatum {
         this.carSubversion,
         this.carFuel,
         this.ownerName,
+        this.carProfile,
     });
 
     factory MycarDatum.fromJson(Map<String, dynamic> json) => MycarDatum(
@@ -67,6 +68,7 @@ class MycarDatum {
         carSubversion: json["car_subversion"],
         carFuel: json["car_fuel"],
         ownerName: json["owner_name"],
+        carProfile: json["car_profile"],
     );
 
     String? carBrand;
@@ -76,6 +78,7 @@ class MycarDatum {
     String? carSubversion;
     String? mycarId;
     String? ownerName;
+    String? carProfile;
 
     Map<String, dynamic> toJson() => {
         "mycar_id": mycarId,
@@ -85,5 +88,6 @@ class MycarDatum {
         "car_subversion": carSubversion,
         "car_fuel": carFuel,
         "owner_name": ownerName,
+        "car_profile": carProfile,
     };
 }

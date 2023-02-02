@@ -752,7 +752,6 @@ class _CreateClubPageState extends State<CreateClubPage> {
                             fontSize: 17,
                           );
                           Get.to(() => ScreensPage(
-                                getToken: widget.getToken,
                                 pageIndex: 4,
                                 current: 1,
                               ));

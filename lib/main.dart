@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rac_road/screens.dart';
+import 'package:rac_road/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'colors.dart';
@@ -21,9 +22,12 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
   ],
 );
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = "th";
   initializeDateFormatting();
+
+  await UserPreferences.init();
 
   runApp(const MyApp());
 }
@@ -48,8 +52,6 @@ class _MyAppState extends State<MyApp> {
         _currentUser = account;
       });
     });
-
-    getToken();
     // googleSigninSilently();
   }
 
@@ -67,10 +69,6 @@ class _MyAppState extends State<MyApp> {
   //     print(error);
   //   }
   // }
-  Future<void> getToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    token = preferences.getString("token")!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +82,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/home",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 0,
             current: 0,
           ),
@@ -92,7 +89,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/club",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 1,
             current: 0,
           ),
@@ -100,7 +96,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/sos",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 2,
             current: 0,
           ),
@@ -108,7 +103,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/notification",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 3,
             current: 0,
           ),
@@ -116,7 +110,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/profile",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 4,
             current: 0,
           ),
@@ -124,7 +117,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/profile-myclub",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 4,
             current: 1,
           ),
@@ -132,7 +124,6 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: "/profile-myjob",
           page: () => ScreensPage(
-            getToken: token!,
             pageIndex: 4,
             current: 2,
           ),
@@ -178,7 +169,6 @@ class _CheckLoginState extends State<CheckLogin> {
         const Duration(seconds: 2),
         () => Get.to(
           () => ScreensPage(
-            getToken: token,
             pageIndex: 0,
             current: 0,
           ),

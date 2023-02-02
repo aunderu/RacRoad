@@ -12,7 +12,7 @@ import 'package:rac_road/models/my_car_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 import '../../../colors.dart';
 import '../../models/data/menu_items.dart';
-import 'add_car/add_car.dart';
+import 'add_car/find_car.dart';
 import 'car_details.dart';
 
 class MyCarWidget extends StatefulWidget {
@@ -213,12 +213,17 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                                 child: ClipRRect(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(14)),
-                                  // child: Image.network(
-                                  //   "",
-                                  //   fit: BoxFit.fill,
-                                  // ),
-                                  child: Container(
-                                    color: Colors.white,
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        myCar!.data!.mycarData![0].carProfile!,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Container(
+                                      color: Colors.white,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                            color: Colors.white,
+                                            child: const Icon(Icons.error)),
                                   ),
                                 ),
                               ),
@@ -1122,7 +1127,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          AddCarPage(getToken: widget.getToken),
+                          FindCarPage(getToken: widget.getToken),
                     ),
                   );
                 },

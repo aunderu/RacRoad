@@ -522,7 +522,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             final SharedPreferences sharedPreferences =
                                 await SharedPreferences.getInstance();
 
-                            sharedPreferences.remove("token");
+                            sharedPreferences.clear();
 
                             await GoogleSignInApi.handleSignOut();
 
