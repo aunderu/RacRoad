@@ -14,7 +14,10 @@ import 'sos/sos_form.dart';
 import 'sos/timeline/timeline_page.dart';
 
 class SOSPage extends StatefulWidget {
-  const SOSPage({super.key, required this.token});
+  const SOSPage({
+    super.key,
+    required this.token,
+  });
 
   final String token;
 
@@ -40,7 +43,7 @@ class _SOSPageState extends State<SOSPage> {
   }
 
   setUpTimedFetch() {
-    Timer.periodic(const Duration(milliseconds: 5000), (timer) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
       if (mounted) {
         setState(() {
           _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);

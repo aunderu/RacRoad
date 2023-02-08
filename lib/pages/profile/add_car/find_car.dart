@@ -28,11 +28,9 @@ class _FindCarPageState extends State<FindCarPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<CarDatum>? foundCars;
   bool haveCar = false;
-  File? imageFile;
+
   bool isLoaded = false;
   TextEditingController? searchController;
-
-  TextEditingController? licensePlateController;
 
   @override
   void dispose() {
@@ -71,143 +69,6 @@ class _FindCarPageState extends State<FindCarPage> {
           });
         }
       }
-    }
-  }
-
-  void showImageDialog(String carId) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title:
-              const Text('กรุณาเลือกรูปรถของคุณ', textAlign: TextAlign.center),
-          titleTextStyle: GoogleFonts.sarabun(
-            color: Colors.black,
-            fontSize: 20,
-          ),
-          alignment: Alignment.center,
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {
-                  getFromCamera(carId);
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.camera_alt_outlined,
-                        color: Colors.black,
-                        size: 65,
-                      ),
-                    ),
-                    Text(
-                      'กล้อง',
-                      style: GoogleFonts.sarabun(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  getFromGallery(carId);
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.image_outlined,
-                        color: Colors.black,
-                        size: 65,
-                      ),
-                    ),
-                    Text(
-                      'รูปภาพ',
-                      style: GoogleFonts.sarabun(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void getFromGallery(String carId) async {
-    XFile? pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 50);
-    if (pickedFile != null) {
-      setState(() {
-        imageFile = File(pickedFile.path);
-      });
-
-      carSend(imageFile!.path, carId).then((value) => value == true
-          ? Get.offNamedUntil('/profile', (route) => false)
-          : null);
-    } else {
-      Fluttertoast.showToast(
-        msg: 'คุณยังไม่ได้เลือกรูป',
-        backgroundColor: Colors.yellow[100],
-        textColor: Colors.black,
-        fontSize: 15,
-        gravity: ToastGravity.SNACKBAR,
-      );
-    }
-    Navigator.pop(context);
-  }
-
-  void getFromCamera(String carId) async {
-    XFile? pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 50);
-    if (pickedFile != null) {
-      setState(() {
-        imageFile = File(pickedFile.path);
-      });
-
-      carSend(imageFile!.path, carId).then((value) => value == true
-          ? Get.offNamedUntil('/profile', (route) => false)
-          : null);
-    } else {
-      Fluttertoast.showToast(
-        msg: 'คุณยังไม่ได้เลือกรูป',
-        backgroundColor: Colors.yellow[100],
-        textColor: Colors.black,
-        fontSize: 15,
-        gravity: ToastGravity.SNACKBAR,
-      );
-    }
-    Navigator.pop(context);
-  }
-
-  Future<bool> carSend(String filePath, String carId) async {
-    Map<String, String> headers = {"Context-Type": "multipart/formdata"};
-    var requset = http.MultipartRequest(
-        "POST", Uri.parse("https://api.racroad.com/api/mycar/store"))
-      ..fields.addAll({
-        "user_id": widget.getToken,
-        "car_id": carId,
-      })
-      ..headers.addAll(headers)
-      ..files.add(await http.MultipartFile.fromPath('profile_car', filePath));
-    var response = await requset.send();
-
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      throw Exception(jsonDecode(response.toString()));
     }
   }
 
@@ -385,268 +246,13 @@ class _FindCarPageState extends State<FindCarPage> {
                                       // showImageDialog(
                                       //     allCar!.data.carData[index].carId);
 
-                                      showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(20),
-                                          ),
-                                        ),
-                                        builder: (context) {
-                                          return GestureDetector(
-                                            onTap: () => FocusScope.of(context)
-                                                .unfocus(),
-                                            child: SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.85,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(20.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      'รถ ${foundCars![index].brand} รุ่น ${foundCars![index].model} โฉม ${foundCars![index].makeover}',
-                                                      style:
-                                                          GoogleFonts.sarabun(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.05,
-                                                    ),
-                                                    Container(
-                                                      height: 50,
-                                                      decoration: BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                                offset:
-                                                                    const Offset(
-                                                                        12, 26),
-                                                                blurRadius: 50,
-                                                                spreadRadius: 0,
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        .1)),
-                                                          ]),
-                                                      child: TextField(
-                                                        controller:
-                                                            licensePlateController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        style: const TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                                Colors.black),
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          label: Text(
-                                                              "ป้ายทะเบียนรถยนต์"),
-                                                          labelStyle: TextStyle(
-                                                            color: mainGreen,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                          prefixIcon: Icon(
-                                                            Icons.car_crash,
-                                                            color: mainGreen,
-                                                          ),
-                                                          filled: true,
-                                                          fillColor:
-                                                              Color(0xffffffff),
-                                                          contentPadding:
-                                                              EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          0.0,
-                                                                      horizontal:
-                                                                          20.0),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color:
-                                                                    lightGreen,
-                                                                width: 1.0),
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        10.0)),
-                                                          ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                                    color:
-                                                                        mainGreen,
-                                                                    width: 1.0),
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        10.0)),
-                                                          ),
-                                                          errorBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: Color(
-                                                                    0xffEF4444),
-                                                                width: 1.0),
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        10.0)),
-                                                          ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color:
-                                                                    whiteGreen,
-                                                                width: 1.0),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  10.0),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.007,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10),
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                          '* ใช้สำหรับตั้งเป็นชื่อรถของคุณ ผู้ใช้งานอื่น ๆ จะไม่เห็นข้อมูลส่วนนี้',
-                                                          style: GoogleFonts
-                                                              .sarabun(
-                                                            color: gray,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    imageFile == null
-                                                        ? Tooltip(
-                                                            message:
-                                                                "แนบรูปภาพ",
-                                                            verticalOffset: -55,
-                                                            child: Align(
-                                                              alignment:
-                                                                  const AlignmentDirectional(
-                                                                      0, 0),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
-                                                                            .fromSTEB(
-                                                                        0,
-                                                                        16,
-                                                                        0,
-                                                                        0),
-                                                                child: InkWell(
-                                                                  onTap:
-                                                                      () async {
-                                                                    PermissionStatus
-                                                                        cameraStatus =
-                                                                        await Permission
-                                                                            .camera
-                                                                            .request();
-                                                                    if (cameraStatus ==
-                                                                        PermissionStatus
-                                                                            .granted) {
-                                                                      showImageDialog(allCar!
-                                                                          .data
-                                                                          .carData[
-                                                                              index]
-                                                                          .carId);
-                                                                    }
-                                                                    if (cameraStatus ==
-                                                                        PermissionStatus
-                                                                            .denied) {
-                                                                      Fluttertoast
-                                                                          .showToast(
-                                                                              msg: "This permission is recommended");
-                                                                    }
-                                                                    if (cameraStatus ==
-                                                                        PermissionStatus
-                                                                            .permanentlyDenied) {
-                                                                      openAppSettings();
-                                                                    }
-                                                                  },
-                                                                  child: Ink(
-                                                                    width: 100,
-                                                                    height: 100,
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                      color: Color(
-                                                                          0xFFEFEFEF),
-                                                                    ),
-                                                                    child:
-                                                                        const Icon(
-                                                                      Icons.add,
-                                                                      color: Color(
-                                                                          0xFF9D9D9D),
-                                                                      size: 40,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 16),
-                                                            child: Center(
-                                                              child: InkWell(
-                                                                onTap: () =>
-                                                                    showImageDialog(allCar!
-                                                                        .data
-                                                                        .carData[
-                                                                            index]
-                                                                        .carId),
-                                                                child:
-                                                                    Image.file(
-                                                                  imageFile!,
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.9,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                      showFormBottomSheet(
+                                        context,
+                                        foundCars![index].brand,
+                                        foundCars![index].model,
+                                        foundCars![index].makeover,
+                                        widget.getToken,
+                                        foundCars![index].carId,
                                       );
                                     },
                                   );
@@ -658,6 +264,357 @@ class _FindCarPageState extends State<FindCarPage> {
                       : const Center(
                           child: Text('ดูเหมือนยังไม่มีข้อมูลรถในขณะนี้'),
                         ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void showFormBottomSheet(context, String brand, String model, String makeOver,
+    String getToken, String carId) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(20),
+      ),
+    ),
+    builder: (context) => FormBottomSheet(
+      brand: brand,
+      model: model,
+      makeOver: makeOver,
+      getToken: getToken,
+      carId: carId,
+    ),
+  );
+}
+
+class FormBottomSheet extends StatefulWidget {
+  final String brand;
+  final String model;
+  final String makeOver;
+  final String getToken;
+  final String carId;
+  const FormBottomSheet({
+    super.key,
+    required this.brand,
+    required this.model,
+    required this.makeOver,
+    required this.getToken,
+    required this.carId,
+  });
+
+  @override
+  State<FormBottomSheet> createState() => _FormBottomSheetState();
+}
+
+class _FormBottomSheetState extends State<FormBottomSheet> {
+  TextEditingController? licensePlateController;
+  File? imageFile;
+
+  void showImageDialog(String carId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title:
+              const Text('กรุณาเลือกรูปรถของคุณ', textAlign: TextAlign.center),
+          titleTextStyle: GoogleFonts.sarabun(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+          alignment: Alignment.center,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {
+                  getFromCamera(carId);
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        color: Colors.black,
+                        size: 65,
+                      ),
+                    ),
+                    Text(
+                      'กล้อง',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  getFromGallery(carId);
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.image_outlined,
+                        color: Colors.black,
+                        size: 65,
+                      ),
+                    ),
+                    Text(
+                      'รูปภาพ',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void getFromGallery(String carId) async {
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+
+      // carSend(imageFile!.path, carId).then((value) => value == true
+      //     ? Get.offNamedUntil('/profile', (route) => false)
+      //     : null);
+    } else {
+      Fluttertoast.showToast(
+        msg: 'คุณยังไม่ได้เลือกรูป',
+        backgroundColor: Colors.yellow[100],
+        textColor: Colors.black,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+    Get.back();
+  }
+
+  void getFromCamera(String carId) async {
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+
+      // carSend(imageFile!.path, carId).then((value) => value == true
+      //     ? Get.offNamedUntil('/profile', (route) => false)
+      //     : null);
+    } else {
+      Fluttertoast.showToast(
+        msg: 'คุณยังไม่ได้เลือกรูป',
+        backgroundColor: Colors.yellow[100],
+        textColor: Colors.black,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+    Get.back();
+  }
+
+  Future<bool> carSend(String filePath, String carId) async {
+    Map<String, String> headers = {"Context-Type": "multipart/formdata"};
+    var requset = http.MultipartRequest(
+        "POST", Uri.parse("https://api.racroad.com/api/mycar/store"))
+      ..fields.addAll({
+        "user_id": widget.getToken,
+        "car_id": carId,
+      })
+      ..headers.addAll(headers)
+      ..files.add(await http.MultipartFile.fromPath('profile_car', filePath));
+    var response = await requset.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception(jsonDecode(response.toString()));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'รถ ${widget.brand} รุ่น ${widget.model} โฉม ${widget.makeOver}',
+                style: GoogleFonts.sarabun(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+              ),
+              imageFile == null
+                  ? Tooltip(
+                      message: "โปรไฟล์รถ",
+                      verticalOffset: -55,
+                      child: Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(bottom: 16),
+                          child: InkWell(
+                            onTap: () async {
+                              PermissionStatus cameraStatus =
+                                  await Permission.camera.request();
+                              if (cameraStatus == PermissionStatus.granted) {
+                                showImageDialog(widget.carId);
+                              }
+                              if (cameraStatus == PermissionStatus.denied) {
+                                Fluttertoast.showToast(
+                                    msg: "This permission is recommended");
+                              }
+                              if (cameraStatus ==
+                                  PermissionStatus.permanentlyDenied) {
+                                openAppSettings();
+                              }
+
+                              setState(() {});
+                            },
+                            child: Ink(
+                              width: 100,
+                              height: 100,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFEFEFEF),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                color: Color(0xFF9D9D9D),
+                                size: 40,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Center(
+                        child: InkWell(
+                          onTap: () {
+                            showImageDialog(widget.carId);
+
+                            setState(() {});
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.file(
+                              imageFile!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+              Text(
+                'เลือกรูปโปรไฟล์รถของคุณ',
+                style: GoogleFonts.sarabun(
+                  fontSize: 17,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+              ),
+              Container(
+                height: 50,
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      offset: const Offset(12, 26),
+                      blurRadius: 50,
+                      spreadRadius: 0,
+                      color: Colors.grey.withOpacity(.1)),
+                ]),
+                child: TextField(
+                  controller: licensePlateController,
+                  keyboardType: TextInputType.text,
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                  decoration: const InputDecoration(
+                    label: Text("ป้ายทะเบียนรถยนต์"),
+                    labelStyle: TextStyle(
+                      color: mainGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.car_crash,
+                      color: mainGreen,
+                    ),
+                    filled: true,
+                    fillColor: Color(0xffffffff),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: lightGreen, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: mainGreen, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xffEF4444), width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: whiteGreen, width: 1.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.007,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '* ใช้สำหรับตั้งเป็นชื่อรถของคุณ ผู้ใช้งานอื่น ๆ จะไม่เห็นข้อมูลส่วนนี้',
+                    style: GoogleFonts.sarabun(
+                      color: gray,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
