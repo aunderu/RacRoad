@@ -76,7 +76,7 @@ class _SOSPageState extends State<SOSPage> {
           "${pm.reversed.last.street}, ${pm.reversed.last.subLocality} ${pm.reversed.last.subAdministrativeArea} ${pm.reversed.last.administrativeArea}, ${pm.reversed.last.postalCode}";
     });
 
-    Navigator.of(context).pop();
+    Get.back();
 
     Get.to(
       () => SOSFormPage(

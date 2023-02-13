@@ -110,12 +110,15 @@ class _ScreensPageState extends State<ScreensPage> {
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
-            child: CachedNetworkImage(
-              imageUrl: avatar!,
-              placeholder: (context, url) =>
-                  Image.asset('assets/imgs/profile.png'),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
+            child: token != '0'
+                ? CachedNetworkImage(
+                    imageUrl: avatar!,
+                    placeholder: (context, url) =>
+                        Image.asset('assets/imgs/profile.png'),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )
+                : Image.asset('assets/imgs/profile.png'),
           ),
         ),
         title: Text(

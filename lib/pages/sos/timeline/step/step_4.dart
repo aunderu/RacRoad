@@ -1,9 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
@@ -29,33 +35,46 @@ class StepFour extends StatefulWidget {
     required this.tncStatus,
     required this.tncProfile,
     required this.imgBfwork,
+    this.priceTwoStatus,
+    required this.sosId,
+    this.repairPriceTwo,
+    this.repairDetailsTwo,
+    this.tuPriceTwoTimeStamp,
+    this.userDealTwo,
+    this.tuUserDealTwoTimeStamp,
   });
 
   final String getToken;
   final String? imgBfwork;
   final String imgIncident;
   final String location;
+  final String? priceTwoStatus;
   final String problem;
   final String problemDetails;
   final String repairDetails;
+  final String? repairDetailsTwo;
   final String repairPrice;
+  final String? repairPriceTwo;
+  final String sosId;
   final DateTime stepFourTimeStamp;
   final DateTime stepOnetimeStamp;
   final DateTime stepThreeTimeStamp;
   final DateTime stepTwoTimeStamp;
+  final DateTime? tuPriceTwoTimeStamp;
   final String tncName;
   final String? tncProfile;
   final String tncStatus;
   final String userName;
   final String userProfile;
   final String userTel;
+  final String? userDealTwo;
+  final DateTime? tuUserDealTwoTimeStamp;
 
   @override
   State<StepFour> createState() => _StepFourState();
 }
 
 class _StepFourState extends State<StepFour> {
-
   late List<Timelines> timelines;
 
   @override
@@ -255,6 +274,144 @@ class _StepFourState extends State<StepFour> {
         "3",
       ),
     ].toList();
+
+    isPriceTwoStatus();
+  }
+
+  Future<void> userSendDeal(String sosId, String userDeal) async {
+    final response = await http.post(
+      Uri.parse("https://api.racroad.com/api/set/user/deal2/$sosId"),
+      body: {
+        'user_deal2': userDeal,
+      },
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(jsonDecode(response.body));
+    }
+  }
+
+  void isPriceTwoStatus() {
+    if (widget.priceTwoStatus == "yes") {
+      setState(() {
+        timelines.add(
+          Timelines(
+            widget.tuPriceTwoTimeStamp!,
+            "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
+            Card(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'รายละเอียดเพิ่มเติม :',
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.repairDetailsTwo!,
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'รวมทั้งหมด :',
+                            style: GoogleFonts.sarabun(),
+                          ),
+                        ),
+                        Text(
+                          "${widget.repairPriceTwo} บาท",
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+        );
+        timelines.add(
+          widget.userDealTwo != "yes"
+              ? Timelines(
+                  DateTime.now(),
+                  "ฉันยืนยันรับข้อเสนอดังกล่าว",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          userSendDeal(widget.sosId, "no");
+
+                          Get.offAllNamed('/sos');
+
+                          Fluttertoast.showToast(
+                            msg:
+                                "คุณปฏิเสธข้อเสนอ สามารถดูประวัติของคุณได้ที่\nหน้าโปรไฟล์ -> ประวัติการแจ้งเหตุฉุกเฉินของฉัน",
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 15,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: whiteGrey,
+                          foregroundColor: darkGray,
+                          minimumSize: const Size(100, 40),
+                        ),
+                        child: Text(
+                          "ปฏิเสธ",
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          userSendDeal(widget.sosId, "yes");
+                          Get.offNamed('/sos');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainGreen,
+                          minimumSize: const Size(100, 40),
+                        ),
+                        child: Text(
+                          "รับข้อเสนอ",
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  widget.userProfile,
+                  widget.userName,
+                  "1",
+                )
+              : Timelines(
+                  widget.tuUserDealTwoTimeStamp!,
+                  "ฉันยืนยันรับข้อเสนอดังกล่าว",
+                  Text(
+                    "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
+                    style: GoogleFonts.sarabun(),
+                  ),
+                  widget.userProfile,
+                  widget.userName,
+                  "1",
+                ),
+        );
+      });
+    }
   }
 
   @override
@@ -271,7 +428,6 @@ class _StepFourState extends State<StepFour> {
         timelines.timestamp.month,
         timelines.timestamp.day,
         timelines.timestamp.hour,
-        
       ),
       groupHeaderBuilder: (Timelines timelines) => SizedBox(
         height: 40,
@@ -286,7 +442,7 @@ class _StepFourState extends State<StepFour> {
               padding: const EdgeInsets.all(8),
               child: Text(
                 DateFormat(
-                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}')
+                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
                     .format(timelines.timestamp),
                 style: GoogleFonts.sarabun(
                   color: darkGray,
@@ -315,8 +471,17 @@ class _StepFourState extends State<StepFour> {
                   )
                 : const SizedBox.shrink(),
             Card(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: const Radius.circular(12.0),
+                  bottomRight: timelines.isSentByMe == "1"
+                      ? const Radius.circular(0)
+                      : const Radius.circular(12.0),
+                  topLeft: const Radius.circular(12.0),
+                  bottomLeft: timelines.isSentByMe != "1"
+                      ? const Radius.circular(0)
+                      : const Radius.circular(12.0),
+                ),
               ),
               color: ((() {
                 if (timelines.isSentByMe == "1") {

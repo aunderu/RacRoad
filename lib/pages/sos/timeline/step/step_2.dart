@@ -188,6 +188,13 @@ class _StepTwoState extends State<StepTwo> {
               onPressed: () {
                 userSendDeal(widget.sosId, "yes");
                 Get.offNamed('/sos');
+
+                Fluttertoast.showToast(
+                  msg: "คุณได้ยืนยันรับข้อเสนอดังกล่าว",
+                  backgroundColor: lightGreen,
+                  textColor: Colors.white,
+                  fontSize: 15,
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: mainGreen,
@@ -237,7 +244,7 @@ class _StepTwoState extends State<StepTwo> {
               padding: const EdgeInsets.all(8),
               child: Text(
                 DateFormat(
-                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}')
+                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
                     .format(timelines.timestamp),
                 style: GoogleFonts.sarabun(
                   color: darkGray,
@@ -266,8 +273,17 @@ class _StepTwoState extends State<StepTwo> {
                   )
                 : const SizedBox.shrink(),
             Card(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: const Radius.circular(12.0),
+                  bottomRight: timelines.isSentByMe == "1"
+                      ? const Radius.circular(0)
+                      : const Radius.circular(12.0),
+                  topLeft: const Radius.circular(12.0),
+                  bottomLeft: timelines.isSentByMe != "1"
+                      ? const Radius.circular(0)
+                      : const Radius.circular(12.0),
+                ),
               ),
               color: timelines.isSentByMe == "1"
                   ? const Color.fromARGB(255, 182, 235, 255)

@@ -36,6 +36,8 @@ class TncStepOne extends StatefulWidget {
     required this.latitude,
     required this.longitude,
     required this.imgBfwork,
+    required this.tncNote,
+    this.userDeal,
   });
 
   final String getToken;
@@ -54,18 +56,23 @@ class TncStepOne extends StatefulWidget {
   final String userName;
   final String userProfile;
   final String userTel;
+  final String? tncNote;
+  final String? userDeal;
 
   @override
   State<TncStepOne> createState() => _TncStepOneState();
 }
 
 class _TncStepOneState extends State<TncStepOne> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   File? imgFile;
   late List<Timelines> timelines;
+  TextEditingController? tncNoteController;
 
   @override
   void initState() {
     super.initState();
+    tncNoteController = TextEditingController();
 
     getTimelines();
   }
@@ -127,7 +134,9 @@ class _TncStepOneState extends State<TncStepOne> {
       ),
       Timelines(
         DateTime.now(),
-        "รับงาน",
+        widget.tncNote == null
+            ? "รับงาน"
+            : "คุณได้เปลี่ยนข้อเสนอใหม่ ทางเจ้าหน้าที่กำลังตรวจสอบให้คุณ",
         Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -178,6 +187,76 @@ class _TncStepOneState extends State<TncStepOne> {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 0, 20, 7),
+                              child: Text(
+                                'ข้อความ : ',
+                                style: GoogleFonts.sarabun(),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: tncNoteController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              hintText:
+                                  'ถ้าข้อเสนอไม่สอดคล้องกับปัญหาที่พบ คุณสามารถพิมพ์ข้อตกลงใหม่ได้ที่นี้',
+                              hintStyle: GoogleFonts.sarabun(),
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: mainGreen,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.red,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.red,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              contentPadding:
+                                  const EdgeInsetsDirectional.fromSTEB(
+                                      20, 32, 20, 12),
+                            ),
+                            style: GoogleFonts.sarabun(),
+                            textAlign: TextAlign.start,
+                            maxLines: 4,
+                            keyboardType: TextInputType.multiline,
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 0, 0, 7),
+                              child: Text(
+                                '* ไม่จำเป็นต้องกรอก',
+                                style: GoogleFonts.sarabun(
+                                  color: darkGray,
+                                ),
+                              ),
+                            ),
+                          ),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Padding(
@@ -260,6 +339,7 @@ class _TncStepOneState extends State<TncStepOne> {
                                       tncSendBfImg(
                                         widget.sosId,
                                         imgFile!.path,
+                                        tncNoteController!.text,
                                       );
                                       Get.offNamed('/profile-myjob');
                                     } else {
@@ -293,6 +373,19 @@ class _TncStepOneState extends State<TncStepOne> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              widget.tncNote != null
+                                  ? Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 10, 20, 7),
+                                        child: Text(
+                                          'ข้อเสนอเพิ่มเติมของคุณ : ${widget.tncNote}',
+                                          style: GoogleFonts.sarabun(),
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: Padding(
@@ -320,117 +413,142 @@ class _TncStepOneState extends State<TncStepOne> {
                                   ),
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 10, 20, 7),
-                                  child: Text(
-                                    'รูปหลังเสร็จงาน : ',
-                                    style: GoogleFonts.sarabun(),
-                                  ),
-                                ),
-                              ),
-                              imgFile == null
-                                  ? Align(
-                                      alignment:
-                                          const AlignmentDirectional(0, 0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 10, 0, 0),
-                                        child: Material(
-                                          child: InkWell(
-                                            onTap: () async {
-                                              PermissionStatus cameraStatus =
-                                                  await Permission.camera
-                                                      .request();
-                                              if (cameraStatus ==
-                                                  PermissionStatus.granted) {
-                                                getFromCamera();
-                                              }
-                                              if (cameraStatus ==
-                                                  PermissionStatus.denied) {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "This permission is recommended");
-                                              }
-                                              if (cameraStatus ==
-                                                  PermissionStatus
-                                                      .permanentlyDenied) {
-                                                openAppSettings();
-                                              }
-                                            },
-                                            child: Ink(
-                                              width: double.infinity,
-                                              height: 100,
-                                              decoration: const BoxDecoration(
-                                                color: Color(0xFFEFEFEF),
-                                              ),
-                                              child: const Icon(
-                                                Icons.camera_alt_outlined,
-                                                color: Color(0xFF9D9D9D),
-                                                size: 40,
-                                              ),
+                              widget.tncNote != null
+                                  ? const SizedBox.shrink()
+                                  : Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0, 10, 20, 7),
+                                            child: Text(
+                                              'รูปหลังเสร็จงาน : ',
+                                              style: GoogleFonts.sarabun(),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(top: 16),
-                                      child: Center(
-                                        child: InkWell(
-                                          onTap: getFromCamera,
-                                          child: Image.file(
-                                            imgFile!,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            fit: BoxFit.cover,
-                                          ),
+                                        imgFile == null
+                                            ? Align(
+                                                alignment:
+                                                    const AlignmentDirectional(
+                                                        0, 0),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                          0, 10, 0, 0),
+                                                  child: Material(
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        PermissionStatus
+                                                            cameraStatus =
+                                                            await Permission
+                                                                .camera
+                                                                .request();
+                                                        if (cameraStatus ==
+                                                            PermissionStatus
+                                                                .granted) {
+                                                          getFromCamera();
+                                                        }
+                                                        if (cameraStatus ==
+                                                            PermissionStatus
+                                                                .denied) {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "This permission is recommended");
+                                                        }
+                                                        if (cameraStatus ==
+                                                            PermissionStatus
+                                                                .permanentlyDenied) {
+                                                          openAppSettings();
+                                                        }
+                                                      },
+                                                      child: Ink(
+                                                        width: double.infinity,
+                                                        height: 100,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color:
+                                                              Color(0xFFEFEFEF),
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons
+                                                              .camera_alt_outlined,
+                                                          color:
+                                                              Color(0xFF9D9D9D),
+                                                          size: 40,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 16),
+                                                child: Center(
+                                                  child: InkWell(
+                                                    onTap: getFromCamera,
+                                                    child: Image.file(
+                                                      imgFile!,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                        const SizedBox(height: 15),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 0, 16, 16),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  if (imgFile != null) {
+                                                    tncSendAfImg(
+                                                      widget.sosId,
+                                                      imgFile!.path,
+                                                    );
+                                                    Get.offNamed(
+                                                        '/profile-myjob');
+                                                  } else {
+                                                    Fluttertoast.showToast(
+                                                      msg:
+                                                          'คุณยังไม่ได้ถ่ายรูป',
+                                                      backgroundColor:
+                                                          Colors.yellow[100],
+                                                      textColor: Colors.black,
+                                                      fontSize: 15,
+                                                      gravity:
+                                                          ToastGravity.SNACKBAR,
+                                                    );
+                                                  }
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: mainGreen,
+                                                  minimumSize:
+                                                      const Size(200, 40),
+                                                ),
+                                                child: Text(
+                                                  "ส่งรูปหลังเสร็จงาน",
+                                                  style: GoogleFonts.sarabun(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
+                                      ],
                                     ),
-                              const SizedBox(height: 15),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            16, 0, 16, 16),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (imgFile != null) {
-                                          tncSendAfImg(
-                                            widget.sosId,
-                                            imgFile!.path,
-                                          );
-                                          Get.offNamed('/profile-myjob');
-                                        } else {
-                                          Fluttertoast.showToast(
-                                            msg: 'คุณยังไม่ได้ถ่ายรูป',
-                                            backgroundColor: Colors.yellow[100],
-                                            textColor: Colors.black,
-                                            fontSize: 15,
-                                            gravity: ToastGravity.SNACKBAR,
-                                          );
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: mainGreen,
-                                        minimumSize: const Size(200, 40),
-                                      ),
-                                      child: Text(
-                                        "ส่งรูปหลังเสร็จงาน",
-                                        style: GoogleFonts.sarabun(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ],
                           )
                         : const SizedBox.shrink(),
@@ -441,6 +559,140 @@ class _TncStepOneState extends State<TncStepOne> {
         "1",
       ),
     ].toList();
+
+    isUserDeal();
+  }
+
+  void isUserDeal() {
+    if (widget.userDeal == "yes") {
+      setState(() {
+        timelines.add(
+          Timelines(
+            DateTime.now(),
+            "ผู้ใช้ได้ตอบรับข้อเสนอใหม่ของคุณ คุณสามารถเริ่มงานได้",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 7),
+                        child: Text(
+                          'รูปหลังเสร็จงาน : ',
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ),
+                    ),
+                    imgFile == null
+                        ? Align(
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 10, 0, 0),
+                              child: Material(
+                                child: InkWell(
+                                  onTap: () async {
+                                    PermissionStatus cameraStatus =
+                                        await Permission.camera.request();
+                                    if (cameraStatus ==
+                                        PermissionStatus.granted) {
+                                      getFromCamera();
+                                    }
+                                    if (cameraStatus ==
+                                        PermissionStatus.denied) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "This permission is recommended");
+                                    }
+                                    if (cameraStatus ==
+                                        PermissionStatus.permanentlyDenied) {
+                                      openAppSettings();
+                                    }
+                                  },
+                                  child: Ink(
+                                    width: double.infinity,
+                                    height: 100,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFEFEFEF),
+                                    ),
+                                    child: const Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: Color(0xFF9D9D9D),
+                                      size: 40,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: Center(
+                              child: InkWell(
+                                onTap: getFromCamera,
+                                child: Image.file(
+                                  imgFile!,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 0, 16, 16),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (imgFile != null) {
+                                tncSendAfImg(
+                                  widget.sosId,
+                                  imgFile!.path,
+                                );
+                                Get.offNamed('/profile-myjob');
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'คุณยังไม่ได้ถ่ายรูป',
+                                  backgroundColor: Colors.yellow[100],
+                                  textColor: Colors.black,
+                                  fontSize: 15,
+                                  gravity: ToastGravity.SNACKBAR,
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: mainGreen,
+                              minimumSize: const Size(200, 40),
+                            ),
+                            child: Text(
+                              "ส่งรูปหลังเสร็จงาน",
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+        );
+      });
+    }
   }
 
   void getFromCamera() async {
@@ -479,10 +731,14 @@ class _TncStepOneState extends State<TncStepOne> {
   Future<bool> tncSendBfImg(
     String sosId,
     String imgFile,
+    String tncNote,
   ) async {
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
     var requset = http.MultipartRequest(
         "POST", Uri.parse("https://api.racroad.com/api/sos/step/$sosId"))
+      ..fields.addAll({
+        "tnc_description": tncNote,
+      })
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('image_bw', imgFile));
     var response = await requset.send();
@@ -523,162 +779,169 @@ class _TncStepOneState extends State<TncStepOne> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: GroupedListView<Timelines, DateTime>(
-        elements: timelines,
-        reverse: true,
-        useStickyGroupSeparators: true,
-        floatingHeader: true,
-        shrinkWrap: true,
-        order: GroupedListOrder.DESC,
-        padding: const EdgeInsets.only(top: 0),
-        groupBy: (timelines) => DateTime(
-          timelines.timestamp.month,
-          timelines.timestamp.day,
-          timelines.timestamp.hour,
-        ),
-        groupHeaderBuilder: (Timelines timelines) => SizedBox(
-          height: 40,
-          child: Center(
-            child: Card(
-              elevation: 0,
-              color: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  DateFormat(
-                          'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}')
-                      .format(timelines.timestamp),
-                  style: GoogleFonts.sarabun(
-                    color: darkGray,
+    return Form(
+      key: formKey,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: GroupedListView<Timelines, DateTime>(
+            elements: timelines,
+            reverse: true,
+            useStickyGroupSeparators: true,
+            floatingHeader: true,
+            shrinkWrap: true,
+            order: GroupedListOrder.DESC,
+            padding: const EdgeInsets.only(top: 0),
+            groupBy: (timelines) => DateTime(
+              timelines.timestamp.month,
+              timelines.timestamp.day,
+              timelines.timestamp.hour,
+            ),
+            groupHeaderBuilder: (Timelines timelines) => SizedBox(
+              height: 40,
+              child: Center(
+                child: Card(
+                  elevation: 0,
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      DateFormat(
+                              'd MMMM ${timelines.timestamp.yearInBuddhistCalendar} เวลา hh:mm')
+                          .format(timelines.timestamp),
+                      style: GoogleFonts.sarabun(
+                        color: darkGray,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        itemBuilder: (context, Timelines timelines) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Row(
-            mainAxisAlignment: timelines.isSentByMe == "1"
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              timelines.isSentByMe == "1"
-                  ? Row(
-                      children: [
-                        Text(
-                          DateFormat('KK:mm').format(timelines.timestamp),
-                        ),
-                        const SizedBox(width: 10),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-              Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                color: timelines.isSentByMe == "1"
-                    ? const Color.fromARGB(255, 182, 235, 255)
-                    : const Color.fromARGB(255, 185, 195, 255),
-                elevation: 8,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            10, 10, 10, 10),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            itemBuilder: (context, Timelines timelines) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                mainAxisAlignment: timelines.isSentByMe == "1"
+                    ? MainAxisAlignment.end
+                    : MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  timelines.isSentByMe == "1"
+                      ? Row(
                           children: [
-                            Column(
+                            Text(
+                              DateFormat('KK:mm').format(timelines.timestamp),
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
+                  Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    color: timelines.isSentByMe == "1"
+                        ? const Color.fromARGB(255, 182, 235, 255)
+                        : const Color.fromARGB(255, 185, 195, 255),
+                    elevation: 8,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.70,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                10, 10, 10, 10),
+                            child: Column(
                               mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 0, 20, 0),
+                                      child: Text(
+                                        timelines.title!,
+                                        style: GoogleFonts.sarabun(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 5),
+                                      child: Divider(
+                                        thickness: 1,
+                                        color: Color(0x392E2E2E),
+                                      ),
+                                    ),
+                                    timelines.body,
+                                  ],
+                                ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 20, 0),
-                                  child: Text(
-                                    timelines.title!,
-                                    style: GoogleFonts.sarabun(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
+                                      0, 10, 0, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 30,
+                                        height: 30,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),
+                                        child: timelines.isSentByMe == "1"
+                                            ? CachedNetworkImage(
+                                                imageUrl: timelines.profile,
+                                                placeholder: (context, url) =>
+                                                    Image.asset(
+                                                        "assets/imgs/profile.png"),
+                                              )
+                                            : Image.asset(timelines.profile),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 0, 0, 0),
+                                        child: Text(
+                                          timelines.name,
+                                          style: GoogleFonts.sarabun(),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
-                                  child: Divider(
-                                    thickness: 1,
-                                    color: Color(0x392E2E2E),
-                                  ),
-                                ),
-                                timelines.body,
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    child: timelines.isSentByMe == "1"
-                                        ? CachedNetworkImage(
-                                            imageUrl: timelines.profile,
-                                            placeholder: (context, url) =>
-                                                Image.asset(
-                                                    "assets/imgs/profile.png"),
-                                          )
-                                        : Image.asset(timelines.profile),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 0, 0, 0),
-                                    child: Text(
-                                      timelines.name,
-                                      style: GoogleFonts.sarabun(),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  timelines.isSentByMe != "1"
+                      ? Row(
+                          children: [
+                            const SizedBox(width: 10),
+                            Text(
+                              DateFormat('KK:mm').format(timelines.timestamp),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
               ),
-              timelines.isSentByMe != "1"
-                  ? Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Text(
-                          DateFormat('KK:mm').format(timelines.timestamp),
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-            ],
+            ),
           ),
         ),
       ),

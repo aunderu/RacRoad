@@ -43,32 +43,48 @@ class StepSix extends StatefulWidget {
     this.tncProfile,
     this.imgBfwork,
     this.imgAfwork,
-    this.qrCode,
+    required this.qrCode,
+    this.repairDetailsTwo,
+    this.repairPriceTwo,
+    this.tuPriceTwoTimeStamp,
+    this.tuUserDealTwoTimeStamp,
+    this.userDealTwo,
+    required this.qrName,
+    required this.qrType,
+    required this.qrNumber,
   });
 
   final String getToken;
+  final String sosId;
   final String? imgAfwork;
   final String? imgBfwork;
   final String imgIncident;
   final String location;
   final String problem;
   final String problemDetails;
-  final String? qrCode;
   final String repairDetails;
+  final String? repairDetailsTwo;
   final String repairPrice;
-  final String sosId;
+  final String? repairPriceTwo;
+  final DateTime stepSixTimeStamp;
   final DateTime stepFiveTimeStamp;
   final DateTime stepFourTimeStamp;
   final DateTime stepOnetimeStamp;
-  final DateTime stepSixTimeStamp;
   final DateTime stepThreeTimeStamp;
   final DateTime stepTwoTimeStamp;
   final String tncName;
   final String? tncProfile;
   final String tncStatus;
+  final DateTime? tuPriceTwoTimeStamp;
+  final DateTime? tuUserDealTwoTimeStamp;
+  final String? userDealTwo;
   final String userName;
   final String userProfile;
   final String userTel;
+  final String qrCode;
+  final String qrName;
+  final String qrType;
+  final String qrNumber;
 
   @override
   State<StepSix> createState() => _StepSixState();
@@ -228,8 +244,114 @@ class _StepSixState extends State<StepSix> {
         "2",
       ),
       Timelines(
-        widget.stepFiveTimeStamp,
+        widget.stepFourTimeStamp,
         "ช่างรับงานและออกปฎิบัติงาน",
+        Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+              child: Text(
+                'สถานะ : ช่างถึงหน้างานเเล้ว',
+                style: GoogleFonts.sarabun(),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                  child: Text(
+                    'รูปก่อนเริ่มงาน : ',
+                    style: GoogleFonts.sarabun(),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.imgBfwork.toString(),
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
+                        alignment: Alignment.center,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        widget.tncProfile!,
+        widget.tncName,
+        "3",
+      ),
+      Timelines(
+        widget.tuPriceTwoTimeStamp!,
+        "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
+        Card(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'รายละเอียดเพิ่มเติม :',
+                  style: GoogleFonts.sarabun(),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  widget.repairDetailsTwo!,
+                  style: GoogleFonts.sarabun(),
+                ),
+                const SizedBox(height: 15),
+                const Divider(
+                  thickness: 1,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'รวมทั้งหมด :',
+                        style: GoogleFonts.sarabun(),
+                      ),
+                    ),
+                    Text(
+                      "${widget.repairPriceTwo} บาท",
+                      style: GoogleFonts.sarabun(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        "assets/imgs/oparator.png",
+        "เจ้าหน้าที่ Racroad",
+        "2",
+      ),
+      Timelines(
+        widget.tuUserDealTwoTimeStamp!,
+        "ฉันยืนยันรับข้อเสนอดังกล่าว",
+        Text(
+          "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
+          style: GoogleFonts.sarabun(),
+        ),
+        widget.userProfile,
+        widget.userName,
+        "1",
+      ),
+      Timelines(
+        widget.stepFiveTimeStamp,
+        "เสร็จสิ้นงาน",
         Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,74 +363,36 @@ class _StepSixState extends State<StepSix> {
                 style: GoogleFonts.sarabun(),
               ),
             ),
-            widget.imgBfwork == null
-                ? const SizedBox.shrink()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
-                        child: Text(
-                          'รูปก่อนเริ่มงาน : ',
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: CachedNetworkImage(
-                              imageUrl: widget.imgBfwork.toString(),
-                              height: 250,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                              alignment: Alignment.center,
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                  child: Text(
+                    'รูปหลังเสร็จงาน : ',
+                    style: GoogleFonts.sarabun(),
                   ),
-            widget.imgAfwork == null
-                ? const SizedBox.shrink()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
-                        child: Text(
-                          'รูปหลังเสร็จงาน : ',
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ),
-                      Align(
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.imgAfwork.toString(),
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
                         alignment: Alignment.center,
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: CachedNetworkImage(
-                              imageUrl: widget.imgAfwork.toString(),
-                              height: 250,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                              alignment: Alignment.center,
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
-                    ],
+                    ),
                   ),
+                ),
+              ],
+            ),
           ],
         ),
         widget.tncProfile!,
@@ -318,43 +402,54 @@ class _StepSixState extends State<StepSix> {
       Timelines(
         widget.stepSixTimeStamp,
         "QR Code สำหรับโอน",
-        widget.qrCode == null
-            ? const SizedBox.shrink()
-            : Column(
-                children: [
-                  Text(
-                    "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
-                    style: GoogleFonts.sarabun(),
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                      child: InkWell(
-                        onLongPress: () async {
-                          await GallerySaver.saveImage(widget.qrCode!);
-                          Fluttertoast.showToast(
-                            msg: "โหลด QR Code เรียบร้อย",
-                            fontSize: 18,
-                            backgroundColor: mainGreen,
-                            textColor: Colors.white,
-                          );
-                        },
-                        child: Ink(
-                          child: CachedNetworkImage(
-                            imageUrl: widget.qrCode.toString(),
-                            height: 400,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                        ),
-                      ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
+              style: GoogleFonts.sarabun(),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                child: InkWell(
+                  onLongPress: () async {
+                    await GallerySaver.saveImage(widget.qrCode);
+                    Fluttertoast.showToast(
+                      msg: "โหลด QR Code เรียบร้อย",
+                      fontSize: 18,
+                      backgroundColor: mainGreen,
+                      textColor: Colors.white,
+                    );
+                  },
+                  child: Ink(
+                    child: CachedNetworkImage(
+                      imageUrl: widget.qrCode.toString(),
+                      height: 400,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ),
-                ],
+                ),
               ),
+            ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
+                    style: GoogleFonts.sarabun(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
         "assets/imgs/oparator.png",
         "เจ้าหน้าที่ Racroad",
         "2",
@@ -649,7 +744,7 @@ class _StepSixState extends State<StepSix> {
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     DateFormat(
-                            'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}')
+                            'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
                         .format(timelines.timestamp),
                     style: GoogleFonts.sarabun(
                       color: darkGray,
@@ -678,8 +773,17 @@ class _StepSixState extends State<StepSix> {
                       )
                     : const SizedBox.shrink(),
                 Card(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: const Radius.circular(12.0),
+                      bottomRight: timelines.isSentByMe == "1"
+                          ? const Radius.circular(0)
+                          : const Radius.circular(12.0),
+                      topLeft: const Radius.circular(12.0),
+                      bottomLeft: timelines.isSentByMe != "1"
+                          ? const Radius.circular(0)
+                          : const Radius.circular(12.0),
+                    ),
                   ),
                   color: ((() {
                     if (timelines.isSentByMe == "1") {

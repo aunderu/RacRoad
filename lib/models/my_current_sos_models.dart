@@ -17,17 +17,17 @@ class MyCurrentSos {
     required this.data,
   });
 
+  bool status;
+  int count;
+  String message;
+  Data data;
+
   factory MyCurrentSos.fromJson(Map<String, dynamic> json) => MyCurrentSos(
         status: json["status"],
         count: json["count"],
         message: json["message"],
         data: Data.fromJson(json["data"]),
       );
-
-  int count;
-  Data data;
-  String message;
-  bool status;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -42,12 +42,12 @@ class Data {
     required this.mySosInProgress,
   });
 
+  List<MySosInProgress> mySosInProgress;
+
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         mySosInProgress: List<MySosInProgress>.from(
             json["my_sos_in_progress"].map((x) => MySosInProgress.fromJson(x))),
       );
-
-  List<MySosInProgress> mySosInProgress;
 
   Map<String, dynamic> toJson() => {
         "my_sos_in_progress":
@@ -61,9 +61,11 @@ class MySosInProgress {
     required this.userId,
     required this.userName,
     required this.avatar,
+    required this.imageIncident,
     required this.problem,
     required this.sosStatus,
     required this.createdAt,
+    required this.tuStep1,
     this.tuStep2,
     this.tuStep3,
     this.tuStep4,
@@ -72,7 +74,29 @@ class MySosInProgress {
     this.tuStep7,
     this.tuStep8,
     this.tuSc,
+    this.tuPrice2,
+    this.tuUserDeal2,
   });
+
+  String sosId;
+  String userId;
+  String userName;
+  String avatar;
+  List<dynamic> imageIncident;
+  String problem;
+  String sosStatus;
+  DateTime createdAt;
+  DateTime tuStep1;
+  dynamic tuStep2;
+  dynamic tuStep3;
+  dynamic tuStep4;
+  dynamic tuStep5;
+  dynamic tuStep6;
+  dynamic tuStep7;
+  dynamic tuStep8;
+  dynamic tuSc;
+  dynamic tuPrice2;
+  dynamic tuUserDeal2;
 
   factory MySosInProgress.fromJson(Map<String, dynamic> json) =>
       MySosInProgress(
@@ -80,9 +104,11 @@ class MySosInProgress {
         userId: json["user_id"],
         userName: json["user_name"],
         avatar: json["avatar"],
+        imageIncident: List<dynamic>.from(json["image_incident"].map((x) => x)),
         problem: json["problem"],
         sosStatus: json["sos_status"],
         createdAt: DateTime.parse(json["created_at"]),
+        tuStep1: DateTime.parse(json["tu_step1"]),
         tuStep2: json["tu_step2"],
         tuStep3: json["tu_step3"],
         tuStep4: json["tu_step4"],
@@ -91,32 +117,20 @@ class MySosInProgress {
         tuStep7: json["tu_step7"],
         tuStep8: json["tu_step8"],
         tuSc: json["tu_sc"],
+        tuPrice2: json["tu_price2"],
+        tuUserDeal2: json["tu_user_deal2"],
       );
-
-  String avatar;
-  DateTime createdAt;
-  String problem;
-  String sosId;
-  String sosStatus;
-  dynamic tuSc;
-  dynamic tuStep2;
-  dynamic tuStep3;
-  dynamic tuStep4;
-  dynamic tuStep5;
-  dynamic tuStep6;
-  dynamic tuStep7;
-  dynamic tuStep8;
-  String userId;
-  String userName;
 
   Map<String, dynamic> toJson() => {
         "sos_id": sosId,
         "user_id": userId,
         "user_name": userName,
         "avatar": avatar,
+        "image_incident": List<dynamic>.from(imageIncident.map((x) => x)),
         "problem": problem,
         "sos_status": sosStatus,
         "created_at": createdAt.toIso8601String(),
+        "tu_step1": tuStep1.toIso8601String(),
         "tu_step2": tuStep2,
         "tu_step3": tuStep3,
         "tu_step4": tuStep4,
@@ -125,5 +139,7 @@ class MySosInProgress {
         "tu_step7": tuStep7,
         "tu_step8": tuStep8,
         "tu_sc": tuSc,
+        "tu_price2": tuPrice2,
+        "tu_user_deal2": tuUserDeal2,
       };
 }

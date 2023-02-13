@@ -104,7 +104,7 @@ class _StepOneState extends State<StepOne> {
               padding: const EdgeInsets.all(8),
               child: Text(
                 DateFormat(
-                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}')
+                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
                     .format(timelines.timestamp),
                 style: GoogleFonts.sarabun(
                   color: darkGray,
@@ -132,8 +132,17 @@ class _StepOneState extends State<StepOne> {
                     )
                   : const SizedBox.shrink(),
               Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: const Radius.circular(12.0),
+                    bottomRight: timelines.isSentByMe == "1"
+                        ? const Radius.circular(0)
+                        : const Radius.circular(12.0),
+                    topLeft: const Radius.circular(12.0),
+                    bottomLeft: timelines.isSentByMe != "1"
+                        ? const Radius.circular(0)
+                        : const Radius.circular(12.0),
+                  ),
                 ),
                 color: const Color.fromARGB(255, 182, 235, 255),
                 elevation: 8,

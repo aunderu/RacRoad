@@ -106,7 +106,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident![0].image,
+                        imgIncident: result.data.imgIncident[0].image,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
@@ -116,6 +116,8 @@ class _StepPageState extends State<StepPage> {
                             result.data.sos.tncStatus == "ช่างถึงหน้างานเเล้ว"
                                 ? result.data.imgBfwork![0].image
                                 : null,
+                        tncNote: result.data.sos.tncDescription,
+                        userDeal: result.data.sos.userDeal2,
                       );
                     case "step5":
                       return TncStepTwo(
@@ -129,7 +131,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident![0].image,
+                        imgIncident: result.data.imgIncident[0].image,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
@@ -150,7 +152,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident![0].image,
+                        imgIncident: result.data.imgIncident[0].image,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
@@ -171,7 +173,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident![0].image,
+                        imgIncident: result.data.imgIncident[0].image,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
@@ -192,7 +194,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident![0].image,
+                        imgIncident: result.data.imgIncident[0].image,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
@@ -214,7 +216,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident![0].image,
+                        imgIncident: result.data.imgIncident[0].image,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
