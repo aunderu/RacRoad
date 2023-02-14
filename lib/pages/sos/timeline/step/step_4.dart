@@ -379,7 +379,7 @@ class _StepFourState extends State<StepFour> {
                       ElevatedButton(
                         onPressed: () {
                           userSendDeal(widget.sosId, "yes");
-                          Get.offNamed('/sos');
+                          Get.offAllNamed('/sos');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainGreen,

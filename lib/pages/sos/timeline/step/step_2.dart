@@ -187,7 +187,7 @@ class _StepTwoState extends State<StepTwo> {
             ElevatedButton(
               onPressed: () {
                 userSendDeal(widget.sosId, "yes");
-                Get.offNamed('/sos');
+                Get.offAllNamed('/sos');
 
                 Fluttertoast.showToast(
                   msg: "คุณได้ยืนยันรับข้อเสนอดังกล่าว",

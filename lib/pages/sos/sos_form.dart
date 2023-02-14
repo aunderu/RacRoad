@@ -29,7 +29,7 @@ class SOSFormPage extends StatefulWidget {
   String latitude;
   String location;
   String longitude;
-  final List<String> problems;
+  List<String> problems;
   final String sosTitle;
 
   @override
@@ -141,7 +141,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
         gravity: ToastGravity.SNACKBAR,
       );
     }
-    Navigator.pop(context);
+    Get.back();
   }
 
   void getFromCamera() async {
@@ -160,7 +160,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
         gravity: ToastGravity.SNACKBAR,
       );
     }
-    Navigator.pop(context);
+    Get.back();
   }
 
   Future<bool> sosSend(String filePath, String userProblem) async {
@@ -423,33 +423,35 @@ class _SOSFormPageState extends State<SOSFormPage> {
                             keyboardType: TextInputType.multiline,
                           ),
                         ),
-                        ChipsChoice<String>.multiple(
-                          value: _isSelected,
-                          onChanged: (value) {
-                            setState(() {
-                              _isSelected = value;
-                            });
-                            var stringList = _isSelected.join(", ");
-                            userProblemController?.text = stringList;
-                          },
-                          choiceItems: C2Choice.listFrom(
-                            source: widget.problems,
-                            value: (i, v) => v,
-                            label: (i, v) => v,
-                          ),
-                          choiceCheckmark: true,
-                          choiceStyle: C2ChipStyle.toned(
-                            selectedStyle: const C2ChipStyle(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(25),
-                              ),
-                              foregroundColor: mainGreen,
-                              backgroundColor: mainGreen,
-                            ),
-                          ),
-                          wrapped: true,
-                          textDirection: TextDirection.ltr,
-                        ),
+                        widget.problems.isNotEmpty
+                            ? ChipsChoice<String>.multiple(
+                                value: _isSelected,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isSelected = value;
+                                  });
+                                  var stringList = _isSelected.join(", ");
+                                  userProblemController?.text = stringList;
+                                },
+                                choiceItems: C2Choice.listFrom(
+                                  source: widget.problems,
+                                  value: (index, item) => item,
+                                  label: (index, item) => item,
+                                ),
+                                choiceCheckmark: true,
+                                choiceStyle: C2ChipStyle.toned(
+                                  selectedStyle: const C2ChipStyle(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(25),
+                                    ),
+                                    foregroundColor: mainGreen,
+                                    backgroundColor: mainGreen,
+                                  ),
+                                ),
+                                wrapped: true,
+                                textDirection: TextDirection.ltr,
+                              )
+                            : const SizedBox.shrink(),
                         imageFile == null
                             ? Tooltip(
                                 message: "แนบรูปภาพ",

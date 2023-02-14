@@ -11,8 +11,10 @@ import 'package:rac_road/models/my_current_sos_models.dart';
 import 'package:rac_road/models/my_job_models.dart';
 import 'package:rac_road/models/current_tnc_sos_models.dart';
 import 'package:rac_road/models/sos_details_models.dart';
+import 'package:rac_road/models/specific_problem.dart';
 
 import '../models/my_club_models.dart';
+import '../models/problem_type.dart';
 import '../models/user_profile_model.dart';
 
 MyProfile? resultUserProfile;
@@ -26,6 +28,8 @@ CurrentTncSos? resultCurrentTncSos;
 AllMyTncSos? resultAllMyTncSos;
 AllMySos? resultAllMySos;
 AllCarModel? resultAllCar;
+ProblemType? resultProblemType;
+SpecificProblem? resultSpecificProblem;
 
 const url = "https://api.racroad.com/api";
 // const testurl = "https://api-racroad.chabafarm.com/api";
@@ -232,5 +236,42 @@ class RemoteService {
       }
     }
     return resultAllCar;
+  }
+
+  // ################################ ProblemType #################################
+  Future<ProblemType?> getProblemType() async {
+    try {
+      final response = await http.get(Uri.parse("$url/problem/type/all"));
+      if (response.statusCode == 200) {
+        final itemProblemType = json.decode(response.body);
+        resultProblemType = ProblemType.fromJson(itemProblemType);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultProblemType;
+  }
+
+  // ################################ SpecificProblem #################################
+  Future<SpecificProblem?> getSpecificProblem(String problemTypeId) async {
+    try {
+      final response = await http
+          .get(Uri.parse("$url/problem/in/problem/type/$problemTypeId"));
+      if (response.statusCode == 200) {
+        final itemSpecificProblem = json.decode(response.body);
+        resultSpecificProblem = SpecificProblem.fromJson(itemSpecificProblem);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultSpecificProblem;
   }
 }
