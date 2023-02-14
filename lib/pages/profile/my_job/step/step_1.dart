@@ -90,26 +90,26 @@ class _TncStepOneState extends State<TncStepOne> {
               'ชื่อผู้ใช้ : ${widget.userName}\nเบอร์โทร : ${widget.userTel}\n\nปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
               style: GoogleFonts.sarabun(),
             ),
-            // const SizedBox(height: 10),
-            // Align(
-            //   alignment: Alignment.topCenter,
-            //   child: ElevatedButton.icon(
-            //     onPressed: () {
-            //       _openMap(widget.latitude, widget.longitude);
-            //     },
-            //     icon: const Icon(Icons.pin_drop),
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: mainGreen,
-            //       minimumSize: const Size(200, 40),
-            //     ),
-            //     label: Text(
-            //       "ดูใน Google Map",
-            //       style: GoogleFonts.sarabun(
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.topCenter,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  _openMap(widget.latitude, widget.longitude);
+                },
+                icon: const Icon(Icons.pin_drop),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: mainGreen,
+                  minimumSize: const Size(200, 40),
+                ),
+                label: Text(
+                  "ดูใน Google Map",
+                  style: GoogleFonts.sarabun(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.topCenter,
@@ -567,7 +567,7 @@ class _TncStepOneState extends State<TncStepOne> {
         timelines.add(
           Timelines(
             DateTime.now(),
-            "ผู้ใช้ได้ตอบรับข้อเสนอใหม่ของคุณ คุณสามารถเริ่มงานได้",
+            "คุณสามารถเริ่มงานได้",
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,

@@ -166,6 +166,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                       tuPriceTwoTimeStamp: result.data.sos.tuPrice2,
                       userDealTwo: result.data.sos.userDeal2,
                       tuUserDealTwoTimeStamp: result.data.sos.tuUserDeal2,
+                      priceTwoStatus: result.data.sos.price2Status!,
                     );
                   case "step6":
                     return StepSix(
@@ -200,6 +201,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                       tuPriceTwoTimeStamp: result.data.sos.tuPrice2,
                       userDealTwo: result.data.sos.userDeal2,
                       tuUserDealTwoTimeStamp: result.data.sos.tuUserDeal2,
+                      priceTwoStatus: result.data.sos.price2Status!,
                     );
                   case "step7":
                     return StepSeven(
@@ -238,6 +240,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                       rate: result.data.sos.rate!,
                       review: result.data.sos.review!,
                       userSlip: result.data.userSlip![0].image,
+                      priceTwoStatus: result.data.sos.price2Status!,
                     );
                   case "step8":
                     return StepEight(
@@ -277,6 +280,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                       rate: result.data.sos.rate!,
                       review: result.data.sos.review!,
                       userSlip: result.data.userSlip![0].image,
+                      priceTwoStatus: result.data.sos.price2Status!,
                     );
                   case "user_reject_deal":
                     return UserReject(
@@ -332,6 +336,7 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                       rate: result.data.sos.rate!,
                       review: result.data.sos.review!,
                       userSlip: result.data.userSlip![0].image,
+                      priceTwoStatus: result.data.sos.price2Status!,
                     );
                   default:
                     const LoadingTimeLine();

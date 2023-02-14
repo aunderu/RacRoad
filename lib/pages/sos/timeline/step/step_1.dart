@@ -104,7 +104,7 @@ class _StepOneState extends State<StepOne> {
               padding: const EdgeInsets.all(8),
               child: Text(
                 DateFormat(
-                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
+                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm น.')
                     .format(timelines.timestamp),
                 style: GoogleFonts.sarabun(
                   color: darkGray,

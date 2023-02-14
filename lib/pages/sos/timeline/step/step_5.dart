@@ -36,6 +36,7 @@ class StepFive extends StatefulWidget {
     this.userDealTwo,
     this.tuUserDealTwoTimeStamp,
     this.repairDetailsTwo,
+    required this.priceTwoStatus,
   });
 
   final String getToken;
@@ -63,6 +64,7 @@ class StepFive extends StatefulWidget {
   final String userName;
   final String userProfile;
   final String userTel;
+  final String priceTwoStatus;
 
   @override
   State<StepFive> createState() => _StepFiveState();
@@ -262,113 +264,183 @@ class _StepFiveState extends State<StepFive> {
         widget.tncName,
         "3",
       ),
-      Timelines(
-        widget.tuPriceTwoTimeStamp!,
-        "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
-        Card(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
+    ].toList();
+
+    isUserDeal();
+  }
+
+  void isUserDeal() {
+    if (widget.priceTwoStatus == "yes") {
+      setState(() {
+        timelines.addAll([
+          Timelines(
+            widget.tuPriceTwoTimeStamp!,
+            "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
+            Card(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'รายละเอียดเพิ่มเติม :',
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.repairDetailsTwo!,
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'รวมทั้งหมด :',
+                            style: GoogleFonts.sarabun(),
+                          ),
+                        ),
+                        Text(
+                          "${widget.repairPriceTwo} บาท",
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            widget.tuUserDealTwoTimeStamp!,
+            "ฉันยืนยันรับข้อเสนอดังกล่าว",
+            Text(
+              "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
+              style: GoogleFonts.sarabun(),
+            ),
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+          Timelines(
+            widget.stepFiveTimeStamp,
+            "เสร็จสิ้นงาน",
+            Column(
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'รายละเอียดเพิ่มเติม :',
-                  style: GoogleFonts.sarabun(),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                  child: Text(
+                    'สถานะ : ${widget.tncStatus}',
+                    style: GoogleFonts.sarabun(),
+                  ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  widget.repairDetailsTwo!,
-                  style: GoogleFonts.sarabun(),
-                ),
-                const SizedBox(height: 15),
-                const Divider(
-                  thickness: 1,
-                ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
                       child: Text(
-                        'รวมทั้งหมด :',
+                        'รูปหลังเสร็จงาน : ',
                         style: GoogleFonts.sarabun(),
                       ),
                     ),
-                    Text(
-                      "${widget.repairPriceTwo} บาท",
-                      style: GoogleFonts.sarabun(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imgAfwork.toString(),
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
+            widget.tncProfile!,
+            widget.tncName,
+            "3",
           ),
-        ),
-        "assets/imgs/oparator.png",
-        "เจ้าหน้าที่ Racroad",
-        "2",
-      ),
-      Timelines(
-        widget.tuUserDealTwoTimeStamp!,
-        "ฉันยืนยันรับข้อเสนอดังกล่าว",
-        Text(
-          "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
-          style: GoogleFonts.sarabun(),
-        ),
-        widget.userProfile,
-        widget.userName,
-        "1",
-      ),
-      Timelines(
-        widget.stepFiveTimeStamp,
-        "เสร็จสิ้นงาน",
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-              child: Text(
-                'สถานะ : ${widget.tncStatus}',
-                style: GoogleFonts.sarabun(),
-              ),
-            ),
+        ]);
+      });
+    } else {
+      setState(() {
+        timelines.add(
+          Timelines(
+            widget.stepFiveTimeStamp,
+            "เสร็จสิ้นงาน",
             Column(
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                   child: Text(
-                    'รูปหลังเสร็จงาน : ',
+                    'สถานะ : ${widget.tncStatus}',
                     style: GoogleFonts.sarabun(),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgAfwork.toString(),
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                      child: Text(
+                        'รูปหลังเสร็จงาน : ',
+                        style: GoogleFonts.sarabun(),
                       ),
                     ),
-                  ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imgAfwork.toString(),
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-        widget.tncProfile!,
-        widget.tncName,
-        "3",
-      ),
-    ].toList();
+            widget.tncProfile!,
+            widget.tncName,
+            "3",
+          ),
+        );
+      });
+    }
   }
 
   @override

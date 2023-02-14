@@ -52,6 +52,7 @@ class StepSix extends StatefulWidget {
     required this.qrName,
     required this.qrType,
     required this.qrNumber,
+    required this.priceTwoStatus,
   });
 
   final String getToken;
@@ -85,6 +86,7 @@ class StepSix extends StatefulWidget {
   final String qrName;
   final String qrType;
   final String qrNumber;
+  final String priceTwoStatus;
 
   @override
   State<StepSix> createState() => _StepSixState();
@@ -293,380 +295,717 @@ class _StepSixState extends State<StepSix> {
         widget.tncName,
         "3",
       ),
-      Timelines(
-        widget.tuPriceTwoTimeStamp!,
-        "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
-        Card(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
+    ].toList();
+
+    isUserDeal();
+  }
+
+  void isUserDeal() {
+    if (widget.priceTwoStatus == "yes") {
+      setState(() {
+        timelines.addAll([
+          Timelines(
+            widget.tuPriceTwoTimeStamp!,
+            "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
+            Card(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'รายละเอียดเพิ่มเติม :',
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.repairDetailsTwo!,
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'รวมทั้งหมด :',
+                            style: GoogleFonts.sarabun(),
+                          ),
+                        ),
+                        Text(
+                          "${widget.repairPriceTwo} บาท",
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            widget.tuUserDealTwoTimeStamp!,
+            "ฉันยืนยันรับข้อเสนอดังกล่าว",
+            Text(
+              "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
+              style: GoogleFonts.sarabun(),
+            ),
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+          Timelines(
+            widget.stepFiveTimeStamp,
+            "เสร็จสิ้นงาน",
+            Column(
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'รายละเอียดเพิ่มเติม :',
-                  style: GoogleFonts.sarabun(),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                  child: Text(
+                    'สถานะ : ${widget.tncStatus}',
+                    style: GoogleFonts.sarabun(),
+                  ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  widget.repairDetailsTwo!,
-                  style: GoogleFonts.sarabun(),
-                ),
-                const SizedBox(height: 15),
-                const Divider(
-                  thickness: 1,
-                ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
                       child: Text(
-                        'รวมทั้งหมด :',
+                        'รูปหลังเสร็จงาน : ',
                         style: GoogleFonts.sarabun(),
                       ),
                     ),
-                    Text(
-                      "${widget.repairPriceTwo} บาท",
-                      style: GoogleFonts.sarabun(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imgAfwork.toString(),
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
+            widget.tncProfile!,
+            widget.tncName,
+            "3",
           ),
-        ),
-        "assets/imgs/oparator.png",
-        "เจ้าหน้าที่ Racroad",
-        "2",
-      ),
-      Timelines(
-        widget.tuUserDealTwoTimeStamp!,
-        "ฉันยืนยันรับข้อเสนอดังกล่าว",
-        Text(
-          "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
-          style: GoogleFonts.sarabun(),
-        ),
-        widget.userProfile,
-        widget.userName,
-        "1",
-      ),
-      Timelines(
-        widget.stepFiveTimeStamp,
-        "เสร็จสิ้นงาน",
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-              child: Text(
-                'สถานะ : ${widget.tncStatus}',
-                style: GoogleFonts.sarabun(),
-              ),
-            ),
+          Timelines(
+            widget.stepSixTimeStamp,
+            "QR Code สำหรับโอน",
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
-                  child: Text(
-                    'รูปหลังเสร็จงาน : ',
-                    style: GoogleFonts.sarabun(),
-                  ),
+                Text(
+                  "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
+                  style: GoogleFonts.sarabun(),
                 ),
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgAfwork.toString(),
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    child: InkWell(
+                      onLongPress: () async {
+                        await GallerySaver.saveImage(widget.qrCode);
+                        Fluttertoast.showToast(
+                          msg: "โหลด QR Code เรียบร้อย",
+                          fontSize: 18,
+                          backgroundColor: mainGreen,
+                          textColor: Colors.white,
+                        );
+                      },
+                      child: Ink(
+                        child: CachedNetworkImage(
+                          imageUrl: widget.qrCode.toString(),
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
+                        style: GoogleFonts.sarabun(),
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-        widget.tncProfile!,
-        widget.tncName,
-        "3",
-      ),
-      Timelines(
-        widget.stepSixTimeStamp,
-        "QR Code สำหรับโอน",
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
-              style: GoogleFonts.sarabun(),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: InkWell(
-                  onLongPress: () async {
-                    await GallerySaver.saveImage(widget.qrCode);
-                    Fluttertoast.showToast(
-                      msg: "โหลด QR Code เรียบร้อย",
-                      fontSize: 18,
-                      backgroundColor: mainGreen,
-                      textColor: Colors.white,
-                    );
-                  },
-                  child: Ink(
-                    child: CachedNetworkImage(
-                      imageUrl: widget.qrCode.toString(),
-                      height: 400,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                  width: double.infinity,
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            DateTime.now(),
+            "สลิปโอนเงินค่าบริการและรีวิว",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
-                    "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
-                    style: GoogleFonts.sarabun(),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        "assets/imgs/oparator.png",
-        "เจ้าหน้าที่ Racroad",
-        "2",
-      ),
-      Timelines(
-        DateTime.now(),
-        "สลิปโอนเงินค่าบริการและรีวิว",
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                'รีวิวช่าง',
-                style: GoogleFonts.sarabun(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            TextFormField(
-              controller: userReviewController,
-              obscureText: false,
-              decoration: InputDecoration(
-                hintText: 'เล่าประสบการณ์บริการกับช่างคนนี้',
-                hintStyle: GoogleFonts.sarabun(),
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: mainGreen,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                contentPadding:
-                    const EdgeInsetsDirectional.fromSTEB(20, 32, 20, 12),
-              ),
-              style: GoogleFonts.sarabun(),
-              textAlign: TextAlign.start,
-              maxLines: 4,
-              keyboardType: TextInputType.multiline,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'สลิปการโอนของคุณ',
-              style: GoogleFonts.sarabun(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            imageFile == null
-                ? Align(
-                    alignment: const AlignmentDirectional(0, 0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                      child: Material(
-                        child: InkWell(
-                          onTap: () async {
-                            PermissionStatus cameraStatus =
-                                await Permission.camera.request();
-                            if (cameraStatus == PermissionStatus.granted) {
-                              getFromGallery();
-                            }
-                            if (cameraStatus == PermissionStatus.denied) {
-                              Fluttertoast.showToast(
-                                  msg: "This permission is recommended");
-                            }
-                            if (cameraStatus ==
-                                PermissionStatus.permanentlyDenied) {
-                              openAppSettings();
-                            }
-                          },
-                          child: Ink(
-                            width: double.infinity,
-                            height: 100,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFEFEFEF),
-                            ),
-                            child: const Icon(
-                              Icons.photo_library_outlined,
-                              color: Color(0xFF9D9D9D),
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Center(
-                      child: InkWell(
-                        onTap: getFromGallery,
-                        child: Image.file(
-                          imageFile!,
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    'รีวิวช่าง',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Center(
-                child: RatingBar.builder(
-                  minRating: 1,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 5),
-                  itemBuilder: (context, index) => const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  updateOnDrag: true,
-                  onRatingUpdate: (rating) => setState(() {
-                    this.rating = rating;
-                  }),
                 ),
-              ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (imageFile != null) {
-                    if (userReviewController!.text == "") {
-                      if (rating == 0) {
-                        sosPayAndReview(
-                          widget.sosId,
-                          "ผู้ใช้ไม่ได้ให้ดาวช่าง",
-                          "ผู้ใช้ไม่ได้มีการรีวิวช่าง",
-                          imageFile!.path,
-                        );
-                      } else {
-                        sosPayAndReview(
-                          widget.sosId,
-                          rating.toString(),
-                          "ผู้ใช้ไม่ได้มีการรีวิวช่าง",
-                          imageFile!.path,
-                        );
-                      }
-                    } else {
-                      if (rating != 0) {
-                        sosPayAndReview(
-                          widget.sosId,
-                          rating.toString(),
-                          userReviewController!.text,
-                          imageFile!.path,
-                        );
-                      } else {
-                        sosPayAndReview(
-                          widget.sosId,
-                          "ผู้ใช้ไม่ได้ให้ดาวช่าง",
-                          userReviewController!.text,
-                          imageFile!.path,
-                        );
-                      }
-                    }
-
-                    Get.offAllNamed('/sos');
-
-                    Fluttertoast.showToast(
-                      msg: "ส่งสลิปโอนเงินค่าบริการและรีวิว เรียบร้อย!",
-                      backgroundColor: mainGreen,
-                      fontSize: 17,
-                    );
-                  } else {
-                    Fluttertoast.showToast(
-                      msg: "กรุณาแนบสลิปด้วย",
-                      backgroundColor: Colors.yellow[100],
-                      fontSize: 17,
-                      textColor: Colors.black,
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: mainGreen,
-                  minimumSize: const Size(
-                    200,
-                    40,
+                TextFormField(
+                  controller: userReviewController,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    hintText: 'เล่าประสบการณ์บริการกับช่างคนนี้',
+                    hintStyle: GoogleFonts.sarabun(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: mainGreen,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding:
+                        const EdgeInsetsDirectional.fromSTEB(20, 32, 20, 12),
                   ),
+                  style: GoogleFonts.sarabun(),
+                  textAlign: TextAlign.start,
+                  maxLines: 4,
+                  keyboardType: TextInputType.multiline,
                 ),
-                child: Text(
-                  'ยืนยันส่ง',
+                const SizedBox(height: 10),
+                Text(
+                  'สลิปการโอนของคุณ',
                   style: GoogleFonts.sarabun(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+                imageFile == null
+                    ? Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          child: Material(
+                            child: InkWell(
+                              onTap: () async {
+                                PermissionStatus cameraStatus =
+                                    await Permission.camera.request();
+                                if (cameraStatus == PermissionStatus.granted) {
+                                  getFromGallery();
+                                }
+                                if (cameraStatus == PermissionStatus.denied) {
+                                  Fluttertoast.showToast(
+                                      msg: "This permission is recommended");
+                                }
+                                if (cameraStatus ==
+                                    PermissionStatus.permanentlyDenied) {
+                                  openAppSettings();
+                                }
+                              },
+                              child: Ink(
+                                width: double.infinity,
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFEFEFEF),
+                                ),
+                                child: const Icon(
+                                  Icons.photo_library_outlined,
+                                  color: Color(0xFF9D9D9D),
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Center(
+                          child: InkWell(
+                            onTap: getFromGallery,
+                            child: Image.file(
+                              imageFile!,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Center(
+                    child: RatingBar.builder(
+                      minRating: 1,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      updateOnDrag: true,
+                      onRatingUpdate: (rating) => setState(() {
+                        this.rating = rating;
+                      }),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (imageFile != null) {
+                        if (userReviewController!.text == "") {
+                          if (rating == 0) {
+                            sosPayAndReview(
+                              widget.sosId,
+                              "ผู้ใช้ไม่ได้ให้ดาวช่าง",
+                              "ผู้ใช้ไม่ได้มีการรีวิวช่าง",
+                              imageFile!.path,
+                            );
+                          } else {
+                            sosPayAndReview(
+                              widget.sosId,
+                              rating.toString(),
+                              "ผู้ใช้ไม่ได้มีการรีวิวช่าง",
+                              imageFile!.path,
+                            );
+                          }
+                        } else {
+                          if (rating != 0) {
+                            sosPayAndReview(
+                              widget.sosId,
+                              rating.toString(),
+                              userReviewController!.text,
+                              imageFile!.path,
+                            );
+                          } else {
+                            sosPayAndReview(
+                              widget.sosId,
+                              "ผู้ใช้ไม่ได้ให้ดาวช่าง",
+                              userReviewController!.text,
+                              imageFile!.path,
+                            );
+                          }
+                        }
+
+                        Get.offAllNamed('/sos');
+
+                        Fluttertoast.showToast(
+                          msg: "ส่งสลิปโอนเงินค่าบริการและรีวิว เรียบร้อย!",
+                          backgroundColor: mainGreen,
+                          fontSize: 17,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "กรุณาแนบสลิปด้วย",
+                          backgroundColor: Colors.yellow[100],
+                          fontSize: 17,
+                          textColor: Colors.black,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainGreen,
+                      minimumSize: const Size(
+                        200,
+                        40,
+                      ),
+                    ),
+                    child: Text(
+                      'ยืนยันส่ง',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        widget.userProfile,
-        widget.userName,
-        "1",
-      ),
-    ].toList();
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+        ]);
+      });
+    } else {
+      setState(() {
+        timelines.addAll([
+          Timelines(
+            widget.stepFiveTimeStamp,
+            "เสร็จสิ้นงาน",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                  child: Text(
+                    'สถานะ : ${widget.tncStatus}',
+                    style: GoogleFonts.sarabun(),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                      child: Text(
+                        'รูปหลังเสร็จงาน : ',
+                        style: GoogleFonts.sarabun(),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imgAfwork.toString(),
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            widget.tncProfile!,
+            widget.tncName,
+            "3",
+          ),
+          Timelines(
+            widget.stepSixTimeStamp,
+            "QR Code สำหรับโอน",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
+                  style: GoogleFonts.sarabun(),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                    child: InkWell(
+                      onLongPress: () async {
+                        await GallerySaver.saveImage(widget.qrCode);
+                        Fluttertoast.showToast(
+                          msg: "โหลด QR Code เรียบร้อย",
+                          fontSize: 18,
+                          backgroundColor: mainGreen,
+                          textColor: Colors.white,
+                        );
+                      },
+                      child: Ink(
+                        child: CachedNetworkImage(
+                          imageUrl: widget.qrCode.toString(),
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
+                        style: GoogleFonts.sarabun(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            DateTime.now(),
+            "สลิปโอนเงินค่าบริการและรีวิว",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'รีวิวช่าง',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  controller: userReviewController,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    hintText: 'เล่าประสบการณ์บริการกับช่างคนนี้',
+                    hintStyle: GoogleFonts.sarabun(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: mainGreen,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding:
+                        const EdgeInsetsDirectional.fromSTEB(20, 32, 20, 12),
+                  ),
+                  style: GoogleFonts.sarabun(),
+                  textAlign: TextAlign.start,
+                  maxLines: 4,
+                  keyboardType: TextInputType.multiline,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'สลิปการโอนของคุณ',
+                  style: GoogleFonts.sarabun(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                imageFile == null
+                    ? Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          child: Material(
+                            child: InkWell(
+                              onTap: () async {
+                                PermissionStatus cameraStatus =
+                                    await Permission.camera.request();
+                                if (cameraStatus == PermissionStatus.granted) {
+                                  getFromGallery();
+                                }
+                                if (cameraStatus == PermissionStatus.denied) {
+                                  Fluttertoast.showToast(
+                                      msg: "This permission is recommended");
+                                }
+                                if (cameraStatus ==
+                                    PermissionStatus.permanentlyDenied) {
+                                  openAppSettings();
+                                }
+                              },
+                              child: Ink(
+                                width: double.infinity,
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFEFEFEF),
+                                ),
+                                child: const Icon(
+                                  Icons.photo_library_outlined,
+                                  color: Color(0xFF9D9D9D),
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Center(
+                          child: InkWell(
+                            onTap: getFromGallery,
+                            child: Image.file(
+                              imageFile!,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Center(
+                    child: RatingBar.builder(
+                      minRating: 1,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      updateOnDrag: true,
+                      onRatingUpdate: (rating) => setState(() {
+                        this.rating = rating;
+                      }),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (imageFile != null) {
+                        if (userReviewController!.text == "") {
+                          if (rating == 0) {
+                            sosPayAndReview(
+                              widget.sosId,
+                              "ผู้ใช้ไม่ได้ให้ดาวช่าง",
+                              "ผู้ใช้ไม่ได้มีการรีวิวช่าง",
+                              imageFile!.path,
+                            );
+                          } else {
+                            sosPayAndReview(
+                              widget.sosId,
+                              rating.toString(),
+                              "ผู้ใช้ไม่ได้มีการรีวิวช่าง",
+                              imageFile!.path,
+                            );
+                          }
+                        } else {
+                          if (rating != 0) {
+                            sosPayAndReview(
+                              widget.sosId,
+                              rating.toString(),
+                              userReviewController!.text,
+                              imageFile!.path,
+                            );
+                          } else {
+                            sosPayAndReview(
+                              widget.sosId,
+                              "ผู้ใช้ไม่ได้ให้ดาวช่าง",
+                              userReviewController!.text,
+                              imageFile!.path,
+                            );
+                          }
+                        }
+
+                        Get.offAllNamed('/sos');
+
+                        Fluttertoast.showToast(
+                          msg: "ส่งสลิปโอนเงินค่าบริการและรีวิว เรียบร้อย!",
+                          backgroundColor: mainGreen,
+                          fontSize: 17,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "กรุณาแนบสลิปด้วย",
+                          backgroundColor: Colors.yellow[100],
+                          fontSize: 17,
+                          textColor: Colors.black,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainGreen,
+                      minimumSize: const Size(
+                        200,
+                        40,
+                      ),
+                    ),
+                    child: Text(
+                      'ยืนยันส่ง',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+        ]);
+      });
+    }
   }
 
   void getFromGallery() async {

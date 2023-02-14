@@ -272,6 +272,14 @@ class _SOSPageState extends State<SOSPage> {
                                                                   .problemTypeAll[
                                                                       index]
                                                                   .image,
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  Image.asset(
+                                                                'assets/icons/404.png',
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
                                                               color:
                                                                   Colors.white,
                                                               width: 50,

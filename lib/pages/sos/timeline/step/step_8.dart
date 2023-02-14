@@ -34,7 +34,7 @@ class StepEight extends StatefulWidget {
     this.tncProfile,
     this.imgBfwork,
     this.imgAfwork,
-    this.qrCode,
+    required this.qrCode,
     required this.stepSevenTimeStamp,
     required this.rate,
     required this.review,
@@ -49,6 +49,7 @@ class StepEight extends StatefulWidget {
     required this.qrName,
     required this.qrType,
     required this.qrNumber,
+    required this.priceTwoStatus,
   });
 
   final String getToken;
@@ -58,7 +59,7 @@ class StepEight extends StatefulWidget {
   final String location;
   final String problem;
   final String problemDetails;
-  final String? qrCode;
+  final String qrCode;
   final String rate;
   final String repairDetails;
   final String repairPrice;
@@ -87,6 +88,7 @@ class StepEight extends StatefulWidget {
   final String qrName;
   final String qrType;
   final String qrNumber;
+  final String priceTwoStatus;
 
   @override
   State<StepEight> createState() => _StepEightState();
@@ -290,241 +292,439 @@ class _StepEightState extends State<StepEight> {
         widget.tncName,
         "3",
       ),
-      Timelines(
-        widget.tuPriceTwoTimeStamp!,
-        "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
-        Card(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
+    ].toList();
+
+    isUserDeal();
+  }
+
+  void isUserDeal() {
+    if (widget.priceTwoStatus == "yes") {
+      setState(() {
+        timelines.addAll([
+          Timelines(
+            widget.tuPriceTwoTimeStamp!,
+            "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
+            Card(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'รายละเอียดเพิ่มเติม :',
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.repairDetailsTwo!,
+                      style: GoogleFonts.sarabun(),
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'รวมทั้งหมด :',
+                            style: GoogleFonts.sarabun(),
+                          ),
+                        ),
+                        Text(
+                          "${widget.repairPriceTwo} บาท",
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            widget.tuUserDealTwoTimeStamp!,
+            "ฉันยืนยันรับข้อเสนอดังกล่าว",
+            Text(
+              "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
+              style: GoogleFonts.sarabun(),
+            ),
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+          Timelines(
+            widget.stepFiveTimeStamp,
+            "เสร็จสิ้นงาน",
+            Column(
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'รายละเอียดเพิ่มเติม :',
-                  style: GoogleFonts.sarabun(),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                  child: Text(
+                    'สถานะ : ${widget.tncStatus}',
+                    style: GoogleFonts.sarabun(),
+                  ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  widget.repairDetailsTwo!,
-                  style: GoogleFonts.sarabun(),
-                ),
-                const SizedBox(height: 15),
-                const Divider(
-                  thickness: 1,
-                ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
                       child: Text(
-                        'รวมทั้งหมด :',
+                        'รูปหลังเสร็จงาน : ',
                         style: GoogleFonts.sarabun(),
                       ),
                     ),
-                    Text(
-                      "${widget.repairPriceTwo} บาท",
-                      style: GoogleFonts.sarabun(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imgAfwork.toString(),
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
+            widget.tncProfile!,
+            widget.tncName,
+            "3",
           ),
-        ),
-        "assets/imgs/oparator.png",
-        "เจ้าหน้าที่ Racroad",
-        "2",
-      ),
-      Timelines(
-        widget.tuUserDealTwoTimeStamp!,
-        "ฉันยืนยันรับข้อเสนอดังกล่าว",
-        Text(
-          "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
-          style: GoogleFonts.sarabun(),
-        ),
-        widget.userProfile,
-        widget.userName,
-        "1",
-      ),
-      Timelines(
-        widget.stepFiveTimeStamp,
-        "เสร็จสิ้นงาน",
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-              child: Text(
-                'สถานะ : ${widget.tncStatus}',
-                style: GoogleFonts.sarabun(),
-              ),
-            ),
+          Timelines(
+            widget.stepSixTimeStamp,
+            "QR Code สำหรับโอน",
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
-                  child: Text(
-                    'รูปหลังเสร็จงาน : ',
-                    style: GoogleFonts.sarabun(),
-                  ),
+                Text(
+                  "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
+                  style: GoogleFonts.sarabun(),
                 ),
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgAfwork.toString(),
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    child: InkWell(
+                      onLongPress: () async {
+                        await GallerySaver.saveImage(widget.qrCode);
+                        Fluttertoast.showToast(
+                          msg: "โหลด QR Code เรียบร้อย",
+                          fontSize: 18,
+                          backgroundColor: mainGreen,
+                          textColor: Colors.white,
+                        );
+                      },
+                      child: Ink(
+                        child: CachedNetworkImage(
+                          imageUrl: widget.qrCode.toString(),
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
+                        style: GoogleFonts.sarabun(),
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-        widget.tncProfile!,
-        widget.tncName,
-        "3",
-      ),
-      Timelines(
-        widget.stepSixTimeStamp,
-        "QR Code สำหรับโอน",
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
-              style: GoogleFonts.sarabun(),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: InkWell(
-                  onLongPress: () async {
-                    await GallerySaver.saveImage(widget.qrCode!);
-                    Fluttertoast.showToast(
-                      msg: "โหลด QR Code เรียบร้อย",
-                      fontSize: 18,
-                      backgroundColor: mainGreen,
-                      textColor: Colors.white,
-                    );
-                  },
-                  child: Ink(
-                    child: CachedNetworkImage(
-                      imageUrl: widget.qrCode.toString(),
-                      height: 400,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            widget.stepSevenTimeStamp,
+            "โอนเงินค่าบริการ",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ให้ดาวช่าง : ${widget.rate}\nรีวิว : ${widget.review}',
+                  style: GoogleFonts.sarabun(
+                    height: 1.5,
+                  ),
+                ),
+                Align(
+                  alignment: const AlignmentDirectional(0, 0),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 5),
+                    child: InteractiveViewer(
+                      panEnabled: false,
+                      minScale: 0.5,
+                      maxScale: 2,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.userSlip,
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.fill,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                  width: double.infinity,
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+          Timelines(
+            widget.stepEightTimeStamp,
+            "ขอบคุณที่ใช้บริการ",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'เจ้าหน้าที่ตรวจการเงินและโอนเงินให้ช่างภายใน 24 ชั่วโมง ขอบคุณที่ใช้บริการกับเรา',
+                  style: GoogleFonts.sarabun(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/imgs/thank.png',
+                        height: 100,
+                      ),
+                      Image.asset(
+                        'assets/imgs/thank_bubbles.png',
+                        height: 70,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+        ]);
+      });
+    } else {
+      setState(() {
+        timelines.addAll([
+          Timelines(
+            widget.stepFiveTimeStamp,
+            "เสร็จสิ้นงาน",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                   child: Text(
-                    "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
+                    'สถานะ : ${widget.tncStatus}',
                     style: GoogleFonts.sarabun(),
                   ),
                 ),
-              ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                      child: Text(
+                        'รูปหลังเสร็จงาน : ',
+                        style: GoogleFonts.sarabun(),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imgAfwork.toString(),
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
-        "assets/imgs/oparator.png",
-        "เจ้าหน้าที่ Racroad",
-        "2",
-      ),
-      Timelines(
-        widget.stepSevenTimeStamp,
-        "โอนเงินค่าบริการ",
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'ให้ดาวช่าง : ${widget.rate}\nรีวิว : ${widget.review}',
-              style: GoogleFonts.sarabun(
-                height: 1.5,
-              ),
-            ),
-            Align(
-              alignment: const AlignmentDirectional(0, 0),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 5),
-                child: InteractiveViewer(
-                  panEnabled: false,
-                  minScale: 0.5,
-                  maxScale: 2,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.userSlip,
-                      height: 400,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+            widget.tncProfile!,
+            widget.tncName,
+            "3",
+          ),
+          Timelines(
+            widget.stepSixTimeStamp,
+            "QR Code สำหรับโอน",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "คุณสามารถกดค้างที่รูป เพื่อดาวห์โหลด QR Code นี้",
+                  style: GoogleFonts.sarabun(),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                    child: InkWell(
+                      onLongPress: () async {
+                        await GallerySaver.saveImage(widget.qrCode);
+                        Fluttertoast.showToast(
+                          msg: "โหลด QR Code เรียบร้อย",
+                          fontSize: 18,
+                          backgroundColor: mainGreen,
+                          textColor: Colors.white,
+                        );
+                      },
+                      child: Ink(
+                        child: CachedNetworkImage(
+                          imageUrl: widget.qrCode.toString(),
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-        widget.userProfile,
-        widget.userName,
-        "1",
-      ),
-      Timelines(
-        widget.stepEightTimeStamp,
-        "ขอบคุณที่ใช้บริการ",
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'เจ้าหน้าที่ตรวจการเงินและโอนเงินให้ช่างภายใน 24 ชั่วโมง ขอบคุณที่ใช้บริการกับเรา',
-              style: GoogleFonts.sarabun(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/imgs/thank.png',
-                    height: 100,
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        "ชื่อบัญชี : ${widget.qrName}\nเลขบัญชี : ${widget.qrNumber}\nประเภทบัญชี : ${widget.qrType}",
+                        style: GoogleFonts.sarabun(),
+                      ),
+                    ),
                   ),
-                  Image.asset(
-                    'assets/imgs/thank_bubbles.png',
-                    height: 70,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-        "assets/imgs/oparator.png",
-        "เจ้าหน้าที่ Racroad",
-        "2",
-      ),
-    ].toList();
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+          Timelines(
+            widget.stepSevenTimeStamp,
+            "โอนเงินค่าบริการ",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ให้ดาวช่าง : ${widget.rate}\nรีวิว : ${widget.review}',
+                  style: GoogleFonts.sarabun(
+                    height: 1.5,
+                  ),
+                ),
+                Align(
+                  alignment: const AlignmentDirectional(0, 0),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 5),
+                    child: InteractiveViewer(
+                      panEnabled: false,
+                      minScale: 0.5,
+                      maxScale: 2,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.userSlip,
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.fill,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            widget.userProfile,
+            widget.userName,
+            "1",
+          ),
+          Timelines(
+            widget.stepEightTimeStamp,
+            "ขอบคุณที่ใช้บริการ",
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'เจ้าหน้าที่ตรวจการเงินและโอนเงินให้ช่างภายใน 24 ชั่วโมง ขอบคุณที่ใช้บริการกับเรา',
+                  style: GoogleFonts.sarabun(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/imgs/thank.png',
+                        height: 100,
+                      ),
+                      Image.asset(
+                        'assets/imgs/thank_bubbles.png',
+                        height: 70,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            "assets/imgs/oparator.png",
+            "เจ้าหน้าที่ Racroad",
+            "2",
+          ),
+        ]);
+      });
+    }
   }
 
   @override
