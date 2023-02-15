@@ -90,9 +90,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
     var response = await http.delete(url);
 
     if (response.statusCode == 200) {
-      // ignore: use_build_context_synchronously
-
-      Get.toNamed('/home');
+      Get.offAllNamed('/profile');
       Fluttertoast.showToast(
         msg: "คุณได้ลบคลับนี้แล้ว",
         toastLength: Toast.LENGTH_SHORT,
