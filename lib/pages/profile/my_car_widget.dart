@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +10,11 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rac_road/models/menu_item.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:rac_road/models/my_car_models.dart';
+import 'package:rac_road/models/all_my_car.dart';
 import 'package:rac_road/services/remote_service.dart';
 import '../../../colors.dart';
 import '../../models/data/menu_items.dart';
+import '../../models/my_car_details.dart';
 import 'add_car/find_car.dart';
 import 'car_details.dart';
 
@@ -27,26 +30,33 @@ class MyCarWidget extends StatefulWidget {
 class _MyCarWidgetState extends State<MyCarWidget> {
   bool isLoaded = true;
   AllMyCar? myCar;
+  MyCarDetails? carDetails;
 
   bool _haveCar = false;
-  final bool _isMultiCar = false;
+  bool _isMultiCar = false;
 
   @override
   void initState() {
     super.initState();
 
     // ดึงข้อมูล
-    getData(widget.getToken);
+    getData();
+
+    setUpTimedFetch();
   }
 
-  getData(String token) async {
+  getData() async {
     setState(() {
       isLoaded == true;
     });
-    myCar = await RemoteService().getMyCar(token);
+    myCar = await RemoteService().getMyCar(widget.getToken);
+
     if (myCar != null) {
-      final bool? haveData = myCar?.data!.mycarData?.isNotEmpty;
+      final bool haveData = myCar!.data.mycarData.isNotEmpty;
       if (haveData == true) {
+        carDetails = await RemoteService()
+            .getMyCarDetails(myCar!.data.mycarData[0].mycarId);
+        _isMultiCar = myCar!.data.mycarData.length > 1;
         if (mounted) {
           setState(() {
             _haveCar = true;
@@ -64,6 +74,17 @@ class _MyCarWidgetState extends State<MyCarWidget> {
     }
   }
 
+  setUpTimedFetch() {
+    Timer.periodic(const Duration(seconds: 10), (timer) async {
+      myCar = await RemoteService().getMyCar(widget.getToken);
+      if (mounted) {
+        setState(() {
+          myCar;
+        });
+      }
+    });
+  }
+
   void deleteCar(String carId) async {
     var url = Uri.parse('https://api.racroad.com/api/mycar/destroy/$carId');
     var response = await http.delete(url);
@@ -71,7 +92,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
     if (response.statusCode == 200) {
       // ignore: use_build_context_synchronously
 
-      Get.toNamed('/profile');
+      Get.toNamed('/home');
       Fluttertoast.showToast(
         msg: "คุณได้ลบคลับนี้แล้ว",
         toastLength: Toast.LENGTH_SHORT,
@@ -119,7 +140,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  deleteCar(myCar!.data!.mycarData![0].mycarId!);
+                  deleteCar(myCar!.data.mycarData[0].mycarId);
                 },
                 child: const Text('ลบข้อมูลรถ'),
               ),
@@ -175,7 +196,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                           children: [
                             Expanded(
                               child: Text(
-                                myCar!.data!.mycarData![0].carBrand!,
+                                myCar!.data.mycarData[0].carNo,
                                 style: GoogleFonts.sarabun(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
@@ -203,7 +224,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'รุ่น : ${myCar!.data!.mycarData![0].carModel!}\nโฉม : ${myCar!.data!.mycarData![0].carMakeover!}\nรุ่นย่อย : ${myCar!.data!.mycarData![0].carSubversion!}\nเชื้อเพลิง : ${myCar!.data!.mycarData![0].carFuel!}',
+                                  'รุ่น : ${carDetails!.data!.mycarDetail!.carModel}\nโฉม : ${carDetails!.data!.mycarDetail!.carMakeover!}\nรุ่นย่อย : ${carDetails!.data!.mycarDetail!.carSubversion!}\nเชื้อเพลิง : ${carDetails!.data!.mycarDetail!.carFuel!}',
                                   style: GoogleFonts.sarabun(),
                                 ),
                               ),
@@ -215,7 +236,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                                       Radius.circular(14)),
                                   child: CachedNetworkImage(
                                     imageUrl:
-                                        myCar!.data!.mycarData![0].carProfile!,
+                                        myCar!.data.mycarData[0].carProfile,
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => Container(
                                       color: Colors.white,
@@ -759,7 +780,11 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                   borderRadius: BorderRadius.circular(20),
                   child: Material(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(
+                          () => FindCarPage(getToken: widget.getToken),
+                        );
+                      },
                       child: Ink(
                         width: 40,
                         height: 40,
@@ -781,319 +806,168 @@ class _MyCarWidgetState extends State<MyCarWidget> {
         } else {
           return Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              primary: false,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
+            child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CarDetails(),
+                ListView.builder(
+                  padding: EdgeInsets.zero,
+                  primary: false,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: myCar!.data.mycarData.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 3,
+                              color: Color(0x411D2429),
+                              offset: Offset(0, 1),
+                            )
+                          ],
                         ),
-                      );
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 3,
-                            color: Color(0x411D2429),
-                            offset: Offset(0, 1),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 1, 1, 1),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                // child: Image.network(
-                                //   '',
-                                //   width: 80,
-                                //   height: 80,
-                                //   fit: BoxFit.cover,
-                                // ),
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  color: Colors.grey.shade300,
+                        child: Material(
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CarDetails(),
                                 ),
+                              );
+                            },
+                            onLongPress: () {
+                              Get.defaultDialog(
+                                  title: 'ลบ',
+                                  titleStyle: GoogleFonts.sarabun(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                  ),
+                                  middleText:
+                                      'คุณต้องการลบข้อมูลรถยนต์นี้หรือไม่?');
+                            },
+                            child: Ink(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: primaryBGColor,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ),
-                            Expanded(
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    8, 8, 4, 0),
-                                child: Column(
+                                padding: const EdgeInsetsDirectional.all(8),
+                                child: Row(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Car Title',
-                                      style: GoogleFonts.sarabun(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24,
-                                      ),
-                                    ),
                                     Padding(
                                       padding:
                                           const EdgeInsetsDirectional.fromSTEB(
-                                              0, 4, 8, 0),
-                                      child: AutoSizeText(
-                                        'Subtext',
-                                        textAlign: TextAlign.start,
-                                        style: GoogleFonts.sarabun(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey,
+                                              0, 1, 1, 1),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: CachedNetworkImage(
+                                          imageUrl: myCar!
+                                              .data.mycarData[index].carProfile,
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                            'assets/icons/404.png',
+                                            color: Colors.red,
+                                          ),
                                         ),
                                       ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 8, 4, 0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'ชื่อยี่ห้อรถยนต์',
+                                              style: GoogleFonts.sarabun(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(0, 4, 8, 0),
+                                              child: AutoSizeText(
+                                                myCar!.data.mycarData[index]
+                                                    .carNo,
+                                                textAlign: TextAlign.start,
+                                                style: GoogleFonts.sarabun(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: const [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 4, 0, 0),
+                                          child: Icon(
+                                            Icons.chevron_right_rounded,
+                                            color: Color(0xFF57636C),
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 0, 0),
-                                  child: Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Color(0xFF57636C),
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CarDetails(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 3,
-                            color: Color(0x411D2429),
-                            offset: Offset(0, 1),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 1, 1, 1),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                // child: Image.network(
-                                //   '',
-                                //   width: 80,
-                                //   height: 80,
-                                //   fit: BoxFit.cover,
-                                // ),
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  color: Colors.grey.shade300,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    8, 8, 4, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Car Title',
-                                      style: GoogleFonts.sarabun(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 4, 8, 0),
-                                      child: AutoSizeText(
-                                        'Subtext',
-                                        textAlign: TextAlign.start,
-                                        style: GoogleFonts.sarabun(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 0, 0),
-                                  child: Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Color(0xFF57636C),
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 24),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CarDetails(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 3,
-                            color: Color(0x411D2429),
-                            offset: Offset(0, 1),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 1, 1, 1),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                // child: Image.network(
-                                //   '',
-                                //   width: 80,
-                                //   height: 80,
-                                //   fit: BoxFit.cover,
-                                // ),
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  color: Colors.grey.shade300,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    8, 8, 4, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Car Title',
-                                      style: GoogleFonts.sarabun(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 4, 8, 0),
-                                      child: AutoSizeText(
-                                        'Subtext',
-                                        textAlign: TextAlign.start,
-                                        style: GoogleFonts.sarabun(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 0, 0),
-                                  child: Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Color(0xFF57636C),
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Material(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(
+                            () => FindCarPage(getToken: widget.getToken),
+                          );
+                        },
+                        child: Ink(
+                          width: 40,
+                          height: 40,
+                          decoration: const BoxDecoration(
+                            color: lightGrey,
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            color: darkGray,
+                            size: 24,
+                          ),
                         ),
                       ),
                     ),
@@ -1122,13 +996,9 @@ class _MyCarWidgetState extends State<MyCarWidget> {
               ),
               const SizedBox(height: 10),
               TextButton(
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          FindCarPage(getToken: widget.getToken),
-                    ),
+                onPressed: () {
+                  Get.to(
+                    () => FindCarPage(getToken: widget.getToken),
                   );
                 },
                 child: Text(

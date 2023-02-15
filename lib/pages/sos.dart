@@ -122,17 +122,20 @@ class _SOSPageState extends State<SOSPage> {
   Future<Position> _determindePosition() async {
     bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!isServiceEnabled) {
+      Get.back();
       return Future.error('บริการระบุตำแหน่งปิดใช้งานอยู่');
     }
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        Get.back();
         return Future.error("สิทธิ์ในการระบุตำแหน่งถูกปฏิเสธ");
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
+      Get.back();
       return Future.error(
           'สิทธิ์เข้าถึงตำแหน่งถูกปฏิเสธอย่างถาวร พวกเราไม่สามารถเข้าถึงการระบุตำแหน่งได้');
     }

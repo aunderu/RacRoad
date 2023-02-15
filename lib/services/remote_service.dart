@@ -2,23 +2,25 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:rac_road/models/all_car_models.dart';
-import 'package:rac_road/models/all_my_sos_models.dart';
-import 'package:rac_road/models/all_my_tnc_sos_models.dart';
-import 'package:rac_road/models/club_details.dart';
-import 'package:rac_road/models/my_car_models.dart';
-import 'package:rac_road/models/my_current_sos_models.dart';
-import 'package:rac_road/models/my_job_models.dart';
-import 'package:rac_road/models/current_tnc_sos_models.dart';
-import 'package:rac_road/models/sos_details_models.dart';
-import 'package:rac_road/models/specific_problem.dart';
 
+import '../models/all_car_models.dart';
+import '../models/all_my_car.dart';
+import '../models/all_my_sos_models.dart';
+import '../models/all_my_tnc_sos_models.dart';
+import '../models/club_details.dart';
+import '../models/current_tnc_sos_models.dart';
+import '../models/my_car_details.dart';
 import '../models/my_club_models.dart';
+import '../models/my_current_sos_models.dart';
+import '../models/my_job_models.dart';
 import '../models/problem_type.dart';
+import '../models/sos_details_models.dart';
+import '../models/specific_problem.dart';
 import '../models/user_profile_model.dart';
 
 MyProfile? resultUserProfile;
-AllMyCar? resultMyCar;
+AllMyCar? resultAllMyCar;
+MyCarDetails? resultMyCarDetails;
 MyClub? resultMyClub;
 ClubDetails? resultClubDetails;
 MyJob? resultMyJob;
@@ -61,7 +63,7 @@ class RemoteService {
       final response = await http.get(Uri.parse("$url/mycar/all/$token"));
       if (response.statusCode == 200) {
         final itemMyCar = json.decode(response.body);
-        resultMyCar = AllMyCar.fromJson(itemMyCar);
+        resultAllMyCar = AllMyCar.fromJson(itemMyCar);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -70,7 +72,25 @@ class RemoteService {
         print(e);
       }
     }
-    return resultMyCar;
+    return resultAllMyCar;
+  }
+
+  // ################################ MyCarDetails #################################
+  Future<MyCarDetails?> getMyCarDetails(String carId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/mycar/detail/$carId"));
+      if (response.statusCode == 200) {
+        final itemMyCarDetails = json.decode(response.body);
+        resultMyCarDetails = MyCarDetails.fromJson(itemMyCarDetails);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultMyCarDetails;
   }
 
   // ################################ MyClub #################################

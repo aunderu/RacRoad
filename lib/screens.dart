@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/colors.dart';
-import 'package:rac_road/loading/skelton.dart';
 import 'package:rac_road/models/user_profile_model.dart';
 import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/my_job_models.dart';
 import '../models/current_tnc_sos_models.dart';
@@ -16,7 +13,6 @@ import 'pages/home_page.dart';
 import 'pages/notifications.dart';
 import 'pages/profile.dart';
 import 'pages/sos.dart';
-import 'pages/test_page.dart';
 
 class ScreensPage extends StatefulWidget {
   ScreensPage({

@@ -315,6 +315,13 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
   TextEditingController? licensePlateController;
   File? imageFile;
 
+  @override
+  void initState() {
+    super.initState();
+
+    licensePlateController = TextEditingController();
+  }
+
   void showImageDialog(String carId) {
     showDialog(
       context: context,
@@ -433,13 +440,14 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
     Get.back();
   }
 
-  Future<bool> carSend(String filePath, String carId) async {
+  Future<bool> carSend(String filePath, String carId, String carPlate) async {
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
     var requset = http.MultipartRequest(
         "POST", Uri.parse("https://api.racroad.com/api/mycar/store"))
       ..fields.addAll({
         "user_id": widget.getToken,
         "car_id": carId,
+        "car_no": carPlate,
       })
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('profile_car', filePath));
@@ -551,66 +559,125 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
-              Container(
-                height: 50,
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(12, 26),
-                      blurRadius: 50,
-                      spreadRadius: 0,
-                      color: Colors.grey.withOpacity(.1)),
-                ]),
-                child: TextField(
-                  controller: licensePlateController,
-                  keyboardType: TextInputType.text,
-                  style: const TextStyle(fontSize: 14, color: Colors.black),
-                  decoration: const InputDecoration(
-                    label: Text("ป้ายทะเบียนรถยนต์"),
-                    labelStyle: TextStyle(
-                      color: mainGreen,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.car_crash,
-                      color: mainGreen,
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffffffff),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: lightGreen, width: 1.0),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: mainGreen, width: 1.0),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xffEF4444), width: 1.0),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: whiteGreen, width: 1.0),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            offset: const Offset(12, 26),
+                            blurRadius: 50,
+                            spreadRadius: 0,
+                            color: Colors.grey.withOpacity(.1)),
+                      ]),
+                      child: TextField(
+                        controller: licensePlateController,
+                        keyboardType: TextInputType.text,
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
+                        decoration: const InputDecoration(
+                          label: Text("ป้ายทะเบียนรถยนต์"),
+                          labelStyle: TextStyle(
+                            color: mainGreen,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.car_crash,
+                            color: mainGreen,
+                          ),
+                          filled: true,
+                          fillColor: Color(0xffffffff),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.0, horizontal: 20.0),
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: lightGreen, width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: mainGreen, width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color(0xffEF4444), width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: whiteGreen, width: 1.0),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.007,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '* ใช้สำหรับตั้งเป็นชื่อรถของคุณ ผู้ใช้งานอื่น ๆ จะไม่เห็นข้อมูลส่วนนี้',
+                          style: GoogleFonts.sarabun(
+                            color: gray,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.007,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '* ใช้สำหรับตั้งเป็นชื่อรถของคุณ ผู้ใช้งานอื่น ๆ จะไม่เห็นข้อมูลส่วนนี้',
-                    style: GoogleFonts.sarabun(
-                      color: gray,
+              Align(
+                alignment: const AlignmentDirectional(0, 0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (imageFile != null) {
+                        carSend(
+                          imageFile!.path,
+                          widget.carId,
+                          licensePlateController!.text,
+                        );
+
+                        Get.offAndToNamed('/profile');
+
+                        // Get.offAll(
+                        //   ScreensPage(
+                        //     getToken: widget.getToken,
+                        //     pageIndex: 2,
+                        //     current: 0,
+                        //   ),
+                        // );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "กรุณาแนบรูปภาพมาด้วย",
+                          backgroundColor: Colors.yellowAccent,
+                          textColor: Colors.black,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainGreen,
+                      minimumSize: const Size(
+                        300,
+                        40,
+                      ),
+                    ),
+                    child: Text(
+                      'ยืนยัน',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
