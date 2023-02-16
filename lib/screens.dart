@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/models/user_profile_model.dart';
+import 'package:rac_road/models/user/user_profile_model.dart';
 import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 
-import '../models/my_job_models.dart';
-import '../models/current_tnc_sos_models.dart';
+import 'models/user/my_job_models.dart';
+import 'models/user/current_tnc_sos_models.dart';
 import 'pages/profile/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
@@ -75,19 +75,6 @@ class _ScreensPageState extends State<ScreensPage> {
 
   getData(String token) async {
     myJob = await RemoteService().getMyJob(token);
-    myTncSos = await RemoteService()
-        .getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
-    if (myTncSos?.count == 1) {
-      if (mounted) {
-        setState(() {
-          _isProfileNoti = true;
-        });
-      }
-    } else {
-      setState(() {
-        _isProfileNoti = false;
-      });
-    }
   }
 
   @override

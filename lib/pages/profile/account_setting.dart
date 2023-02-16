@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/models/user_profile_model.dart';
+import 'package:rac_road/models/user/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../login/api/google_sign_in_api.dart';

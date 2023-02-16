@@ -1,225 +1,208 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:http/http.dart' as http;
+import 'package:rac_road/models/user/car_data_calculated.dart';
 
-import '../../../colors.dart';
+import '../../colors.dart';
+import '../../models/data/menu_items.dart';
+import '../../models/menu_item.dart';
+import '../../models/user/my_car_details.dart';
+import 'add_car/find_car.dart';
 
-class CarDetails extends StatefulWidget {
-  const CarDetails({super.key});
+void deleteCar(String carId) async {
+  var url = Uri.parse('https://api.racroad.com/api/mycar/destroy/$carId');
+  var response = await http.delete(url);
 
-  @override
-  State<CarDetails> createState() => _CarDetailsState();
+  if (response.statusCode == 200) {
+    Get.offAllNamed('/profile');
+    Fluttertoast.showToast(
+      msg: "คุณได้ลบคลับนี้แล้ว",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 }
 
-class _CarDetailsState extends State<CarDetails> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black,
-              ),
+PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
+    PopupMenuItem<CustomMenuItem>(
+      value: item,
+      child: Row(
+        children: [
+          Icon(
+            item.icon,
+            color: Colors.black,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Text(
+            item.text,
+            style: GoogleFonts.sarabun(),
+          ),
+        ],
+      ),
+    );
+
+void onSelected(BuildContext context, CustomMenuItem item, String carId) {
+  switch (item) {
+    case CarMenuItems.itemDelete:
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            "ลบข้อมูลรถของคุณ",
+            style: GoogleFonts.sarabun(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+              'ข้อมูลรถนี้จะหายไปตลอดการและไม่สามารถย้อนกลับได้ คุณแน่ใช่แล้วใช่ไหม'),
+          actions: <Widget>[
+            TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                deleteCar(carId);
               },
+              child: const Text('ลบข้อมูลรถ'),
             ),
-            title: Row(
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('ยกเลิก'),
+            ),
+          ],
+          elevation: 24,
+        ),
+      );
+
+      break;
+  }
+}
+
+Widget carDetailsWidget(
+  BuildContext context,
+  String getToken,
+  MyCarDetails carDetails,
+  CarDataCal carDataCal,
+) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: const Color(0xFFEBEBEB),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 5,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 35,
-                  height: 35,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.asset(
-                    'assets/imgs/profile.png',
-                    fit: BoxFit.contain,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        carDetails.data!.mycarDetail!.carNo!,
+                        style: GoogleFonts.sarabun(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                    PopupMenuButton<CustomMenuItem>(
+                      onSelected: (item) => onSelected(context, item,
+                          carDetails.data!.mycarDetail!.mycarId!),
+                      itemBuilder: (context) => [
+                        ...CarMenuItems.itemsDelete.map(buildItem).toList(),
+                      ],
+                      child: const Icon(
+                        Icons.keyboard_control,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  'User Name',
-                  style: GoogleFonts.sarabun(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'รุ่น : ${carDetails.data!.mycarDetail!.carModel}\nโฉม : ${carDetails.data!.mycarDetail!.carMakeover}\nรุ่นย่อย : ${carDetails.data!.mycarDetail!.carSubversion}\nเชื้อเพลิง : ${carDetails.data!.mycarDetail!.carFuel}',
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 75,
+                        width: 100,
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(14)),
+                          child: CachedNetworkImage(
+                            imageUrl: carDetails.data!.mycarDetail!.carProfile!,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: Colors.white,
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                                color: Colors.white,
+                                child: const Icon(Icons.error)),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            actions: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                child: IconButton(
-                  hoverColor: Colors.transparent,
-                  iconSize: 60,
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-            centerTitle: false,
-            elevation: 0,
           ),
-        ],
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+        child: GridView(
+          padding: EdgeInsets.zero,
+          physics: const ScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 1,
+          ),
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
           children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
-              child: Container(
-                width: double.infinity,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBEBEB),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: const AlignmentDirectional(0, -1),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                        child: Text(
-                          'ชื่อรถ',
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ),
-                    ),
-                    const Align(
-                      alignment: AlignmentDirectional(1, -1),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                        child: Icon(
-                          Icons.keyboard_control,
-                          color: Colors.black,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(1, 1),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 5),
-                        child: Container(
-                          width: 100,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          alignment: const AlignmentDirectional(0, 0),
-                          child: Text(
-                            'การเชื่อมต่อ',
-                            style: GoogleFonts.sarabun(),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
                           ),
                         ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(5, 25, 0, 5),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'ผู้ผลิด : ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                'ปี : ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                'เชื้อเพลิง : ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                '(CC) : ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                'เลขไมล์ : ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(5, 25, 0, 5),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'บลา ๆ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                'บลา ๆ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                'บลา ๆ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                'บลา ๆ',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                              Text(
-                                '20000 miles',
-                                style: GoogleFonts.sarabun(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-              child: GridView(
-                padding: EdgeInsets.zero,
-                physics: const ScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1,
-                ),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                children: [
-                  Container(
+                        builder: (context) => Container());
+                  },
+                  child: Ink(
                     width: 100,
                     height: 100,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEBEBEB),
-                      borderRadius: BorderRadius.circular(20),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEBEBEB),
                     ),
                     child: Stack(
                       children: [
@@ -268,14 +251,21 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent:
+                                          carDataCal.data.engineOilCal == null
+                                              ? 0
+                                              : carDataCal.data.engineOilCal!
+                                                      .dateRemainAvg! /
+                                                  100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.engineOilCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -301,14 +291,21 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent:
+                                          carDataCal.data.brakeOilCal == null
+                                              ? 0
+                                              : carDataCal.data.brakeOilCal!
+                                                      .dateRemainAvg! /
+                                                  100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.brakeOilCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -334,14 +331,61 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent:
+                                          carDataCal.data.powerOilCal == null
+                                              ? 0
+                                              : carDataCal.data.powerOilCal!
+                                                      .dateRemainAvg! /
+                                                  100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.powerOilCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                        style: GoogleFonts.sarabun(
+                                          color: const Color(0xFF2E2E2E),
+                                        ),
+                                      ),
+                                      barRadius: const Radius.circular(50),
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    10, 10, 10, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'เกียร์',
+                                      style: GoogleFonts.sarabun(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    LinearPercentIndicator(
+                                      percent:
+                                          carDataCal.data.gearOilCal == null
+                                              ? 0
+                                              : carDataCal.data.gearOilCal!
+                                                      .dateRemainAvg! /
+                                                  100,
+                                      width: 100,
+                                      lineHeight: 24,
+                                      animation: true,
+                                      progressColor: mainGreen,
+                                      backgroundColor: Colors.white,
+                                      center: Text(
+                                        carDataCal.data.gearOilCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -358,7 +402,26 @@ class _CarDetailsState extends State<CarDetails> {
                       ],
                     ),
                   ),
-                  Container(
+                ),
+              ),
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) => Container(),
+                    );
+                  },
+                  child: Ink(
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
@@ -412,14 +475,21 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent:
+                                          carDataCal.data.brakeOilCal == null
+                                              ? 0
+                                              : carDataCal.data.brakeOilCal!
+                                                      .dateRemainAvg! /
+                                                  100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.brakeOilCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -445,14 +515,21 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent:
+                                          carDataCal.data.carTireCal == null
+                                              ? 0
+                                              : carDataCal.data.carTireCal!
+                                                      .dateRemainAvg! /
+                                                  100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.carTireCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -469,7 +546,25 @@ class _CarDetailsState extends State<CarDetails> {
                       ],
                     ),
                   ),
-                  Container(
+                ),
+              ),
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) => Container());
+                  },
+                  child: Ink(
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
@@ -523,14 +618,21 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent:
+                                          carDataCal.data.batteryCal == null
+                                              ? 0
+                                              : carDataCal.data.batteryCal!
+                                                      .dateRemainAvg! /
+                                                  100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.batteryCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -547,12 +649,30 @@ class _CarDetailsState extends State<CarDetails> {
                       ],
                     ),
                   ),
-                  Container(
+                ),
+              ),
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) => Container(),
+                    );
+                  },
+                  child: Ink(
                     width: 100,
                     height: 100,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEBEBEB),
-                      borderRadius: BorderRadius.circular(20),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEBEBEB),
                     ),
                     child: Stack(
                       children: [
@@ -601,14 +721,20 @@ class _CarDetailsState extends State<CarDetails> {
                                       ),
                                     ),
                                     LinearPercentIndicator(
-                                      percent: 0.5,
+                                      percent: carDataCal.data.airCal == null
+                                          ? 0
+                                          : carDataCal
+                                                  .data.airCal!.dateRemainAvg! /
+                                              100,
                                       width: 100,
                                       lineHeight: 24,
                                       animation: true,
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        '50%',
+                                        carDataCal.data.airCal == null
+                                            ? '0%'
+                                            : '${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -625,35 +751,39 @@ class _CarDetailsState extends State<CarDetails> {
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Material(
-                  child: InkWell(
-                    onTap: () {},
-                    child: Ink(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
+      Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Material(
+            child: InkWell(
+              onTap: () {
+                Get.to(
+                  () => FindCarPage(getToken: getToken),
+                );
+              },
+              child: Ink(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
 }

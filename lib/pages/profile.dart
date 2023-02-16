@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/loading/skelton.dart';
 import 'package:rac_road/utils/user_preferences.dart';
-import '../../services/remote_service.dart';
 import 'profile/my_car_widget.dart';
 import 'profile/my_club_widget.dart';
 import 'profile/my_job_widget.dart';
@@ -18,9 +16,10 @@ class ProfilePage extends StatefulWidget {
     // required this.user,
   }) : super(key: key);
 
+  final String getToken;
   int current;
   // final GoogleSignInAccount user;
-  final String getToken;
+  
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();

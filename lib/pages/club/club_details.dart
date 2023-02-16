@@ -7,7 +7,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 
-import 'package:rac_road/models/club_details.dart';
+import 'package:rac_road/models/user/club_details.dart';
 import 'package:rac_road/services/remote_service.dart';
 
 import '../../../colors.dart';

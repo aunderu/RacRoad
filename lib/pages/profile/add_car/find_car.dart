@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/models/all_car_models.dart';
+import 'package:rac_road/models/user/all_car_models.dart';
 
 import '../../../services/remote_service.dart';
 
@@ -26,6 +27,7 @@ class FindCarPage extends StatefulWidget {
 class _FindCarPageState extends State<FindCarPage> {
   AllCarModel? allCar;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   List<CarDatum>? foundCars;
   bool haveCar = false;
 
@@ -243,9 +245,6 @@ class _FindCarPageState extends State<FindCarPage> {
                                     textCancel: "ยกเลิก",
                                     confirmTextColor: Colors.white,
                                     onConfirm: () {
-                                      // showImageDialog(
-                                      //     allCar!.data.carData[index].carId);
-
                                       showFormBottomSheet(
                                         context,
                                         foundCars![index].brand,
@@ -312,6 +311,7 @@ class FormBottomSheet extends StatefulWidget {
 }
 
 class _FormBottomSheetState extends State<FormBottomSheet> {
+  GlobalKey<FormState> carPlateKey = GlobalKey<FormState>();
   TextEditingController? licensePlateController;
   File? imageFile;
 
@@ -401,10 +401,6 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
       setState(() {
         imageFile = File(pickedFile.path);
       });
-
-      // carSend(imageFile!.path, carId).then((value) => value == true
-      //     ? Get.offNamedUntil('/profile', (route) => false)
-      //     : null);
     } else {
       Fluttertoast.showToast(
         msg: 'คุณยังไม่ได้เลือกรูป',
@@ -424,10 +420,6 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
       setState(() {
         imageFile = File(pickedFile.path);
       });
-
-      // carSend(imageFile!.path, carId).then((value) => value == true
-      //     ? Get.offNamedUntil('/profile', (route) => false)
-      //     : null);
     } else {
       Fluttertoast.showToast(
         msg: 'คุณยังไม่ได้เลือกรูป',
@@ -456,7 +448,7 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(jsonDecode(response.toString()));
+      throw false;
     }
   }
 
@@ -562,57 +554,66 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
               Expanded(
                 child: Column(
                   children: [
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            offset: const Offset(12, 26),
-                            blurRadius: 50,
-                            spreadRadius: 0,
-                            color: Colors.grey.withOpacity(.1)),
-                      ]),
-                      child: TextField(
-                        controller: licensePlateController,
-                        keyboardType: TextInputType.text,
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.black),
-                        decoration: const InputDecoration(
-                          label: Text("ป้ายทะเบียนรถยนต์"),
-                          labelStyle: TextStyle(
-                            color: mainGreen,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.car_crash,
-                            color: mainGreen,
-                          ),
-                          filled: true,
-                          fillColor: Color(0xffffffff),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 0.0, horizontal: 20.0),
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: lightGreen, width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: mainGreen, width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xffEF4444), width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: whiteGreen, width: 1.0),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.0),
+                    Form(
+                      key: carPlateKey,
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(12, 26),
+                              blurRadius: 50,
+                              spreadRadius: 0,
+                              color: Colors.grey.withOpacity(.1)),
+                        ]),
+                        child: TextFormField(
+                          controller: licensePlateController,
+                          keyboardType: TextInputType.text,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขป้ายด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("ป้ายทะเบียนรถยนต์"),
+                            labelStyle: TextStyle(
+                              color: mainGreen,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.car_crash,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: lightGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
                             ),
                           ),
                         ),
@@ -643,13 +644,30 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (imageFile != null) {
-                        carSend(
-                          imageFile!.path,
-                          widget.carId,
-                          licensePlateController!.text,
-                        );
-
-                        Get.offAndToNamed('/profile');
+                        if (carPlateKey.currentState?.validate() ?? false) {
+                          carSend(
+                            imageFile!.path,
+                            widget.carId,
+                            licensePlateController!.text,
+                          ).then((value) {
+                            if (value) {
+                              Get.offAllNamed('/profile');
+                            } else {
+                              Fluttertoast.showToast(
+                                msg:
+                                    "มีบางอย่างผิดพลาด กรุณาลองอีกครั้งในภายหลัง",
+                                backgroundColor: Colors.red[300],
+                                textColor: Colors.black,
+                              );
+                            }
+                          });
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "กรุณาใส่ชื่อป้ายรถด้วย",
+                            backgroundColor: Colors.yellowAccent,
+                            textColor: Colors.black,
+                          );
+                        }
 
                         // Get.offAll(
                         //   ScreensPage(

@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/main.dart';
-import 'package:rac_road/models/user_login.dart';
+import 'package:rac_road/models/user/user_login.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

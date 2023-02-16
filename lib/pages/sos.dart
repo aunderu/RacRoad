@@ -7,12 +7,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/models/my_current_sos_models.dart';
-import 'package:rac_road/models/problem_type.dart';
-import 'package:rac_road/models/specific_problem.dart';
+import 'package:rac_road/models/sos/problem_type.dart';
+import 'package:rac_road/models/sos/specific_problem.dart';
 import 'package:rac_road/services/remote_service.dart';
 
 import '../colors.dart';
+import '../models/sos/my_current_sos_models.dart';
 import 'sos/sos_form.dart';
 import 'sos/timeline/timeline_page.dart';
 

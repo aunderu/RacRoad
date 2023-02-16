@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/models/my_job_models.dart';
-import 'package:rac_road/models/current_tnc_sos_models.dart';
+import 'package:rac_road/models/user/my_job_models.dart';
+import 'package:rac_road/models/user/current_tnc_sos_models.dart';
 
 import '../../../services/remote_service.dart';
 import 'apply_for_technician/tech_app_form.dart';

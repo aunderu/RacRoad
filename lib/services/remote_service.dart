@@ -2,21 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:rac_road/models/user/car_data_calculated.dart';
 
-import '../models/all_car_models.dart';
-import '../models/all_my_car.dart';
-import '../models/all_my_sos_models.dart';
-import '../models/all_my_tnc_sos_models.dart';
-import '../models/club_details.dart';
-import '../models/current_tnc_sos_models.dart';
-import '../models/my_car_details.dart';
-import '../models/my_club_models.dart';
-import '../models/my_current_sos_models.dart';
-import '../models/my_job_models.dart';
-import '../models/problem_type.dart';
-import '../models/sos_details_models.dart';
-import '../models/specific_problem.dart';
-import '../models/user_profile_model.dart';
+import '../models/user/all_car_models.dart';
+import '../models/user/all_my_car.dart';
+import '../models/sos/all_my_sos_models.dart';
+import '../models/user/all_my_tnc_sos_models.dart';
+import '../models/user/club_details.dart';
+import '../models/user/current_tnc_sos_models.dart';
+import '../models/user/my_car_details.dart';
+import '../models/user/my_club_models.dart';
+import '../models/sos/my_current_sos_models.dart';
+import '../models/user/my_job_models.dart';
+import '../models/sos/problem_type.dart';
+import '../models/sos/sos_details_models.dart';
+import '../models/sos/specific_problem.dart';
+import '../models/user/user_profile_model.dart';
 
 MyProfile? resultUserProfile;
 AllMyCar? resultAllMyCar;
@@ -32,6 +33,7 @@ AllMySos? resultAllMySos;
 AllCarModel? resultAllCar;
 ProblemType? resultProblemType;
 SpecificProblem? resultSpecificProblem;
+CarDataCal? resultCarDataCal;
 
 const url = "https://api.racroad.com/api";
 // const testurl = "https://api-racroad.chabafarm.com/api";
@@ -293,5 +295,24 @@ class RemoteService {
       }
     }
     return resultSpecificProblem;
+  }
+
+  // ################################ Car Data Calculated #################################
+  Future<CarDataCal?> getCarDataCal(String carId) async {
+    try {
+      final response = await http
+          .get(Uri.parse("$url/upgc/cal/$carId"));
+      if (response.statusCode == 200) {
+        final itemCarDataCal = json.decode(response.body);
+        resultCarDataCal = CarDataCal.fromJson(itemCarDataCal);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultCarDataCal;
   }
 }

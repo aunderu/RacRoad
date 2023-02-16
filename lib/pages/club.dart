@@ -1,7 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/models/my_club_models.dart';
+import 'package:rac_road/models/user/my_club_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 
 import '../../colors.dart';
