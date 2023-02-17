@@ -142,17 +142,18 @@ class _AllMyClubState extends State<AllMyClub> {
             ),
             child: Stack(
               children: [
-                const Align(
-                  alignment: AlignmentDirectional(-1, -1),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
-                    child: Icon(
-                      Icons.star_border_rounded,
-                      color: darkGray,
-                      size: 24,
-                    ),
-                  ),
-                ),
+                // book mark
+                // const Align(
+                //   alignment: AlignmentDirectional(-1, -1),
+                //   child: Padding(
+                //     padding: EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
+                //     child: Icon(
+                //       Icons.star_border_rounded,
+                //       color: darkGray,
+                //       size: 24,
+                //     ),
+                //   ),
+                // ),
                 Align(
                   alignment: const AlignmentDirectional(1, -1),
                   child: Padding(

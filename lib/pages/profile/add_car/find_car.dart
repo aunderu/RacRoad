@@ -433,6 +433,17 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
   }
 
   Future<bool> carSend(String filePath, String carId, String carPlate) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+            strokeWidth: 8,
+          ),
+        );
+      },
+    );
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
     var requset = http.MultipartRequest(
         "POST", Uri.parse("https://api.racroad.com/api/mycar/store"))
@@ -444,6 +455,8 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('profile_car', filePath));
     var response = await requset.send();
+
+    Get.back();
 
     if (response.statusCode == 200) {
       return true;
@@ -602,7 +615,6 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
                                   BorderRadius.all(Radius.circular(10.0)),
                             ),
                             errorBorder: OutlineInputBorder(
-                              
                               borderSide: BorderSide(
                                   color: Color(0xffEF4444), width: 1.0),
                               borderRadius:
@@ -668,14 +680,6 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
                             textColor: Colors.black,
                           );
                         }
-
-                        // Get.offAll(
-                        //   ScreensPage(
-                        //     getToken: widget.getToken,
-                        //     pageIndex: 2,
-                        //     current: 0,
-                        //   ),
-                        // );
                       } else {
                         Fluttertoast.showToast(
                           msg: "กรุณาแนบรูปภาพมาด้วย",

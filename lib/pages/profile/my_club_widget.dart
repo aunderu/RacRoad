@@ -27,7 +27,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
   bool isLoaded = false;
   MyClub? myClub;
 
-  final bool _haveBookMark = true;
+  // final bool _haveBookMark = true;
 
   @override
   void initState() {

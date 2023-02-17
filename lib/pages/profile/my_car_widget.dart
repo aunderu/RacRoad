@@ -12,7 +12,7 @@ import '../../models/user/all_my_car.dart';
 import '../../models/user/my_car_details.dart';
 import '../../services/remote_service.dart';
 import 'add_car/find_car.dart';
-import 'car_details.dart';
+import 'car_details_widgets.dart';
 
 class MyCarWidget extends StatefulWidget {
   const MyCarWidget({super.key, required this.getToken});
@@ -72,6 +72,17 @@ class _MyCarWidgetState extends State<MyCarWidget> {
   }
 
   void deleteCar(String carId) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+            strokeWidth: 8,
+          ),
+        );
+      },
+    );
     var url = Uri.parse('https://api.racroad.com/api/mycar/destroy/$carId');
     var response = await http.delete(url);
 
@@ -85,6 +96,8 @@ class _MyCarWidgetState extends State<MyCarWidget> {
         fontSize: 16.0,
       );
     }
+
+    Get.back();
   }
 
   @override
@@ -131,12 +144,48 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                         child: Material(
                           child: InkWell(
                             onTap: () async {
-                              // await Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => const CarDetails(),
-                              //   ),
-                              // );
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          mainGreen),
+                                      strokeWidth: 8,
+                                    ),
+                                  );
+                                },
+                              );
+                              MyCarDetails? specificCarDetails =
+                                  await RemoteService().getMyCarDetails(
+                                      myCar!.data.mycarData[index].mycarId);
+                              CarDataCal? specificCarDataCal =
+                                  await RemoteService().getCarDataCal(
+                                      myCar!.data.mycarData[index].mycarId);
+
+                              Get.back();
+
+                              if (!mounted) return;
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                enableDrag: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) => SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                  child: carDetailsWidget(
+                                      context,
+                                      widget.getToken,
+                                      specificCarDetails!,
+                                      specificCarDataCal!),
+                                ),
+                              );
                             },
                             onLongPress: () {
                               Get.defaultDialog(
@@ -283,11 +332,42 @@ class _MyCarWidgetState extends State<MyCarWidget> {
             ),
           );
         } else {
-          return carDetailsWidget(
-            context,
-            widget.getToken,
-            carDetails!,
-            carDataCal!,
+          return Column(
+            children: [
+              carDetailsWidget(
+                context,
+                widget.getToken,
+                carDetails!,
+                carDataCal!,
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(
+                          () => FindCarPage(getToken: widget.getToken),
+                        );
+                      },
+                      child: Ink(
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         }
       } else {

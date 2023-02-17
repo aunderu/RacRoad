@@ -751,10 +751,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                             backgroundColor: mainGreen,
                             fontSize: 17,
                           );
-                          Get.to(() => ScreensPage(
-                                pageIndex: 4,
-                                current: 1,
-                              ));
+                          Get.offAllNamed('/profile-myclub');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainGreen,

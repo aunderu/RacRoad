@@ -12,6 +12,7 @@ import 'package:rac_road/services/remote_service.dart';
 
 import '../../../colors.dart';
 import '../../../loading/skelton.dart';
+import '../../utils/user_preferences.dart';
 import '../profile/account_setting.dart';
 import 'view_calentar.dart';
 
@@ -34,10 +35,18 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController? searchController;
 
+  String? avatar;
+  String? email;
+  String? name;
+
   @override
   void initState() {
     super.initState();
     searchController = TextEditingController();
+
+    name = UserPreferences.getName() ?? 'user name';
+    email = UserPreferences.getEmail() ?? 'user@email.com';
+    avatar = UserPreferences.getAvatar() ?? 'assets/imgs/profile.png';
   }
 
   @override
@@ -81,119 +90,65 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
         child: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            FutureBuilder(
-              future: RemoteService().getUserProfile(widget.getToken),
-              builder: (context, snapshot) {
-                var result = snapshot.data;
-                if (result != null) {
-                  return SliverAppBar(
-                    floating: true,
-                    snap: true,
-                    backgroundColor: Colors.white,
-                    automaticallyImplyLeading: false,
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Row(
+                children: [
+                  Container(
+                    width: 35,
+                    height: 35,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
                     ),
-                    title: Row(
-                      children: [
-                        Container(
-                          width: 35,
-                          height: 35,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: CachedNetworkImage(
-                            imageUrl: result.data.myProfile.avatar,
-                            placeholder: (context, url) =>
-                                Image.asset('assets/imgs/profile.png'),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          result.data.myProfile.name,
-                          style: GoogleFonts.sarabun(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                    child: CachedNetworkImage(
+                      imageUrl: avatar!,
+                      placeholder: (context, url) =>
+                          Image.asset('assets/imgs/profile.png'),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
-                    actions: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                        child: IconButton(
-                          hoverColor: Colors.transparent,
-                          iconSize: 60,
-                          icon: const Icon(
-                            Icons.settings,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                    centerTitle: false,
-                    elevation: 0,
-                  );
-                }
-                return SliverAppBar(
-                  floating: true,
-                  snap: true,
-                  backgroundColor: Colors.white,
-                  automaticallyImplyLeading: false,
-                  leading: IconButton(
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    name!,
+                    style: GoogleFonts.sarabun(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                  child: IconButton(
+                    hoverColor: Colors.transparent,
+                    iconSize: 60,
                     icon: const Icon(
-                      Icons.arrow_back_ios_new,
+                      Icons.settings,
                       color: Colors.black,
+                      size: 30,
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () {},
                   ),
-                  title: const Skelton(
-                    width: 200,
-                    height: 20,
-                  ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                      child: IconButton(
-                        hoverColor: Colors.transparent,
-                        iconSize: 60,
-                        icon: const Icon(
-                          Icons.settings,
-                          color: Colors.black,
-                          size: 30,
-                        ),
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountSetting(
-                                getToken: widget.getToken,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                  centerTitle: false,
-                  elevation: 0,
-                );
-              },
-            ),
+                ),
+              ],
+              centerTitle: false,
+              elevation: 0,
+            )
           ],
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
