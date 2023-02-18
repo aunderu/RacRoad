@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -202,7 +205,10 @@ Widget carDetailsWidget(
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (context) => OilWidgets(carDataCal: carDataCal),
+                      builder: (context) => OilWidgets(
+                        carDataCal: carDataCal,
+                        carDetails: carDetails,
+                      ),
                     );
                   },
                   child: Ink(
@@ -435,7 +441,10 @@ Widget carDetailsWidget(
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (context) => TireWidgets(carDataCal: carDataCal),
+                      builder: (context) => TireWidgets(
+                        carDataCal: carDataCal,
+                        carDetails: carDetails,
+                      ),
                     );
                   },
                   child: Ink(
@@ -495,9 +504,9 @@ Widget carDetailsWidget(
                                     ),
                                     LinearPercentIndicator(
                                       percent:
-                                          carDataCal.data.brakeOilCal == null
+                                          carDataCal.data.brakePadsCal == null
                                               ? 0
-                                              : carDataCal.data.brakeOilCal!
+                                              : carDataCal.data.brakePadsCal!
                                                       .dateRemainAvg! /
                                                   100,
                                       width: 100,
@@ -506,9 +515,9 @@ Widget carDetailsWidget(
                                       progressColor: mainGreen,
                                       backgroundColor: Colors.white,
                                       center: Text(
-                                        carDataCal.data.brakeOilCal == null
+                                        carDataCal.data.brakePadsCal == null
                                             ? '0%'
-                                            : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                            : '${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                         style: GoogleFonts.sarabun(
                                           color: const Color(0xFF2E2E2E),
                                         ),
@@ -585,8 +594,10 @@ Widget carDetailsWidget(
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (context) =>
-                          BatteryWidgets(carDataCal: carDataCal),
+                      builder: (context) => BatteryWidgets(
+                        carDataCal: carDataCal,
+                        carDetails: carDetails,
+                      ),
                     );
                   },
                   child: Ink(
@@ -694,7 +705,10 @@ Widget carDetailsWidget(
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (context) => AirWidgets(carDataCal: carDataCal),
+                      builder: (context) => AirWidgets(
+                        carDataCal: carDataCal,
+                        carDetails: carDetails,
+                      ),
                     );
                   },
                   child: Ink(
@@ -876,16 +890,334 @@ Widget carDetailsWidget(
   );
 }
 
-class OilWidgets extends StatelessWidget {
+class OilWidgets extends StatefulWidget {
   const OilWidgets({
     super.key,
     required this.carDataCal,
+    required this.carDetails,
   });
 
   final CarDataCal carDataCal;
+  final MyCarDetails carDetails;
 
   @override
+  State<OilWidgets> createState() => _OilWidgetsState();
+}
+
+class _OilWidgetsState extends State<OilWidgets> {
+  @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
+    TextEditingController mileNowController = TextEditingController();
+    TextEditingController mileNextController = TextEditingController();
+
+    DateTime date = DateTime.now();
+
+    @override
+    void initState() {
+      super.initState();
+
+      mileNowController = TextEditingController();
+      mileNextController = TextEditingController();
+    }
+
+    void dispose() {
+      mileNowController.dispose();
+      mileNextController.dispose();
+      super.dispose();
+    }
+
+    Future<bool> saveUpgc(
+      String carId,
+      String problemType,
+      String mileNow,
+      String mileNext,
+      String date,
+    ) async {
+      final response = await http.post(
+        Uri.parse("https://api.racroad.com/api/upgc/store"),
+        body: {
+          'mycar_id': carId,
+          'type': problemType,
+          'mile_now': mileNow,
+          'mile_next': mileNext,
+          'date': date,
+        },
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw false;
+      }
+    }
+
+    void showFormDialog(String title, String changePart) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: AlertDialog(
+              title: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.sarabun(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              ),
+              content: Stack(
+                children: <Widget>[
+                  Positioned(
+                    right: -40.0,
+                    top: -40.0,
+                    child: InkResponse(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const CircleAvatar(
+                        backgroundColor: Colors.red,
+                        child: Icon(Icons.close),
+                      ),
+                    ),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: mileNowController,
+                            keyboardType: TextInputType.number,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                errorText: "กรุณากรอกเลขไมล์ด้วย",
+                              ),
+                            ]),
+                            decoration: const InputDecoration(
+                              label: Text("กรอกเลขไมล์ปัจจุบัน"),
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.looks_one_outlined,
+                                color: mainGreen,
+                              ),
+                              filled: true,
+                              fillColor: Color(0xffffffff),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0.0, horizontal: 20.0),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: mainGreen,
+                                  width: 1.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: whiteGreen, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xffEF4444), width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: mainGreen, width: 1.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: mileNextController,
+                            keyboardType: TextInputType.number,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                errorText: "กรุณากรอกเลขไมล์ด้วย",
+                              ),
+                            ]),
+                            decoration: const InputDecoration(
+                              label: Text("กรอกเลขไมล์ครั้งต่อไป"),
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.looks_two_outlined,
+                                color: mainGreen,
+                              ),
+                              filled: true,
+                              fillColor: Color(0xffffffff),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0.0, horizontal: 20.0),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: mainGreen,
+                                  width: 1.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: whiteGreen, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xffEF4444), width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: mainGreen, width: 1.0),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            splashColor: mainGreen,
+                            onTap: () async {
+                              DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: date,
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100),
+                              );
+
+                              if (newDate == null) return;
+
+                              setState(() => date = newDate);
+
+                              Get.appUpdate();
+                            },
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: mainGreen,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  10,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.date_range_rounded,
+                                        color: mainGreen,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        child: Text(
+                                          '${date.day}/${date.month}/${date.year}',
+                                          style: GoogleFonts.sarabun(),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                // next
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                mainGreen),
+                                        strokeWidth: 8,
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                saveUpgc(
+                                  widget.carDetails.data!.mycarDetail!.mycarId!,
+                                  changePart,
+                                  mileNowController.text,
+                                  mileNextController.text,
+                                  date.toString(),
+                                ).then((value) {
+                                  if (value == false) {
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
+                                      backgroundColor: Colors.yellowAccent,
+                                      textColor: Colors.black,
+                                    );
+                                  }
+
+                                  Get.offAllNamed('/profile');
+                                });
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: mainGreen,
+                              minimumSize: const Size(
+                                300,
+                                40,
+                              ),
+                            ),
+                            child: Text(
+                              'ยืนยัน',
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -912,7 +1244,7 @@ class OilWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('น้ำมันเครื่อง', 'engine_oil'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -941,9 +1273,9 @@ class OilWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.engineOilCal == null
+                                  widget.carDataCal.data.engineOilCal == null
                                       ? 'น้ำมันเครื่อง 0%'
-                                      : 'น้ำมันเครื่อง ${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'น้ำมันเครื่อง ${widget.carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -962,15 +1294,20 @@ class OilWidgets extends StatelessWidget {
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
                                     percent:
-                                        carDataCal.data.engineOilCal == null
+                                        widget.carDataCal.data.engineOilCal ==
+                                                null
                                             ? 0
-                                            : carDataCal.data.engineOilCal!
+                                            : widget
+                                                    .carDataCal
+                                                    .data
+                                                    .engineOilCal!
                                                     .dateRemainAvg! /
                                                 100,
                                     center: Text(
-                                      carDataCal.data.engineOilCal == null
+                                      widget.carDataCal.data.engineOilCal ==
+                                              null
                                           ? '0%'
-                                          : '${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -987,9 +1324,9 @@ class OilWidgets extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: Text(
-                                    carDataCal.data.engineOilCal == null
+                                    widget.carDataCal.data.engineOilCal == null
                                         ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                        : 'เริ่มต้น ${carDataCal.data.engineOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.engineOilCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.engineOilCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.engineOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.engineOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.engineOilCal!.dateUpgradeNext!)}',
+                                        : 'เริ่มต้น ${widget.carDataCal.data.engineOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.engineOilCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.engineOilCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.engineOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.engineOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.engineOilCal!.dateUpgradeNext!)}',
                                     style: GoogleFonts.sarabun(
                                       color: Colors.black,
                                       fontSize: 17,
@@ -1021,7 +1358,7 @@ class OilWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('น้ำมันเบรก', 'brake_oil'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1050,9 +1387,9 @@ class OilWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.brakeOilCal == null
+                                  widget.carDataCal.data.brakeOilCal == null
                                       ? 'น้ำมันเบรก 0%'
-                                      : 'น้ำมันเบรก ${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'น้ำมันเบรก ${widget.carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1070,15 +1407,20 @@ class OilWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.brakeOilCal == null
-                                        ? 0
-                                        : carDataCal.data.brakeOilCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.brakeOilCal ==
+                                                null
+                                            ? 0
+                                            : widget
+                                                    .carDataCal
+                                                    .data
+                                                    .brakeOilCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.brakeOilCal == null
+                                      widget.carDataCal.data.brakeOilCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1098,9 +1440,10 @@ class OilWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.brakeOilCal == null
+                                        widget.carDataCal.data.brakeOilCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.brakeOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.brakeOilCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.brakeOilCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.brakeOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.brakeOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.brakeOilCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.brakeOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.brakeOilCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.brakeOilCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.brakeOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.brakeOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.brakeOilCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -1134,7 +1477,7 @@ class OilWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('น้ำมันเพาเวอร์', 'power_oil'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1163,9 +1506,9 @@ class OilWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.powerOilCal == null
+                                  widget.carDataCal.data.powerOilCal == null
                                       ? 'น้ำมันเพาเวอร์ 0%'
-                                      : 'น้ำมันเพาเวอร์ ${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'น้ำมันเพาเวอร์ ${widget.carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1183,15 +1526,20 @@ class OilWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.powerOilCal == null
-                                        ? 0
-                                        : carDataCal.data.powerOilCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.powerOilCal ==
+                                                null
+                                            ? 0
+                                            : widget
+                                                    .carDataCal
+                                                    .data
+                                                    .powerOilCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.powerOilCal == null
+                                      widget.carDataCal.data.powerOilCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1211,9 +1559,10 @@ class OilWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.powerOilCal == null
+                                        widget.carDataCal.data.powerOilCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.powerOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.powerOilCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.powerOilCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.powerOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.powerOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.powerOilCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.powerOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.powerOilCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.powerOilCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.powerOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.powerOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.powerOilCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -1247,7 +1596,7 @@ class OilWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('น้ำมันเกียร์', 'gear_oil'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1276,9 +1625,9 @@ class OilWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.gearOilCal == null
+                                  widget.carDataCal.data.gearOilCal == null
                                       ? 'น้ำมันเกียร์ 0%'
-                                      : 'น้ำมันเกียร์ ${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'น้ำมันเกียร์ ${widget.carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1296,15 +1645,17 @@ class OilWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.gearOilCal == null
-                                        ? 0
-                                        : carDataCal.data.gearOilCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.gearOilCal ==
+                                                null
+                                            ? 0
+                                            : widget.carDataCal.data.gearOilCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.gearOilCal == null
+                                      widget.carDataCal.data.gearOilCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1324,9 +1675,10 @@ class OilWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.gearOilCal == null
+                                        widget.carDataCal.data.gearOilCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.gearOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.gearOilCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.gearOilCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.gearOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.gearOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.gearOilCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.gearOilCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.gearOilCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.gearOilCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.gearOilCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.gearOilCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.gearOilCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -1360,13 +1712,330 @@ class OilWidgets extends StatelessWidget {
   }
 }
 
-class TireWidgets extends StatelessWidget {
+class TireWidgets extends StatefulWidget {
   const TireWidgets({
     super.key,
     required this.carDataCal,
+    required this.carDetails,
   });
 
   final CarDataCal carDataCal;
+  final MyCarDetails carDetails;
+
+  @override
+  State<TireWidgets> createState() => _TireWidgetsState();
+}
+
+class _TireWidgetsState extends State<TireWidgets> {
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController mileNowController = TextEditingController();
+  TextEditingController mileNextController = TextEditingController();
+
+  DateTime date = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    mileNowController = TextEditingController();
+    mileNextController = TextEditingController();
+  }
+
+  void dispose() {
+    mileNowController.dispose();
+    mileNextController.dispose();
+    super.dispose();
+  }
+
+  Future<bool> saveUpgc(
+    String carId,
+    String problemType,
+    String mileNow,
+    String mileNext,
+    String date,
+  ) async {
+    final response = await http.post(
+      Uri.parse("https://api.racroad.com/api/upgc/store"),
+      body: {
+        'mycar_id': carId,
+        'type': problemType,
+        'mile_now': mileNow,
+        'mile_next': mileNext,
+        'date': date,
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw false;
+    }
+  }
+
+  void showFormDialog(String title, String changePart) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: AlertDialog(
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.sarabun(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color: Colors.black,
+              ),
+            ),
+            content: Stack(
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.red,
+                      child: Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: mileNowController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขไมล์ด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("กรอกเลขไมล์ปัจจุบัน"),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.looks_one_outlined,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: mileNextController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขไมล์ด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("กรอกเลขไมล์ครั้งต่อไป"),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.looks_two_outlined,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          splashColor: mainGreen,
+                          onTap: () async {
+                            DateTime? newDate = await showDatePicker(
+                              context: context,
+                              initialDate: date,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+
+                            if (newDate == null) return;
+
+                            setState(() => date = newDate);
+
+                            Get.appUpdate();
+                          },
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: mainGreen,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.date_range_rounded,
+                                      color: mainGreen,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      child: Text(
+                                        '${date.day}/${date.month}/${date.year}',
+                                        style: GoogleFonts.sarabun(),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              // next
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          mainGreen),
+                                      strokeWidth: 8,
+                                    ),
+                                  );
+                                },
+                              );
+
+                              saveUpgc(
+                                widget.carDetails.data!.mycarDetail!.mycarId!,
+                                changePart,
+                                mileNowController.text,
+                                mileNextController.text,
+                                date.toString(),
+                              ).then((value) {
+                                if (value == false) {
+                                  Fluttertoast.showToast(
+                                    msg:
+                                        "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
+                                    backgroundColor: Colors.yellowAccent,
+                                    textColor: Colors.black,
+                                  );
+                                }
+
+                                Get.offAllNamed('/profile');
+                              });
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mainGreen,
+                            minimumSize: const Size(
+                              300,
+                              40,
+                            ),
+                          ),
+                          child: Text(
+                            'ยืนยัน',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1396,7 +2065,7 @@ class TireWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('ผ้าเบรค', 'brake_pads'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1425,9 +2094,9 @@ class TireWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.brakePadsCal == null
+                                  widget.carDataCal.data.brakePadsCal == null
                                       ? 'ผ้าเบรค 0%'
-                                      : 'ผ้าเบรค ${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'ผ้าเบรค ${widget.carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1446,15 +2115,20 @@ class TireWidgets extends StatelessWidget {
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
                                     percent:
-                                        carDataCal.data.brakePadsCal == null
+                                        widget.carDataCal.data.brakePadsCal ==
+                                                null
                                             ? 0
-                                            : carDataCal.data.brakePadsCal!
+                                            : widget
+                                                    .carDataCal
+                                                    .data
+                                                    .brakePadsCal!
                                                     .dateRemainAvg! /
                                                 100,
                                     center: Text(
-                                      carDataCal.data.brakePadsCal == null
+                                      widget.carDataCal.data.brakePadsCal ==
+                                              null
                                           ? '0%'
-                                          : '${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1474,9 +2148,10 @@ class TireWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.brakePadsCal == null
+                                        widget.carDataCal.data.brakePadsCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.brakePadsCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.brakePadsCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.brakePadsCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.brakePadsCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.brakePadsCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.brakePadsCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.brakePadsCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.brakePadsCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.brakePadsCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.brakePadsCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.brakePadsCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.brakePadsCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -1510,7 +2185,7 @@ class TireWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('ยางรถ', 'car_tire'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1539,9 +2214,9 @@ class TireWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.carTireCal == null
+                                  widget.carDataCal.data.carTireCal == null
                                       ? 'ยางรถ 0%'
-                                      : 'ยางรถ ${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'ยางรถ ${widget.carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1559,15 +2234,17 @@ class TireWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.carTireCal == null
-                                        ? 0
-                                        : carDataCal.data.carTireCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.carTireCal ==
+                                                null
+                                            ? 0
+                                            : widget.carDataCal.data.carTireCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.carTireCal == null
+                                      widget.carDataCal.data.carTireCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1587,9 +2264,10 @@ class TireWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.carTireCal == null
+                                        widget.carDataCal.data.carTireCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.carTireCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.carTireCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.carTireCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.carTireCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.carTireCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.carTireCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.carTireCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.carTireCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.carTireCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.carTireCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.carTireCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.carTireCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -1623,13 +2301,330 @@ class TireWidgets extends StatelessWidget {
   }
 }
 
-class BatteryWidgets extends StatelessWidget {
+class BatteryWidgets extends StatefulWidget {
   const BatteryWidgets({
     super.key,
     required this.carDataCal,
+    required this.carDetails,
   });
 
   final CarDataCal carDataCal;
+  final MyCarDetails carDetails;
+
+  @override
+  State<BatteryWidgets> createState() => _BatteryWidgetsState();
+}
+
+class _BatteryWidgetsState extends State<BatteryWidgets> {
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController mileNowController = TextEditingController();
+  TextEditingController mileNextController = TextEditingController();
+
+  DateTime date = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    mileNowController = TextEditingController();
+    mileNextController = TextEditingController();
+  }
+
+  void dispose() {
+    mileNowController.dispose();
+    mileNextController.dispose();
+    super.dispose();
+  }
+
+  Future<bool> saveUpgc(
+    String carId,
+    String problemType,
+    String mileNow,
+    String mileNext,
+    String date,
+  ) async {
+    final response = await http.post(
+      Uri.parse("https://api.racroad.com/api/upgc/store"),
+      body: {
+        'mycar_id': carId,
+        'type': problemType,
+        'mile_now': mileNow,
+        'mile_next': mileNext,
+        'date': date,
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw false;
+    }
+  }
+
+  void showFormDialog(String title, String changePart) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: AlertDialog(
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.sarabun(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color: Colors.black,
+              ),
+            ),
+            content: Stack(
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.red,
+                      child: Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: mileNowController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขไมล์ด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("กรอกเลขไมล์ปัจจุบัน"),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.looks_one_outlined,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: mileNextController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขไมล์ด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("กรอกเลขไมล์ครั้งต่อไป"),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.looks_two_outlined,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          splashColor: mainGreen,
+                          onTap: () async {
+                            DateTime? newDate = await showDatePicker(
+                              context: context,
+                              initialDate: date,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+
+                            if (newDate == null) return;
+
+                            setState(() => date = newDate);
+
+                            Get.appUpdate();
+                          },
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: mainGreen,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.date_range_rounded,
+                                      color: mainGreen,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      child: Text(
+                                        '${date.day}/${date.month}/${date.year}',
+                                        style: GoogleFonts.sarabun(),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              // next
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          mainGreen),
+                                      strokeWidth: 8,
+                                    ),
+                                  );
+                                },
+                              );
+
+                              saveUpgc(
+                                widget.carDetails.data!.mycarDetail!.mycarId!,
+                                changePart,
+                                mileNowController.text,
+                                mileNextController.text,
+                                date.toString(),
+                              ).then((value) {
+                                if (value == false) {
+                                  Fluttertoast.showToast(
+                                    msg:
+                                        "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
+                                    backgroundColor: Colors.yellowAccent,
+                                    textColor: Colors.black,
+                                  );
+                                }
+
+                                Get.offAllNamed('/profile');
+                              });
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mainGreen,
+                            minimumSize: const Size(
+                              300,
+                              40,
+                            ),
+                          ),
+                          child: Text(
+                            'ยืนยัน',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1659,7 +2654,7 @@ class BatteryWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('แบตเตอรี่', 'battery'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1688,9 +2683,9 @@ class BatteryWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.batteryCal == null
+                                  widget.carDataCal.data.batteryCal == null
                                       ? 'แบตเตอรี่ 0%'
-                                      : 'แบตเตอรี่ ${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'แบตเตอรี่ ${widget.carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1708,15 +2703,17 @@ class BatteryWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.batteryCal == null
-                                        ? 0
-                                        : carDataCal.data.batteryCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.batteryCal ==
+                                                null
+                                            ? 0
+                                            : widget.carDataCal.data.batteryCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.batteryCal == null
+                                      widget.carDataCal.data.batteryCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1736,9 +2733,10 @@ class BatteryWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.batteryCal == null
+                                        widget.carDataCal.data.batteryCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.batteryCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.batteryCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.batteryCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.batteryCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.batteryCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.batteryCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.batteryCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.batteryCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.batteryCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.batteryCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.batteryCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.batteryCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -1772,13 +2770,330 @@ class BatteryWidgets extends StatelessWidget {
   }
 }
 
-class AirWidgets extends StatelessWidget {
+class AirWidgets extends StatefulWidget {
   const AirWidgets({
     super.key,
     required this.carDataCal,
+    required this.carDetails,
   });
 
   final CarDataCal carDataCal;
+  final MyCarDetails carDetails;
+
+  @override
+  State<AirWidgets> createState() => _AirWidgetsState();
+}
+
+class _AirWidgetsState extends State<AirWidgets> {
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController mileNowController = TextEditingController();
+  TextEditingController mileNextController = TextEditingController();
+
+  DateTime date = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    mileNowController = TextEditingController();
+    mileNextController = TextEditingController();
+  }
+
+  void dispose() {
+    mileNowController.dispose();
+    mileNextController.dispose();
+    super.dispose();
+  }
+
+  Future<bool> saveUpgc(
+    String carId,
+    String problemType,
+    String mileNow,
+    String mileNext,
+    String date,
+  ) async {
+    final response = await http.post(
+      Uri.parse("https://api.racroad.com/api/upgc/store"),
+      body: {
+        'mycar_id': carId,
+        'type': problemType,
+        'mile_now': mileNow,
+        'mile_next': mileNext,
+        'date': date,
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw false;
+    }
+  }
+
+  void showFormDialog(String title, String changePart) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: AlertDialog(
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.sarabun(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color: Colors.black,
+              ),
+            ),
+            content: Stack(
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.red,
+                      child: Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: mileNowController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขไมล์ด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("กรอกเลขไมล์ปัจจุบัน"),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.looks_one_outlined,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: mileNextController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณากรอกเลขไมล์ด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text("กรอกเลขไมล์ครั้งต่อไป"),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.looks_two_outlined,
+                              color: mainGreen,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          splashColor: mainGreen,
+                          onTap: () async {
+                            DateTime? newDate = await showDatePicker(
+                              context: context,
+                              initialDate: date,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            );
+
+                            if (newDate == null) return;
+
+                            setState(() => date = newDate);
+
+                            Get.appUpdate();
+                          },
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: mainGreen,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.date_range_rounded,
+                                      color: mainGreen,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      child: Text(
+                                        '${date.day}/${date.month}/${date.year}',
+                                        style: GoogleFonts.sarabun(),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              // next
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          mainGreen),
+                                      strokeWidth: 8,
+                                    ),
+                                  );
+                                },
+                              );
+
+                              saveUpgc(
+                                widget.carDetails.data!.mycarDetail!.mycarId!,
+                                changePart,
+                                mileNowController.text,
+                                mileNextController.text,
+                                date.toString(),
+                              ).then((value) {
+                                if (value == false) {
+                                  Fluttertoast.showToast(
+                                    msg:
+                                        "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
+                                    backgroundColor: Colors.yellowAccent,
+                                    textColor: Colors.black,
+                                  );
+                                }
+
+                                Get.offAllNamed('/profile');
+                              });
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mainGreen,
+                            minimumSize: const Size(
+                              300,
+                              40,
+                            ),
+                          ),
+                          child: Text(
+                            'ยืนยัน',
+                            style: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1808,7 +3123,7 @@ class AirWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('น้ำยาแอร์', 'air'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1837,9 +3152,9 @@ class AirWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.airCal == null
+                                  widget.carDataCal.data.airCal == null
                                       ? 'น้ำยาแอร์ 0%'
-                                      : 'น้ำยาแอร์ ${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'น้ำยาแอร์ ${widget.carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1857,15 +3172,16 @@ class AirWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.airCal == null
-                                        ? 0
-                                        : carDataCal
-                                                .data.airCal!.dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.airCal == null
+                                            ? 0
+                                            : widget.carDataCal.data.airCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.airCal == null
+                                      widget.carDataCal.data.airCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1882,9 +3198,9 @@ class AirWidgets extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: Text(
-                                    carDataCal.data.airCal == null
+                                    widget.carDataCal.data.airCal == null
                                         ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                        : 'เริ่มต้น ${carDataCal.data.airCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.airCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.airCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.airCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.airCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.airCal!.dateUpgradeNext!)}',
+                                        : 'เริ่มต้น ${widget.carDataCal.data.airCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.airCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.airCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.airCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.airCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.airCal!.dateUpgradeNext!)}',
                                     style: GoogleFonts.sarabun(
                                       color: Colors.black,
                                       fontSize: 17,
@@ -1916,7 +3232,7 @@ class AirWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('แผงคอยล์ร้อน', 'clean_hs'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -1945,9 +3261,9 @@ class AirWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.cleanHsCal == null
+                                  widget.carDataCal.data.cleanHsCal == null
                                       ? 'แผงคอยล์ร้อน 0%'
-                                      : 'แผงคอยล์ร้อน ${carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'แผงคอยล์ร้อน ${widget.carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1965,15 +3281,17 @@ class AirWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.cleanHsCal == null
-                                        ? 0
-                                        : carDataCal.data.cleanHsCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.cleanHsCal ==
+                                                null
+                                            ? 0
+                                            : widget.carDataCal.data.cleanHsCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.cleanHsCal == null
+                                      widget.carDataCal.data.cleanHsCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1993,9 +3311,10 @@ class AirWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.cleanHsCal == null
+                                        widget.carDataCal.data.cleanHsCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.cleanHsCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.cleanHsCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.cleanHsCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.cleanHsCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.cleanHsCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.cleanHsCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.cleanHsCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.cleanHsCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.cleanHsCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.cleanHsCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.cleanHsCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.cleanHsCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
@@ -2029,7 +3348,7 @@ class AirWidgets extends StatelessWidget {
               child: Material(
                 child: InkWell(
                   splashColor: mainGreen,
-                  onTap: () {},
+                  onTap: () => showFormDialog('ตัวกรองแอร์', 'change_af'),
                   child: Ink(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -2058,9 +3377,9 @@ class AirWidgets extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  carDataCal.data.changeAfCal == null
+                                  widget.carDataCal.data.changeAfCal == null
                                       ? 'ตัวกรองแอร์ 0%'
-                                      : 'ตัวกรองแอร์ ${carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : 'ตัวกรองแอร์ ${widget.carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -2078,15 +3397,20 @@ class AirWidgets extends StatelessWidget {
                                     animation: true,
                                     progressColor: mainGreen,
                                     barRadius: const Radius.circular(50),
-                                    percent: carDataCal.data.changeAfCal == null
-                                        ? 0
-                                        : carDataCal.data.changeAfCal!
-                                                .dateRemainAvg! /
-                                            100,
+                                    percent:
+                                        widget.carDataCal.data.changeAfCal ==
+                                                null
+                                            ? 0
+                                            : widget
+                                                    .carDataCal
+                                                    .data
+                                                    .changeAfCal!
+                                                    .dateRemainAvg! /
+                                                100,
                                     center: Text(
-                                      carDataCal.data.changeAfCal == null
+                                      widget.carDataCal.data.changeAfCal == null
                                           ? '0%'
-                                          : '${carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : '${widget.carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -2106,9 +3430,10 @@ class AirWidgets extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: Text(
-                                        carDataCal.data.changeAfCal == null
+                                        widget.carDataCal.data.changeAfCal ==
+                                                null
                                             ? 'คุณยังไม่ได้กรอกข้อมูล'
-                                            : 'เริ่มต้น ${carDataCal.data.changeAfCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.changeAfCal!.dateSet!.yearInBuddhistCalendar}').format(carDataCal.data.changeAfCal!.dateSet!)}\nสิ้นสุด ${carDataCal.data.changeAfCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${carDataCal.data.changeAfCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(carDataCal.data.changeAfCal!.dateUpgradeNext!)}',
+                                            : 'เริ่มต้น ${widget.carDataCal.data.changeAfCal!.mileNow} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.changeAfCal!.dateSet!.yearInBuddhistCalendar}').format(widget.carDataCal.data.changeAfCal!.dateSet!)}\nสิ้นสุด ${widget.carDataCal.data.changeAfCal!.mileNext} ไมน์ วันที่ ${DateFormat('d MMMM ${widget.carDataCal.data.changeAfCal!.dateUpgradeNext!.yearInBuddhistCalendar}').format(widget.carDataCal.data.changeAfCal!.dateUpgradeNext!)}',
                                         style: GoogleFonts.sarabun(
                                           color: Colors.black,
                                           fontSize: 17,
