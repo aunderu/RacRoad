@@ -8,10 +8,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/main.dart';
 import 'package:rac_road/models/user/user_login.dart';
+import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
+import '../models/user/user_profile_model.dart';
 import 'page/with_email/stepone_with_email.dart';
 import 'page/with_phone/stepone_with_phone.dart';
 
@@ -80,7 +82,6 @@ class _LoginMainPageState extends State<LoginMainPage> {
   }
 
   Widget loginWithGoogle(BuildContext context, Size size) {
-    bool isTel = true;
     const url = "https://api.racroad.com/api";
 
     Future<UserLogin> googleSignIn() async {
@@ -139,6 +140,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
           // prefUserName.setString("name", login.data.name);
           // prefUserEmail.setString("email", login.data.email);
           // prefUserProfile.setString("profile", login.data.avatar);
+
           Get.to(() => const CheckLogin());
         }
       },
@@ -207,12 +209,12 @@ class _LoginMainPageState extends State<LoginMainPage> {
         ),
       ),
       onPressed: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const StepOneWithPhoneNumber(),
-          ),
-        );
+        // await Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => StepOneWithPhoneNumber(),
+        //   ),
+        // );
       },
       label: Align(
         alignment: Alignment.centerLeft,

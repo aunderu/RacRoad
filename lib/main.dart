@@ -6,12 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:rac_road/login/page/with_phone/stepone_with_phone.dart';
 import 'package:rac_road/screens.dart';
+import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'colors.dart';
 import 'login/login_main_page.dart';
+import 'models/user/user_profile_model.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -165,15 +168,20 @@ class _CheckLoginState extends State<CheckLogin> {
     String? token = sharedPreferences.getString("token");
 
     if (token != null) {
-      Timer(
-        const Duration(seconds: 2),
-        () => Get.to(
-          () => ScreensPage(
-            pageIndex: 0,
-            current: 0,
+      MyProfile? myProfile = await RemoteService().getUserProfile(token);
+      if (myProfile!.data.myProfile.tel != null) {
+        Timer(
+          const Duration(seconds: 2),
+          () => Get.to(
+            () => ScreensPage(
+              pageIndex: 0,
+              current: 0,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        Get.to(() => StepOneWithPhoneNumber(getToken: token));
+      }
     } else {
       Timer(
         const Duration(seconds: 2),
