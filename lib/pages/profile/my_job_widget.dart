@@ -188,11 +188,16 @@ class _MyJobWidgetState extends State<MyJobWidget> {
               ),
             );
           default:
-            return Center(
-              child: Text(
-                'ข้อมูลกำลังโหลดกรุณารอสักครู่...',
-                style: GoogleFonts.sarabun(),
-                textAlign: TextAlign.center,
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: JobWidget(
+                getToken: widget.getToken,
+                jobId: myJob!.data.myTechnician[0].tncId,
+                clubProfile: "assets/imgs/mechanic.png",
+                tncId: myJob!.data.myTechnician[0].tncId,
+                tncName: myJob!.data.myTechnician[0].tncName,
+                jobZone: myJob!.data.myTechnician[0].serviceZone,
+                status: myJob!.data.myTechnician[0].status,
               ),
             );
         }
