@@ -44,26 +44,19 @@ class _MyJobWidgetState extends State<MyJobWidget> {
       isLoaded = true;
     });
     myJob = await RemoteService().getMyJob(token);
-    myTncSos = await RemoteService()
-        .getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
-    if (myJob != null && myTncSos != null) {
-      final bool? haveMyJobData = myJob?.data.myTechnician.isNotEmpty;
-      if (haveMyJobData == true) {
-        if (mounted) {
-          setState(() {
-            haveJob = true;
-            isLoaded = false;
-          });
-        }
-      } else {
-        if (mounted) {
-          setState(() {
-            haveJob = false;
-            isLoaded = false;
-          });
-        }
-      }
+    if (myJob!.data.myTechnician.isNotEmpty) {
+      myTncSos = await RemoteService()
+          .getCurrentTncSos(myJob!.data.myTechnician[0].tncId);
+
+      setState(() {
+        haveJob = true;
+        isLoaded = false;
+      });
     }
+
+    setState(() {
+      isLoaded = false;
+    });
   }
 
   @override

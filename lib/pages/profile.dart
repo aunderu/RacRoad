@@ -19,7 +19,6 @@ class ProfilePage extends StatefulWidget {
   final String getToken;
   int current;
   // final GoogleSignInAccount user;
-  
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -142,8 +141,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
                                   margin: const EdgeInsets.all(5),
-                                  width: 110,
-                                  height: 40,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.27,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
                                   decoration: BoxDecoration(
                                     color: widget.current == index
                                         ? mainGreen
