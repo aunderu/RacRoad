@@ -922,6 +922,7 @@ class _OilWidgetsState extends State<OilWidgets> {
       mileNextController = TextEditingController();
     }
 
+    @override
     void dispose() {
       mileNowController.dispose();
       mileNextController.dispose();
@@ -1099,7 +1100,7 @@ class _OilWidgetsState extends State<OilWidgets> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 3),
                           child: InkWell(
                             splashColor: mainGreen,
                             onTap: () async {
@@ -1107,7 +1108,7 @@ class _OilWidgetsState extends State<OilWidgets> {
                                 context: context,
                                 initialDate: date,
                                 firstDate: DateTime(1900),
-                                lastDate: DateTime(2100),
+                                lastDate: DateTime.now(),
                               );
 
                               if (newDate == null) return;
@@ -1152,8 +1153,23 @@ class _OilWidgetsState extends State<OilWidgets> {
                             ),
                           ),
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              '* วันเดือนปี ณ ตอนที่คุณเปลี่ยนอะไหล่ครั้งล่าสุด',
+                              style: GoogleFonts.sarabun(
+                                color: darkGray,
+                              ),
+                            ),
+                          ),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 12,
+                          ),
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState?.validate() ?? false) {
@@ -1206,7 +1222,7 @@ class _OilWidgetsState extends State<OilWidgets> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -1742,6 +1758,7 @@ class _TireWidgetsState extends State<TireWidgets> {
     mileNextController = TextEditingController();
   }
 
+  @override
   void dispose() {
     mileNowController.dispose();
     mileNextController.dispose();
@@ -1919,7 +1936,7 @@ class _TireWidgetsState extends State<TireWidgets> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 3),
                         child: InkWell(
                           splashColor: mainGreen,
                           onTap: () async {
@@ -1927,7 +1944,7 @@ class _TireWidgetsState extends State<TireWidgets> {
                               context: context,
                               initialDate: date,
                               firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
+                              lastDate: DateTime.now(),
                             );
 
                             if (newDate == null) return;
@@ -1972,8 +1989,23 @@ class _TireWidgetsState extends State<TireWidgets> {
                           ),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            '* วันเดือนปี ณ ตอนที่คุณเปลี่ยนอะไหล่ครั้งล่าสุด',
+                            style: GoogleFonts.sarabun(
+                              color: darkGray,
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState?.validate() ?? false) {
@@ -2331,6 +2363,7 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
     mileNextController = TextEditingController();
   }
 
+  @override
   void dispose() {
     mileNowController.dispose();
     mileNextController.dispose();
@@ -2508,7 +2541,7 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 3),
                         child: InkWell(
                           splashColor: mainGreen,
                           onTap: () async {
@@ -2516,7 +2549,7 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
                               context: context,
                               initialDate: date,
                               firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
+                              lastDate: DateTime.now(),
                             );
 
                             if (newDate == null) return;
@@ -2561,8 +2594,23 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
                           ),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            '* วันเดือนปี ณ ตอนที่คุณเปลี่ยนอะไหล่ครั้งล่าสุด',
+                            style: GoogleFonts.sarabun(
+                              color: darkGray,
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState?.validate() ?? false) {
@@ -2800,6 +2848,7 @@ class _AirWidgetsState extends State<AirWidgets> {
     mileNextController = TextEditingController();
   }
 
+  @override
   void dispose() {
     mileNowController.dispose();
     mileNextController.dispose();
@@ -2977,7 +3026,7 @@ class _AirWidgetsState extends State<AirWidgets> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 3),
                         child: InkWell(
                           splashColor: mainGreen,
                           onTap: () async {
@@ -2985,7 +3034,7 @@ class _AirWidgetsState extends State<AirWidgets> {
                               context: context,
                               initialDate: date,
                               firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
+                              lastDate: DateTime.now(),
                             );
 
                             if (newDate == null) return;
@@ -3030,8 +3079,23 @@ class _AirWidgetsState extends State<AirWidgets> {
                           ),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            '* วันเดือนปี ณ ตอนที่คุณเปลี่ยนอะไหล่ครั้งล่าสุด',
+                            style: GoogleFonts.sarabun(
+                              color: darkGray,
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState?.validate() ?? false) {
