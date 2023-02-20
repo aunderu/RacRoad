@@ -212,8 +212,6 @@ Widget carDetailsWidget(
                     );
                   },
                   child: Ink(
-                    width: 100,
-                    height: 100,
                     decoration: const BoxDecoration(
                       color: Color(0xFFEBEBEB),
                     ),
@@ -226,7 +224,9 @@ Widget carDetailsWidget(
                                 0, 5, 0, 0),
                             child: Text(
                               'น้ำมัน',
-                              style: GoogleFonts.sarabun(),
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -245,179 +245,181 @@ Widget carDetailsWidget(
                         Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'เครื่อง',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'เครื่อง',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.engineOilCal == null
+                                                ? 0
+                                                : carDataCal.data.engineOilCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.engineOilCal == null
-                                              ? 0
-                                              : carDataCal.data.engineOilCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.engineOilCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'เบรก',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'เบรก',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.brakeOilCal == null
+                                                ? 0
+                                                : carDataCal.data.brakeOilCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.brakeOilCal == null
-                                              ? 0
-                                              : carDataCal.data.brakeOilCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.brakeOilCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'เพาเวอร์',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'เพาเวอร์',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.powerOilCal == null
+                                                ? 0
+                                                : carDataCal.data.powerOilCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.powerOilCal == null
-                                              ? 0
-                                              : carDataCal.data.powerOilCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.powerOilCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'เกียร์',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'เกียร์',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.gearOilCal == null
+                                                ? 0
+                                                : carDataCal.data.gearOilCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.gearOilCal == null
-                                              ? 0
-                                              : carDataCal.data.gearOilCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.gearOilCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -448,8 +450,6 @@ Widget carDetailsWidget(
                     );
                   },
                   child: Ink(
-                    width: 100,
-                    height: 100,
                     decoration: BoxDecoration(
                       color: const Color(0xFFEBEBEB),
                       borderRadius: BorderRadius.circular(20),
@@ -463,7 +463,9 @@ Widget carDetailsWidget(
                                 0, 5, 0, 0),
                             child: Text(
                               'ยางรถ',
-                              style: GoogleFonts.sarabun(),
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -482,95 +484,97 @@ Widget carDetailsWidget(
                         Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'ผ้าเบรก',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'ผ้าเบรก',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.brakePadsCal == null
+                                                ? 0
+                                                : carDataCal.data.brakePadsCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.brakePadsCal == null
-                                              ? 0
-                                              : carDataCal.data.brakePadsCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.brakePadsCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'ยางรถ',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'ยางรถ',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.carTireCal == null
+                                                ? 0
+                                                : carDataCal.data.carTireCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.carTireCal == null
-                                              ? 0
-                                              : carDataCal.data.carTireCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.carTireCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -601,8 +605,6 @@ Widget carDetailsWidget(
                     );
                   },
                   child: Ink(
-                    width: 100,
-                    height: 100,
                     decoration: BoxDecoration(
                       color: const Color(0xFFEBEBEB),
                       borderRadius: BorderRadius.circular(20),
@@ -616,7 +618,9 @@ Widget carDetailsWidget(
                                 0, 5, 0, 0),
                             child: Text(
                               'แบตเตอรี่',
-                              style: GoogleFonts.sarabun(),
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -635,53 +639,55 @@ Widget carDetailsWidget(
                         Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'แบตเตอรี่',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'แบตเตอรี่',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.batteryCal == null
+                                                ? 0
+                                                : carDataCal.data.batteryCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.batteryCal == null
-                                              ? 0
-                                              : carDataCal.data.batteryCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.batteryCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -712,8 +718,6 @@ Widget carDetailsWidget(
                     );
                   },
                   child: Ink(
-                    width: 100,
-                    height: 100,
                     decoration: const BoxDecoration(
                       color: Color(0xFFEBEBEB),
                     ),
@@ -726,7 +730,9 @@ Widget carDetailsWidget(
                                 0, 5, 0, 0),
                             child: Text(
                               'แอร์',
-                              style: GoogleFonts.sarabun(),
+                              style: GoogleFonts.sarabun(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -745,136 +751,138 @@ Widget carDetailsWidget(
                         Padding(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'น้ำยา',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'น้ำยา',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent: carDataCal.data.airCal == null
-                                          ? 0
-                                          : carDataCal
-                                                  .data.airCal!.dateRemainAvg! /
-                                              100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.airCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                      LinearPercentIndicator(
+                                        percent: carDataCal.data.airCal == null
+                                            ? 0
+                                            : carDataCal.data.airCal!
+                                                    .dateRemainAvg! /
+                                                100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
+                                          carDataCal.data.airCal == null
+                                              ? '0%'
+                                              : '${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'แผงคอยล์ร้อน',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'แผงคอยล์ร้อน',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.cleanHsCal == null
+                                                ? 0
+                                                : carDataCal.data.cleanHsCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.cleanHsCal == null
-                                              ? 0
-                                              : carDataCal.data.cleanHsCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.cleanHsCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'ตัวกรองแอร์',
-                                        style: GoogleFonts.sarabun(
-                                          fontSize: 12,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 10, 10, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'ตัวกรองแอร์',
+                                          style: GoogleFonts.sarabun(
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    LinearPercentIndicator(
-                                      percent:
+                                      LinearPercentIndicator(
+                                        percent:
+                                            carDataCal.data.changeAfCal == null
+                                                ? 0
+                                                : carDataCal.data.changeAfCal!
+                                                        .dateRemainAvg! /
+                                                    100,
+                                        width: 100,
+                                        lineHeight: 24,
+                                        animation: true,
+                                        progressColor: mainGreen,
+                                        backgroundColor: Colors.white,
+                                        center: Text(
                                           carDataCal.data.changeAfCal == null
-                                              ? 0
-                                              : carDataCal.data.changeAfCal!
-                                                      .dateRemainAvg! /
-                                                  100,
-                                      width: 100,
-                                      lineHeight: 24,
-                                      animation: true,
-                                      progressColor: mainGreen,
-                                      backgroundColor: Colors.white,
-                                      center: Text(
-                                        carDataCal.data.changeAfCal == null
-                                            ? '0%'
-                                            : '${carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
-                                        style: GoogleFonts.sarabun(
-                                          color: const Color(0xFF2E2E2E),
+                                              ? '0%'
+                                              : '${carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          style: GoogleFonts.sarabun(
+                                            color: const Color(0xFF2E2E2E),
+                                          ),
                                         ),
+                                        barRadius: const Radius.circular(50),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      barRadius: const Radius.circular(50),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],

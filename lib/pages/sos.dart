@@ -150,7 +150,7 @@ class _SOSPageState extends State<SOSPage> {
       key: scaffoldKey,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsetsDirectional.all(10),
+        padding: EdgeInsets.symmetric(horizontal: size.height * 0.03),
         child: FutureBuilder<MyCurrentSos?>(
           future: _dataCurrentSos,
           builder: (context, snapshot) {
@@ -169,8 +169,7 @@ class _SOSPageState extends State<SOSPage> {
                           switch (snapshot.connectionState) {
                             case ConnectionState.waiting:
                               return SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 1.5,
+                                height: size.height / 1.5,
                                 child: const Center(
                                   child: CircularProgressIndicator(
                                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -190,18 +189,14 @@ class _SOSPageState extends State<SOSPage> {
                                     ? Align(
                                         alignment: Alignment.center,
                                         child: ListView.builder(
-                                          padding: const EdgeInsets.only(
-                                            top: 10,
-                                            bottom: 10,
-                                          ),
                                           itemCount: snapshot
                                               .data!.data.problemTypeAll.length,
                                           shrinkWrap: true,
                                           scrollDirection: Axis.vertical,
                                           itemBuilder: (context, index) {
                                             return Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 15,
+                                              padding: EdgeInsets.only(
+                                                bottom: size.height * 0.03,
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:
@@ -237,7 +232,8 @@ class _SOSPageState extends State<SOSPage> {
                                                     },
                                                     child: Ink(
                                                       width: double.infinity,
-                                                      height: 70,
+                                                      height:
+                                                          size.height * 0.09,
                                                       decoration:
                                                           const BoxDecoration(
                                                         gradient:
@@ -261,13 +257,12 @@ class _SOSPageState extends State<SOSPage> {
                                                             MainAxisSize.max,
                                                         children: [
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                    10,
-                                                                    0,
-                                                                    0,
-                                                                    0),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                              horizontal:
+                                                                  size.width *
+                                                                      0.05,
+                                                            ),
                                                             child:
                                                                 CachedNetworkImage(
                                                               imageUrl: result
@@ -285,39 +280,29 @@ class _SOSPageState extends State<SOSPage> {
                                                               ),
                                                               color:
                                                                   Colors.white,
-                                                              width: 50,
-                                                              height: 50,
+                                                              height:
+                                                                  size.height *
+                                                                      0.07,
                                                             ),
                                                           ),
                                                           Expanded(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                      20,
-                                                                      5,
-                                                                      10,
-                                                                      5),
-                                                              child:
-                                                                  AutoSizeText(
-                                                                result
-                                                                    .data
-                                                                    .problemTypeAll[
-                                                                        index]
-                                                                    .name,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start,
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .sarabun(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
+                                                            child: AutoSizeText(
+                                                              result
+                                                                  .data
+                                                                  .problemTypeAll[
+                                                                      index]
+                                                                  .name,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                              style: GoogleFonts
+                                                                  .sarabun(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 20,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                           ),
@@ -332,9 +317,7 @@ class _SOSPageState extends State<SOSPage> {
                                         ),
                                       )
                                     : SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                1.5,
+                                        height: size.height / 1.5,
                                         child: const Center(
                                           child: CircularProgressIndicator(
                                             valueColor:

@@ -131,6 +131,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                       child: Container(
+                        height: MediaQuery.of(context).size.height * 0.12,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           boxShadow: [
@@ -275,9 +276,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                                     Column(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                          MainAxisAlignment.center,
                                       children: const [
                                         Padding(
                                           padding:
@@ -355,7 +354,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                         width: 40,
                         height: 40,
                         decoration: const BoxDecoration(
-                          color: Colors.black,
+                          color: darkGray,
                         ),
                         child: const Icon(
                           Icons.add,

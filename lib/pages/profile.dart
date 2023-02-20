@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     alignment: Alignment.center,
                     width: double.infinity,
-                    height: 50,
+                    height: size.height * 0.064,
                     decoration: BoxDecoration(
                       color: const Color(0xFFEBEBEB),
                       borderRadius: BorderRadius.circular(20),
@@ -131,6 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Column(
+                            mainAxisSize: MainAxisSize.max,
                             children: [
                               GestureDetector(
                                 onTap: () {
