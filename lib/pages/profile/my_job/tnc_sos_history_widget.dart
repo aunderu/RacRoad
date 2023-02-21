@@ -72,6 +72,14 @@ class TncSosHistoryWidget extends StatelessWidget {
                             height: 44,
                             width: 44,
                             fit: BoxFit.cover,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(
+                                value: downloadProgress.progress,
+                                color: mainGreen,
+                              ),
+                            ),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                           ),
@@ -98,7 +106,27 @@ class TncSosHistoryWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            sosStatus,
+                            (() {
+                              switch (sosStatus) {
+                                case "step4":
+                                  return "กำลังปฏิบัติหน้าที่";
+                                case "step5":
+                                  return "ปฏิบัติงานสำเร็จ";
+                                case "step6":
+                                  return "ปฏิบัติงานสำเร็จ";
+                                case "step7":
+                                  return "ปฏิบัติงานสำเร็จ";
+                                case "step8":
+                                  return "สำเร็จ";
+                                case "success":
+                                  return "สำเร็จ";
+                                case "user_reject_deal":
+                                  return "ผู้ใช้ปฏิเสธข้อเสนอ";
+                                case "user_reject_deal2":
+                                  return "ผู้ใช้ปฏิเสธข้อเสนอ";
+                              }
+                              return "";
+                            })(),
                             style: GoogleFonts.sarabun(
                               color: darkGray,
                             ),

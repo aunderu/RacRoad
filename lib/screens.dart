@@ -40,18 +40,15 @@ class _ScreensPageState extends State<ScreensPage> {
   String? avatar;
   String? email;
   String? name;
-
-  late Future<MyProfile?> _dataFuture;
   // int index = 0;
-  bool _isProfileNoti = false;
 
   late final _screens = <Widget>[
-    // HomePage(token: token!),
-    // ClubPage(token: token!),
+    HomePage(token: token!),
+    ClubPage(token: token!),
     SOSPage(
       token: token!,
     ),
-    // NotificationsPage(token: token!),
+    NotificationsPage(token: token!),
     ProfilePage(
       getToken: token!,
       current: widget.current,
@@ -70,7 +67,6 @@ class _ScreensPageState extends State<ScreensPage> {
     avatar = UserPreferences.getAvatar() ?? 'assets/imgs/profile.png';
 
     getData(token!);
-    _dataFuture = RemoteService().getUserProfile(token!);
   }
 
   getData(String token) async {
@@ -155,28 +151,28 @@ class _ScreensPageState extends State<ScreensPage> {
             () => widget.pageIndex = index,
           ),
           destinations: [
-            // const NavigationDestination(
-            //   icon: Icon(
-            //     Icons.home_outlined,
-            //     size: 40,
-            //   ),
-            //   selectedIcon: Icon(
-            //     Icons.home,
-            //     size: 40,
-            //   ),
-            //   label: 'Home',
-            // ),
-            // const NavigationDestination(
-            //   icon: Icon(
-            //     Icons.groups_outlined,
-            //     size: 40,
-            //   ),
-            //   selectedIcon: Icon(
-            //     Icons.groups,
-            //     size: 40,
-            //   ),
-            //   label: 'Club',
-            // ),
+            const NavigationDestination(
+              icon: Icon(
+                Icons.home_outlined,
+                size: 40,
+              ),
+              selectedIcon: Icon(
+                Icons.home,
+                size: 40,
+              ),
+              label: 'Home',
+            ),
+            const NavigationDestination(
+              icon: Icon(
+                Icons.groups_outlined,
+                size: 40,
+              ),
+              selectedIcon: Icon(
+                Icons.groups,
+                size: 40,
+              ),
+              label: 'Club',
+            ),
             const NavigationDestination(
               icon: Icon(
                 Icons.sos_outlined,
@@ -185,63 +181,14 @@ class _ScreensPageState extends State<ScreensPage> {
               ),
               label: 'SOS',
             ),
-            // NavigationDestination(
-            //   icon: Stack(
-            //     children: [
-            //       const Icon(
-            //         Icons.notifications_outlined,
-            //         size: 40,
-            //       ),
-            //       false
-            //           ? Positioned(
-            //               top: -1.0,
-            //               right: -1.0,
-            //               child: Stack(
-            //                 children: const [
-            //                   Icon(
-            //                     Icons.brightness_1,
-            //                     color: Colors.red,
-            //                     size: 15,
-            //                   )
-            //                 ],
-            //               ),
-            //             )
-            //           : const SizedBox.shrink(),
-            //     ],
-            //   ),
-            //   selectedIcon: Stack(
-            //     children: [
-            //       const Icon(
-            //         Icons.notifications,
-            //         size: 40,
-            //       ),
-            //       false
-            //           ? Positioned(
-            //               top: -1.0,
-            //               right: -1.0,
-            //               child: Stack(
-            //                 children: const [
-            //                   Icon(
-            //                     Icons.brightness_1,
-            //                     color: Colors.red,
-            //                     size: 15,
-            //                   )
-            //                 ],
-            //               ),
-            //             )
-            //           : const SizedBox.shrink(),
-            //     ],
-            //   ),
-            //   label: 'Notification',
-            // ),
             NavigationDestination(
               icon: Stack(
                 children: [
                   const Icon(
-                    Icons.person_outline,
+                    Icons.notifications_outlined,
                     size: 40,
                   ),
-                  _isProfileNoti
+                  false
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -261,10 +208,10 @@ class _ScreensPageState extends State<ScreensPage> {
               selectedIcon: Stack(
                 children: [
                   const Icon(
-                    Icons.person,
+                    Icons.notifications,
                     size: 40,
                   ),
-                  _isProfileNoti
+                  false
                       ? Positioned(
                           top: -1.0,
                           right: -1.0,
@@ -279,6 +226,55 @@ class _ScreensPageState extends State<ScreensPage> {
                           ),
                         )
                       : const SizedBox.shrink(),
+                ],
+              ),
+              label: 'Notification',
+            ),
+            NavigationDestination(
+              icon: Stack(
+                children: [
+                  const Icon(
+                    Icons.person_outline,
+                    size: 40,
+                  ),
+                  // _isProfileNoti
+                  //     ? Positioned(
+                  //         top: -1.0,
+                  //         right: -1.0,
+                  //         child: Stack(
+                  //           children: const [
+                  //             Icon(
+                  //               Icons.brightness_1,
+                  //               color: Colors.red,
+                  //               size: 15,
+                  //             )
+                  //           ],
+                  //         ),
+                  //       )
+                  //     : const SizedBox.shrink(),
+                ],
+              ),
+              selectedIcon: Stack(
+                children: [
+                  const Icon(
+                    Icons.person,
+                    size: 40,
+                  ),
+                  // _isProfileNoti
+                  //     ? Positioned(
+                  //         top: -1.0,
+                  //         right: -1.0,
+                  //         child: Stack(
+                  //           children: const [
+                  //             Icon(
+                  //               Icons.brightness_1,
+                  //               color: Colors.red,
+                  //               size: 15,
+                  //             )
+                  //           ],
+                  //         ),
+                  //       )
+                  //     : const SizedBox.shrink(),
                 ],
               ),
               label: 'Profile',

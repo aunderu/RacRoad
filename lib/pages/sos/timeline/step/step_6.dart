@@ -590,17 +590,19 @@ class _StepSixState extends State<StepSix> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Center(
-                    child: RatingBar.builder(
-                      minRating: 1,
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 5),
-                      itemBuilder: (context, index) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
+                    child: FittedBox(
+                      child: RatingBar.builder(
+                        minRating: 1,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 5),
+                        itemBuilder: (context, index) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        updateOnDrag: true,
+                        onRatingUpdate: (rating) => setState(() {
+                          this.rating = rating;
+                        }),
                       ),
-                      updateOnDrag: true,
-                      onRatingUpdate: (rating) => setState(() {
-                        this.rating = rating;
-                      }),
                     ),
                   ),
                 ),

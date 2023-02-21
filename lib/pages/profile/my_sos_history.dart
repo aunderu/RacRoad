@@ -87,126 +87,125 @@ class _MySosHistoryState extends State<MySosHistory> {
         ],
         centerTitle: false,
       ),
-      body: Padding( 
+      body: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
         child: FutureBuilder<AllMySos?>(
           future: dataFuture,
           builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return snapshot.hasData
-                    ? ListView.builder(
-                        itemCount: snapshot.data!.count,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          return MySosHistoryWidget(
-                            getToken: widget.getToken,
-                            sosId: snapshot
-                                .data!
-                                .data
-                                .sos![
-                                    snapshot.data!.data.sos!.length - 1 - index]
-                                .sosId,
-                            imgAccident: snapshot
-                                .data!
-                                .data
-                                .sos![
-                                    snapshot.data!.data.sos!.length - 1 - index]
-                                .imageIncident[0]
-                                .image,
-                            userName: snapshot
-                                .data!
-                                .data
-                                .sos![
-                                    snapshot.data!.data.sos!.length - 1 - index]
-                                .userName,
-                            sosStatus: snapshot
-                                .data!
-                                .data
-                                .sos![
-                                    snapshot.data!.data.sos!.length - 1 - index]
-                                .sosStatus,
-                            userProblem: snapshot
-                                .data!
-                                .data
-                                .sos![
-                                    snapshot.data!.data.sos!.length - 1 - index]
-                                .problem,
-                            timeStamp: snapshot
-                                .data!
-                                .data
-                                .sos![
-                                    snapshot.data!.data.sos!.length - 1 - index]
-                                .createdAt,
-                          );
-                        },
-                      )
-                    : SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.5,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(mainGreen),
-                            strokeWidth: 8,
+            var resultData = snapshot.data;
+            if (resultData == null) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                    strokeWidth: 8,
+                  ),
+                ),
+              );
+            } else {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          itemCount: resultData.data.sos!.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return MySosHistoryWidget(
+                              getToken: widget.getToken,
+                              sosId: resultData
+                                  .data
+                                  .sos![resultData.data.sos!.length - 1 - index]
+                                  .sosId,
+                              imgAccident: resultData
+                                  .data
+                                  .sos![resultData.data.sos!.length - 1 - index]
+                                  .imageIncident[0]
+                                  .image!,
+                              userName: resultData
+                                  .data
+                                  .sos![resultData.data.sos!.length - 1 - index]
+                                  .userName,
+                              sosStatus: resultData
+                                  .data
+                                  .sos![resultData.data.sos!.length - 1 - index]
+                                  .sosStatus,
+                              userProblem: resultData
+                                  .data
+                                  .sos![resultData.data.sos!.length - 1 - index]
+                                  .problem,
+                              timeStamp: resultData
+                                  .data
+                                  .sos![resultData.data.sos!.length - 1 - index]
+                                  .createdAt,
+                            );
+                          },
+                        )
+                      : SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(mainGreen),
+                              strokeWidth: 8,
+                            ),
                           ),
+                        );
+                case ConnectionState.done:
+                default:
+                  if (snapshot.hasError) {
+                    return const Center(
+                        child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                  } else if (snapshot.data!.count != 0) {
+                    return ListView.builder(
+                      itemCount: resultData.data.sos!.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return MySosHistoryWidget(
+                          getToken: widget.getToken,
+                          sosId: resultData
+                              .data
+                              .sos![resultData.data.sos!.length - 1 - index]
+                              .sosId,
+                          imgAccident: resultData
+                              .data
+                              .sos![resultData.data.sos!.length - 1 - index]
+                              .imageIncident[0]
+                              .image!,
+                          userName: resultData
+                              .data
+                              .sos![resultData.data.sos!.length - 1 - index]
+                              .userName,
+                          sosStatus: resultData
+                              .data
+                              .sos![resultData.data.sos!.length - 1 - index]
+                              .sosStatus,
+                          userProblem: resultData
+                              .data
+                              .sos![resultData.data.sos!.length - 1 - index]
+                              .problem,
+                          timeStamp: resultData
+                              .data
+                              .sos![resultData.data.sos!.length - 1 - index]
+                              .createdAt,
+                        );
+                      },
+                    );
+                  } else {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      child: Center(
+                        child: Text(
+                          'ดูเหมือนคุณยังไม่ได้แจ้งอะไรนะ',
+                          style: GoogleFonts.sarabun(),
+                          textAlign: TextAlign.center,
                         ),
-                      );
-              case ConnectionState.done:
-              default:
-                if (snapshot.hasError) {
-                  return const Center(child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
-                } else if (snapshot.data!.count != 0) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.count,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return MySosHistoryWidget(
-                        getToken: widget.getToken,
-                        sosId: snapshot
-                            .data!
-                            .data
-                            .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .sosId,
-                        imgAccident: snapshot
-                            .data!
-                            .data
-                            .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .imageIncident[0]
-                            .image,
-                        userName: snapshot
-                            .data!
-                            .data
-                            .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .userName,
-                        sosStatus: snapshot
-                            .data!
-                            .data
-                            .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .sosStatus,
-                        userProblem: snapshot
-                            .data!
-                            .data
-                            .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .problem,
-                        timeStamp: snapshot
-                            .data!
-                            .data
-                            .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .createdAt,
-                      );
-                    },
-                  );
-                } else {
-                  return Center(
-                    child: Text(
-                      'ดูเหมือนคุณยังไม่ได้แจ้งอะไรนะ',
-                      style: GoogleFonts.sarabun(),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                }
+                      ),
+                    );
+                  }
+              }
             }
           },
         ),

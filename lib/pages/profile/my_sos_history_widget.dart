@@ -79,8 +79,16 @@ class MySosHistoryWidget extends StatelessWidget {
                             height: 44,
                             width: 44,
                             fit: BoxFit.cover,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(
+                                value: downloadProgress.progress,
+                                color: mainGreen,
+                              ),
+                            ),
                             errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                                Image.asset('assets/icons/404.png'),
                           ),
                         ),
                       ),
@@ -104,10 +112,38 @@ class MySosHistoryWidget extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            sosStatus,
-                            style: GoogleFonts.sarabun(
-                              color: darkGray,
+                          Flexible(
+                            child: Text(
+                              (() {
+                                switch (sosStatus) {
+                                  case "step1":
+                                    return "แจ้งเหตุการณ์";
+                                  case "step2":
+                                    return "การตอบรับข้อเสนอ";
+                                  case "step3":
+                                    return "เจ้าหน้าที่เลือกช่าง";
+                                  case "step4":
+                                    return "ช่างปฏิบัติหน้าที่";
+                                  case "step5":
+                                    return "ช่างปฏิบัติงานสำเร็จ";
+                                  case "step6":
+                                    return "ชำระเงินและรีวิว";
+                                  case "step7":
+                                    return "รอตรวจสอบการเงิน";
+                                  case "step8":
+                                    return "สำเร็จ";
+                                  case "success":
+                                    return "สำเร็จ";
+                                  case "user_reject_deal":
+                                    return "ปฏิเสธข้อเสนอ";
+                                  case "user_reject_deal2":
+                                    return "ปฏิเสธข้อเสนอ";
+                                }
+                                return "";
+                              })(),
+                              style: GoogleFonts.sarabun(
+                                color: darkGray,
+                              ),
                             ),
                           ),
                         ],

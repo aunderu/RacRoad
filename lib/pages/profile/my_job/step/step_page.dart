@@ -11,6 +11,7 @@ import '../../../../../colors.dart';
 import 'step_1.dart';
 import 'step_2.dart';
 import 'step_3.dart';
+import 'user_reject.dart';
 
 class StepPage extends StatefulWidget {
   const StepPage({
@@ -227,6 +228,27 @@ class _StepPageState extends State<StepPage> {
                         userReview: result.data.sos.review!,
                         userRate: result.data.sos.rate!,
                         racroadSlip: result.data.racroadSlip![0].image,
+                      );
+                    case "user_reject_deal2":
+                      return TncUserReject(
+                        getToken: widget.getToken,
+                        userName: result.data.sos.userName,
+                        userTel: result.data.sos.userTel.toString(),
+                        problem: result.data.sos.problem,
+                        problemDetails: result.data.sos.problemDetail,
+                        location: result.data.sos.location,
+                        userProfile: result.data.sos.avatar,
+                        imgIncident: result.data.imgIncident[0].image,
+                        imgBfwork: result.data.imgBfwork![0].image,
+                        repairPriceTwo: result.data.sos.repairPrice2!,
+                        stepOneTimeStamp: result.data.sos.tuStep1,
+                        tuUserDealTwo: result.data.sos.tuUserDeal2!,
+                        tncNote: result.data.sos.tncDescription == null
+                            ? 'คุณไม่ได้ให้ข้อเสนอของคุณ'
+                            : result.data.sos.tncDescription!,
+                        userReason: result.data.sos.userReason == null
+                            ? 'ผู้ใช้งานไม่ได้ให้เหตุผล'
+                            : result.data.sos.userReason!,
                       );
                     default:
                       const LoadingTimeLine();

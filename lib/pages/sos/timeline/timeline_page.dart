@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rac_road/colors.dart';
 
@@ -17,6 +18,7 @@ import 'step/step_6.dart';
 import 'step/step_7.dart';
 import 'step/step_8.dart';
 import 'step/user_reject.dart';
+import 'step/user_reject_2.dart';
 
 class TimeLinePage extends StatefulWidget {
   const TimeLinePage({
@@ -56,11 +58,13 @@ class _TimeLinePageState extends State<TimeLinePage> {
   }
 
   void _onRefresh() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
       _dataFuture = RemoteService().getSosDetails(widget.sosId);
     });
+
+    Get.appUpdate();
 
     _refreshController.refreshCompleted();
   }
@@ -314,6 +318,39 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   stepThreeTimeStamp: result.data.sos.tuStep3!,
                   repairPrice: result.data.sos.repairPrice.toString(),
                   repairDetails: result.data.sos.repairDetail!,
+                  userReason: result.data.sos.userReason == null
+                      ? 'ผู้ใช้งานไม่ได้ให้เหตุผล'
+                      : result.data.sos.userReason!,
+                );
+              case "user_reject_deal2":
+                return UserRejectTwo(
+                  getToken: widget.getToken,
+                  stepOnetimeStamp: result.data.sos.tuStep1,
+                  userName: result.data.sos.userName,
+                  userTel: result.data.sos.userTel.toString(),
+                  problem: result.data.sos.problem,
+                  problemDetails: result.data.sos.problemDetail,
+                  location: result.data.sos.location,
+                  userProfile: result.data.sos.avatar,
+                  imgIncident: result.data.imgIncident[0].image,
+                  stepTwoTimeStamp: result.data.sos.tuStep2!,
+                  stepThreeTimeStamp: result.data.sos.tuStep3!,
+                  repairPrice: result.data.sos.repairPrice.toString(),
+                  repairDetails: result.data.sos.repairDetail!,
+                  tncName: result.data.sos.tncName!,
+                  tncStatus: result.data.sos.tncStatus!,
+                  tncProfile: result.data.sos.tncAvatar,
+                  imgBfwork: result.data.imgBfwork![0].image,
+                  repairPriceTwo: result.data.sos.repairPrice2,
+                  repairDetailsTwo: result.data.sos.repairDetail2,
+                  tuPriceTwoTimeStamp: result.data.sos.tuPrice2,
+                  userDealTwo: result.data.sos.userDeal2,
+                  tuUserDealTwoTimeStamp: result.data.sos.tuUserDeal2,
+                  priceTwoStatus: result.data.sos.price2Status!,
+                  stepFourTimeStamp: result.data.sos.tuStep4!,
+                  userReason: result.data.sos.userReason == null
+                      ? 'ผู้ใช้งานไม่ได้ให้เหตุผล'
+                      : result.data.sos.userReason!,
                 );
               case "success":
                 return StepEight(
