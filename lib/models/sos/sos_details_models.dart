@@ -141,7 +141,6 @@ class Sos {
     this.repairDetail2,
     this.price2Status,
     this.userDeal2,
-    this.userReason,
     this.qrId,
     this.qrName,
     this.qrNumber,
@@ -192,7 +191,6 @@ class Sos {
         repairDetail2: json["repair_detail2"],
         price2Status: json["price2_status"],
         userDeal2: json["user_deal2"],
-        userReason: json["why_urd01"],
         qrId: json["qr_id"],
         qrName: json["qr_name"],
         qrNumber: json["qr_number"],
@@ -241,8 +239,8 @@ class Sos {
   String? qrId;
   String? qrName;
   String? qrNumber;
-  String? qrStatus;
   String? qrType;
+  String? qrStatus;
   dynamic rate;
   dynamic repairDetail;
   String? repairDetail2;
@@ -275,7 +273,6 @@ class Sos {
   String? userDeal2;
   String userId;
   String userName;
-  String? userReason;
   String userTel;
 
   Map<String, dynamic> toJson() => {
@@ -293,7 +290,6 @@ class Sos {
         "repair_price": repairPrice,
         "repair_detail": repairDetail,
         "user_deal": userDeal,
-        "why_urd01": userReason,
         "tnc_id": tncId,
         "tnc_name": tncName,
         "tnc_avatar": tncAvatar,

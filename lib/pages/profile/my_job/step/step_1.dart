@@ -411,6 +411,142 @@ class _TncStepOneState extends State<TncStepOne> {
                                   ),
                                 ),
                               ),
+                              // widget.tncNote != null
+                              //     ? const SizedBox.shrink()
+                              //     : Column(
+                              //         children: [
+                              //           Align(
+                              //             alignment: Alignment.topLeft,
+                              //             child: Padding(
+                              //               padding: const EdgeInsetsDirectional
+                              //                   .fromSTEB(0, 10, 20, 7),
+                              //               child: Text(
+                              //                 'รูปหลังเสร็จงาน : ',
+                              //                 style: GoogleFonts.sarabun(),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //           imgFile == null
+                              //               ? Align(
+                              //                   alignment:
+                              //                       const AlignmentDirectional(
+                              //                           0, 0),
+                              //                   child: Padding(
+                              //                     padding:
+                              //                         const EdgeInsetsDirectional
+                              //                                 .fromSTEB(
+                              //                             0, 10, 0, 0),
+                              //                     child: Material(
+                              //                       child: InkWell(
+                              //                         onTap: () async {
+                              //                           PermissionStatus
+                              //                               cameraStatus =
+                              //                               await Permission
+                              //                                   .camera
+                              //                                   .request();
+                              //                           if (cameraStatus ==
+                              //                               PermissionStatus
+                              //                                   .granted) {
+                              //                             getFromCamera();
+                              //                           }
+                              //                           if (cameraStatus ==
+                              //                               PermissionStatus
+                              //                                   .denied) {
+                              //                             Fluttertoast.showToast(
+                              //                                 msg:
+                              //                                     "This permission is recommended");
+                              //                           }
+                              //                           if (cameraStatus ==
+                              //                               PermissionStatus
+                              //                                   .permanentlyDenied) {
+                              //                             openAppSettings();
+                              //                           }
+                              //                         },
+                              //                         child: Ink(
+                              //                           width: double.infinity,
+                              //                           height: 100,
+                              //                           decoration:
+                              //                               const BoxDecoration(
+                              //                             color:
+                              //                                 Color(0xFFEFEFEF),
+                              //                           ),
+                              //                           child: const Icon(
+                              //                             Icons
+                              //                                 .camera_alt_outlined,
+                              //                             color:
+                              //                                 Color(0xFF9D9D9D),
+                              //                             size: 40,
+                              //                           ),
+                              //                         ),
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                 )
+                              //               : Padding(
+                              //                   padding: const EdgeInsets.only(
+                              //                       top: 16),
+                              //                   child: Center(
+                              //                     child: InkWell(
+                              //                       onTap: getFromCamera,
+                              //                       child: Image.file(
+                              //                         imgFile!,
+                              //                         width:
+                              //                             MediaQuery.of(context)
+                              //                                 .size
+                              //                                 .width,
+                              //                         fit: BoxFit.cover,
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                 ),
+                              //           const SizedBox(height: 15),
+                              //           Row(
+                              //             mainAxisAlignment:
+                              //                 MainAxisAlignment.center,
+                              //             children: [
+                              //               Padding(
+                              //                 padding:
+                              //                     const EdgeInsetsDirectional
+                              //                         .fromSTEB(16, 0, 16, 16),
+                              //                 child: ElevatedButton(
+                              //                   onPressed: () {
+                              //                     if (imgFile != null) {
+                              //                       tncSendAfImg(
+                              //                         widget.sosId,
+                              //                         imgFile!.path,
+                              //                       );
+                              //                       Get.offNamed(
+                              //                           '/profile-myjob');
+                              //                     } else {
+                              //                       Fluttertoast.showToast(
+                              //                         msg:
+                              //                             'คุณยังไม่ได้ถ่ายรูป',
+                              //                         backgroundColor:
+                              //                             Colors.yellow[100],
+                              //                         textColor: Colors.black,
+                              //                         fontSize: 15,
+                              //                         gravity:
+                              //                             ToastGravity.SNACKBAR,
+                              //                       );
+                              //                     }
+                              //                   },
+                              //                   style: ElevatedButton.styleFrom(
+                              //                     backgroundColor: mainGreen,
+                              //                     minimumSize:
+                              //                         const Size(200, 40),
+                              //                   ),
+                              //                   child: Text(
+                              //                     "ส่งรูปหลังเสร็จงาน",
+                              //                     style: GoogleFonts.sarabun(
+                              //                       fontWeight: FontWeight.bold,
+                              //                     ),
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ],
+                              //       ),
                             ],
                           )
                         : const SizedBox.shrink(),

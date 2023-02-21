@@ -16,6 +16,7 @@ class EditProfilePage extends StatefulWidget {
     super.key,
     required this.userAvatar,
     required this.userEmail,
+    required this.userTel,
     required this.userName,
     required this.getToken,
   });
@@ -24,6 +25,7 @@ class EditProfilePage extends StatefulWidget {
   final String userAvatar;
   final String userEmail;
   final String userName;
+  final String userTel;
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -33,11 +35,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   GlobalKey<FormState> basicFormKey = GlobalKey<FormState>();
   TextEditingController? userEmailController;
   TextEditingController? userNameController;
+  TextEditingController? userTelController;
 
   @override
   void dispose() {
     userEmailController?.dispose();
     userNameController?.dispose();
+    userTelController?.dispose();
     super.dispose();
   }
 
@@ -46,18 +50,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
     userEmailController = TextEditingController(text: widget.userEmail);
     userNameController = TextEditingController(text: widget.userName);
+    userTelController = TextEditingController(text: widget.userTel);
   }
 
   Future<void> editProfile(
     String userId,
     String userName,
-    // String userTel,
+    String userTel,
     String userEmail,
   ) async {
     final response = await http.post(
       Uri.parse("https://api.racroad.com/api/user/update/$userId"),
       body: {
         'name': userName,
+        'tel': userTel,
         'email': userEmail,
       },
     );
@@ -263,72 +269,72 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         maxLines: 1,
                       ),
                     ),
-                    // Padding(
-                    //   padding:
-                    //       const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
-                    //   child: TextFormField(
-                    //     controller: userTelController,
-                    //     obscureText: false,
-                    //     decoration: InputDecoration(
-                    //       labelText: 'เบอร์โทร',
-                    //       labelStyle: GoogleFonts.sarabun(
-                    //         color: darkGray,
-                    //         fontWeight: FontWeight.normal,
-                    //       ),
-                    //       enabledBorder: OutlineInputBorder(
-                    //         borderSide: const BorderSide(
-                    //           color: lightGrey,
-                    //           width: 2,
-                    //         ),
-                    //         borderRadius: BorderRadius.circular(8),
-                    //       ),
-                    //       focusedBorder: OutlineInputBorder(
-                    //         borderSide: const BorderSide(
-                    //           color: mainGreen,
-                    //           width: 2,
-                    //         ),
-                    //         borderRadius: BorderRadius.circular(8),
-                    //       ),
-                    //       errorBorder: OutlineInputBorder(
-                    //         borderSide: const BorderSide(
-                    //           color: Colors.red,
-                    //           width: 1,
-                    //         ),
-                    //         borderRadius: BorderRadius.circular(8),
-                    //       ),
-                    //       focusedErrorBorder: OutlineInputBorder(
-                    //         borderSide: const BorderSide(
-                    //           color: Colors.red,
-                    //           width: 1,
-                    //         ),
-                    //         borderRadius: BorderRadius.circular(8),
-                    //       ),
-                    //       prefixIcon: const Icon(
-                    //         Icons.phone_iphone_rounded,
-                    //         color: mainGreen,
-                    //       ),
-                    //       contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                    //           20, 32, 20, 12),
-                    //     ),
-                    //     validator: MultiValidator([
-                    //       RequiredValidator(
-                    //         errorText: "กรุณาเบอร์ติดต่อด้วย",
-                    //       ),
-                    //       MinLengthValidator(
-                    //         10,
-                    //         errorText: "กรุณากรอกเบอร์โทรศัพท์ 10 หลัก",
-                    //       ),
-                    //       MaxLengthValidator(
-                    //         10,
-                    //         errorText: "กรุณากรอกเบอร์โทรศัพท์ 10 หลัก",
-                    //       ),
-                    //     ]),
-                    //     style: GoogleFonts.sarabun(),
-                    //     textAlign: TextAlign.start,
-                    //     keyboardType: TextInputType.phone,
-                    //     maxLines: 1,
-                    //   ),
-                    // ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+                      child: TextFormField(
+                        controller: userTelController,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          labelText: 'เบอร์โทร',
+                          labelStyle: GoogleFonts.sarabun(
+                            color: darkGray,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: lightGrey,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: mainGreen,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.phone_iphone_rounded,
+                            color: mainGreen,
+                          ),
+                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                              20, 32, 20, 12),
+                        ),
+                        validator: MultiValidator([
+                          RequiredValidator(
+                            errorText: "กรุณาเบอร์ติดต่อด้วย",
+                          ),
+                          MinLengthValidator(
+                            10,
+                            errorText: "กรุณากรอกเบอร์โทรศัพท์ 10 หลัก",
+                          ),
+                          MaxLengthValidator(
+                            10,
+                            errorText: "กรุณากรอกเบอร์โทรศัพท์ 10 หลัก",
+                          ),
+                        ]),
+                        style: GoogleFonts.sarabun(),
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.phone,
+                        maxLines: 1,
+                      ),
+                    ),
                   ],
                 ),
                 Align(
@@ -367,7 +373,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               editProfile(
                                 widget.getToken,
                                 userNameController!.text,
-                                // userTelController!.text,
+                                userTelController!.text,
                                 userEmailController!.text,
                               );
                               Get.to(

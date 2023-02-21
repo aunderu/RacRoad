@@ -4,7 +4,6 @@ import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sn
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -52,38 +51,25 @@ class StepTwo extends StatefulWidget {
 
 class _StepTwoState extends State<StepTwo> {
   late List<Timelines> timelines;
-  final _formKey = GlobalKey<FormState>();
-
-  TextEditingController userReasonController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    userReasonController = TextEditingController();
-
     getTimelines();
   }
 
-  @override
-  void dispose() {
-    userReasonController.dispose();
-    super.dispose();
-  }
-
-  Future<bool> userSendDeal(
-      String sosId, String userDeal, String userReason) async {
+  Future<void> userSendDeal(String sosId, String userDeal) async {
     final response = await http.post(
       Uri.parse("https://api.racroad.com/api/sos/step/$sosId"),
       body: {
         'user_deal': userDeal,
-        'why_urd01': userReason,
       },
     );
     if (response.statusCode == 200) {
-      return true;
+      return jsonDecode(response.body);
     } else {
-      throw false;
+      throw Exception(jsonDecode(response.body));
     }
   }
 
@@ -173,7 +159,19 @@ class _StepTwoState extends State<StepTwo> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
-              onPressed: () => showFormDialogReject(),
+              onPressed: () {
+                userSendDeal(widget.sosId, "no");
+
+                Get.offAllNamed('/sos');
+
+                Fluttertoast.showToast(
+                  msg:
+                      "คุณปฏิเสธข้อเสนอ สามารถดูประวัติของคุณได้ที่\nหน้าโปรไฟล์ -> ประวัติการแจ้งเหตุฉุกเฉินของฉัน",
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 15,
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: whiteGrey,
                 foregroundColor: darkGray,
@@ -187,7 +185,17 @@ class _StepTwoState extends State<StepTwo> {
               ),
             ),
             ElevatedButton(
-              onPressed: () => showFormDialogAccept(),
+              onPressed: () {
+                userSendDeal(widget.sosId, "yes");
+                Get.offAllNamed('/sos');
+
+                Fluttertoast.showToast(
+                  msg: "คุณได้ยืนยันรับข้อเสนอดังกล่าว",
+                  backgroundColor: lightGreen,
+                  textColor: Colors.white,
+                  fontSize: 15,
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: mainGreen,
                 minimumSize: const Size(100, 40),
@@ -206,368 +214,6 @@ class _StepTwoState extends State<StepTwo> {
         "1",
       ),
     ].toList();
-  }
-
-  void showFormDialogAccept() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: AlertDialog(
-            icon: const Icon(
-              Icons.check_circle,
-              color: mainGreen,
-              size: 50,
-            ),
-            title: Text(
-              'คุณกำลังรับข้อเสนอ',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.sarabun(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.black,
-              ),
-            ),
-            content: Stack(
-              children: <Widget>[
-                Positioned(
-                  right: -40.0,
-                  top: -40.0,
-                  child: InkResponse(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const CircleAvatar(
-                      backgroundColor: Colors.red,
-                      child: Icon(Icons.close),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 12,
-                  ),
-                  child: FittedBox(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // next
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          mainGreen),
-                                      strokeWidth: 8,
-                                    ),
-                                  );
-                                },
-                              );
-
-                              userSendDeal(
-                                widget.sosId,
-                                "yes",
-                                "",
-                              ).then((value) {
-                                if (value == false) {
-                                  Fluttertoast.showToast(
-                                    msg:
-                                        "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
-                                    backgroundColor: Colors.yellowAccent,
-                                    textColor: Colors.black,
-                                  );
-                                }
-
-                                Get.offAllNamed('/sos');
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: mainGreen,
-                            ),
-                            child: Text(
-                              'ยืนยัน',
-                              style: GoogleFonts.sarabun(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.05),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Get.back();
-                              userReasonController.clear();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: lightGrey,
-                            ),
-                            child: Text(
-                              'ยกเลิก',
-                              style: GoogleFonts.sarabun(
-                                fontWeight: FontWeight.bold,
-                                color: darkGray,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void showFormDialogReject() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: AlertDialog(
-            icon: const Icon(
-              Icons.warning_rounded,
-              color: Colors.red,
-              size: 50,
-            ),
-            title: Text(
-              'คุณกำลังปฏิเสธข้อเสนอ',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.sarabun(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.black,
-              ),
-            ),
-            content: Stack(
-              children: <Widget>[
-                Positioned(
-                  right: -40.0,
-                  top: -40.0,
-                  child: InkResponse(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const CircleAvatar(
-                      backgroundColor: Colors.red,
-                      child: Icon(Icons.close),
-                    ),
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: userReasonController,
-                            keyboardType: TextInputType.multiline,
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.black),
-                            textAlignVertical: TextAlignVertical.top,
-                            maxLines: 5,
-                            decoration: const InputDecoration(
-                              label: Text("เหตุผลที่ปฏิเสธ"),
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              counterText: "* ไม่จำเป็นต้องกรอก",
-                              floatingLabelStyle: TextStyle(
-                                fontSize: 20,
-                                color: mainGreen,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.question_mark_rounded,
-                                color: mainGreen,
-                              ),
-                              filled: true,
-                              fillColor: Color(0xffffffff),
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 5.0,
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: mainGreen,
-                                  width: 1.0,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: whiteGreen, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xffEF4444), width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: mainGreen, width: 1.0),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              'คุณสามารถช่วยกรอกเหตุผลที่ปฏิเสธข้อเสนอของคุณเพื่อให้เรานำมาปรับเปลี่ยนได้ในครั้งหน้า',
-                              style: GoogleFonts.sarabun(
-                                color: darkGray,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 12,
-                          ),
-                          child: FittedBox(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // next
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return const Center(
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      mainGreen),
-                                              strokeWidth: 8,
-                                            ),
-                                          );
-                                        },
-                                      );
-
-                                      if (userReasonController.text == "") {
-                                        userSendDeal(
-                                          widget.sosId,
-                                          "no",
-                                          "ผู้ใช้งานไม่ได้ให้เหตุผล",
-                                        ).then((value) {
-                                          if (value == false) {
-                                            Fluttertoast.showToast(
-                                              msg:
-                                                  "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
-                                              backgroundColor:
-                                                  Colors.yellowAccent,
-                                              textColor: Colors.black,
-                                            );
-                                          }
-
-                                          Get.offAllNamed('/sos');
-                                        });
-                                      } else {
-                                        userSendDeal(
-                                          widget.sosId,
-                                          "no",
-                                          userReasonController.text,
-                                        ).then((value) {
-                                          if (value == false) {
-                                            Fluttertoast.showToast(
-                                              msg:
-                                                  "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
-                                              backgroundColor:
-                                                  Colors.yellowAccent,
-                                              textColor: Colors.black,
-                                            );
-                                          }
-
-                                          Get.offAllNamed('/sos');
-                                        });
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                    ),
-                                    child: Text(
-                                      'ยืนยัน',
-                                      style: GoogleFonts.sarabun(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Get.back();
-                                      userReasonController.clear();
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: lightGrey,
-                                    ),
-                                    child: Text(
-                                      'ยกเลิก',
-                                      style: GoogleFonts.sarabun(
-                                        fontWeight: FontWeight.bold,
-                                        color: darkGray,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 
   @override
