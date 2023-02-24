@@ -82,52 +82,52 @@ class _MyAppState extends State<MyApp> {
       initialRoute: "/",
       getPages: [
         GetPage(name: '/', page: () => const MyApp()),
-        // GetPage(
-        //   name: "/home",
-        //   page: () => ScreensPage(
-        //     pageIndex: 0,
-        //     current: 0,
-        //   ),
-        // ),
-        // GetPage(
-        //   name: "/club",
-        //   page: () => ScreensPage(
-        //     pageIndex: 1,
-        //     current: 0,
-        //   ),
-        // ),
         GetPage(
-          name: "/sos",
+          name: "/home",
           page: () => ScreensPage(
             pageIndex: 0,
             current: 0,
           ),
         ),
-        // GetPage(
-        //   name: "/notification",
-        //   page: () => ScreensPage(
-        //     pageIndex: 3,
-        //     current: 0,
-        //   ),
-        // ),
+        GetPage(
+          name: "/club",
+          page: () => ScreensPage(
+            pageIndex: 1,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/sos",
+          page: () => ScreensPage(
+            pageIndex: 2,
+            current: 0,
+          ),
+        ),
+        GetPage(
+          name: "/notification",
+          page: () => ScreensPage(
+            pageIndex: 3,
+            current: 0,
+          ),
+        ),
         GetPage(
           name: "/profile",
           page: () => ScreensPage(
-            pageIndex: 1,
+            pageIndex: 4,
             current: 0,
           ),
         ),
         GetPage(
           name: "/profile-myclub",
           page: () => ScreensPage(
-            pageIndex: 1,
+            pageIndex: 4,
             current: 1,
           ),
         ),
         GetPage(
           name: "/profile-myjob",
           page: () => ScreensPage(
-            pageIndex: 1,
+            pageIndex: 4,
             current: 2,
           ),
         ),

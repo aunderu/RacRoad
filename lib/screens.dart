@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/colors.dart';
 import 'package:rac_road/models/user/user_profile_model.dart';
 import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
@@ -13,6 +14,7 @@ import 'pages/home_page.dart';
 import 'pages/notifications.dart';
 import 'pages/profile.dart';
 import 'pages/sos.dart';
+import 'pages/test_page.dart';
 
 class ScreensPage extends StatefulWidget {
   ScreensPage({
@@ -43,20 +45,19 @@ class _ScreensPageState extends State<ScreensPage> {
 
   late Future<MyProfile?> _dataFuture;
   // int index = 0;
-  bool _isProfileNoti = false;
 
   late final _screens = <Widget>[
-    // HomePage(token: token!),
-    // ClubPage(token: token!),
+    HomePage(token: token!),
+    ClubPage(token: token!),
     SOSPage(
       token: token!,
     ),
-    // NotificationsPage(token: token!),
+    NotificationsPage(token: token!),
     ProfilePage(
       getToken: token!,
       current: widget.current,
     ),
-    // TestPage(),
+    TestPage(),
   ];
 
   @override
@@ -75,6 +76,12 @@ class _ScreensPageState extends State<ScreensPage> {
 
   getData(String token) async {
     myJob = await RemoteService().getMyJob(token);
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      widget.pageIndex = index;
+    });
   }
 
   @override
@@ -139,161 +146,248 @@ class _ScreensPageState extends State<ScreensPage> {
         elevation: 0,
       ),
       body: _screens[widget.pageIndex],
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          indicatorColor: Colors.greenAccent.shade100,
-          labelTextStyle: MaterialStateProperty.all(
-            GoogleFonts.sarabun(
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              size: 40,
             ),
+            activeIcon: Icon(
+              Icons.home,
+              size: 40,
+            ),
+            label: 'Home',
+            tooltip: 'หน้าแรก',
           ),
-        ),
-        child: NavigationBar(
-          selectedIndex: widget.pageIndex,
-          onDestinationSelected: (index) => setState(
-            () => widget.pageIndex = index,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.groups_outlined,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.groups,
+              size: 40,
+            ),
+            label: 'Club',
+            tooltip: 'คลับ',
           ),
-          destinations: [
-            // const NavigationDestination(
-            //   icon: Icon(
-            //     Icons.home_outlined,
-            //     size: 40,
-            //   ),
-            //   selectedIcon: Icon(
-            //     Icons.home,
-            //     size: 40,
-            //   ),
-            //   label: 'Home',
-            // ),
-            // const NavigationDestination(
-            //   icon: Icon(
-            //     Icons.groups_outlined,
-            //     size: 40,
-            //   ),
-            //   selectedIcon: Icon(
-            //     Icons.groups,
-            //     size: 40,
-            //   ),
-            //   label: 'Club',
-            // ),
-            const NavigationDestination(
-              icon: Icon(
-                Icons.sos_outlined,
-                color: Colors.red,
-                size: 40,
-              ),
-              label: 'SOS',
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.sos_outlined,
+              color: Colors.red,
+              size: 40,
             ),
-            // NavigationDestination(
-            //   icon: Stack(
-            //     children: [
-            //       const Icon(
-            //         Icons.notifications_outlined,
-            //         size: 40,
-            //       ),
-            //       false
-            //           ? Positioned(
-            //               top: -1.0,
-            //               right: -1.0,
-            //               child: Stack(
-            //                 children: const [
-            //                   Icon(
-            //                     Icons.brightness_1,
-            //                     color: Colors.red,
-            //                     size: 15,
-            //                   )
-            //                 ],
-            //               ),
-            //             )
-            //           : const SizedBox.shrink(),
-            //     ],
-            //   ),
-            //   selectedIcon: Stack(
-            //     children: [
-            //       const Icon(
-            //         Icons.notifications,
-            //         size: 40,
-            //       ),
-            //       false
-            //           ? Positioned(
-            //               top: -1.0,
-            //               right: -1.0,
-            //               child: Stack(
-            //                 children: const [
-            //                   Icon(
-            //                     Icons.brightness_1,
-            //                     color: Colors.red,
-            //                     size: 15,
-            //                   )
-            //                 ],
-            //               ),
-            //             )
-            //           : const SizedBox.shrink(),
-            //     ],
-            //   ),
-            //   label: 'Notification',
-            // ),
-            NavigationDestination(
-              icon: Stack(
-                children: [
-                  const Icon(
-                    Icons.person_outline,
-                    size: 40,
-                  ),
-                  _isProfileNoti
-                      ? Positioned(
-                          top: -1.0,
-                          right: -1.0,
-                          child: Stack(
-                            children: const [
-                              Icon(
-                                Icons.brightness_1,
-                                color: Colors.red,
-                                size: 15,
-                              )
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              ),
-              selectedIcon: Stack(
-                children: [
-                  const Icon(
-                    Icons.person,
-                    size: 40,
-                  ),
-                  _isProfileNoti
-                      ? Positioned(
-                          top: -1.0,
-                          right: -1.0,
-                          child: Stack(
-                            children: const [
-                              Icon(
-                                Icons.brightness_1,
-                                color: Colors.red,
-                                size: 15,
-                              )
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              ),
-              label: 'Profile',
+            activeIcon: Icon(
+              Icons.sos,
+              color: Colors.red,
+              size: 40,
             ),
-            // NavigationDestination(
-            //   icon: Icon(
-            //     Icons.app_registration_sharp,
-            //     color: Colors.yellow[700],
-            //     size: 40,
-            //   ),
-            //   label: 'Test',
-            // ),
-          ],
+            label: 'SOS',
+            tooltip: 'แจ้งเหตุฉุกเฉิน',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notifications_outlined,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.notifications,
+              size: 40,
+            ),
+            label: 'Notifications',
+            tooltip: 'การแจ้งเตือน',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.person,
+              size: 40,
+            ),
+            label: 'Profile',
+            tooltip: 'โปรไฟล์',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.app_registration_outlined,
+              color: Colors.amber,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.app_registration,
+              color: Colors.amber,
+              size: 40,
+            ),
+            label: 'TESTING',
+            tooltip: 'หน้าเทสโปรแกรม',
+          ),
+        ],
+        currentIndex: widget.pageIndex,
+        selectedItemColor: widget.pageIndex == 2 ? Colors.red : mainGreen,
+        unselectedItemColor: darkGray,
+        selectedLabelStyle: GoogleFonts.sarabun(
+          fontWeight: FontWeight.bold,
         ),
+        onTap: _onItemTapped,
       ),
+      // bottomNavigationBar: NavigationBarTheme(
+      //   data: NavigationBarThemeData(
+      //     indicatorColor: Colors.greenAccent.shade100,
+      //     labelTextStyle: MaterialStateProperty.all(
+      //       GoogleFonts.sarabun(
+      //         fontWeight: FontWeight.w500,
+      //         fontSize: 14,
+      //       ),
+      //     ),
+      //   ),
+      //   child: NavigationBar(
+      //     selectedIndex: widget.pageIndex,
+      //     onDestinationSelected: (index) => setState(
+      //       () => widget.pageIndex = index,
+      //     ),
+      //     destinations: [
+      //       const NavigationDestination(
+      //         icon: Icon(
+      //           Icons.home_outlined,
+      //           size: 40,
+      //         ),
+      //         selectedIcon: Icon(
+      //           Icons.home,
+      //           size: 40,
+      //         ),
+      //         label: 'Home',
+      //       ),
+      //       const NavigationDestination(
+      //         icon: Icon(
+      //           Icons.groups_outlined,
+      //           size: 40,
+      //         ),
+      //         selectedIcon: Icon(
+      //           Icons.groups,
+      //           size: 40,
+      //         ),
+      //         label: 'Club',
+      //       ),
+      //       const NavigationDestination(
+      //         icon: Icon(
+      //           Icons.sos_outlined,
+      //           color: Colors.red,
+      //           size: 40,
+      //         ),
+      //         label: 'SOS',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Stack(
+      //           children: const [
+      //             Icon(
+      //               Icons.notifications_outlined,
+      //               size: 40,
+      //             ),
+      //             // false
+      //             //     ? Positioned(
+      //             //         top: -1.0,
+      //             //         right: -1.0,
+      //             //         child: Stack(
+      //             //           children: const [
+      //             //             Icon(
+      //             //               Icons.brightness_1,
+      //             //               color: Colors.red,
+      //             //               size: 15,
+      //             //             )
+      //             //           ],
+      //             //         ),
+      //             //       )
+      //             //     : const SizedBox.shrink(),
+      //           ],
+      //         ),
+      //         selectedIcon: Stack(
+      //           children: const [
+      //             Icon(
+      //               Icons.notifications,
+      //               size: 40,
+      //             ),
+      //             // false
+      //             //     ? Positioned(
+      //             //         top: -1.0,
+      //             //         right: -1.0,
+      //             //         child: Stack(
+      //             //           children: const [
+      //             //             Icon(
+      //             //               Icons.brightness_1,
+      //             //               color: Colors.red,
+      //             //               size: 15,
+      //             //             )
+      //             //           ],
+      //             //         ),
+      //             //       )
+      //             //     : const SizedBox.shrink(),
+      //           ],
+      //         ),
+      //         label: 'Notification',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Stack(
+      //           children: const [
+      //             Icon(
+      //               Icons.person_outline,
+      //               size: 40,
+      //             ),
+      //             // _isProfileNoti
+      //             //     ? Positioned(
+      //             //         top: -1.0,
+      //             //         right: -1.0,
+      //             //         child: Stack(
+      //             //           children: const [
+      //             //             Icon(
+      //             //               Icons.brightness_1,
+      //             //               color: Colors.red,
+      //             //               size: 15,
+      //             //             )
+      //             //           ],
+      //             //         ),
+      //             //       )
+      //             //     : const SizedBox.shrink(),
+      //           ],
+      //         ),
+      //         selectedIcon: Stack(
+      //           children: const [
+      //             Icon(
+      //               Icons.person,
+      //               size: 40,
+      //             ),
+      //             // _isProfileNoti
+      //             //     ? Positioned(
+      //             //         top: -1.0,
+      //             //         right: -1.0,
+      //             //         child: Stack(
+      //             //           children: const [
+      //             //             Icon(
+      //             //               Icons.brightness_1,
+      //             //               color: Colors.red,
+      //             //               size: 15,
+      //             //             )
+      //             //           ],
+      //             //         ),
+      //             //       )
+      //             //     : const SizedBox.shrink(),
+      //           ],
+      //         ),
+      //         label: 'Profile',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Icon(
+      //           Icons.app_registration_sharp,
+      //           color: Colors.yellow[700],
+      //           size: 40,
+      //         ),
+      //         label: 'Test',
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
