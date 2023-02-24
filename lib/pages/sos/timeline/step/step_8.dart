@@ -6,9 +6,11 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
+import '../../../../models/sos/sos_details_models.dart';
 
 class StepEight extends StatefulWidget {
   const StepEight({
@@ -32,8 +34,8 @@ class StepEight extends StatefulWidget {
     required this.tncName,
     required this.tncStatus,
     this.tncProfile,
-    this.imgBfwork,
-    this.imgAfwork,
+    required this.imgBfwork,
+    required this.imgAfwork,
     required this.qrCode,
     required this.stepSevenTimeStamp,
     required this.rate,
@@ -53,9 +55,9 @@ class StepEight extends StatefulWidget {
   });
 
   final String getToken;
-  final String? imgAfwork;
-  final String? imgBfwork;
-  final String imgIncident;
+  final List<Img> imgAfwork;
+  final List<Img> imgBfwork;
+  final List<Img> imgIncident;
   final String location;
   final String problem;
   final String problemDetails;
@@ -96,6 +98,9 @@ class StepEight extends StatefulWidget {
 
 class _StepEightState extends State<StepEight> {
   late List<Timelines> timelines;
+  final imageUserController = PageController();
+  final imageBfController = PageController();
+  final imageAfController = PageController();
 
   @override
   void initState() {
@@ -111,23 +116,61 @@ class _StepEightState extends State<StepEight> {
         "แจ้งเหตุการณ์",
         Column(
           children: [
-            Text(
-              "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
-              style: GoogleFonts.sarabun(),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
+                style: GoogleFonts.sarabun(),
+              ),
             ),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgIncident,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  height: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PageView.builder(
+                      controller: imageUserController,
+                      itemCount: widget.imgIncident.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                          imageUrl: widget.imgIncident[index].image,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SmoothPageIndicator(
+                    controller: imageUserController,
+                    count: widget.imgIncident.length,
+                    effect: const WormEffect(
+                      spacing: 20,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      activeDotColor: mainGreen,
+                      dotColor: Colors.black26,
+                    ),
+                    onDotClicked: (index) => imageUserController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ),
@@ -267,19 +310,53 @@ class _StepEightState extends State<StepEight> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgBfwork.toString(),
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      height: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: PageView.builder(
+                          controller: imageBfController,
+                          itemCount: widget.imgBfwork.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: widget.imgBfwork[index].image,
+                              height: 250,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: SmoothPageIndicator(
+                        controller: imageBfController,
+                        count: widget.imgBfwork.length,
+                        effect: const WormEffect(
+                          spacing: 20,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          activeDotColor: mainGreen,
+                          dotColor: Colors.black26,
+                        ),
+                        onDotClicked: (index) =>
+                            imageBfController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        ),
                       ),
                     ),
                   ),
@@ -295,6 +372,15 @@ class _StepEightState extends State<StepEight> {
     ].toList();
 
     isUserDeal();
+  }
+
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+    imageAfController.dispose();
+
+    super.dispose();
   }
 
   void isUserDeal() {
@@ -383,20 +469,54 @@ class _StepEightState extends State<StepEight> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topCenter,
                       child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imgAfwork.toString(),
-                            height: 250,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                            alignment: Alignment.center,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: SizedBox(
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: PageView.builder(
+                              controller: imageAfController,
+                              itemCount: widget.imgAfwork.length,
+                              itemBuilder: (context, index) {
+                                return CachedNetworkImage(
+                                  imageUrl: widget.imgAfwork[index].image,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SmoothPageIndicator(
+                            controller: imageAfController,
+                            count: widget.imgAfwork.length,
+                            effect: const WormEffect(
+                              spacing: 20,
+                              dotHeight: 10,
+                              dotWidth: 10,
+                              activeDotColor: mainGreen,
+                              dotColor: Colors.black26,
+                            ),
+                            onDotClicked: (index) =>
+                                imageAfController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            ),
                           ),
                         ),
                       ),
@@ -568,20 +688,54 @@ class _StepEightState extends State<StepEight> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topCenter,
                       child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imgAfwork.toString(),
-                            height: 250,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                            alignment: Alignment.center,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: SizedBox(
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: PageView.builder(
+                              controller: imageAfController,
+                              itemCount: widget.imgAfwork.length,
+                              itemBuilder: (context, index) {
+                                return CachedNetworkImage(
+                                  imageUrl: widget.imgAfwork[index].image,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SmoothPageIndicator(
+                            controller: imageAfController,
+                            count: widget.imgAfwork.length,
+                            effect: const WormEffect(
+                              spacing: 20,
+                              dotHeight: 10,
+                              dotWidth: 10,
+                              activeDotColor: mainGreen,
+                              dotColor: Colors.black26,
+                            ),
+                            onDotClicked: (index) =>
+                                imageAfController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            ),
                           ),
                         ),
                       ),
@@ -697,7 +851,7 @@ class _StepEightState extends State<StepEight> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'เจ้าหน้าที่ตรวจการเงินและโอนเงินให้ช่างภายใน 24 ชั่วโมง ขอบคุณที่ใช้บริการกับเรา',
+                  'เจ้าหน้าที่ตรวจการเงินเรียบร้อยแล้ว ขอบคุณที่ใช้บริการกับเรา',
                   style: GoogleFonts.sarabun(),
                 ),
                 Padding(
@@ -729,180 +883,176 @@ class _StepEightState extends State<StepEight> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: GroupedListView<Timelines, DateTime>(
-        elements: timelines,
-        reverse: true,
-        order: GroupedListOrder.DESC,
-        useStickyGroupSeparators: true,
-        floatingHeader: true,
-        shrinkWrap: true,
-        padding: const EdgeInsets.only(top: 0),
-        groupBy: (timelines) => DateTime(
-          timelines.timestamp.month,
-          timelines.timestamp.day,
-          timelines.timestamp.hour,
-        ),
-        groupHeaderBuilder: (Timelines timelines) => SizedBox(
-          height: 40,
-          child: Center(
-            child: Card(
-              elevation: 0,
-              color: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  DateFormat(
-                          'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
-                      .format(timelines.timestamp),
-                  style: GoogleFonts.sarabun(
-                    color: darkGray,
-                  ),
+    return GroupedListView<Timelines, DateTime>(
+      elements: timelines,
+      reverse: true,
+      order: GroupedListOrder.DESC,
+      useStickyGroupSeparators: true,
+      floatingHeader: true,
+      shrinkWrap: true,
+      padding: const EdgeInsets.only(top: 0),
+      groupBy: (timelines) => DateTime(
+        timelines.timestamp.month,
+        timelines.timestamp.day,
+        timelines.timestamp.hour,
+      ),
+      groupHeaderBuilder: (Timelines timelines) => SizedBox(
+        height: 40,
+        child: Center(
+          child: Card(
+            elevation: 0,
+            color: Colors.white,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                DateFormat(
+                        'd MMMM ${timelines.timestamp.yearInBuddhistCalendar}  เวลา hh:mm')
+                    .format(timelines.timestamp),
+                style: GoogleFonts.sarabun(
+                  color: darkGray,
                 ),
               ),
             ),
           ),
         ),
-        itemBuilder: (context, Timelines timelines) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Row(
-            mainAxisAlignment: timelines.isSentByMe == "1"
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              timelines.isSentByMe == "1"
-                  ? Row(
-                      children: [
-                        Text(
-                          DateFormat('KK:mm').format(timelines.timestamp),
-                        ),
-                        const SizedBox(width: 10),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: const Radius.circular(12.0),
-                    bottomRight: timelines.isSentByMe == "1"
-                        ? const Radius.circular(0)
-                        : const Radius.circular(12.0),
-                    topLeft: const Radius.circular(12.0),
-                    bottomLeft: timelines.isSentByMe != "1"
-                        ? const Radius.circular(0)
-                        : const Radius.circular(12.0),
-                  ),
-                ),
-                color: ((() {
-                  if (timelines.isSentByMe == "1") {
-                    return const Color.fromARGB(255, 182, 235, 255);
-                  } else if (timelines.isSentByMe == "2") {
-                    return const Color.fromARGB(255, 185, 195, 255);
-                  } else if (timelines.isSentByMe == "3") {
-                    return const Color.fromARGB(255, 255, 239, 185);
-                  } else {
-                    return const Color.fromARGB(255, 185, 195, 255);
-                  }
-                })()),
-                elevation: 8,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
+      ),
+      itemBuilder: (context, Timelines timelines) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Row(
+          mainAxisAlignment: timelines.isSentByMe == "1"
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            timelines.isSentByMe == "1"
+                ? Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            10, 10, 10, 10),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 20, 0),
-                                  child: Text(
-                                    timelines.title!,
-                                    style: GoogleFonts.sarabun(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 1),
-                                  child: Divider(
-                                    thickness: 1,
-                                    color: Color(0x392E2E2E),
-                                  ),
-                                ),
-                                timelines.body,
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    child: timelines.isSentByMe != "2"
-                                        ? CachedNetworkImage(
-                                            imageUrl: timelines.profile,
-                                            placeholder: (context, url) =>
-                                                Image.asset(
-                                                    "assets/imgs/profile.png"),
-                                          )
-                                        : Image.asset(timelines.profile),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 0, 0, 0),
-                                    child: Text(
-                                      timelines.name,
-                                      style: GoogleFonts.sarabun(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                      Text(
+                        DateFormat('KK:mm').format(timelines.timestamp),
                       ),
+                      const SizedBox(width: 10),
                     ],
-                  ),
+                  )
+                : const SizedBox.shrink(),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: const Radius.circular(12.0),
+                  bottomRight: timelines.isSentByMe == "1"
+                      ? const Radius.circular(0)
+                      : const Radius.circular(12.0),
+                  topLeft: const Radius.circular(12.0),
+                  bottomLeft: timelines.isSentByMe != "1"
+                      ? const Radius.circular(0)
+                      : const Radius.circular(12.0),
                 ),
               ),
-              timelines.isSentByMe != "1"
-                  ? Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Text(
-                          DateFormat('KK:mm').format(timelines.timestamp),
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-            ],
-          ),
+              color: ((() {
+                if (timelines.isSentByMe == "1") {
+                  return const Color.fromARGB(255, 182, 235, 255);
+                } else if (timelines.isSentByMe == "2") {
+                  return const Color.fromARGB(255, 185, 195, 255);
+                } else if (timelines.isSentByMe == "3") {
+                  return const Color.fromARGB(255, 255, 239, 185);
+                } else {
+                  return const Color.fromARGB(255, 185, 195, 255);
+                }
+              })()),
+              elevation: 8,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.70,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 0, 20, 0),
+                                child: Text(
+                                  timelines.title!,
+                                  style: GoogleFonts.sarabun(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 1),
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Color(0x392E2E2E),
+                                ),
+                              ),
+                              timelines.body,
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 10, 0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: timelines.isSentByMe != "2"
+                                      ? CachedNetworkImage(
+                                          imageUrl: timelines.profile,
+                                          placeholder: (context, url) =>
+                                              Image.asset(
+                                                  "assets/imgs/profile.png"),
+                                        )
+                                      : Image.asset(timelines.profile),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      8, 0, 0, 0),
+                                  child: Text(
+                                    timelines.name,
+                                    style: GoogleFonts.sarabun(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            timelines.isSentByMe != "1"
+                ? Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Text(
+                        DateFormat('KK:mm').format(timelines.timestamp),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ],
         ),
       ),
     );

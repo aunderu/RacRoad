@@ -10,9 +10,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
+import '../../../../models/sos/sos_details_models.dart';
 
 class StepFour extends StatefulWidget {
   const StepFour({
@@ -45,8 +47,8 @@ class StepFour extends StatefulWidget {
   });
 
   final String getToken;
-  final String? imgBfwork;
-  final String imgIncident;
+  final List<Img>? imgBfwork;
+  final List<Img> imgIncident;
   final String location;
   final String? priceTwoStatus;
   final String problem;
@@ -76,6 +78,8 @@ class StepFour extends StatefulWidget {
 
 class _StepFourState extends State<StepFour> {
   late List<Timelines> timelines;
+  final imageUserController = PageController();
+  final imageBfController = PageController();
 
   @override
   void initState() {
@@ -87,23 +91,61 @@ class _StepFourState extends State<StepFour> {
         "แจ้งเหตุการณ์",
         Column(
           children: [
-            Text(
-              "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
-              style: GoogleFonts.sarabun(),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
+                style: GoogleFonts.sarabun(),
+              ),
             ),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgIncident,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  height: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PageView.builder(
+                      controller: imageUserController,
+                      itemCount: widget.imgIncident.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                          imageUrl: widget.imgIncident[index].image,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SmoothPageIndicator(
+                    controller: imageUserController,
+                    count: widget.imgIncident.length,
+                    effect: const WormEffect(
+                      spacing: 20,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      activeDotColor: mainGreen,
+                      dotColor: Colors.black26,
+                    ),
+                    onDotClicked: (index) => imageUserController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ),
@@ -246,21 +288,54 @@ class _StepFourState extends State<StepFour> {
                         ),
                       ),
                       Align(
-                        alignment: Alignment.center,
+                        alignment: Alignment.topCenter,
                         child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            child: CachedNetworkImage(
-                              imageUrl: widget.imgBfwork!,
-                              alignment: Alignment.center,
-                              height: 250,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 200,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: PageView.builder(
+                                controller: imageBfController,
+                                itemCount: widget.imgBfwork!.length,
+                                itemBuilder: (context, index) {
+                                  return CachedNetworkImage(
+                                    imageUrl: widget.imgBfwork![index].image,
+                                    height: 250,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: SmoothPageIndicator(
+                              controller: imageBfController,
+                              count: widget.imgBfwork!.length,
+                              effect: const WormEffect(
+                                spacing: 20,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                activeDotColor: mainGreen,
+                                dotColor: Colors.black26,
+                              ),
+                              onDotClicked: (index) =>
+                                  imageBfController.animateToPage(
+                                index,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeIn,
+                              ),
                             ),
                           ),
                         ),
@@ -276,6 +351,14 @@ class _StepFourState extends State<StepFour> {
     ].toList();
 
     isPriceTwoStatus();
+  }
+
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+
+    super.dispose();
   }
 
   Future<void> userSendDeal(String sosId, String userDeal) async {

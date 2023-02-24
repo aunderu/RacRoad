@@ -6,9 +6,11 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
+import '../../../../models/sos/sos_details_models.dart';
 
 class StepSeven extends StatefulWidget {
   const StepSeven({
@@ -33,8 +35,8 @@ class StepSeven extends StatefulWidget {
     required this.tncName,
     required this.tncStatus,
     this.tncProfile,
-    this.imgBfwork,
-    this.imgAfwork,
+    required this.imgBfwork,
+    required this.imgAfwork,
     required this.qrCode,
     required this.rate,
     required this.review,
@@ -52,9 +54,9 @@ class StepSeven extends StatefulWidget {
   });
 
   final String getToken;
-  final String? imgAfwork;
-  final String? imgBfwork;
-  final String imgIncident;
+  final List<Img> imgAfwork;
+  final List<Img> imgBfwork;
+  final List<Img> imgIncident;
   final String location;
   final String problem;
   final String problemDetails;
@@ -94,6 +96,9 @@ class StepSeven extends StatefulWidget {
 
 class _StepSevenState extends State<StepSeven> {
   late List<Timelines> timelines;
+  final imageUserController = PageController();
+  final imageBfController = PageController();
+  final imageAfController = PageController();
 
   @override
   void initState() {
@@ -109,23 +114,62 @@ class _StepSevenState extends State<StepSeven> {
         "แจ้งเหตุการณ์",
         Column(
           children: [
-            Text(
-              "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
-              style: GoogleFonts.sarabun(),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
+                style: GoogleFonts.sarabun(),
+              ),
             ),
             const SizedBox(height: 10),
+
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgIncident,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  height: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PageView.builder(
+                      controller: imageUserController,
+                      itemCount: widget.imgIncident.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                          imageUrl: widget.imgIncident[index].image,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SmoothPageIndicator(
+                    controller: imageUserController,
+                    count: widget.imgIncident.length,
+                    effect: const WormEffect(
+                      spacing: 20,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      activeDotColor: mainGreen,
+                      dotColor: Colors.black26,
+                    ),
+                    onDotClicked: (index) => imageUserController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ),
@@ -265,19 +309,53 @@ class _StepSevenState extends State<StepSeven> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgBfwork.toString(),
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      height: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: PageView.builder(
+                          controller: imageBfController,
+                          itemCount: widget.imgBfwork.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: widget.imgBfwork[index].image,
+                              height: 250,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: SmoothPageIndicator(
+                        controller: imageBfController,
+                        count: widget.imgBfwork.length,
+                        effect: const WormEffect(
+                          spacing: 20,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          activeDotColor: mainGreen,
+                          dotColor: Colors.black26,
+                        ),
+                        onDotClicked: (index) =>
+                            imageBfController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        ),
                       ),
                     ),
                   ),
@@ -293,6 +371,15 @@ class _StepSevenState extends State<StepSeven> {
     ].toList();
 
     isUserDeal();
+  }
+
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+    imageAfController.dispose();
+
+    super.dispose();
   }
 
   void isUserDeal() {
@@ -381,20 +468,54 @@ class _StepSevenState extends State<StepSeven> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topCenter,
                       child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imgAfwork.toString(),
-                            height: 250,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                            alignment: Alignment.center,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: SizedBox(
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: PageView.builder(
+                              controller: imageAfController,
+                              itemCount: widget.imgAfwork.length,
+                              itemBuilder: (context, index) {
+                                return CachedNetworkImage(
+                                  imageUrl: widget.imgAfwork[index].image,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SmoothPageIndicator(
+                            controller: imageAfController,
+                            count: widget.imgAfwork.length,
+                            effect: const WormEffect(
+                              spacing: 20,
+                              dotHeight: 10,
+                              dotWidth: 10,
+                              activeDotColor: mainGreen,
+                              dotColor: Colors.black26,
+                            ),
+                            onDotClicked: (index) =>
+                                imageAfController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            ),
                           ),
                         ),
                       ),
@@ -533,20 +654,54 @@ class _StepSevenState extends State<StepSeven> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topCenter,
                       child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imgAfwork.toString(),
-                            height: 250,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                            alignment: Alignment.center,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: SizedBox(
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: PageView.builder(
+                              controller: imageAfController,
+                              itemCount: widget.imgAfwork.length,
+                              itemBuilder: (context, index) {
+                                return CachedNetworkImage(
+                                  imageUrl: widget.imgAfwork[index].image,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SmoothPageIndicator(
+                            controller: imageAfController,
+                            count: widget.imgAfwork.length,
+                            effect: const WormEffect(
+                              spacing: 20,
+                              dotHeight: 10,
+                              dotWidth: 10,
+                              activeDotColor: mainGreen,
+                              dotColor: Colors.black26,
+                            ),
+                            onDotClicked: (index) =>
+                                imageAfController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn,
+                            ),
                           ),
                         ),
                       ),

@@ -36,27 +36,6 @@ class _StepPageState extends State<StepPage> {
     super.initState();
 
     _dataFuture = RemoteService().getSosDetails(widget.sosId);
-    setUpTimedFetch();
-  }
-
-  setUpTimedFetch() {
-    Timer.periodic(const Duration(milliseconds: 5000), (timer) {
-      if (mounted) {
-        setState(() {
-          _dataFuture = RemoteService().getSosDetails(widget.sosId);
-        });
-      }
-    });
-  }
-
-  void _onRefresh() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-
-    setState(() {
-      _dataFuture = RemoteService().getSosDetails(widget.sosId);
-    });
-
-    _refreshController.refreshCompleted();
   }
 
   @override
@@ -84,7 +63,6 @@ class _StepPageState extends State<StepPage> {
           waterDropColor: mainGreen,
         ),
         controller: _refreshController,
-        onRefresh: _onRefresh,
         reverse: true,
         child: SingleChildScrollView(
           child: Padding(
@@ -106,7 +84,7 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident[0].image,
+                        imgIncident: result.data.imgIncident,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
@@ -114,7 +92,7 @@ class _StepPageState extends State<StepPage> {
                         longitude: result.data.sos.longitude,
                         imgBfwork:
                             result.data.sos.tncStatus == "ช่างถึงหน้างานเเล้ว"
-                                ? result.data.imgBfwork![0].image
+                                ? result.data.imgBfwork!
                                 : null,
                         tncNote: result.data.sos.tncDescription,
                         userDeal: result.data.sos.userDeal2,
@@ -131,14 +109,14 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident[0].image,
+                        imgIncident: result.data.imgIncident,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
                         latitude: result.data.sos.latitude,
                         longitude: result.data.sos.longitude,
-                        imgBfwork: result.data.imgBfwork![0].image,
-                        imgAfwork: result.data.imgAfwork![0].image,
+                        imgBfwork: result.data.imgBfwork!,
+                        imgAfwork: result.data.imgAfwork!,
                       );
                     case "step6":
                       return TncStepTwo(
@@ -152,14 +130,14 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident[0].image,
+                        imgIncident: result.data.imgIncident,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
                         latitude: result.data.sos.latitude,
                         longitude: result.data.sos.longitude,
-                        imgBfwork: result.data.imgBfwork![0].image,
-                        imgAfwork: result.data.imgAfwork![0].image,
+                        imgBfwork: result.data.imgBfwork!,
+                        imgAfwork: result.data.imgAfwork!,
                       );
                     case "step7":
                       return TncStepTwo(
@@ -173,14 +151,14 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident[0].image,
+                        imgIncident: result.data.imgIncident,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
                         latitude: result.data.sos.latitude,
                         longitude: result.data.sos.longitude,
-                        imgBfwork: result.data.imgBfwork![0].image,
-                        imgAfwork: result.data.imgAfwork![0].image,
+                        imgBfwork: result.data.imgBfwork!,
+                        imgAfwork: result.data.imgAfwork!,
                       );
                     case "step8":
                       return TncStepTwo(
@@ -194,14 +172,14 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident[0].image,
+                        imgIncident: result.data.imgIncident,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
                         latitude: result.data.sos.latitude,
                         longitude: result.data.sos.longitude,
-                        imgBfwork: result.data.imgBfwork![0].image,
-                        imgAfwork: result.data.imgAfwork![0].image,
+                        imgBfwork: result.data.imgBfwork!,
+                        imgAfwork: result.data.imgAfwork!,
                       );
                     case "success":
                       return TncStepThree(
@@ -216,14 +194,14 @@ class _StepPageState extends State<StepPage> {
                         problemDetails: result.data.sos.problemDetail,
                         userTel: result.data.sos.userTel,
                         location: result.data.sos.location,
-                        imgIncident: result.data.imgIncident[0].image,
+                        imgIncident: result.data.imgIncident,
                         tncName: result.data.sos.tncName!,
                         tncAvatar: result.data.sos.tncAvatar!,
                         tncStatus: result.data.sos.tncStatus!,
                         latitude: result.data.sos.latitude,
                         longitude: result.data.sos.longitude,
-                        imgBfwork: result.data.imgBfwork![0].image,
-                        imgAfwork: result.data.imgAfwork![0].image,
+                        imgBfwork: result.data.imgBfwork!,
+                        imgAfwork: result.data.imgAfwork!,
                         userReview: result.data.sos.review!,
                         userRate: result.data.sos.rate!,
                         racroadSlip: result.data.racroadSlip![0].image,

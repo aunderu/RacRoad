@@ -11,11 +11,13 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
+import '../../../../models/sos/sos_details_models.dart';
 
 class TncStepOne extends StatefulWidget {
   const TncStepOne({
@@ -41,8 +43,8 @@ class TncStepOne extends StatefulWidget {
   });
 
   final String getToken;
-  final String? imgBfwork;
-  final String imgIncident;
+  final List<Img>? imgBfwork;
+  final List<Img> imgIncident;
   final String latitude;
   final String location;
   final String longitude;
@@ -65,9 +67,15 @@ class TncStepOne extends StatefulWidget {
 
 class _TncStepOneState extends State<TncStepOne> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  File? imgFile;
-  late List<Timelines> timelines;
+  final ImagePicker _picker = ImagePicker();
+  List<XFile> photo = <XFile>[];
+  List<XFile> itemImagesList = <XFile>[];
+  XFile? camera;
+  List<File> imageFile = <File>[];
+  List<Timelines>? timelines = [];
   TextEditingController? tncNoteController;
+  final imageUserController = PageController();
+  final imageBfController = PageController();
 
   @override
   void initState() {
@@ -114,14 +122,50 @@ class _TncStepOneState extends State<TncStepOne> {
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgIncident,
-                    height: 200,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  height: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PageView.builder(
+                      controller: imageUserController,
+                      itemCount: widget.imgIncident.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                          imageUrl: widget.imgIncident[index].image,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SmoothPageIndicator(
+                    controller: imageUserController,
+                    count: widget.imgIncident.length,
+                    effect: const WormEffect(
+                      spacing: 20,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      activeDotColor: mainGreen,
+                      dotColor: Colors.black26,
+                    ),
+                    onDotClicked: (index) => imageUserController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ),
@@ -266,64 +310,105 @@ class _TncStepOneState extends State<TncStepOne> {
                               ),
                             ),
                           ),
-                          imgFile == null
-                              ? Align(
-                                  alignment: const AlignmentDirectional(0, 0),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 10, 0, 0),
-                                    child: Material(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          PermissionStatus cameraStatus =
-                                              await Permission.camera.request();
-                                          if (cameraStatus ==
-                                              PermissionStatus.granted) {
-                                            getFromCamera();
-                                          }
-                                          if (cameraStatus ==
-                                              PermissionStatus.denied) {
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "This permission is recommended");
-                                          }
-                                          if (cameraStatus ==
-                                              PermissionStatus
-                                                  .permanentlyDenied) {
-                                            openAppSettings();
-                                          }
-                                        },
-                                        child: Ink(
-                                          width: double.infinity,
-                                          height: 100,
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xFFEFEFEF),
-                                          ),
-                                          child: const Icon(
-                                            Icons.camera_alt_outlined,
-                                            color: Color(0xFF9D9D9D),
-                                            size: 40,
-                                          ),
-                                        ),
+                          itemImagesList.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 100,
+                                    child: GridView.builder(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 120,
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 10,
                                       ),
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: itemImagesList.length,
+                                      itemBuilder: (context, index) {
+                                        return Stack(
+                                          children: [
+                                            SizedBox(
+                                              height: double.maxFinite,
+                                              width: double.maxFinite,
+                                              child: Image.file(
+                                                File(
+                                                    itemImagesList[index].path),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: -1.0,
+                                              right: -1.0,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    itemImagesList
+                                                        .removeAt(index);
+                                                    getTimelines();
+                                                  });
+                                                },
+                                                child: Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.white,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.cancel,
+                                                    color: Colors.red,
+                                                    size: 30,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                   ),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 16),
-                                  child: Center(
-                                    child: InkWell(
-                                      onTap: getFromCamera,
-                                      child: Image.file(
-                                        imgFile!,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        fit: BoxFit.cover,
-                                      ),
+                              : const SizedBox.shrink(),
+                          Align(
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 10, 0, 0),
+                              child: Material(
+                                child: InkWell(
+                                  onTap: () async {
+                                    PermissionStatus cameraStatus =
+                                        await Permission.camera.request();
+                                    if (cameraStatus ==
+                                        PermissionStatus.granted) {
+                                      getFromCamera();
+                                    }
+                                    if (cameraStatus ==
+                                        PermissionStatus.denied) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "This permission is recommended");
+                                    }
+                                    if (cameraStatus ==
+                                        PermissionStatus.permanentlyDenied) {
+                                      openAppSettings();
+                                    }
+                                  },
+                                  child: Ink(
+                                    width: double.infinity,
+                                    height: 100,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFEFEFEF),
+                                    ),
+                                    child: const Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: Color(0xFF9D9D9D),
+                                      size: 40,
                                     ),
                                   ),
                                 ),
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -333,21 +418,66 @@ class _TncStepOneState extends State<TncStepOne> {
                                     16, 0, 16, 16),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    if (imgFile != null) {
+                                    if (itemImagesList.isEmpty) {
+                                      Get.snackbar(
+                                        'คำเตือน',
+                                        'คุณยังไม่ได้เลือกรูป',
+                                        backgroundGradient:
+                                            const LinearGradient(colors: [
+                                          Color.fromARGB(255, 255, 191, 0),
+                                          Color.fromARGB(255, 255, 234, 172),
+                                        ]),
+                                        barBlur: 15,
+                                        animationDuration:
+                                            const Duration(milliseconds: 500),
+                                        icon: const Icon(
+                                          Icons.warning,
+                                          size: 30,
+                                          color: Colors.red,
+                                        ),
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
+                                    } else {
+                                      for (var i = 0;
+                                          i < itemImagesList.length;
+                                          i++) {
+                                        // print('index $i , value ${itemImagesList[i].path}');
+
+                                        imageFile
+                                            .add(File(itemImagesList[i].path));
+                                      }
+
                                       tncSendBfImg(
                                         widget.sosId,
-                                        imgFile!.path,
+                                        imageFile,
                                         tncNoteController!.text,
-                                      );
-                                      Get.offNamed('/profile-myjob');
-                                    } else {
-                                      Fluttertoast.showToast(
-                                        msg: 'คุณยังไม่ได้ถ่ายรูป',
-                                        backgroundColor: Colors.yellow[100],
-                                        textColor: Colors.black,
-                                        fontSize: 15,
-                                        gravity: ToastGravity.SNACKBAR,
-                                      );
+                                      ).then((value) {
+                                        if (value == false) {
+                                          Get.snackbar(
+                                            'โอ้ะ!',
+                                            'เกิดข้อผิดพลาดบางอย่างกรุณารอสักครู่',
+                                            backgroundGradient:
+                                                const LinearGradient(colors: [
+                                              Color.fromARGB(255, 255, 191, 0),
+                                              Color.fromARGB(
+                                                  255, 255, 234, 172),
+                                            ]),
+                                            barBlur: 15,
+                                            animationDuration: const Duration(
+                                                milliseconds: 500),
+                                            icon: const Icon(
+                                              Icons.warning,
+                                              size: 30,
+                                              color: Colors.red,
+                                            ),
+                                            snackPosition: SnackPosition.BOTTOM,
+                                          );
+                                        }
+                                        setState(() {
+                                          itemImagesList.clear();
+                                        });
+                                        Get.offNamed('/profile-myjob');
+                                      });
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -398,155 +528,60 @@ class _TncStepOneState extends State<TncStepOne> {
                               Align(
                                 alignment: Alignment.topCenter,
                                 child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 5, 0, 5),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(25),
-                                    child: CachedNetworkImage(
-                                      imageUrl: widget.imgBfwork!,
-                                      width: double.infinity,
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: SizedBox(
+                                    height: 200,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: PageView.builder(
+                                        controller: imageBfController,
+                                        itemCount: widget.imgBfwork!.length,
+                                        itemBuilder: (context, index) {
+                                          return CachedNetworkImage(
+                                            imageUrl:
+                                                widget.imgBfwork![index].image,
+                                            height: 250,
+                                            fit: BoxFit.cover,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                              // widget.tncNote != null
-                              //     ? const SizedBox.shrink()
-                              //     : Column(
-                              //         children: [
-                              //           Align(
-                              //             alignment: Alignment.topLeft,
-                              //             child: Padding(
-                              //               padding: const EdgeInsetsDirectional
-                              //                   .fromSTEB(0, 10, 20, 7),
-                              //               child: Text(
-                              //                 'รูปหลังเสร็จงาน : ',
-                              //                 style: GoogleFonts.sarabun(),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //           imgFile == null
-                              //               ? Align(
-                              //                   alignment:
-                              //                       const AlignmentDirectional(
-                              //                           0, 0),
-                              //                   child: Padding(
-                              //                     padding:
-                              //                         const EdgeInsetsDirectional
-                              //                                 .fromSTEB(
-                              //                             0, 10, 0, 0),
-                              //                     child: Material(
-                              //                       child: InkWell(
-                              //                         onTap: () async {
-                              //                           PermissionStatus
-                              //                               cameraStatus =
-                              //                               await Permission
-                              //                                   .camera
-                              //                                   .request();
-                              //                           if (cameraStatus ==
-                              //                               PermissionStatus
-                              //                                   .granted) {
-                              //                             getFromCamera();
-                              //                           }
-                              //                           if (cameraStatus ==
-                              //                               PermissionStatus
-                              //                                   .denied) {
-                              //                             Fluttertoast.showToast(
-                              //                                 msg:
-                              //                                     "This permission is recommended");
-                              //                           }
-                              //                           if (cameraStatus ==
-                              //                               PermissionStatus
-                              //                                   .permanentlyDenied) {
-                              //                             openAppSettings();
-                              //                           }
-                              //                         },
-                              //                         child: Ink(
-                              //                           width: double.infinity,
-                              //                           height: 100,
-                              //                           decoration:
-                              //                               const BoxDecoration(
-                              //                             color:
-                              //                                 Color(0xFFEFEFEF),
-                              //                           ),
-                              //                           child: const Icon(
-                              //                             Icons
-                              //                                 .camera_alt_outlined,
-                              //                             color:
-                              //                                 Color(0xFF9D9D9D),
-                              //                             size: 40,
-                              //                           ),
-                              //                         ),
-                              //                       ),
-                              //                     ),
-                              //                   ),
-                              //                 )
-                              //               : Padding(
-                              //                   padding: const EdgeInsets.only(
-                              //                       top: 16),
-                              //                   child: Center(
-                              //                     child: InkWell(
-                              //                       onTap: getFromCamera,
-                              //                       child: Image.file(
-                              //                         imgFile!,
-                              //                         width:
-                              //                             MediaQuery.of(context)
-                              //                                 .size
-                              //                                 .width,
-                              //                         fit: BoxFit.cover,
-                              //                       ),
-                              //                     ),
-                              //                   ),
-                              //                 ),
-                              //           const SizedBox(height: 15),
-                              //           Row(
-                              //             mainAxisAlignment:
-                              //                 MainAxisAlignment.center,
-                              //             children: [
-                              //               Padding(
-                              //                 padding:
-                              //                     const EdgeInsetsDirectional
-                              //                         .fromSTEB(16, 0, 16, 16),
-                              //                 child: ElevatedButton(
-                              //                   onPressed: () {
-                              //                     if (imgFile != null) {
-                              //                       tncSendAfImg(
-                              //                         widget.sosId,
-                              //                         imgFile!.path,
-                              //                       );
-                              //                       Get.offNamed(
-                              //                           '/profile-myjob');
-                              //                     } else {
-                              //                       Fluttertoast.showToast(
-                              //                         msg:
-                              //                             'คุณยังไม่ได้ถ่ายรูป',
-                              //                         backgroundColor:
-                              //                             Colors.yellow[100],
-                              //                         textColor: Colors.black,
-                              //                         fontSize: 15,
-                              //                         gravity:
-                              //                             ToastGravity.SNACKBAR,
-                              //                       );
-                              //                     }
-                              //                   },
-                              //                   style: ElevatedButton.styleFrom(
-                              //                     backgroundColor: mainGreen,
-                              //                     minimumSize:
-                              //                         const Size(200, 40),
-                              //                   ),
-                              //                   child: Text(
-                              //                     "ส่งรูปหลังเสร็จงาน",
-                              //                     style: GoogleFonts.sarabun(
-                              //                       fontWeight: FontWeight.bold,
-                              //                     ),
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ],
-                              //       ),
+                              Center(
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: SmoothPageIndicator(
+                                      controller: imageBfController,
+                                      count: widget.imgBfwork!.length,
+                                      effect: const WormEffect(
+                                        spacing: 20,
+                                        dotHeight: 10,
+                                        dotWidth: 10,
+                                        activeDotColor: mainGreen,
+                                        dotColor: Colors.black26,
+                                      ),
+                                      onDotClicked: (index) =>
+                                          imageBfController.animateToPage(
+                                        index,
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        curve: Curves.easeIn,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           )
                         : const SizedBox.shrink(),
@@ -561,10 +596,18 @@ class _TncStepOneState extends State<TncStepOne> {
     isUserDeal();
   }
 
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+
+    super.dispose();
+  }
+
   void isUserDeal() {
     if (widget.userDeal == "yes") {
       setState(() {
-        timelines.add(
+        timelines!.add(
           Timelines(
             DateTime.now(),
             "คุณสามารถเริ่มงานได้",
@@ -586,61 +629,99 @@ class _TncStepOneState extends State<TncStepOne> {
                         ),
                       ),
                     ),
-                    imgFile == null
-                        ? Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 10, 0, 0),
-                              child: Material(
-                                child: InkWell(
-                                  onTap: () async {
-                                    PermissionStatus cameraStatus =
-                                        await Permission.camera.request();
-                                    if (cameraStatus ==
-                                        PermissionStatus.granted) {
-                                      getFromCamera();
-                                    }
-                                    if (cameraStatus ==
-                                        PermissionStatus.denied) {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "This permission is recommended");
-                                    }
-                                    if (cameraStatus ==
-                                        PermissionStatus.permanentlyDenied) {
-                                      openAppSettings();
-                                    }
-                                  },
-                                  child: Ink(
-                                    width: double.infinity,
-                                    height: 100,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFEFEFEF),
-                                    ),
-                                    child: const Icon(
-                                      Icons.camera_alt_outlined,
-                                      color: Color(0xFF9D9D9D),
-                                      size: 40,
-                                    ),
-                                  ),
+                    itemImagesList.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 100,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 120,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 10,
                                 ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: itemImagesList.length,
+                                itemBuilder: (context, index) {
+                                  return Stack(
+                                    children: [
+                                      SizedBox(
+                                        height: double.maxFinite,
+                                        width: double.maxFinite,
+                                        child: Image.file(
+                                          File(itemImagesList[index].path),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: -1.0,
+                                        right: -1.0,
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              itemImagesList.removeAt(index);
+                                              getTimelines();
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              color: Colors.red,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                             ),
                           )
-                        : Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Center(
-                              child: InkWell(
-                                onTap: getFromCamera,
-                                child: Image.file(
-                                  imgFile!,
-                                  width: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.cover,
-                                ),
+                        : const SizedBox.shrink(),
+                    Align(
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                        child: Material(
+                          child: InkWell(
+                            onTap: () async {
+                              PermissionStatus cameraStatus =
+                                  await Permission.camera.request();
+                              if (cameraStatus == PermissionStatus.granted) {
+                                getFromCamera();
+                              }
+                              if (cameraStatus == PermissionStatus.denied) {
+                                Fluttertoast.showToast(
+                                    msg: "This permission is recommended");
+                              }
+                              if (cameraStatus ==
+                                  PermissionStatus.permanentlyDenied) {
+                                openAppSettings();
+                              }
+                            },
+                            child: Ink(
+                              width: double.infinity,
+                              height: 100,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFEFEFEF),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt_outlined,
+                                color: Color(0xFF9D9D9D),
+                                size: 40,
                               ),
                             ),
                           ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -650,20 +731,79 @@ class _TncStepOneState extends State<TncStepOne> {
                               16, 0, 16, 16),
                           child: ElevatedButton(
                             onPressed: () {
-                              if (imgFile != null) {
+                              // if (imgFile != null) {
+                              //   tncSendAfImg(
+                              //     widget.sosId,
+                              //     imgFile!.path,
+                              //   );
+                              //   Get.offNamed('/profile-myjob');
+                              // } else {
+                              //   Fluttertoast.showToast(
+                              //     msg: 'คุณยังไม่ได้ถ่ายรูป',
+                              //     backgroundColor: Colors.yellow[100],
+                              //     textColor: Colors.black,
+                              //     fontSize: 15,
+                              //     gravity: ToastGravity.SNACKBAR,
+                              //   );
+                              // }
+
+                              if (itemImagesList.isEmpty) {
+                                Get.snackbar(
+                                  'คำเตือน',
+                                  'คุณยังไม่ได้เลือกรูป',
+                                  backgroundGradient:
+                                      const LinearGradient(colors: [
+                                    Color.fromARGB(255, 255, 191, 0),
+                                    Color.fromARGB(255, 255, 234, 172),
+                                  ]),
+                                  barBlur: 15,
+                                  animationDuration:
+                                      const Duration(milliseconds: 500),
+                                  icon: const Icon(
+                                    Icons.warning,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              } else {
+                                for (var i = 0;
+                                    i < itemImagesList.length;
+                                    i++) {
+                                  // print('index $i , value ${itemImagesList[i].path}');
+
+                                  imageFile.add(File(itemImagesList[i].path));
+                                }
+
                                 tncSendAfImg(
                                   widget.sosId,
-                                  imgFile!.path,
-                                );
-                                Get.offNamed('/profile-myjob');
-                              } else {
-                                Fluttertoast.showToast(
-                                  msg: 'คุณยังไม่ได้ถ่ายรูป',
-                                  backgroundColor: Colors.yellow[100],
-                                  textColor: Colors.black,
-                                  fontSize: 15,
-                                  gravity: ToastGravity.SNACKBAR,
-                                );
+                                  imageFile,
+                                ).then((value) {
+                                  if (value == false) {
+                                    Get.snackbar(
+                                      'โอ้ะ!',
+                                      'เกิดข้อผิดพลาดบางอย่างกรุณารอสักครู่',
+                                      backgroundGradient:
+                                          const LinearGradient(colors: [
+                                        Color.fromARGB(255, 255, 191, 0),
+                                        Color.fromARGB(255, 255, 234, 172),
+                                      ]),
+                                      barBlur: 15,
+                                      animationDuration:
+                                          const Duration(milliseconds: 500),
+                                      icon: const Icon(
+                                        Icons.warning,
+                                        size: 30,
+                                        color: Colors.red,
+                                      ),
+                                      snackPosition: SnackPosition.BOTTOM,
+                                    );
+                                  }
+                                  setState(() {
+                                    itemImagesList.clear();
+                                  });
+                                  Get.offNamed('/profile-myjob');
+                                });
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -694,20 +834,48 @@ class _TncStepOneState extends State<TncStepOne> {
   }
 
   void getFromCamera() async {
-    XFile? pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 50);
-    if (pickedFile != null) {
+    // XFile? pickedFile = await ImagePicker()
+    //     .pickImage(source: ImageSource.camera, imageQuality: 50);
+    // if (pickedFile != null) {
+    //   setState(() {
+    //     imgFile = File(pickedFile.path);
+    //     getTimelines();
+    //   });
+    // } else {
+    //   Fluttertoast.showToast(
+    //     msg: 'คุณยังไม่ได้เลือกรูป',
+    //     backgroundColor: Colors.yellow[100],
+    //     textColor: Colors.black,
+    //     fontSize: 15,
+    //     gravity: ToastGravity.SNACKBAR,
+    //   );
+    // }
+
+    camera = await _picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+    );
+    if (camera != null) {
       setState(() {
-        imgFile = File(pickedFile.path);
+        itemImagesList.add(camera!);
         getTimelines();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'คุณยังไม่ได้เลือกรูป',
-        backgroundColor: Colors.yellow[100],
-        textColor: Colors.black,
-        fontSize: 15,
-        gravity: ToastGravity.SNACKBAR,
+      Get.snackbar(
+        'คำเตือน',
+        'คุณยังไม่ได้เลือกรูป',
+        backgroundGradient: const LinearGradient(colors: [
+          Color.fromARGB(255, 255, 191, 0),
+          Color.fromARGB(255, 255, 234, 172),
+        ]),
+        barBlur: 15,
+        animationDuration: const Duration(milliseconds: 500),
+        icon: const Icon(
+          Icons.warning,
+          size: 30,
+          color: Colors.red,
+        ),
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
@@ -728,41 +896,85 @@ class _TncStepOneState extends State<TncStepOne> {
 
   Future<bool> tncSendBfImg(
     String sosId,
-    String imgFile,
+    List<File> imgFile,
     String tncNote,
   ) async {
-    Map<String, String> headers = {"Context-Type": "multipart/formdata"};
-    var requset = http.MultipartRequest(
-        "POST", Uri.parse("https://api.racroad.com/api/sos/step/$sosId"))
+    // Map<String, String> headers = {"Context-Type": "multipart/formdata"};
+    // var requset = http.MultipartRequest(
+    //     "POST", Uri.parse("https://api.racroad.com/api/sos/step/$sosId"))
+    //   ..fields.addAll({
+    //     "tnc_description": tncNote,
+    //   })
+    //   ..headers.addAll(headers)
+    //   ..files.add(await http.MultipartFile.fromPath('image_bw', imgFile));
+    // var response = await requset.send();
+
+    // if (response.statusCode == 200) {
+    //   return true;
+    // } else {
+    //   throw Exception(jsonDecode(response.toString()));
+    // }
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+    };
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.racroad.com/api/sos/step/$sosId'));
+
+    request
       ..fields.addAll({
         "tnc_description": tncNote,
       })
-      ..headers.addAll(headers)
-      ..files.add(await http.MultipartFile.fromPath('image_bw', imgFile));
-    var response = await requset.send();
+      ..headers.addAll(headers);
+    for (var i = 0; i < imgFile.length; i++) {
+      request.files.add(
+        http.MultipartFile(
+            'image_bw[$i]',
+            File(imgFile[i].path).readAsBytes().asStream(),
+            File(imgFile[i].path).lengthSync(),
+            filename: imgFile[i].path.split("/").last),
+      );
+    }
+
+    var response = await request.send();
 
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(jsonDecode(response.toString()));
+      throw false;
     }
   }
 
   Future<bool> tncSendAfImg(
     String sosId,
-    String imgFile,
+    List<File> imgFile,
   ) async {
-    Map<String, String> headers = {"Context-Type": "multipart/formdata"};
-    var requset = http.MultipartRequest(
-        "POST", Uri.parse("https://api.racroad.com/api/sos/step/$sosId"))
-      ..headers.addAll(headers)
-      ..files.add(await http.MultipartFile.fromPath('image_aw', imgFile));
-    var response = await requset.send();
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+    };
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.racroad.com/api/sos/step/$sosId'));
+
+    for (var i = 0; i < imgFile.length; i++) {
+      request
+        ..files.add(
+          http.MultipartFile(
+              'image_aw[$i]',
+              File(imgFile[i].path).readAsBytes().asStream(),
+              File(imgFile[i].path).lengthSync(),
+              filename: imgFile[i].path.split("/").last),
+        )
+        ..headers.addAll(headers);
+    }
+
+    var response = await request.send();
 
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(jsonDecode(response.toString()));
+      throw false;
     }
   }
 
@@ -777,6 +989,7 @@ class _TncStepOneState extends State<TncStepOne> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // if (timelines!.isEmpty) {}
     return Form(
       key: formKey,
       child: GestureDetector(
@@ -784,7 +997,7 @@ class _TncStepOneState extends State<TncStepOne> {
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: GroupedListView<Timelines, DateTime>(
-            elements: timelines,
+            elements: timelines!,
             reverse: true,
             useStickyGroupSeparators: true,
             floatingHeader: true,

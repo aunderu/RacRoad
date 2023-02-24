@@ -9,9 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
+import '../../../../models/sos/sos_details_models.dart';
 
 class StepTwo extends StatefulWidget {
   const StepTwo({
@@ -32,7 +34,7 @@ class StepTwo extends StatefulWidget {
   });
 
   final String getToken;
-  final String imgIncident;
+  final List<Img> imgIncident;
   final String location;
   final String problem;
   final String problemDetails;
@@ -51,12 +53,20 @@ class StepTwo extends StatefulWidget {
 
 class _StepTwoState extends State<StepTwo> {
   late List<Timelines> timelines;
+  final controller = PageController();
 
   @override
   void initState() {
     super.initState();
 
     getTimelines();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
   }
 
   Future<void> userSendDeal(String sosId, String userDeal) async {
@@ -80,23 +90,61 @@ class _StepTwoState extends State<StepTwo> {
         "แจ้งเหตุการณ์",
         Column(
           children: [
-            Text(
-              "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
-              style: GoogleFonts.sarabun(),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "ปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}",
+                style: GoogleFonts.sarabun(),
+              ),
             ),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgIncident,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  height: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PageView.builder(
+                      controller: controller,
+                      itemCount: widget.imgIncident.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                          imageUrl: widget.imgIncident[index].image,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SmoothPageIndicator(
+                    controller: controller,
+                    count: widget.imgIncident.length,
+                    effect: const WormEffect(
+                      spacing: 20,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      activeDotColor: mainGreen,
+                      dotColor: Colors.black26,
+                    ),
+                    onDotClicked: (index) => controller.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ),

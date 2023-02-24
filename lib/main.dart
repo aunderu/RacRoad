@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,6 +30,10 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = "th";
   initializeDateFormatting();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   await UserPreferences.init();
 
@@ -226,6 +231,10 @@ class _CheckLoginState extends State<CheckLogin> {
                   fontStyle: FontStyle.italic,
                 ),
               ),
+            ),
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+              strokeWidth: 8,
             ),
           ],
         ),

@@ -89,17 +89,19 @@ class _TestPageState extends State<TestPage> {
 
     request
       ..fields.addAll({
-        "name": "Suthawee",
-        "number": "123456789",
+        "title": "Suthawee",
       })
       ..headers.addAll(headers);
     for (var i = 0; i < image.length; i++) {
-      request.files.add(http.MultipartFile(
-          'image',
-          File(image[i].path).readAsBytes().asStream(),
-          File(image[i].path).lengthSync(),
-          filename: image[i].path.split("/").last));
+      request.files.add(
+        http.MultipartFile(
+            'image[$i]',
+            File(image[i].path).readAsBytes().asStream(),
+            File(image[i].path).lengthSync(),
+            filename: image[i].path.split("/").last),
+      );
     }
+
     var response = await request.send();
 
     if (response.statusCode == 200) {
@@ -225,7 +227,30 @@ class _TestPageState extends State<TestPage> {
                           imageFile.add(File(itemImagesList[i].path));
                         }
 
-                        testSend(imageFile);
+                        testSend(imageFile).then((value) {
+                          if (value == false) {
+                            Get.snackbar(
+                              'คำเตือน',
+                              'เกิด Error บางอย่างนะจ๊ะะะะะ',
+                              backgroundGradient: const LinearGradient(colors: [
+                                Color.fromARGB(255, 255, 191, 0),
+                                Color.fromARGB(255, 255, 234, 172),
+                              ]),
+                              barBlur: 15,
+                              animationDuration:
+                                  const Duration(milliseconds: 500),
+                              icon: const Icon(
+                                Icons.warning,
+                                size: 30,
+                                color: Colors.red,
+                              ),
+                              snackPosition: SnackPosition.BOTTOM,
+                            );
+                          }
+                          setState(() {
+                            itemImagesList.clear();
+                          });
+                        });
                       }
                     },
                   ),

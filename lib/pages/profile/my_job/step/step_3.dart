@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
+import '../../../../models/sos/sos_details_models.dart';
 
 class TncStepThree extends StatefulWidget {
   const TncStepThree({
@@ -37,9 +39,9 @@ class TncStepThree extends StatefulWidget {
   });
 
   final String getToken;
-  final String imgAfwork;
-  final String imgBfwork;
-  final String imgIncident;
+  final List<Img> imgAfwork;
+  final List<Img> imgBfwork;
+  final List<Img> imgIncident;
   final String latitude;
   final String location;
   final String longitude;
@@ -65,12 +67,25 @@ class TncStepThree extends StatefulWidget {
 
 class _TncStepThreeState extends State<TncStepThree> {
   late List<Timelines> timelines;
+  final imageUserController = PageController();
+  final imageBfController = PageController();
+  final imageAfController = PageController();
 
   @override
   void initState() {
     super.initState();
 
     getTimelines();
+  }
+
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+    imageAfController.dispose();
+    
+
+    super.dispose();
   }
 
   void getTimelines() {
@@ -86,38 +101,54 @@ class _TncStepThreeState extends State<TncStepThree> {
               'ชื่อผู้ใช้ : ${widget.userName}\nเบอร์โทร : ${widget.userTel}\n\nปัญหา : ${widget.problem}\nรายละเอียดปัญหา : ${widget.problemDetails}\n\nที่เกิดเหตุ : ${widget.location}',
               style: GoogleFonts.sarabun(),
             ),
-            // const SizedBox(height: 10),
-            // Align(
-            //   alignment: Alignment.topCenter,
-            //   child: ElevatedButton.icon(
-            //     onPressed: () {
-            //       _openMap(widget.latitude, widget.longitude);
-            //     },
-            //     icon: const Icon(Icons.pin_drop),
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: mainGreen,
-            //       minimumSize: const Size(200, 40),
-            //     ),
-            //     label: Text(
-            //       "ดูใน Google Map",
-            //       style: GoogleFonts.sarabun(
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //   ),
-            // ),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgIncident,
-                    height: 200,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: SizedBox(
+                  height: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PageView.builder(
+                      controller: imageUserController,
+                      itemCount: widget.imgIncident.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                          imageUrl: widget.imgIncident[index].image,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SmoothPageIndicator(
+                    controller: imageUserController,
+                    count: widget.imgIncident.length,
+                    effect: const WormEffect(
+                      spacing: 20,
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      activeDotColor: mainGreen,
+                      dotColor: Colors.black26,
+                    ),
+                    onDotClicked: (index) => imageUserController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ),
@@ -155,14 +186,51 @@ class _TncStepThreeState extends State<TncStepThree> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgBfwork.toString(),
-                        width: double.infinity,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      height: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: PageView.builder(
+                          controller: imageBfController,
+                          itemCount: widget.imgBfwork.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: widget.imgBfwork[index].image,
+                              height: 250,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: SmoothPageIndicator(
+                        controller: imageBfController,
+                        count: widget.imgBfwork.length,
+                        effect: const WormEffect(
+                          spacing: 20,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          activeDotColor: mainGreen,
+                          dotColor: Colors.black26,
+                        ),
+                        onDotClicked: (index) =>
+                            imageBfController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        ),
                       ),
                     ),
                   ),
@@ -182,14 +250,51 @@ class _TncStepThreeState extends State<TncStepThree> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imgAfwork.toString(),
-                        width: double.infinity,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      height: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: PageView.builder(
+                          controller: imageAfController,
+                          itemCount: widget.imgAfwork.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: widget.imgAfwork[index].image,
+                              height: 250,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: SmoothPageIndicator(
+                        controller: imageAfController,
+                        count: widget.imgAfwork.length,
+                        effect: const WormEffect(
+                          spacing: 20,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          activeDotColor: mainGreen,
+                          dotColor: Colors.black26,
+                        ),
+                        onDotClicked: (index) =>
+                            imageAfController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        ),
                       ),
                     ),
                   ),

@@ -57,7 +57,7 @@ class _ScreensPageState extends State<ScreensPage> {
       getToken: token!,
       current: widget.current,
     ),
-    TestPage(),
+    //const TestPage(),
   ];
 
   @override
@@ -210,20 +210,20 @@ class _ScreensPageState extends State<ScreensPage> {
             label: 'Profile',
             tooltip: 'โปรไฟล์',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.app_registration_outlined,
-              color: Colors.amber,
-              size: 40,
-            ),
-            activeIcon: Icon(
-              Icons.app_registration,
-              color: Colors.amber,
-              size: 40,
-            ),
-            label: 'TESTING',
-            tooltip: 'หน้าเทสโปรแกรม',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(
+          //     Icons.app_registration_outlined,
+          //     color: Colors.amber,
+          //     size: 40,
+          //   ),
+          //   activeIcon: Icon(
+          //     Icons.app_registration,
+          //     color: Colors.amber,
+          //     size: 40,
+          //   ),
+          //   label: 'TESTING',
+          //   tooltip: 'หน้าเทสโปรแกรม',
+          // ),
         ],
         currentIndex: widget.pageIndex,
         selectedItemColor: widget.pageIndex == 2 ? Colors.red : mainGreen,
