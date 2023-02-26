@@ -269,9 +269,13 @@ class _StepSixState extends State<StepSix> {
                   ),
                   child: Container(
                     decoration: const BoxDecoration(color: Colors.white),
-                    child: Image.network(
-                      widget.tncProfile ??
-                          'https://racroad.com/img/admin.71db083f.jpg',
+                    child: CachedNetworkImage(
+                      imageUrl: widget.tncProfile!,
+                      height: 250,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/imgs/profile.png',
+                      ),
                     ),
                   ),
                 ),

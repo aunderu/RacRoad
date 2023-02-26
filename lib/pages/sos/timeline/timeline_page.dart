@@ -6,6 +6,7 @@ import 'package:rac_road/colors.dart';
 
 import 'package:rac_road/loading/timeline.dart';
 import 'package:rac_road/models/sos/sos_details_models.dart';
+import 'package:rac_road/pages/sos/timeline/step/user_reject_two.dart';
 import 'package:rac_road/services/remote_service.dart';
 
 import 'step/step_1.dart';
@@ -314,6 +315,28 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   stepThreeTimeStamp: result.data.sos.tuStep3!,
                   repairPrice: result.data.sos.repairPrice.toString(),
                   repairDetails: result.data.sos.repairDetail!,
+                );
+              case "user_reject_deal2":
+                return UserRejectTwo(
+                  stepOnetimeStamp: result.data.sos.tuStep1,
+                  userName: result.data.sos.userName,
+                  problem: result.data.sos.problem,
+                  problemDetails: result.data.sos.problemDetail,
+                  location: result.data.sos.location,
+                  userProfile: result.data.sos.avatar,
+                  imgIncident: result.data.imgIncident,
+                  stepTwoTimeStamp: result.data.sos.tuStep2!,
+                  stepThreeTimeStamp: result.data.sos.tuStep3!,
+                  stepFourTimeStamp: result.data.sos.tuStep4!,
+                  repairPrice: result.data.sos.repairPrice.toString(),
+                  repairDetails: result.data.sos.repairDetail!,
+                  tncName: result.data.sos.tncName!,
+                  tncProfile: result.data.sos.tncAvatar,
+                  repairDetailsTwo: result.data.sos.repairDetail2,
+                  repairPriceTwo: result.data.sos.repairPrice2,
+                  tuPriceTwoTimeStamp: result.data.sos.tuPrice2,
+                  tuUserDealTwoTimeStamp: result.data.sos.tuUserDeal2,
+                  imgBfwork: result.data.imgBfwork!,
                 );
               case "success":
                 return StepEight(

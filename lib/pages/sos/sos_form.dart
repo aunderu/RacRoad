@@ -38,7 +38,13 @@ class SOSFormPage extends StatefulWidget {
 
 class _SOSFormPageState extends State<SOSFormPage> {
   final formKey = GlobalKey<FormState>();
-  File? imageFile;
+
+  final ImagePicker _picker = ImagePicker();
+  List<File> imageFile = <File>[];
+  List<XFile> photo = <XFile>[];
+  List<XFile> itemImagesList = <XFile>[];
+  XFile? camera;
+
   String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int tag = 1;
@@ -70,7 +76,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
             children: [
               InkWell(
                 onTap: () {
-                  getFromCamera();
+                  pickCamera();
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -95,7 +101,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
               ),
               InkWell(
                 onTap: () {
-                  getFromGallery();
+                  pickPhotoFromGallery();
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -125,48 +131,73 @@ class _SOSFormPageState extends State<SOSFormPage> {
     );
   }
 
-  void getFromGallery() async {
-    XFile? pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 50);
-    if (pickedFile != null) {
+  pickPhotoFromGallery() async {
+    photo = await _picker.pickMultiImage(imageQuality: 50);
+    if (photo.isNotEmpty) {
       setState(() {
-        imageFile = File(pickedFile.path);
+        itemImagesList += photo;
+        photo.clear();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'คุณยังไม่ได้เลือกรูป',
-        backgroundColor: Colors.yellow[100],
-        textColor: Colors.black,
-        fontSize: 15,
-        gravity: ToastGravity.SNACKBAR,
+      Get.snackbar(
+        'คำเตือน',
+        'คุณยังไม่ได้เลือกรูป',
+        backgroundGradient: const LinearGradient(colors: [
+          Color.fromARGB(255, 255, 191, 0),
+          Color.fromARGB(255, 255, 234, 172),
+        ]),
+        barBlur: 15,
+        animationDuration: const Duration(milliseconds: 500),
+        icon: const Icon(
+          Icons.warning,
+          size: 30,
+          color: Colors.red,
+        ),
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
+
     Get.back();
   }
 
-  void getFromCamera() async {
-    XFile? pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 50);
-    if (pickedFile != null) {
+  pickCamera() async {
+    camera = await _picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+    );
+    if (camera != null) {
       setState(() {
-        imageFile = File(pickedFile.path);
+        itemImagesList.add(camera!);
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'คุณยังไม่ได้เลือกรูป',
-        backgroundColor: Colors.yellow[100],
-        textColor: Colors.black,
-        fontSize: 15,
-        gravity: ToastGravity.SNACKBAR,
+      Get.snackbar(
+        'คำเตือน',
+        'คุณยังไม่ได้เลือกรูป',
+        backgroundGradient: const LinearGradient(colors: [
+          Color.fromARGB(255, 255, 191, 0),
+          Color.fromARGB(255, 255, 234, 172),
+        ]),
+        barBlur: 15,
+        animationDuration: const Duration(milliseconds: 500),
+        icon: const Icon(
+          Icons.warning,
+          size: 30,
+          color: Colors.red,
+        ),
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
+
     Get.back();
   }
 
-  Future<bool> sosSend(String filePath, String userProblem) async {
-    Map<String, String> headers = {"Context-Type": "multipart/formdata"};
-    var requset = http.MultipartRequest(
-        "POST", Uri.parse("https://api.racroad.com/api/event/sos"))
+  Future<bool> sosSend(List<File> imgFile, String userProblem) async {
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+    };
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.racroad.com/api/event/sos'))
       ..fields.addAll({
         "user_id": widget.getToken,
         "problem": widget.sosTitle,
@@ -175,14 +206,23 @@ class _SOSFormPageState extends State<SOSFormPage> {
         "latitude": widget.latitude,
         "longitude": widget.longitude,
       })
-      ..headers.addAll(headers)
-      ..files.add(await http.MultipartFile.fromPath('image', filePath));
-    var response = await requset.send();
+      ..headers.addAll(headers);
+    for (var i = 0; i < imgFile.length; i++) {
+      request.files.add(
+        http.MultipartFile(
+            'image[$i]',
+            File(imgFile[i].path).readAsBytes().asStream(),
+            File(imgFile[i].path).lengthSync(),
+            filename: imgFile[i].path.split("/").last),
+      );
+    }
+
+    var response = await request.send();
 
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(jsonDecode(response.toString()));
+      throw false;
     }
   }
 
@@ -452,87 +492,140 @@ class _SOSFormPageState extends State<SOSFormPage> {
                                 textDirection: TextDirection.ltr,
                               )
                             : const SizedBox.shrink(),
-                        imageFile == null
-                            ? Tooltip(
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Tooltip(
                                 message: "แนบรูปภาพ",
                                 verticalOffset: -55,
                                 child: Align(
                                   alignment: const AlignmentDirectional(0, 0),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 16, 0, 0),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        PermissionStatus cameraStatus =
-                                            await Permission.camera.request();
-                                        if (cameraStatus ==
-                                            PermissionStatus.granted) {
-                                          showImageDialog();
-                                        }
-                                        if (cameraStatus ==
-                                            PermissionStatus.denied) {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "This permission is recommended");
-                                        }
-                                        if (cameraStatus ==
-                                            PermissionStatus
-                                                .permanentlyDenied) {
-                                          openAppSettings();
-                                        }
-                                      },
-                                      child: Ink(
-                                        width: 100,
-                                        height: 100,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFFEFEFEF),
-                                        ),
-                                        child: const Icon(
-                                          Icons.add,
-                                          color: Color(0xFF9D9D9D),
-                                          size: 40,
-                                        ),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      PermissionStatus cameraStatus =
+                                          await Permission.camera.request();
+                                      if (cameraStatus ==
+                                          PermissionStatus.granted) {
+                                        showImageDialog();
+                                      }
+                                      if (cameraStatus ==
+                                          PermissionStatus.denied) {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "This permission is recommended");
+                                      }
+                                      if (cameraStatus ==
+                                          PermissionStatus.permanentlyDenied) {
+                                        openAppSettings();
+                                      }
+                                    },
+                                    child: Ink(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Color(0xFF9D9D9D),
+                                        size: 40,
                                       ),
                                     ),
                                   ),
                                 ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Center(
-                                  child: InkWell(
-                                    onTap: showImageDialog,
-                                    child: Image.file(
-                                      imageFile!,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.9,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
                               ),
+                              const SizedBox(width: 16),
+                              itemImagesList.isNotEmpty
+                                  ? Flexible(
+                                      child: SizedBox(
+                                        height: 100,
+                                        child: GridView.builder(
+                                          gridDelegate:
+                                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 120,
+                                            crossAxisSpacing: 20,
+                                            mainAxisSpacing: 10,
+                                          ),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: itemImagesList.length,
+                                          itemBuilder: (context, index) {
+                                            return Stack(
+                                              children: [
+                                                SizedBox(
+                                                  height: double.maxFinite,
+                                                  width: double.maxFinite,
+                                                  child: Image.file(
+                                                    File(itemImagesList[
+                                                            (itemImagesList
+                                                                        .length -
+                                                                    1) -
+                                                                index]
+                                                        .path),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  top: -1.0,
+                                                  right: -1.0,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        itemImagesList.removeAt(
+                                                            (itemImagesList
+                                                                        .length -
+                                                                    1) -
+                                                                index);
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.cancel,
+                                                        color: Colors.red,
+                                                        size: 30,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
+                            ],
+                          ),
+                        ),
                         Align(
                           alignment: const AlignmentDirectional(0, 0),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                if (imageFile != null) {
+                                if (itemImagesList.isNotEmpty) {
+                                  for (var i = 0;
+                                      i < itemImagesList.length;
+                                      i++) {
+                                    // print('index $i , value ${itemImagesList[i].path}');
+
+                                    imageFile.add(File(itemImagesList[i].path));
+                                  }
+
                                   sosSend(
-                                    imageFile!.path,
+                                    imageFile,
                                     userProblemController!.text,
                                   );
 
-                                  Get.offNamed('/sos');
-
-                                  // Get.offAll(
-                                  //   ScreensPage(
-                                  //     getToken: widget.getToken,
-                                  //     pageIndex: 2,
-                                  //     current: 0,
-                                  //   ),
-                                  // );
+                                  Get.offAllNamed('/sos');
                                 } else {
                                   Fluttertoast.showToast(
                                     msg: "กรุณาแนบรูปภาพมาด้วย",

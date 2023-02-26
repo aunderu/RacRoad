@@ -14,6 +14,7 @@ import '../sos/timeline/step/step_6.dart';
 import '../sos/timeline/step/step_7.dart';
 import '../sos/timeline/step/step_8.dart';
 import '../sos/timeline/step/user_reject.dart';
+import '../sos/timeline/step/user_reject_two.dart';
 
 class MyHistorySosDetails extends StatefulWidget {
   const MyHistorySosDetails({
@@ -31,8 +32,6 @@ class MyHistorySosDetails extends StatefulWidget {
 
 class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
   var _dataFuture;
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -51,11 +50,8 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
-      body: SmartRefresher(
-        enablePullDown: false,
-        enablePullUp: false,
-        controller: _refreshController,
-        reverse: true,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Padding(
           padding: const EdgeInsets.only(top: 50),
           child: FutureBuilder<SosDetails?>(
@@ -297,6 +293,28 @@ class _MyHistorySosDetailsState extends State<MyHistorySosDetails> {
                       stepThreeTimeStamp: result.data.sos.tuStep3!,
                       repairPrice: result.data.sos.repairPrice.toString(),
                       repairDetails: result.data.sos.repairDetail!,
+                    );
+                  case "user_reject_deal2":
+                    return UserRejectTwo(
+                      stepOnetimeStamp: result.data.sos.tuStep1,
+                      userName: result.data.sos.userName,
+                      problem: result.data.sos.problem,
+                      problemDetails: result.data.sos.problemDetail,
+                      location: result.data.sos.location,
+                      userProfile: result.data.sos.avatar,
+                      imgIncident: result.data.imgIncident,
+                      stepTwoTimeStamp: result.data.sos.tuStep2!,
+                      stepThreeTimeStamp: result.data.sos.tuStep3!,
+                      stepFourTimeStamp: result.data.sos.tuStep4!,
+                      repairPrice: result.data.sos.repairPrice.toString(),
+                      repairDetails: result.data.sos.repairDetail!,
+                      tncName: result.data.sos.tncName!,
+                      tncProfile: result.data.sos.tncAvatar,
+                      repairDetailsTwo: result.data.sos.repairDetail2,
+                      repairPriceTwo: result.data.sos.repairPrice2,
+                      tuPriceTwoTimeStamp: result.data.sos.tuPrice2,
+                      tuUserDealTwoTimeStamp: result.data.sos.tuUserDeal2,
+                      imgBfwork: result.data.imgBfwork!,
                     );
                   case "success":
                     return StepEight(

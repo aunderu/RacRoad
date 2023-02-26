@@ -98,7 +98,28 @@ class TncSosHistoryWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            sosStatus,
+                            (() {
+                              switch (sosStatus) {
+                                case 'step4':
+                                  return 'กำลังปฏิบัติงาน';
+                                case 'step5':
+                                  return 'ปฏิบัติงานสำเร็จ';
+                                case 'step6':
+                                  return 'ปฏิบัติงานสำเร็จ';
+                                case 'step7':
+                                  return 'ปฏิบัติงานสำเร็จ';
+                                case 'step8':
+                                  return 'ปฏิบัติงานสำเร็จ';
+                                case 'success':
+                                  return 'เสร็จสิ้น';
+                                case 'user_reject_deal':
+                                  return 'ผู้ใช้ปฏิเสธข้อเสนอ';
+                                case 'user_reject_deal2':
+                                  return 'ผู้ใช้ปฏิเสธข้อเสนอ';
+                                default:
+                              }
+                              return 'เหตุฉุกเฉิน';
+                            }()),
                             style: GoogleFonts.sarabun(
                               color: darkGray,
                             ),

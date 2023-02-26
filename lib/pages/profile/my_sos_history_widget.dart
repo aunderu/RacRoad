@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../colors.dart';
+import '../../models/sos/all_my_sos_models.dart';
 import 'my_history_sos_details.dart';
 
 class MySosHistoryWidget extends StatelessWidget {
@@ -21,7 +22,7 @@ class MySosHistoryWidget extends StatelessWidget {
   });
 
   final String getToken;
-  final String imgAccident;
+  final List<ImageIncident> imgAccident;
   final String sosId;
   final String sosStatus;
   final DateTime timeStamp;
@@ -74,14 +75,25 @@ class MySosHistoryWidget extends StatelessWidget {
                             const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: CachedNetworkImage(
-                            imageUrl: imgAccident,
-                            height: 44,
-                            width: 44,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
+                          child: imgAccident.isNotEmpty
+                              ? SizedBox(
+                                  height: 44,
+                                  width: 44,
+                                  child: CachedNetworkImage(
+                                    imageUrl: imgAccident[0].image,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: 44,
+                                  width: 44,
+                                  child: Image.asset(
+                                    'assets/icons/404.png',
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -104,10 +116,39 @@ class MySosHistoryWidget extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            sosStatus,
-                            style: GoogleFonts.sarabun(
-                              color: darkGray,
+                          Flexible(
+                            child: Text(
+                              (() {
+                                switch (sosStatus) {
+                                  case 'step1':
+                                    return 'แจ้งเหตุการณ์';
+                                  case 'step2':
+                                    return 'เจ้าหน้าที่เสนอราคา';
+                                  case 'step3':
+                                    return 'กำลังเลือกช่าง';
+                                  case 'step4':
+                                    return 'ช่างกำลังปฏิบัติงาน';
+                                  case 'step5':
+                                    return 'ช่างปฏิบัติงานสำเร็จ';
+                                  case 'step6':
+                                    return 'ชำระค่าบริการ';
+                                  case 'step7':
+                                    return 'ตรวจสอบการเงิน';
+                                  case 'step8':
+                                    return 'เสร็จสิ้น';
+                                  case 'success':
+                                    return 'เสร็จสิ้น';
+                                  case 'user_reject_deal':
+                                    return 'คุณปฏิเสธข้อเสนอ';
+                                  case 'user_reject_deal2':
+                                    return 'คุณปฏิเสธข้อเสนอ';
+                                  default:
+                                }
+                                return 'เหตุฉุกเฉิน';
+                              }()),
+                              style: GoogleFonts.sarabun(
+                                color: darkGray,
+                              ),
                             ),
                           ),
                         ],

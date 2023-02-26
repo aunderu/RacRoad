@@ -87,7 +87,7 @@ class _MySosHistoryState extends State<MySosHistory> {
         ],
         centerTitle: false,
       ),
-      body: Padding( 
+      body: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
         child: FutureBuilder<AllMySos?>(
           future: dataFuture,
@@ -96,7 +96,7 @@ class _MySosHistoryState extends State<MySosHistory> {
               case ConnectionState.waiting:
                 return snapshot.hasData
                     ? ListView.builder(
-                        itemCount: snapshot.data!.count,
+                        itemCount: snapshot.data!.data.sos!.length,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
@@ -113,8 +113,7 @@ class _MySosHistoryState extends State<MySosHistory> {
                                 .data
                                 .sos![
                                     snapshot.data!.data.sos!.length - 1 - index]
-                                .imageIncident[0]
-                                .image,
+                                .imageIncident,
                             userName: snapshot
                                 .data!
                                 .data
@@ -156,9 +155,9 @@ class _MySosHistoryState extends State<MySosHistory> {
               default:
                 if (snapshot.hasError) {
                   return const Center(child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
-                } else if (snapshot.data!.count != 0) {
+                } else if (snapshot.data!.data.sos!.isNotEmpty) {
                   return ListView.builder(
-                    itemCount: snapshot.data!.count,
+                    itemCount: snapshot.data!.data.sos!.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
@@ -173,8 +172,7 @@ class _MySosHistoryState extends State<MySosHistory> {
                             .data!
                             .data
                             .sos![snapshot.data!.data.sos!.length - 1 - index]
-                            .imageIncident[0]
-                            .image,
+                            .imageIncident,
                         userName: snapshot
                             .data!
                             .data

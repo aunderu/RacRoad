@@ -1,28 +1,20 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 import '../../../../models/sos/sos_details_models.dart';
 
-class StepFour extends StatefulWidget {
-  const StepFour({
+class UserRejectTwo extends StatefulWidget {
+  const UserRejectTwo({
     super.key,
-    required this.getToken,
     required this.stepOnetimeStamp,
     required this.userName,
-    required this.userTel,
     required this.problem,
     required this.problemDetails,
     required this.location,
@@ -34,57 +26,52 @@ class StepFour extends StatefulWidget {
     required this.repairPrice,
     required this.repairDetails,
     required this.tncName,
-    required this.tncStatus,
     required this.tncProfile,
     required this.imgBfwork,
-    this.priceTwoStatus,
-    required this.sosId,
-    this.repairPriceTwo,
     this.repairDetailsTwo,
+    this.repairPriceTwo,
     this.tuPriceTwoTimeStamp,
-    this.userDealTwo,
     this.tuUserDealTwoTimeStamp,
   });
 
-  final String getToken;
-  final List<Img>? imgBfwork;
+  final List<Img> imgBfwork;
   final List<Img> imgIncident;
   final String location;
-  final String? priceTwoStatus;
   final String problem;
   final String problemDetails;
   final String repairDetails;
   final String? repairDetailsTwo;
   final String repairPrice;
   final String? repairPriceTwo;
-  final String sosId;
   final DateTime stepFourTimeStamp;
   final DateTime stepOnetimeStamp;
   final DateTime stepThreeTimeStamp;
   final DateTime stepTwoTimeStamp;
-  final DateTime? tuPriceTwoTimeStamp;
   final String tncName;
-  final String? tncProfile;
-  final String tncStatus;
+  final String tncProfile;
+  final DateTime? tuPriceTwoTimeStamp;
+  final DateTime? tuUserDealTwoTimeStamp;
   final String userName;
   final String userProfile;
-  final String userTel;
-  final String? userDealTwo;
-  final DateTime? tuUserDealTwoTimeStamp;
 
   @override
-  State<StepFour> createState() => _StepFourState();
+  State<UserRejectTwo> createState() => _UserRejectTwoState();
 }
 
-class _StepFourState extends State<StepFour> {
+class _UserRejectTwoState extends State<UserRejectTwo> {
   late List<Timelines> timelines;
   final imageUserController = PageController();
   final imageBfController = PageController();
+  final imageAfController = PageController();
 
   @override
   void initState() {
     super.initState();
 
+    getTimelines();
+  }
+
+  void getTimelines() {
     timelines = [
       Timelines(
         widget.stepOnetimeStamp,
@@ -242,7 +229,7 @@ class _StepFourState extends State<StepFour> {
                   child: Container(
                     decoration: const BoxDecoration(color: Colors.white),
                     child: CachedNetworkImage(
-                      imageUrl: widget.tncProfile!,
+                      imageUrl: widget.tncProfile,
                       height: 250,
                       fit: BoxFit.cover,
                       errorWidget: (context, url, error) => Image.asset(
@@ -274,231 +261,137 @@ class _StepFourState extends State<StepFour> {
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
               child: Text(
-                'สถานะ : ${widget.tncStatus}',
+                'สถานะ : ช่างถึงหน้างานเเล้ว',
                 style: GoogleFonts.sarabun(),
               ),
             ),
-            widget.tncStatus != "ช่างถึงหน้างานเเล้ว"
-                ? const SizedBox.shrink()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
-                        child: Text(
-                          'รูปก่อนเริ่มงาน : ',
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: SizedBox(
-                            height: 200,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: PageView.builder(
-                                controller: imageBfController,
-                                itemCount: widget.imgBfwork!.length,
-                                itemBuilder: (context, index) {
-                                  return CachedNetworkImage(
-                                    imageUrl: widget.imgBfwork![index].image,
-                                    height: 250,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: SmoothPageIndicator(
-                              controller: imageBfController,
-                              count: widget.imgBfwork!.length,
-                              effect: const WormEffect(
-                                spacing: 20,
-                                dotHeight: 10,
-                                dotWidth: 10,
-                                activeDotColor: mainGreen,
-                                dotColor: Colors.black26,
-                              ),
-                              onDotClicked: (index) =>
-                                  imageBfController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeIn,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
+                  child: Text(
+                    'รูปก่อนเริ่มงาน : ',
+                    style: GoogleFonts.sarabun(),
                   ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: SizedBox(
+                      height: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: PageView.builder(
+                          controller: imageBfController,
+                          itemCount: widget.imgBfwork.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: widget.imgBfwork[index].image,
+                              height: 250,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: SmoothPageIndicator(
+                        controller: imageBfController,
+                        count: widget.imgBfwork.length,
+                        effect: const WormEffect(
+                          spacing: 20,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          activeDotColor: mainGreen,
+                          dotColor: Colors.black26,
+                        ),
+                        onDotClicked: (index) =>
+                            imageBfController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-        widget.tncProfile!,
+        widget.tncProfile,
         widget.tncName,
         "3",
       ),
-    ].toList();
-
-    isPriceTwoStatus();
-  }
-
-  @override
-  void dispose() {
-    imageUserController.dispose();
-    imageBfController.dispose();
-
-    super.dispose();
-  }
-
-  Future<void> userSendDeal(String sosId, String userDeal) async {
-    final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/set/user/deal2/$sosId"),
-      body: {
-        'user_deal2': userDeal,
-      },
-    );
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception(jsonDecode(response.body));
-    }
-  }
-
-  void isPriceTwoStatus() {
-    if (widget.priceTwoStatus == "yes") {
-      setState(() {
-        timelines.add(
-          Timelines(
-            widget.tuPriceTwoTimeStamp!,
-            "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
-            Card(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      Timelines(
+        widget.tuPriceTwoTimeStamp!,
+        "เนื่องจากมีการเสนอค่าบริการใหม่ นี้คือข้อเสนอบริการค่าซ่อมก่อนเริ่มงาน",
+        Card(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'รายละเอียดเพิ่มเติม :',
+                  style: GoogleFonts.sarabun(),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  widget.repairDetailsTwo!,
+                  style: GoogleFonts.sarabun(),
+                ),
+                const SizedBox(height: 15),
+                const Divider(
+                  thickness: 1,
+                ),
+                Row(
                   children: [
+                    Expanded(
+                      child: Text(
+                        'รวมทั้งหมด :',
+                        style: GoogleFonts.sarabun(),
+                      ),
+                    ),
                     Text(
-                      'รายละเอียดเพิ่มเติม :',
+                      "${widget.repairPriceTwo} บาท",
                       style: GoogleFonts.sarabun(),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      widget.repairDetailsTwo!,
-                      style: GoogleFonts.sarabun(),
-                    ),
-                    const SizedBox(height: 15),
-                    const Divider(
-                      thickness: 1,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'รวมทั้งหมด :',
-                            style: GoogleFonts.sarabun(),
-                          ),
-                        ),
-                        Text(
-                          "${widget.repairPriceTwo} บาท",
-                          style: GoogleFonts.sarabun(),
-                        ),
-                      ],
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-            "assets/imgs/oparator.png",
-            "เจ้าหน้าที่ Racroad",
-            "2",
           ),
-        );
-        timelines.add(
-          widget.userDealTwo != "yes"
-              ? Timelines(
-                  DateTime.now(),
-                  "ฉันยืนยันรับข้อเสนอดังกล่าว",
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          userSendDeal(widget.sosId, "no");
-
-                          Get.offAllNamed('/sos');
-
-                          Fluttertoast.showToast(
-                            msg:
-                                "คุณปฏิเสธข้อเสนอ สามารถดูประวัติของคุณได้ที่\nหน้าโปรไฟล์ -> ประวัติการแจ้งเหตุฉุกเฉินของฉัน",
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 15,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: whiteGrey,
-                          foregroundColor: darkGray,
-                          minimumSize: const Size(100, 40),
-                        ),
-                        child: Text(
-                          "ปฏิเสธ",
-                          style: GoogleFonts.sarabun(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          userSendDeal(widget.sosId, "yes");
-                          Get.offAllNamed('/sos');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: mainGreen,
-                          minimumSize: const Size(100, 40),
-                        ),
-                        child: Text(
-                          "รับข้อเสนอ",
-                          style: GoogleFonts.sarabun(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  widget.userProfile,
-                  widget.userName,
-                  "1",
-                )
-              : Timelines(
-                  widget.tuUserDealTwoTimeStamp!,
-                  "ฉันยืนยันรับข้อเสนอดังกล่าว",
-                  Text(
-                    "ฉันได้ยืนยันค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
-                    style: GoogleFonts.sarabun(),
-                  ),
-                  widget.userProfile,
-                  widget.userName,
-                  "1",
-                ),
-        );
-      });
-    }
+        ),
+        "assets/imgs/oparator.png",
+        "เจ้าหน้าที่ Racroad",
+        "2",
+      ),
+      Timelines(
+        widget.tuUserDealTwoTimeStamp!,
+        "ฉันปฏิเสธค่าบริการดังกล่าว",
+        Text(
+          "ฉันได้ปฏิเสธค่าบริการ จำนวน ${widget.repairPriceTwo} บาท",
+          style: GoogleFonts.sarabun(),
+        ),
+        widget.userProfile,
+        widget.userName,
+        "1",
+      ),
+    ].toList();
   }
 
   @override
