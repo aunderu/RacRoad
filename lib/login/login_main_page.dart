@@ -25,7 +25,12 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 class LoginMainPage extends StatefulWidget {
-  const LoginMainPage({super.key});
+  LoginMainPage({
+    super.key,
+    this.bgImage,
+  });
+
+  AssetImage? bgImage;
 
   @override
   State<LoginMainPage> createState() => _LoginMainPageState();
@@ -239,9 +244,9 @@ class _LoginMainPageState extends State<LoginMainPage> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/imgs/MainLoginBG-min.jpg'),
+              image: widget.bgImage!,
               fit: BoxFit.cover,
             ),
           ),

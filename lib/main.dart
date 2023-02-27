@@ -7,15 +7,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:rac_road/login/page/with_phone/stepone_with_phone.dart';
-import 'package:rac_road/screens.dart';
-import 'package:rac_road/services/remote_service.dart';
-import 'package:rac_road/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'colors.dart';
 import 'login/login_main_page.dart';
+import 'login/page/with_phone/stepone_with_phone.dart';
 import 'models/user/user_profile_model.dart';
+import 'screens.dart';
+import 'services/remote_service.dart';
+import 'utils/user_preferences.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -155,9 +155,11 @@ class CheckLogin extends StatefulWidget {
 }
 
 class _CheckLoginState extends State<CheckLogin> {
+  final bgImage = const AssetImage('assets/imgs/MainLoginBG-min.jpg');
+
   @override
   void didChangeDependencies() {
-    precacheImage(const AssetImage('assets/imgs/MainLoginBG-min.jpg'), context);
+    precacheImage(bgImage, context);
     super.didChangeDependencies();
   }
 
@@ -191,7 +193,7 @@ class _CheckLoginState extends State<CheckLogin> {
       Timer(
         const Duration(seconds: 2),
         () => Get.to(
-          () => const LoginMainPage(),
+          () => LoginMainPage(bgImage: bgImage),
         ),
       );
     }
