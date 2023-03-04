@@ -300,8 +300,8 @@ Widget clubDetails(BuildContext context, Size size, String clubId) {
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
-                                  // child: Image.network(
-                                  //   '',
+                                  // child: CachedNetworkImage(
+                                  //   imageUrl: dataClubDetails.clubApproveDetail.,
                                   // ),
                                   child: Container(
                                     color: Colors.white,
@@ -594,7 +594,7 @@ Widget clubDetails(BuildContext context, Size size, String clubId) {
                               style: GoogleFonts.sarabun(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 27,
+                                fontSize: 17,
                               ),
                             ),
                           ),

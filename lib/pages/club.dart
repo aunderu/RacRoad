@@ -219,7 +219,30 @@ class _ClubPageState extends State<ClubPage> {
                           case ConnectionState.none:
                             return const ClubLoadingWidget();
                           case ConnectionState.waiting:
-                            return const ClubLoadingWidget();
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<ClubApprove> dataAllClub =
+                                  result!.data.clubApprove!;
+                              return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: dataAllClub.length,
+                                primary: false,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return AllClubWidget(
+                                    getToken: widget.token,
+                                    clubId: dataAllClub[index].id,
+                                    clubName: dataAllClub[index].clubName,
+                                    clubProfile: dataAllClub[index].clubProfile,
+                                    clubStatus: dataAllClub[index].status,
+                                    clubAdmin: dataAllClub[index].admin,
+                                    clubZone: dataAllClub[index].clubZone,
+                                  );
+                                },
+                              );
+                            }
+                            break;
                           case ConnectionState.active:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
