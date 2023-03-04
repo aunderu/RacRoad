@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/login/page/setup/set_interests.dart';
 
 class SetNamePage extends StatefulWidget {
   const SetNamePage({super.key});
@@ -84,12 +83,12 @@ class _SetNamePageState extends State<SetNamePage> {
                     ),
                   ),
                   onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SetInterestsPage(),
-                      ),
-                    );
+                    // await Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const SetInterestsPage(),
+                    //   ),
+                    // );
                   },
                   child: const Text('Next'),
                 ),

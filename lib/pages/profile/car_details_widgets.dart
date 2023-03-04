@@ -271,17 +271,46 @@ Widget carDetailsWidget(
                                             carDataCal.data.engineOilCal == null
                                                 ? 0
                                                 : carDataCal.data.engineOilCal!
-                                                        .dateRemainAvg! /
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
                                                     100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.engineOilCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.engineOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.engineOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal
+                                                      .data
+                                                      .engineOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.engineOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.engineOilCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : '${carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -313,17 +342,56 @@ Widget carDetailsWidget(
                                             carDataCal.data.brakeOilCal == null
                                                 ? 0
                                                 : carDataCal.data.brakeOilCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .brakeOilCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.brakeOilCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.brakeOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.brakeOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal
+                                                      .data
+                                                      .brakeOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.brakeOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.brakeOilCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.brakeOilCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? "0%"
+                                                  : '${carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -355,17 +423,56 @@ Widget carDetailsWidget(
                                             carDataCal.data.powerOilCal == null
                                                 ? 0
                                                 : carDataCal.data.powerOilCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .powerOilCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.powerOilCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.powerOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.powerOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal
+                                                      .data
+                                                      .powerOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.powerOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.powerOilCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.powerOilCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -397,17 +504,54 @@ Widget carDetailsWidget(
                                             carDataCal.data.gearOilCal == null
                                                 ? 0
                                                 : carDataCal.data.gearOilCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .gearOilCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.gearOilCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.gearOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.gearOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal.data.gearOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.gearOilCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.gearOilCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.gearOilCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -510,17 +654,56 @@ Widget carDetailsWidget(
                                             carDataCal.data.brakePadsCal == null
                                                 ? 0
                                                 : carDataCal.data.brakePadsCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .brakePadsCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.brakePadsCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.brakePadsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.brakePadsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal
+                                                      .data
+                                                      .brakePadsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.brakePadsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.brakePadsCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.brakePadsCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -552,17 +735,54 @@ Widget carDetailsWidget(
                                             carDataCal.data.carTireCal == null
                                                 ? 0
                                                 : carDataCal.data.carTireCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .carTireCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.carTireCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.carTireCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.carTireCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal.data.carTireCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.carTireCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.carTireCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.carTireCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -665,17 +885,54 @@ Widget carDetailsWidget(
                                             carDataCal.data.batteryCal == null
                                                 ? 0
                                                 : carDataCal.data.batteryCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .batteryCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.batteryCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.batteryCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.batteryCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal.data.batteryCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.batteryCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.batteryCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.batteryCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -776,17 +1033,51 @@ Widget carDetailsWidget(
                                         percent: carDataCal.data.airCal == null
                                             ? 0
                                             : carDataCal.data.airCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : carDataCal.data.airCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.airCal == null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.airCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.airCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal.data.airCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.airCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.airCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.airCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -818,17 +1109,54 @@ Widget carDetailsWidget(
                                             carDataCal.data.cleanHsCal == null
                                                 ? 0
                                                 : carDataCal.data.cleanHsCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .cleanHsCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.cleanHsCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.cleanHsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.cleanHsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal.data.cleanHsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.cleanHsCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.cleanHsCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.cleanHsCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -860,17 +1188,56 @@ Widget carDetailsWidget(
                                             carDataCal.data.changeAfCal == null
                                                 ? 0
                                                 : carDataCal.data.changeAfCal!
-                                                        .dateRemainAvg! /
-                                                    100,
+                                                            .dateRemainAvg! <
+                                                        0
+                                                    ? 0
+                                                    : carDataCal
+                                                            .data
+                                                            .changeAfCal!
+                                                            .dateRemainAvg!
+                                                            .roundToDouble() /
+                                                        100,
                                         width: 100,
                                         lineHeight: 24,
                                         animation: true,
-                                        progressColor: mainGreen,
+                                        progressColor: (() {
+                                          if (carDataCal.data.changeAfCal ==
+                                              null) {
+                                            return Colors.red;
+                                          }
+                                          if (carDataCal.data.changeAfCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <=
+                                                  100.00 &&
+                                              carDataCal.data.changeAfCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  50.00) {
+                                            return mainGreen;
+                                          } else if (carDataCal
+                                                      .data
+                                                      .changeAfCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() <
+                                                  50.00 &&
+                                              carDataCal.data.changeAfCal!
+                                                      .dateRemainAvg!
+                                                      .roundToDouble() >=
+                                                  30.00) {
+                                            return Colors.yellow;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }()),
                                         backgroundColor: Colors.white,
                                         center: Text(
                                           carDataCal.data.changeAfCal == null
                                               ? '0%'
-                                              : '${carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                              : carDataCal.data.changeAfCal!
+                                                          .dateRemainAvg! <
+                                                      0
+                                                  ? '0%'
+                                                  : '${carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                           style: GoogleFonts.sarabun(
                                             color: const Color(0xFF2E2E2E),
                                           ),
@@ -1299,7 +1666,11 @@ class _OilWidgetsState extends State<OilWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.engineOilCal == null
                                       ? 'น้ำมันเครื่อง 0%'
-                                      : 'น้ำมันเครื่อง ${widget.carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.engineOilCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'น้ำมันเครื่อง 0%'
+                                          : 'น้ำมันเครื่อง ${widget.carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1315,23 +1686,61 @@ class _OilWidgetsState extends State<OilWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.engineOilCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.engineOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.engineOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .engineOilCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.engineOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.engineOilCal ==
                                                 null
                                             ? 0
                                             : widget
-                                                    .carDataCal
-                                                    .data
-                                                    .engineOilCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .carDataCal
+                                                        .data
+                                                        .engineOilCal!
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .engineOilCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.engineOilCal ==
                                               null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.engineOilCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.engineOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1413,7 +1822,11 @@ class _OilWidgetsState extends State<OilWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.brakeOilCal == null
                                       ? 'น้ำมันเบรก 0%'
-                                      : 'น้ำมันเบรก ${widget.carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.brakeOilCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'น้ำมันเบรก 0%'
+                                          : 'น้ำมันเบรก ${widget.carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1429,22 +1842,60 @@ class _OilWidgetsState extends State<OilWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.brakeOilCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.brakeOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.brakeOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .brakeOilCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.brakeOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.brakeOilCal ==
                                                 null
                                             ? 0
                                             : widget
-                                                    .carDataCal
-                                                    .data
-                                                    .brakeOilCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .carDataCal
+                                                        .data
+                                                        .brakeOilCal!
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .brakeOilCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.brakeOilCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.brakeOilCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.brakeOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1532,7 +1983,11 @@ class _OilWidgetsState extends State<OilWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.powerOilCal == null
                                       ? 'น้ำมันเพาเวอร์ 0%'
-                                      : 'น้ำมันเพาเวอร์ ${widget.carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.powerOilCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'น้ำมันเพาเวอร์ 0%'
+                                          : 'น้ำมันเพาเวอร์ ${widget.carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1548,22 +2003,60 @@ class _OilWidgetsState extends State<OilWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.powerOilCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.powerOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.powerOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .powerOilCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.powerOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.powerOilCal ==
                                                 null
                                             ? 0
                                             : widget
-                                                    .carDataCal
-                                                    .data
-                                                    .powerOilCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .carDataCal
+                                                        .data
+                                                        .powerOilCal!
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .powerOilCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.powerOilCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.powerOilCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.powerOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -1651,7 +2144,11 @@ class _OilWidgetsState extends State<OilWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.gearOilCal == null
                                       ? 'น้ำมันเกียร์ 0%'
-                                      : 'น้ำมันเกียร์ ${widget.carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.gearOilCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'น้ำมันเกียร์ 0%'
+                                          : 'น้ำมันเกียร์ ${widget.carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -1667,19 +2164,57 @@ class _OilWidgetsState extends State<OilWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.gearOilCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.gearOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.gearOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .gearOilCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.gearOilCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.gearOilCal ==
                                                 null
                                             ? 0
                                             : widget.carDataCal.data.gearOilCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .gearOilCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.gearOilCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.gearOilCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.gearOilCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -2136,7 +2671,11 @@ class _TireWidgetsState extends State<TireWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.brakePadsCal == null
                                       ? 'ผ้าเบรค 0%'
-                                      : 'ผ้าเบรค ${widget.carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.brakePadsCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'ผ้าเบรค 0%'
+                                          : 'ผ้าเบรค ${widget.carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -2152,23 +2691,61 @@ class _TireWidgetsState extends State<TireWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.brakePadsCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.brakePadsCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.brakePadsCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .brakePadsCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.brakePadsCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.brakePadsCal ==
                                                 null
                                             ? 0
                                             : widget
-                                                    .carDataCal
-                                                    .data
-                                                    .brakePadsCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .carDataCal
+                                                        .data
+                                                        .brakePadsCal!
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .brakePadsCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.brakePadsCal ==
                                               null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.brakePadsCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.brakePadsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -2256,7 +2833,11 @@ class _TireWidgetsState extends State<TireWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.carTireCal == null
                                       ? 'ยางรถ 0%'
-                                      : 'ยางรถ ${widget.carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.carTireCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'ยางรถ 0%'
+                                          : 'ยางรถ ${widget.carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -2272,19 +2853,57 @@ class _TireWidgetsState extends State<TireWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.carTireCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.carTireCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.carTireCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .carTireCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.carTireCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.carTireCal ==
                                                 null
                                             ? 0
                                             : widget.carDataCal.data.carTireCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .carTireCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.carTireCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.carTireCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.carTireCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -2741,7 +3360,11 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.batteryCal == null
                                       ? 'แบตเตอรี่ 0%'
-                                      : 'แบตเตอรี่ ${widget.carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.batteryCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'แบตเตอรี่ 0%'
+                                          : 'แบตเตอรี่ ${widget.carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -2757,19 +3380,57 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.batteryCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.batteryCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.batteryCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .batteryCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.batteryCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.batteryCal ==
                                                 null
                                             ? 0
                                             : widget.carDataCal.data.batteryCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .batteryCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.batteryCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.batteryCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.batteryCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -3226,7 +3887,11 @@ class _AirWidgetsState extends State<AirWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.airCal == null
                                       ? 'น้ำยาแอร์ 0%'
-                                      : 'น้ำยาแอร์ ${widget.carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.airCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'น้ำยาแอร์ 0%'
+                                          : 'น้ำยาแอร์ ${widget.carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -3242,18 +3907,53 @@ class _AirWidgetsState extends State<AirWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.airCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.airCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.airCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data.airCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.airCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.airCal == null
                                             ? 0
                                             : widget.carDataCal.data.airCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget.carDataCal.data.airCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.airCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.airCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.airCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -3335,7 +4035,11 @@ class _AirWidgetsState extends State<AirWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.cleanHsCal == null
                                       ? 'แผงคอยล์ร้อน 0%'
-                                      : 'แผงคอยล์ร้อน ${widget.carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.cleanHsCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'แผงคอยล์ร้อน 0%'
+                                          : 'แผงคอยล์ร้อน ${widget.carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -3351,19 +4055,57 @@ class _AirWidgetsState extends State<AirWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.cleanHsCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.cleanHsCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.cleanHsCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .cleanHsCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.cleanHsCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.cleanHsCal ==
                                                 null
                                             ? 0
                                             : widget.carDataCal.data.cleanHsCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .cleanHsCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.cleanHsCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.cleanHsCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.cleanHsCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),
@@ -3451,7 +4193,11 @@ class _AirWidgetsState extends State<AirWidgets> {
                                 child: Text(
                                   widget.carDataCal.data.changeAfCal == null
                                       ? 'ตัวกรองแอร์ 0%'
-                                      : 'ตัวกรองแอร์ ${widget.carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(0)}%',
+                                      : widget.carDataCal.data.changeAfCal!
+                                                  .dateRemainAvg! <
+                                              0
+                                          ? 'ตัวกรองแอร์ 0%'
+                                          : 'ตัวกรองแอร์ ${widget.carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(0)}%',
                                   style: GoogleFonts.sarabun(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -3467,22 +4213,60 @@ class _AirWidgetsState extends State<AirWidgets> {
                                     backgroundColor: Colors.white,
                                     lineHeight: 25,
                                     animation: true,
-                                    progressColor: mainGreen,
+                                    progressColor: (() {
+                                      if (widget.carDataCal.data.changeAfCal ==
+                                          null) {
+                                        return Colors.red;
+                                      }
+                                      if (widget.carDataCal.data.changeAfCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() <=
+                                              100.00 &&
+                                          widget.carDataCal.data.changeAfCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              50.00) {
+                                        return mainGreen;
+                                      } else if (widget.carDataCal.data
+                                                  .changeAfCal!.dateRemainAvg!
+                                                  .roundToDouble() <
+                                              50.00 &&
+                                          widget.carDataCal.data.changeAfCal!
+                                                  .dateRemainAvg!
+                                                  .roundToDouble() >=
+                                              30.00) {
+                                        return Colors.yellow;
+                                      } else {
+                                        return Colors.red;
+                                      }
+                                    }()),
                                     barRadius: const Radius.circular(50),
                                     percent:
                                         widget.carDataCal.data.changeAfCal ==
                                                 null
                                             ? 0
                                             : widget
-                                                    .carDataCal
-                                                    .data
-                                                    .changeAfCal!
-                                                    .dateRemainAvg! /
-                                                100,
+                                                        .carDataCal
+                                                        .data
+                                                        .changeAfCal!
+                                                        .dateRemainAvg! <
+                                                    0
+                                                ? 0
+                                                : widget
+                                                        .carDataCal
+                                                        .data
+                                                        .changeAfCal!
+                                                        .dateRemainAvg!
+                                                        .roundToDouble() /
+                                                    100,
                                     center: Text(
                                       widget.carDataCal.data.changeAfCal == null
                                           ? '0%'
-                                          : '${widget.carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
+                                          : widget.carDataCal.data.changeAfCal!
+                                                      .dateRemainAvg! <
+                                                  0
+                                              ? '0%'
+                                              : '${widget.carDataCal.data.changeAfCal!.dateRemainAvg!.toStringAsFixed(2)}%',
                                       style: GoogleFonts.sarabun(
                                         color: const Color(0xFF2E2E2E),
                                       ),

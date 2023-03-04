@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../colors.dart';
 import 'club_details.dart';
 
 class ClubWidget extends StatelessWidget {
@@ -10,12 +12,17 @@ class ClubWidget extends StatelessWidget {
     required this.clubName,
     required this.clubZone,
     required this.clubAdmin,
-    required this.getToken, required this.clubId,
+    required this.clubProfile,
+    required this.clubStatus,
+    required this.getToken,
+    required this.clubId,
   });
 
   final String clubAdmin;
   final String clubId;
   final String clubName;
+  final String clubProfile;
+  final String clubStatus;
   final String clubZone;
   final String getToken;
 
@@ -25,22 +32,25 @@ class ClubWidget extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(
-        size.width * 0.02,
+        size.width * 0.04,
         0,
-        size.width * 0.02,
+        size.width * 0.04,
         size.height * 0.01,
       ),
       child: InkWell(
         onTap: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ClubDetailsPage(
-                clubId: clubId,
-                getToken: getToken,
-              ),
-            ),
-          );
+          if (clubStatus == "รอการอนุมัติ") {
+              Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
+            } else if (clubStatus == "ไม่อนุมัติ") {
+              Fluttertoast.showToast(msg: "คลับไม่ได้รับการอนุมัติ");
+            } else {
+              Get.to(
+                () => ClubDetailsPage(
+                  clubId: clubId,
+                  getToken: getToken,
+                ),
+              );
+            }
         },
         child: Ink(
           decoration: BoxDecoration(
@@ -58,28 +68,33 @@ class ClubWidget extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+            padding: const EdgeInsets.all(5),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  // child: Image.network(
-                  //   '',
-                  //   width: 100,
-                  //   height: 100,
-                  //   fit: BoxFit.cover,
-                  // ),
-                  child: Container(
+                  child: CachedNetworkImage(
+                    imageUrl: clubProfile,
                     width: 100,
                     height: 100,
-                    color: const Color(0xFFEBEBEB),
-                    child: const Icon(
-                      Icons.group,
-                      size: 50,
-                      color: darkGray,
+                    placeholder: (context, url) => Container(
+                      width: 100,
+                      height: 100,
+                      color: const Color(0xFFEBEBEB),
                     ),
+                    fit: BoxFit.cover,
                   ),
+                  // child: Container(
+                  //   width: 100,
+                  //   height: 100,
+                  //   color: const Color(0xFFEBEBEB),
+                  //   child: const Icon(
+                  //     Icons.group,
+                  //     size: 50,
+                  //     color: darkGray,
+                  //   ),
+                  // ),
                 ),
                 Expanded(
                   child: Padding(

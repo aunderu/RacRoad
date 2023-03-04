@@ -9,74 +9,85 @@ MyClub myClubFromJson(String str) => MyClub.fromJson(json.decode(str));
 String myClubToJson(MyClub data) => json.encode(data.toJson());
 
 class MyClub {
-  MyClub({
-    required this.status,
-    required this.data,
-    required this.message,
-  });
+    MyClub({
+        required this.status,
+        required this.count,
+        required this.data,
+        required this.message,
+    });
 
-  factory MyClub.fromJson(Map<String, dynamic> json) => MyClub(
+    bool status;
+    int count;
+    Data data;
+    String message;
+
+    factory MyClub.fromJson(Map<String, dynamic> json) => MyClub(
         status: json["status"],
+        count: json["count"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
-      );
+    );
 
-  Data data;
-  String message;
-  bool status;
-
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "status": status,
+        "count": count,
         "data": data.toJson(),
         "message": message,
-      };
+    };
 }
 
 class Data {
-  Data({
-    required this.clubAll,
-  });
+    Data({
+        this.myClub,
+    });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        clubAll: List<ClubAll>.from(
-            json["club_all"].map((x) => ClubAll.fromJson(x))),
-      );
+    List<MyClubElement>? myClub;
 
-  List<ClubAll> clubAll;
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        myClub: json["my_club"] == null ? [] : List<MyClubElement>.from(json["my_club"]!.map((x) => MyClubElement.fromJson(x))),
+    );
 
-  Map<String, dynamic> toJson() => {
-        "club_all": List<dynamic>.from(clubAll.map((x) => x.toJson())),
-      };
+    Map<String, dynamic> toJson() => {
+        "my_club": myClub == null ? [] : List<dynamic>.from(myClub!.map((x) => x.toJson())),
+    };
 }
 
-class ClubAll {
-  ClubAll({
-    required this.id,
-    required this.clubName,
-    required this.clubZone,
-    required this.status,
-    required this.admin,
-  });
+class MyClubElement {
+    MyClubElement({
+        required this.id,
+        required this.clubName,
+        required this.clubZone,
+        required this.description,
+        required this.clubProfile,
+        required this.status,
+        required this.admin,
+    });
 
-  factory ClubAll.fromJson(Map<String, dynamic> json) => ClubAll(
+    String id;
+    String clubName;
+    String clubZone;
+    String description;
+    String clubProfile;
+    String status;
+    String admin;
+
+    factory MyClubElement.fromJson(Map<String, dynamic> json) => MyClubElement(
         id: json["id"],
         clubName: json["club_name"],
         clubZone: json["club_zone"],
+        description: json["description"],
+        clubProfile: json["club_profile"],
         status: json["status"],
         admin: json["admin"],
-      );
+    );
 
-  String admin;
-  String clubName;
-  String clubZone;
-  String id;
-  String status;
-
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "club_name": clubName,
         "club_zone": clubZone,
+        "description": description,
+        "club_profile": clubProfile,
         "status": status,
         "admin": admin,
-      };
+    };
 }

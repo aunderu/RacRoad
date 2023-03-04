@@ -7,7 +7,6 @@ import 'package:rac_road/colors.dart';
 
 import 'create_club.dart';
 
-
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key, required this.getToken});
 
@@ -30,8 +29,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
@@ -48,15 +48,125 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         padding: const EdgeInsets.only(bottom: 80),
         child: PageView(
           controller: controller,
-          children: const [
-            Center(
-              child: Text('Page 1'),
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/imgs/club-banner1.jpg"),
+                  scale: 0.5,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              child: Align(
+                alignment: const AlignmentDirectional(0, -0.8),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'สร้างคลับของคุณ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 40,
+                          // fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 110, 110),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'ร่วมกันสร้างสังคมพูดคุยของคนที่ชอบรถยนต์ด้วยกันเถอะ!',
+                        style: GoogleFonts.kanit(
+                          fontSize: 20,
+                          // fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 110, 110),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            Center(
-              child: Text('Page 2'),
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/imgs/club-banner2.jpg"),
+                  scale: 0.5,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              child: Align(
+                alignment: const AlignmentDirectional(0, -0.85),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'พูดคุยและสื่อสาร',
+                        style: GoogleFonts.kanit(
+                          fontSize: 40,
+                          // fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 110, 110),
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                      Text(
+                        'คุณและผู้คนที่เข้าคลับจะสามารถโพสต์และแสดงความคิดเห็นได้ร่วมกัน!',
+                        style: GoogleFonts.kanit(
+                          fontSize: 20,
+                          // fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 110, 110),
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            Center(
-              child: Text('Page 3'),
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/imgs/club-banner3.jpg"),
+                  scale: 0.5,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              child: Align(
+                alignment: const AlignmentDirectional(0, -0.85),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'การค้นพบคลับ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 40,
+                          // fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 110, 110),
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                      Text(
+                        'หลายผู้คนจะเห็นคลับและแลกเปลี่ยนความรู้เรื่องรถยนต์ร่วมกันมากขึ้น',
+                        style: GoogleFonts.kanit(
+                          fontSize: 20,
+                          // fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 110, 110),
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),

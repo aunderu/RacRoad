@@ -111,8 +111,8 @@ class _ClubPageState extends State<ClubPage> {
                   builder: (context, snapshot) {
                     var result = snapshot.data;
                     if (result != null) {
-                      if (result.data.clubAll.isNotEmpty) {
-                        List<ClubAll> dataMyClub = result.data.clubAll;
+                      if (result.data.myClub!.isNotEmpty) {
+                        List<MyClubElement> dataMyClub = result.data.myClub!;
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           itemCount: dataMyClub.length,
@@ -124,6 +124,8 @@ class _ClubPageState extends State<ClubPage> {
                               getToken: widget.token,
                               clubId: dataMyClub[index].id,
                               clubName: dataMyClub[index].clubName,
+                              clubProfile: dataMyClub[index].clubProfile,
+                              clubStatus: dataMyClub[index].status,
                               clubAdmin: dataMyClub[index].admin,
                               clubZone: dataMyClub[index].clubZone,
                             );

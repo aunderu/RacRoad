@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -14,8 +15,9 @@ import '../club/club_settings.dart';
 
 class AllMyClub extends StatefulWidget {
   const AllMyClub({
-    super.key,
+    super.key, 
     required this.clubName,
+    required this.clubProfile,
     required this.token,
     required this.clubId,
     required this.clubStatus,
@@ -23,6 +25,7 @@ class AllMyClub extends StatefulWidget {
 
   final String clubId;
   final String clubName;
+  final String clubProfile;
   final String clubStatus;
   final String token;
 
@@ -46,6 +49,7 @@ class _AllMyClubState extends State<AllMyClub> {
           ),
         ),
       );
+
       Fluttertoast.showToast(
         msg: "คุณได้ลบคลับนี้แล้ว",
         toastLength: Toast.LENGTH_SHORT,
@@ -192,16 +196,9 @@ class _AllMyClubState extends State<AllMyClub> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    // child: Image.network(
-                    //   '',
-                    // ),
-                    child: Container(
-                      color: Colors.white,
-                      child: const Icon(
-                        Icons.group,
-                        size: 50,
-                        color: darkGray,
-                      ),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.clubProfile,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

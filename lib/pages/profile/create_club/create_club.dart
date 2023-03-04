@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,10 +10,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:rac_road/colors.dart';
-import '../../../../models/category.dart';
-import '../../../screens.dart';
 
 class CreateClubPage extends StatefulWidget {
   const CreateClubPage({super.key, required this.getToken});
@@ -28,8 +30,15 @@ class _CreateClubPageState extends State<CreateClubPage> {
   TextEditingController? clubDescriptionController;
   TextEditingController? clubNameController;
   TextEditingController? clubZoneController;
-  List<Category> pickInterest = [];
-  int totalIndex = 4;
+  List<String> pickInterest = [
+    "กลุ่มพูดคุย",
+    "ชื่อขาย",
+    "แลกเปลี่ยนข้อมูล",
+    "อื่น ๆ",
+  ];
+  List<String> _isSelected = [];
+  int totalIndex = 5;
+  File? imageFile;
 
   int _itemTotal = 0;
 
@@ -49,24 +58,166 @@ class _CreateClubPageState extends State<CreateClubPage> {
     clubZoneController = TextEditingController();
   }
 
-  Future<void> clubSubmit() async {
-    final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/club/store"),
-      body: {
+  void showImageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('กรุณาเลือกรูปคลับของคุณ',
+              textAlign: TextAlign.center),
+          titleTextStyle: GoogleFonts.sarabun(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+          alignment: Alignment.center,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {
+                  getFromCamera();
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        color: Colors.black,
+                        size: 65,
+                      ),
+                    ),
+                    Text(
+                      'กล้อง',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  getFromGallery();
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.image_outlined,
+                        color: Colors.black,
+                        size: 65,
+                      ),
+                    ),
+                    Text(
+                      'รูปภาพ',
+                      style: GoogleFonts.sarabun(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void getFromGallery() async {
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'คุณยังไม่ได้เลือกรูป',
+        backgroundColor: Colors.yellow[100],
+        textColor: Colors.black,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+    Get.back();
+  }
+
+  void getFromCamera() async {
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'คุณยังไม่ได้เลือกรูป',
+        backgroundColor: Colors.yellow[100],
+        textColor: Colors.black,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+      );
+    }
+    Get.back();
+  }
+
+  Future<bool> clubSubmit() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+            strokeWidth: 8,
+          ),
+        );
+      },
+    );
+
+    Map<String, String> headers = {
+      'Content-type': 'multipart/form-data',
+    };
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse("https://api.racroad.com/api/club/store"))
+      ..headers.addAll(headers)
+      ..fields.addAll({
         'user_id': widget.getToken,
         'club_name': clubNameController!.text,
         'description': clubDescriptionController!.text,
         'club_zone': clubZoneController!.text,
-      },
-    );
-    try {
-      if (response.statusCode == 200) {
-        var encodefirst = json.encode(response.body);
-        var data = json.decode(encodefirst);
-        return data;
-      }
-    } catch (e) {
-      throw Exception(jsonDecode(response.body));
+      });
+
+    if (imageFile != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'club_profile',
+          imageFile!.path,
+        ),
+      );
+    }
+
+    for (var i = 0; i < _isSelected.length; i++) {
+      request.fields.addAll({
+        'tags[$i]': _isSelected[i],
+      });
+    }
+
+    var response = await request.send();
+
+    Get.back();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw false;
     }
   }
 
@@ -78,9 +229,9 @@ class _CreateClubPageState extends State<CreateClubPage> {
         return formClubDescription();
       case 2:
         return formClubZone();
-      // case 3:
-      //   return formClubTags(size);
       case 3:
+        return formClubTags(size);
+      case 4:
         return finishClubDetails();
       default:
         return formClubName();
@@ -98,6 +249,10 @@ class _CreateClubPageState extends State<CreateClubPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DotStepper(
+                  indicatorDecoration: const IndicatorDecoration(
+                    color: mainGreen,
+                  ),
+                  tappingEnabled: false,
                   activeStep: activeIndex,
                   dotCount: totalIndex,
                   dotRadius: 20.0,
@@ -216,6 +371,10 @@ class _CreateClubPageState extends State<CreateClubPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DotStepper(
+                  indicatorDecoration: const IndicatorDecoration(
+                    color: mainGreen,
+                  ),
+                  tappingEnabled: false,
                   activeStep: activeIndex,
                   dotCount: totalIndex,
                   dotRadius: 20.0,
@@ -282,11 +441,12 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 ),
                 style: GoogleFonts.sarabun(),
                 maxLines: 4,
+                // expands: true,
                 keyboardType: TextInputType.multiline,
               ),
             ),
           ),
-          const SizedBox(height: 50),
+          // const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
@@ -358,6 +518,10 @@ class _CreateClubPageState extends State<CreateClubPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DotStepper(
+                  indicatorDecoration: const IndicatorDecoration(
+                    color: mainGreen,
+                  ),
+                  tappingEnabled: false,
                   activeStep: activeIndex,
                   dotCount: totalIndex,
                   dotRadius: 20.0,
@@ -504,6 +668,10 @@ class _CreateClubPageState extends State<CreateClubPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DotStepper(
+                  indicatorDecoration: const IndicatorDecoration(
+                    color: mainGreen,
+                  ),
+                  tappingEnabled: false,
                   activeStep: activeIndex,
                   dotCount: totalIndex,
                   dotRadius: 20.0,
@@ -526,6 +694,39 @@ class _CreateClubPageState extends State<CreateClubPage> {
                   ),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 15),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.45,
+            child: SingleChildScrollView(
+              child: ChipsChoice<String>.multiple(
+                value: _isSelected,
+                onChanged: (value) {
+                  if (value.length <= 3) {
+                    setState(() {
+                      _isSelected = value;
+                    });
+                  }
+                },
+                choiceItems: C2Choice.listFrom(
+                  source: pickInterest,
+                  value: (index, item) => item,
+                  label: (index, item) => item,
+                ),
+                choiceCheckmark: true,
+                choiceStyle: C2ChipStyle.toned(
+                  selectedStyle: const C2ChipStyle(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25),
+                    ),
+                    foregroundColor: mainGreen,
+                    backgroundColor: mainGreen,
+                  ),
+                ),
+                wrapped: true,
+                textDirection: TextDirection.ltr,
+              ),
             ),
           ),
           const SizedBox(height: 50),
@@ -678,6 +879,10 @@ class _CreateClubPageState extends State<CreateClubPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       DotStepper(
+                        indicatorDecoration: const IndicatorDecoration(
+                          color: mainGreen,
+                        ),
+                        tappingEnabled: false,
                         activeStep: activeIndex,
                         dotCount: totalIndex,
                         dotRadius: 20.0,
@@ -685,6 +890,123 @@ class _CreateClubPageState extends State<CreateClubPage> {
                         spacing: 10.0,
                       ),
                       const SizedBox(height: 20),
+                      imageFile == null
+                          ? InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                PermissionStatus cameraStatus =
+                                    await Permission.camera.request();
+                                if (cameraStatus == PermissionStatus.granted) {
+                                  showImageDialog();
+                                }
+                                if (cameraStatus == PermissionStatus.denied) {
+                                  Fluttertoast.showToast(
+                                      msg: "This permission is recommended");
+                                }
+                                if (cameraStatus ==
+                                    PermissionStatus.permanentlyDenied) {
+                                  openAppSettings();
+                                }
+
+                                setState(() {});
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Container(color: lightGrey),
+                                  ),
+                                  Positioned(
+                                    bottom: 1.0,
+                                    right: -1.0,
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: lightGrey,
+                                          width: 2.2,
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                PermissionStatus cameraStatus =
+                                    await Permission.camera.request();
+                                if (cameraStatus == PermissionStatus.granted) {
+                                  showImageDialog();
+                                }
+                                if (cameraStatus == PermissionStatus.denied) {
+                                  Fluttertoast.showToast(
+                                      msg: "This permission is recommended");
+                                }
+                                if (cameraStatus ==
+                                    PermissionStatus.permanentlyDenied) {
+                                  openAppSettings();
+                                }
+
+                                setState(() {});
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.file(
+                                      imageFile!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 1.0,
+                                    right: -1.0,
+                                    child: Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: darkGray,
+                                          width: 2.2,
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      const SizedBox(height: 30),
                       Text(
                         'ชื่อคลับของคุณคือ\n${clubNameController!.text}',
                         style: GoogleFonts.sarabun(
@@ -694,7 +1016,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        "Tags : {Club tags}",
+                        "Tags : ${_isSelected.join(", ")}",
                         style: GoogleFonts.sarabun(
                           fontSize: 17,
                         ),
@@ -744,14 +1066,23 @@ class _CreateClubPageState extends State<CreateClubPage> {
                       ElevatedButton(
                         onPressed: () {
                           //ส่งข้อมูลทั้งหมดไปยัง ฐานข้อมูล
-                          clubSubmit();
+                          clubSubmit().then((value) {
+                            if (value == true) {
+                              Fluttertoast.showToast(
+                                msg: "สร้างคลับเรียบร้อย",
+                                backgroundColor: mainGreen,
+                                fontSize: 17,
+                              );
 
-                          Fluttertoast.showToast(
-                            msg: "สร้างคลับเรียบร้อย",
-                            backgroundColor: mainGreen,
-                            fontSize: 17,
-                          );
-                          Get.offAllNamed('/profile-myclub');
+                              Get.offAllNamed('/profile-myclub');
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: "มีบางอย่างผิดพลาด กรุณาลองในภายหลัง",
+                                backgroundColor: Colors.yellowAccent,
+                                textColor: Colors.black,
+                              );
+                            }
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainGreen,
@@ -782,31 +1113,34 @@ class _CreateClubPageState extends State<CreateClubPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (activeIndex != 0) {
-          activeIndex--;
-          setState(() {});
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: WillPopScope(
+        onWillPop: () async {
+          if (activeIndex != 0) {
+            activeIndex--;
+            setState(() {});
+            return true;
+          }
           return true;
-        }
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.black,
-              size: 30,
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
           ),
+          body: bodyBuilder(size),
         ),
-        body: bodyBuilder(size),
       ),
     );
   }

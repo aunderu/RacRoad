@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:rac_road/models/user/my_club_models.dart';
 import '../../../colors.dart';
 import '../../../services/remote_service.dart';
+import '../../models/user/my_club_models.dart';
 import 'all_my_club.dart';
 import 'create_club/on_boarding.dart';
 
@@ -20,9 +20,9 @@ class MyClubWidget extends StatefulWidget {
 }
 
 class _MyClubWidgetState extends State<MyClubWidget> {
-  List<ClubAll>? clubApproved;
-  List<ClubAll>? clubRejected;
-  List<ClubAll>? clubWaiting;
+  List<MyClubElement>? clubApproved;
+  List<MyClubElement>? clubRejected;
+  List<MyClubElement>? clubWaiting;
   bool haveClub = false;
   bool isLoaded = false;
   MyClub? myClub;
@@ -43,15 +43,15 @@ class _MyClubWidgetState extends State<MyClubWidget> {
     });
     myClub = await RemoteService().getMyClub(token);
     if (myClub != null) {
-      final bool? haveData = myClub?.data.clubAll.isNotEmpty;
+      final bool haveData = myClub!.data.myClub!.isNotEmpty;
       if (haveData == true) {
-        clubWaiting = myClub!.data.clubAll
+        clubWaiting = myClub!.data.myClub!
             .where((element) => element.status == "รอการอนุมัติ")
             .toList();
-        clubApproved = myClub!.data.clubAll
+        clubApproved = myClub!.data.myClub!
             .where((element) => element.status == "อนุมัติ")
             .toList();
-        clubRejected = myClub!.data.clubAll
+        clubRejected = myClub!.data.myClub!
             .where((element) => element.status == "ไม่อนุมัติ")
             .toList();
         if (mounted) {
@@ -122,6 +122,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               token: widget.getToken,
                               clubId: clubApproved![index].id,
                               clubName: clubApproved![index].clubName,
+                              clubProfile: clubApproved![index].clubProfile,
                               clubStatus: clubApproved![index].status,
                             );
                           },
@@ -170,6 +171,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               token: widget.getToken,
                               clubId: clubWaiting![index].id,
                               clubName: clubWaiting![index].clubName,
+                              clubProfile: clubWaiting![index].clubProfile,
                               clubStatus: clubWaiting![index].status,
                             );
                           },
@@ -218,6 +220,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               token: widget.getToken,
                               clubId: clubRejected![index].id,
                               clubName: clubRejected![index].clubName,
+                              clubProfile: clubRejected![index].clubProfile,
                               clubStatus: clubRejected![index].status,
                             );
                           },
