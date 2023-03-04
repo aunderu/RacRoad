@@ -7,7 +7,8 @@ import 'package:rac_road/services/remote_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../colors.dart';
-import 'club/club_widget.dart';
+import 'club/all_club_widget.dart';
+import 'club/my_club_widget.dart';
 import 'profile/create_club/on_boarding.dart';
 
 class ClubPage extends StatefulWidget {
@@ -138,7 +139,7 @@ class _ClubPageState extends State<ClubPage> {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
-                                return ClubWidget(
+                                return MyClubWidget(
                                   getToken: widget.token,
                                   clubId: dataMyClub[index].id,
                                   clubName: dataMyClub[index].clubName,
@@ -231,7 +232,7 @@ class _ClubPageState extends State<ClubPage> {
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
-                                  return ClubWidget(
+                                  return AllClubWidget(
                                     getToken: widget.token,
                                     clubId: dataAllClub[index].id,
                                     clubName: dataAllClub[index].clubName,
@@ -261,7 +262,7 @@ class _ClubPageState extends State<ClubPage> {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   itemBuilder: (context, index) {
-                                    return ClubWidget(
+                                    return AllClubWidget(
                                       getToken: widget.token,
                                       clubId: dataAllClub[index].id,
                                       clubName: dataAllClub[index].clubName,

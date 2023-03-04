@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../colors.dart';
 import 'club_details.dart';
 
-class ClubWidget extends StatelessWidget {
-  const ClubWidget({
+class MyClubWidget extends StatelessWidget {
+  const MyClubWidget({
     super.key,
     required this.clubName,
     required this.clubZone,
@@ -116,23 +116,6 @@ class ClubWidget extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                ),
-              ),
-              Container(
-                width: 100,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBEBEB),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Align(
-                  alignment: const AlignmentDirectional(0, 0),
-                  child: Text(
-                    'Unfollow',
-                    style: GoogleFonts.sarabun(
-                      fontWeight: FontWeight.bold,
-                    ),
                   ),
                 ),
               ),
