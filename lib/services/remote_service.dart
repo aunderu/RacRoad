@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/user/car_data_calculated.dart';
 
+import '../models/club/all_club_approve.dart';
 import '../models/user/all_car_models.dart';
 import '../models/user/all_my_car.dart';
 import '../models/sos/all_my_sos_models.dart';
@@ -23,6 +24,7 @@ MyProfile? resultUserProfile;
 AllMyCar? resultAllMyCar;
 MyCarDetails? resultMyCarDetails;
 MyClub? resultMyClub;
+AllClubApprove? resultAllClubApprove;
 ClubDetails? resultClubDetails;
 MyJob? resultMyJob;
 MyCurrentSos? resultMyCurrentSOS;
@@ -111,6 +113,24 @@ class RemoteService {
       }
     }
     return resultMyClub;
+  }
+
+  // ################################ MyClub #################################
+  Future<AllClubApprove?> getAllClubApprove() async {
+    try {
+      final response = await http.get(Uri.parse("$url/club/approve"));
+      if (response.statusCode == 200) {
+        final itemAllClubApprove = json.decode(response.body);
+        resultAllClubApprove = AllClubApprove.fromJson(itemAllClubApprove);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultAllClubApprove;
   }
 
   // ################################ ClubDetails #################################
