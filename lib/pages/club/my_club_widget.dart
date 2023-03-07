@@ -1,87 +1,64 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../colors.dart';
-import 'club_details.dart';
 
 class MyClubWidget extends StatelessWidget {
   const MyClubWidget({
     super.key,
-    required this.clubName,
-    required this.clubZone,
-    required this.clubAdmin,
     this.clubProfile,
-    required this.clubStatus,
-    required this.getToken,
-    required this.clubId,
+    required this.clubName,
+    required this.clubDescription,
   });
 
-  final String clubAdmin;
-  final String clubId;
-  final String clubName;
   final String? clubProfile;
-  final String clubStatus;
-  final String clubZone;
-  final String getToken;
+  final String clubName;
+  final String clubDescription;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        if (clubStatus == "รอการอนุมัติ") {
-          Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
-        } else if (clubStatus == "ไม่อนุมัติ") {
-          Fluttertoast.showToast(msg: "คลับไม่ได้รับการอนุมัติ");
-        } else {
-          Get.to(
-            () => ClubDetailsPage(
-              clubId: clubId,
-              getToken: getToken,
-            ),
-          );
-        }
-      },
-      child: Ink(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 4,
-              color: Color(0x33000000),
-              offset: Offset(0, 2),
-            )
-          ],
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: const Color(0xFFEBEBEB),
+    return Padding(
+      padding: const EdgeInsets.only(right: 15),
+      child: InkWell(
+        onTap: () {},
+        child: Ink(
+          width: MediaQuery.of(context).size.width * 0.4,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 4,
+                color: Color(0x34090F13),
+                offset: Offset(0, 2),
+              )
+            ],
+            borderRadius: BorderRadius.circular(8),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(5),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
                 child: clubProfile != null
                     ? CachedNetworkImage(
                         imageUrl: clubProfile!,
-                        width: 100,
-                        height: 100,
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: double.infinity,
                         placeholder: (context, url) => Container(
-                          width: 100,
-                          height: 100,
+                          height: MediaQuery.of(context).size.height * 0.15,
                           color: const Color(0xFFEBEBEB),
                         ),
                         fit: BoxFit.cover,
                       )
                     : Container(
-                        width: 100,
-                        height: 100,
-                        color: const Color(0xFFEBEBEB),
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: double.infinity,
+                        color: Colors.white,
                         child: const Icon(
                           Icons.group,
                           size: 50,
@@ -89,34 +66,27 @@ class MyClubWidget extends StatelessWidget {
                         ),
                       ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        clubName,
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                        ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      clubName,
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        clubAdmin,
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    Text(
+                      clubDescription,
+                      style: GoogleFonts.sarabun(
+                        fontSize: 12,
                       ),
-                      Text(
-                        clubZone,
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
             ],

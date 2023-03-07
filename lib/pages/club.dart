@@ -1,8 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/models/club/all_club_approve.dart';
-import 'package:rac_road/models/user/my_club_models.dart';
+import 'package:rac_road/models/club/user_club_not_joined.dart';
+import 'package:rac_road/models/club/my_club_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -113,6 +113,7 @@ class _ClubPageState extends State<ClubPage> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
@@ -127,33 +128,120 @@ class _ClubPageState extends State<ClubPage> {
                     FutureBuilder<MyClub?>(
                       future: RemoteService().getMyClub(widget.token),
                       builder: (context, snapshot) {
-                        var result = snapshot.data;
-                        if (result != null) {
-                          if (result.data.myClub!.isNotEmpty) {
-                            List<MyClubElement> dataMyClub =
-                                result.data.myClub!;
-                            return ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: dataMyClub.length,
-                              primary: false,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (context, index) {
-                                return MyClubWidget(
-                                  getToken: widget.token,
-                                  clubId: dataMyClub[index].id,
-                                  clubName: dataMyClub[index].clubName,
-                                  clubProfile: dataMyClub[index].clubProfile,
-                                  clubStatus: dataMyClub[index].status,
-                                  clubAdmin: dataMyClub[index].admin,
-                                  clubZone: dataMyClub[index].clubZone,
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return const MyClubLoadingWidget();
+                          case ConnectionState.waiting:
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<MyClubElement> dataMyClub =
+                                  result!.data.myClub!;
+                              if (dataMyClub.isNotEmpty) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.22,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: dataMyClub.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return FittedBox(
+                                        child: MyClubWidget(
+                                          clubProfile:
+                                              dataMyClub[index].clubProfile,
+                                          clubName: dataMyClub[index].clubName,
+                                          clubDescription:
+                                              dataMyClub[index].description,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            );
-                          }
-                          return SizedBox.fromSize();
+                              } else {
+                                return SizedBox.fromSize();
+                              }
+                            }
+                            break;
+                          case ConnectionState.active:
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<MyClubElement> dataMyClub =
+                                  result!.data.myClub!;
+                              if (dataMyClub.isNotEmpty) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.22,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: dataMyClub.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return FittedBox(
+                                        child: MyClubWidget(
+                                          clubProfile:
+                                              dataMyClub[index].clubProfile,
+                                          clubName: dataMyClub[index].clubName,
+                                          clubDescription:
+                                              dataMyClub[index].description,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              } else {
+                                return SizedBox.fromSize();
+                              }
+                            }
+                            break;
+                          case ConnectionState.done:
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                            } else {
+                              if (snapshot.hasData) {
+                                var result = snapshot.data;
+                                List<MyClubElement> dataMyClub =
+                                    result!.data.myClub!;
+                                if (dataMyClub.isNotEmpty) {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.22,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      itemCount: dataMyClub.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return FittedBox(
+                                          child: MyClubWidget(
+                                            clubProfile:
+                                                dataMyClub[index].clubProfile,
+                                            clubName:
+                                                dataMyClub[index].clubName,
+                                            clubDescription:
+                                                dataMyClub[index].description,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  return SizedBox.fromSize();
+                                }
+                              }
+
+                              // return const MyClubLoadingWidget();
+                            }
                         }
-                        return const ClubLoadingWidget();
+                        return const MyClubLoadingWidget();
                       },
                     ),
                   ],
@@ -205,15 +293,16 @@ class _ClubPageState extends State<ClubPage> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'คลับทั้งหมด',
+                        'คลับที่ฉันติดตาม',
                         style: GoogleFonts.sarabun(
                           fontSize: 20,
                         ),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    FutureBuilder<AllClubApprove?>(
-                      future: RemoteService().getAllClubApprove(),
+                    FutureBuilder<UserClubNotJoined?>(
+                      future:
+                          RemoteService().getUserClubNotJoined(widget.token),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -221,8 +310,8 @@ class _ClubPageState extends State<ClubPage> {
                           case ConnectionState.waiting:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
-                              List<ClubApprove> dataAllClub =
-                                  result!.data.clubApprove!;
+                              List<ClubNotJoin> dataAllClub =
+                                  result!.data.clubNotJoin;
                               return ListView.builder(
                                 padding: EdgeInsets.zero,
                                 itemCount: dataAllClub.length,
@@ -246,8 +335,8 @@ class _ClubPageState extends State<ClubPage> {
                           case ConnectionState.active:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
-                              List<ClubApprove> dataAllClub =
-                                  result!.data.clubApprove!;
+                              List<ClubNotJoin> dataAllClub =
+                                  result!.data.clubNotJoin;
                               return ListView.builder(
                                 padding: EdgeInsets.zero,
                                 itemCount: dataAllClub.length,
@@ -274,10 +363,136 @@ class _ClubPageState extends State<ClubPage> {
                                   child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
                             }
                             if (snapshot.hasData) {
-                              if (snapshot.data!.data.clubApprove!.isNotEmpty) {
+                              if (snapshot.data!.data.clubNotJoin.isNotEmpty) {
                                 var result = snapshot.data;
-                                List<ClubApprove> dataAllClub =
-                                    result!.data.clubApprove!;
+                                List<ClubNotJoin> dataAllClub =
+                                    result!.data.clubNotJoin;
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: dataAllClub.length,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return AllClubWidget(
+                                      getToken: widget.token,
+                                      clubId: dataAllClub[index].id,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubStatus: dataAllClub[index].status,
+                                      clubAdmin: dataAllClub[index].admin,
+                                      clubZone: dataAllClub[index].clubZone,
+                                    );
+                                  },
+                                );
+                              }
+                            } else {
+                              return SizedBox(
+                                height: 50,
+                                child: Center(
+                                  child: Text(
+                                    'ดูเหมือนยังไม่มีคลับอะไรในตอนนี้',
+                                    style: GoogleFonts.sarabun(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                        }
+                        return const ClubLoadingWidget();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.only(
+                  top: size.height * 0.02,
+                  bottom: size.height * 0.02,
+                  start: size.width * 0.04,
+                  end: size.width * 0.04,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'คลับทั้งหมด',
+                        style: GoogleFonts.sarabun(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    FutureBuilder<UserClubNotJoined?>(
+                      future:
+                          RemoteService().getUserClubNotJoined(widget.token),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return const ClubLoadingWidget();
+                          case ConnectionState.waiting:
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<ClubNotJoin> dataAllClub =
+                                  result!.data.clubNotJoin;
+                              return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: dataAllClub.length,
+                                primary: false,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return AllClubWidget(
+                                    getToken: widget.token,
+                                    clubId: dataAllClub[index].id,
+                                    clubName: dataAllClub[index].clubName,
+                                    clubProfile: dataAllClub[index].clubProfile,
+                                    clubStatus: dataAllClub[index].status,
+                                    clubAdmin: dataAllClub[index].admin,
+                                    clubZone: dataAllClub[index].clubZone,
+                                  );
+                                },
+                              );
+                            }
+                            break;
+                          case ConnectionState.active:
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<ClubNotJoin> dataAllClub =
+                                  result!.data.clubNotJoin;
+                              return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: dataAllClub.length,
+                                primary: false,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return AllClubWidget(
+                                    getToken: widget.token,
+                                    clubId: dataAllClub[index].id,
+                                    clubName: dataAllClub[index].clubName,
+                                    clubProfile: dataAllClub[index].clubProfile,
+                                    clubStatus: dataAllClub[index].status,
+                                    clubAdmin: dataAllClub[index].admin,
+                                    clubZone: dataAllClub[index].clubZone,
+                                  );
+                                },
+                              );
+                            }
+                            break;
+                          case ConnectionState.done:
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                            }
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.data.clubNotJoin.isNotEmpty) {
+                                var result = snapshot.data;
+                                List<ClubNotJoin> dataAllClub =
+                                    result!.data.clubNotJoin;
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,
@@ -436,6 +651,52 @@ class ClubLoadingWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MyClubLoadingWidget extends StatelessWidget {
+  const MyClubLoadingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: MediaQuery.of(context).size.height * 0.22,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 4,
+            color: Color(0x34090F13),
+            offset: Offset(0, 2),
+          )
+        ],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+            child: Shimmer.fromColors(
+              baseColor: lightGrey,
+              highlightColor: Colors.white,
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.15,
+                color: lightGrey,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

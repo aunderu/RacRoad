@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../colors.dart';
 import '../../../services/remote_service.dart';
-import '../../models/user/my_club_models.dart';
+import '../../models/club/my_club_models.dart';
 import 'all_my_club.dart';
 import 'create_club/on_boarding.dart';
 

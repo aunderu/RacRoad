@@ -2,17 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:rac_road/models/user/car_data_calculated.dart';
 
-import '../models/club/all_club_approve.dart';
+import '../models/club/user_club_joined.dart';
+import '../models/club/user_club_not_joined.dart';
 import '../models/user/all_car_models.dart';
 import '../models/user/all_my_car.dart';
 import '../models/sos/all_my_sos_models.dart';
 import '../models/user/all_my_tnc_sos_models.dart';
+import '../models/user/car_data_calculated.dart';
 import '../models/user/club_details.dart';
 import '../models/user/current_tnc_sos_models.dart';
 import '../models/user/my_car_details.dart';
-import '../models/user/my_club_models.dart';
+import '../models/club/my_club_models.dart';
 import '../models/sos/my_current_sos_models.dart';
 import '../models/user/my_job_models.dart';
 import '../models/sos/problem_type.dart';
@@ -24,7 +25,6 @@ MyProfile? resultUserProfile;
 AllMyCar? resultAllMyCar;
 MyCarDetails? resultMyCarDetails;
 MyClub? resultMyClub;
-AllClubApprove? resultAllClubApprove;
 ClubDetails? resultClubDetails;
 MyJob? resultMyJob;
 MyCurrentSos? resultMyCurrentSOS;
@@ -36,6 +36,8 @@ AllCarModel? resultAllCar;
 ProblemType? resultProblemType;
 SpecificProblem? resultSpecificProblem;
 CarDataCal? resultCarDataCal;
+UserClubJoined? resultUserClubJoined;
+UserClubNotJoined? resultUserClubNotJoined;
 
 const url = "https://api.racroad.com/api";
 // const testurl = "https://api-racroad.chabafarm.com/api";
@@ -113,24 +115,6 @@ class RemoteService {
       }
     }
     return resultMyClub;
-  }
-
-  // ################################ MyClub #################################
-  Future<AllClubApprove?> getAllClubApprove() async {
-    try {
-      final response = await http.get(Uri.parse("$url/club/approve"));
-      if (response.statusCode == 200) {
-        final itemAllClubApprove = json.decode(response.body);
-        resultAllClubApprove = AllClubApprove.fromJson(itemAllClubApprove);
-      } else {
-        throw Exception(jsonDecode(response.body));
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    return resultAllClubApprove;
   }
 
   // ################################ ClubDetails #################################
@@ -320,8 +304,7 @@ class RemoteService {
   // ################################ Car Data Calculated #################################
   Future<CarDataCal?> getCarDataCal(String carId) async {
     try {
-      final response = await http
-          .get(Uri.parse("$url/upgc/cal/$carId"));
+      final response = await http.get(Uri.parse("$url/upgc/cal/$carId"));
       if (response.statusCode == 200) {
         final itemCarDataCal = json.decode(response.body);
         resultCarDataCal = CarDataCal.fromJson(itemCarDataCal);
@@ -334,5 +317,41 @@ class RemoteService {
       }
     }
     return resultCarDataCal;
+  }
+
+  // ################################ User Club Joined #################################
+  Future<UserClubJoined?> getUserClubJoined(String userId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/my/club/join/$userId"));
+      if (response.statusCode == 200) {
+        final itemUserClubJoined = json.decode(response.body);
+        resultUserClubJoined = UserClubJoined.fromJson(itemUserClubJoined);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultUserClubJoined;
+  }
+
+  // ################################ User Club NOT Joined #################################
+  Future<UserClubNotJoined?> getUserClubNotJoined(String userId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/club/not/join/$userId"));
+      if (response.statusCode == 200) {
+        final itemUserClubNotJoined = json.decode(response.body);
+        resultUserClubNotJoined = UserClubNotJoined.fromJson(itemUserClubNotJoined);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultUserClubNotJoined;
   }
 }
