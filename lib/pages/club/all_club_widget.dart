@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 import '../../colors.dart';
 import 'club_details.dart';
@@ -17,6 +18,7 @@ class AllClubWidget extends StatelessWidget {
     required this.clubStatus,
     required this.getToken,
     required this.clubId,
+    required this.adminName, required this.userName,
   });
 
   final String clubAdmin;
@@ -26,9 +28,26 @@ class AllClubWidget extends StatelessWidget {
   final String clubStatus;
   final String clubZone;
   final String getToken;
+  final String adminName;
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> userJoinClub() async {
+      final response = await http.post(
+        Uri.parse("https://api.racroad.com/api/request/join/club"),
+        body: {
+          'user_id': getToken,
+          'club_id': clubId,
+        },
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw false;
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
@@ -42,6 +61,7 @@ class AllClubWidget extends StatelessWidget {
               () => ClubDetailsPage(
                 clubId: clubId,
                 getToken: getToken,
+                userName: userName,
               ),
             );
           }
@@ -121,23 +141,81 @@ class AllClubWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  width: 100,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEBEBEB),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Align(
-                    alignment: const AlignmentDirectional(0, 0),
-                    child: Text(
-                      'Unfollow',
-                      style: GoogleFonts.sarabun(
-                        fontWeight: FontWeight.bold,
+                adminName == userName
+                    ? const SizedBox.shrink()
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Material(
+                          child: InkWell(
+                            onTap: () {
+                              clubStatus == 'Notjoin'
+                                  // ? userJoinClub()
+                                  //     .then((value) => Get.offAllNamed('/club'))
+                                  ? Get.defaultDialog(
+                                      title: 'ติดตามคลับ\n$clubName',
+                                      titleStyle: GoogleFonts.sarabun(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      titlePadding:
+                                          const EdgeInsets.only(top: 20),
+                                      middleText:
+                                          'เมื่อคุณขอเข้าร่วมคลับ คุณอาจต้องรอการตอบรับคำขอเข้าร่วมของคุณ',
+                                      confirm: ElevatedButton(
+                                        onPressed: () {
+                                          userJoinClub();
+                                          Get.offAllNamed('/club');
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainGreen,
+                                          minimumSize: const Size(100, 40),
+                                        ),
+                                        child: Text(
+                                          "เข้าคลับ",
+                                          style: GoogleFonts.sarabun(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      cancel: ElevatedButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: whiteGrey,
+                                          foregroundColor: darkGray,
+                                          minimumSize: const Size(100, 40),
+                                        ),
+                                        child: Text(
+                                          "ยกเลิก",
+                                          style: GoogleFonts.sarabun(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Get.snackbar('Unfollow!',
+                                      'ปุมนี้สามารถกดยกเลิกติดตามได้');
+                            },
+                            child: Ink(
+                              width: 100,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEBEBEB),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Align(
+                                alignment: const AlignmentDirectional(0, 0),
+                                child: Text(
+                                  clubStatus == 'Notjoin' ? 'Join' : 'Unjoin',
+                                  style: GoogleFonts.sarabun(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

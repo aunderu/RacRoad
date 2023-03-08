@@ -439,16 +439,54 @@ class _StepFourState extends State<StepFour> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          userSendDeal(widget.sosId, "no");
+                          Get.defaultDialog(
+                            title: 'ปฏิเสธข้อเสนอดังกล่าว',
+                            titleStyle: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            middleText:
+                                'คุณกำลังปฏิเสธข้อเสนอ เมื่อคุณปฏิเสธจะไม่สามารถย้อนกลับได้',
+                            confirm: ElevatedButton(
+                              onPressed: () {
+                                userSendDeal(widget.sosId, "no");
 
-                          Get.offAllNamed('/sos');
+                                Get.offAllNamed('/sos');
 
-                          Fluttertoast.showToast(
-                            msg:
-                                "คุณปฏิเสธข้อเสนอ สามารถดูประวัติของคุณได้ที่\nหน้าโปรไฟล์ -> ประวัติการแจ้งเหตุฉุกเฉินของฉัน",
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 15,
+                                Fluttertoast.showToast(
+                                  msg:
+                                      "คุณปฏิเสธข้อเสนอ สามารถดูประวัติของคุณได้ที่\nหน้าโปรไฟล์ -> ประวัติการแจ้งเหตุฉุกเฉินของฉัน",
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 15,
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: whiteGrey,
+                                foregroundColor: darkGray,
+                                minimumSize: const Size(100, 40),
+                              ),
+                              child: Text(
+                                "ยกเลิกข้อเสนอ",
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            cancel: ElevatedButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mainGreen,
+                                minimumSize: const Size(100, 40),
+                              ),
+                              child: Text(
+                                "ฉันขอคิดดูก่อน",
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -465,8 +503,53 @@ class _StepFourState extends State<StepFour> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          userSendDeal(widget.sosId, "yes");
-                          Get.offAllNamed('/sos');
+                          Get.defaultDialog(
+                            title: 'ปฏิเสธข้อเสนอดังกล่าว',
+                            titleStyle: GoogleFonts.sarabun(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            middleText:
+                                'คุณกำลังยืนยันข้อเสนอดังกล่าว เมื่อคุณยืนยันจะไม่สามารถย้อนกลับได้',
+                            confirm: ElevatedButton(
+                              onPressed: () {
+                                userSendDeal(widget.sosId, "yes");
+                                Get.offAllNamed('/sos');
+
+                                Fluttertoast.showToast(
+                                  msg: "คุณได้ยืนยันรับข้อเสนอดังกล่าว",
+                                  backgroundColor: lightGreen,
+                                  textColor: Colors.white,
+                                  fontSize: 15,
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mainGreen,
+                                minimumSize: const Size(100, 40),
+                              ),
+                              child: Text(
+                                "รับข้อเสนอ",
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            cancel: ElevatedButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: whiteGrey,
+                                foregroundColor: darkGray,
+                                minimumSize: const Size(100, 40),
+                              ),
+                              child: Text(
+                                "ฉันขอคิดดูก่อน",
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainGreen,

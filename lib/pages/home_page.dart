@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../colors.dart';
+import '../models/club/my_posts.dart';
+import '../services/remote_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -158,17 +163,151 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  primary: false,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    newsFeed(context, size),
-                    newsFeed(context, size),
-                    newsFeed(context, size),
-                    newsFeed(context, size),
-                  ],
+                child: FutureBuilder<MyPosts?>(
+                  future: RemoteService().getMyPosts(widget.token),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(mainGreen),
+                            strokeWidth: 8,
+                          ),
+                        );
+                      case ConnectionState.waiting:
+                        if (snapshot.hasData) {
+                          var result = snapshot.data;
+                          Data dataMyPosts = result!.data;
+                          if (dataMyPosts.myPost.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height / 5,
+                                child: Center(
+                                  child: Text(
+                                    "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการเพิ่มโพสต์ที่มุมขวาล่าง",
+                                    style: GoogleFonts.sarabun(
+                                      fontSize: 15,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: dataMyPosts.myPost.length,
+                            itemBuilder: (context, index) {
+                              return newsFeed(
+                                context,
+                                size,
+                                dataMyPosts.myPost[index].avatar,
+                                dataMyPosts.myPost[index].ownerAvatar,
+                                dataMyPosts.myPost[index].description,
+                              );
+                            },
+                          );
+                        }
+                        break;
+                      case ConnectionState.active:
+                        if (snapshot.hasData) {
+                          var result = snapshot.data;
+                          Data dataMyPosts = result!.data;
+                          if (dataMyPosts.myPost.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height / 5,
+                                child: Center(
+                                  child: Text(
+                                    "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการเพิ่มโพสต์ที่มุมขวาล่าง",
+                                    style: GoogleFonts.sarabun(
+                                      fontSize: 15,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: dataMyPosts.myPost.length,
+                            itemBuilder: (context, index) {
+                              return newsFeed(
+                                context,
+                                size,
+                                dataMyPosts.myPost[index].avatar,
+                                dataMyPosts.myPost[index].ownerAvatar,
+                                dataMyPosts.myPost[index].description,
+                              );
+                            },
+                          );
+                        }
+                        break;
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return const Center(
+                              child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                        } else {
+                          if (snapshot.hasData) {
+                            var result = snapshot.data;
+                            Data dataMyPosts = result!.data;
+                            if (dataMyPosts.myPost.isEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.all(30.0),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height / 5,
+                                  child: Center(
+                                    child: Text(
+                                      "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการเพิ่มโพสต์ที่มุมขวาล่าง",
+                                      style: GoogleFonts.sarabun(
+                                        fontSize: 15,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              primary: false,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: dataMyPosts.myPost.length,
+                              itemBuilder: (context, index) {
+                                return newsFeed(
+                                  context,
+                                  size,
+                                  dataMyPosts.myPost[index].avatar,
+                                  dataMyPosts.myPost[index].ownerAvatar,
+                                  dataMyPosts.myPost[index].description,
+                                );
+                              },
+                            );
+                          }
+                        }
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                        strokeWidth: 8,
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -250,7 +389,13 @@ Widget clubSuggestion(BuildContext context, Size size) {
   );
 }
 
-Widget newsFeed(BuildContext context, Size size) {
+Widget newsFeed(
+  BuildContext context,
+  Size size,
+  String userProfile,
+  String userName,
+  String description,
+) {
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
       size.width * 0.03,
@@ -285,10 +430,14 @@ Widget newsFeed(BuildContext context, Size size) {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Image.asset(
-                      'assets/imgs/profile.png',
-                      fit: BoxFit.fitWidth,
+                    child: CachedNetworkImage(
+                      imageUrl: userProfile,
+                      fit: BoxFit.cover,
                     ),
+                    // child: Image.asset(
+                    //   'assets/imgs/profile.png',
+                    //   fit: BoxFit.fitWidth,
+                    // ),
                   ),
                 ),
                 Expanded(
@@ -300,19 +449,19 @@ Widget newsFeed(BuildContext context, Size size) {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         child: Text(
-                          'Club name',
+                          userName,
                           style: GoogleFonts.sarabun(),
                         ),
                       ),
-                      IconButton(
-                        hoverColor: Colors.transparent,
-                        icon: const Icon(
-                          Icons.bookmark_border,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
-                        onPressed: () {},
-                      ),
+                      // IconButton(
+                      //   hoverColor: Colors.transparent,
+                      //   icon: const Icon(
+                      //     Icons.bookmark_border,
+                      //     color: Colors.grey,
+                      //     size: 20,
+                      //   ),
+                      //   onPressed: () {},
+                      // ),
                     ],
                   ),
                 ),
@@ -347,18 +496,16 @@ Widget newsFeed(BuildContext context, Size size) {
             ),
           ),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
                   child: Text(
-                    'description',
+                    description,
                     style: GoogleFonts.sarabun(),
                   ),
                 ),

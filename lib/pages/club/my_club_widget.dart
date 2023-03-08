@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../colors.dart';
+import 'club_details.dart';
 
 class MyClubWidget extends StatelessWidget {
   const MyClubWidget({
@@ -10,18 +13,39 @@ class MyClubWidget extends StatelessWidget {
     this.clubProfile,
     required this.clubName,
     required this.clubDescription,
+    required this.clubStatus,
+    required this.clubId,
+    required this.getToken, required this.userName,
   });
 
+  final String clubId;
+  final String getToken;
   final String? clubProfile;
   final String clubName;
   final String clubDescription;
+  final String clubStatus;
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 15),
       child: InkWell(
-        onTap: () {},
+        onTap: () async {
+          if (clubStatus == "รอการอนุมัติ") {
+            Fluttertoast.showToast(msg: "คลับกำลังรอการอนุมัติ");
+          } else if (clubStatus == "ไม่อนุมัติ") {
+            Fluttertoast.showToast(msg: "คลับไม่ได้รับการอนุมัติ");
+          } else {
+            Get.to(
+              () => ClubDetailsPage(
+                clubId: clubId,
+                getToken: getToken,
+                userName: userName,
+              ),
+            );
+          }
+        },
         child: Ink(
           width: MediaQuery.of(context).size.width * 0.4,
           decoration: BoxDecoration(

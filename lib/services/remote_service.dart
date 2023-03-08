@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/club/my_club_post.dart';
+import '../models/club/my_posts.dart';
 import '../models/club/user_club_joined.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../models/user/all_car_models.dart';
@@ -38,6 +40,8 @@ SpecificProblem? resultSpecificProblem;
 CarDataCal? resultCarDataCal;
 UserClubJoined? resultUserClubJoined;
 UserClubNotJoined? resultUserClubNotJoined;
+MyClubPosts? resultMyClubPosts;
+MyPosts? resultMyPosts;
 
 const url = "https://api.racroad.com/api";
 // const testurl = "https://api-racroad.chabafarm.com/api";
@@ -343,7 +347,8 @@ class RemoteService {
       final response = await http.get(Uri.parse("$url/club/not/join/$userId"));
       if (response.statusCode == 200) {
         final itemUserClubNotJoined = json.decode(response.body);
-        resultUserClubNotJoined = UserClubNotJoined.fromJson(itemUserClubNotJoined);
+        resultUserClubNotJoined =
+            UserClubNotJoined.fromJson(itemUserClubNotJoined);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -353,5 +358,43 @@ class RemoteService {
       }
     }
     return resultUserClubNotJoined;
+  }
+
+  // ################################ My Club Posts #################################
+  Future<MyClubPosts?> getMyClubPosts(String clubId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/my/club/post/$clubId"));
+      if (response.statusCode == 200) {
+        final itemMyClubPosts = json.decode(response.body);
+        resultMyClubPosts =
+            MyClubPosts.fromJson(itemMyClubPosts);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultMyClubPosts;
+  }
+
+  // ################################ My Posts #################################
+  Future<MyPosts?> getMyPosts(String userId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/my/post/$userId"));
+      if (response.statusCode == 200) {
+        final itemMyPosts = json.decode(response.body);
+        resultMyPosts =
+            MyPosts.fromJson(itemMyPosts);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultMyPosts;
   }
 }

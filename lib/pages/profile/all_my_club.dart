@@ -21,7 +21,7 @@ class AllMyClub extends StatefulWidget {
     required this.clubProfile,
     required this.token,
     required this.clubId,
-    required this.clubStatus,
+    required this.clubStatus, required this.userName,
   });
 
   final String clubId;
@@ -29,6 +29,7 @@ class AllMyClub extends StatefulWidget {
   final String clubProfile;
   final String clubStatus;
   final String token;
+  final String userName;
 
   @override
   State<AllMyClub> createState() => _AllMyClubState();
@@ -353,6 +354,7 @@ class _AllMyClubState extends State<AllMyClub> {
                 () => ClubDetailsPage(
                   clubId: widget.clubId,
                   getToken: widget.token,
+                  userName: widget.userName,
                 ),
               );
             }

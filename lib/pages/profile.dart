@@ -38,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
     MyCarWidget(getToken: widget.getToken),
     MyClubWidget(
       getToken: widget.getToken,
+      userName: name!,
     ),
     MyJobWidget(
       getToken: widget.getToken,

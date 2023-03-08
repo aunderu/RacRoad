@@ -7,14 +7,20 @@ import 'package:rac_road/services/remote_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../colors.dart';
+import '../models/club/user_club_joined.dart';
 import 'club/all_club_widget.dart';
 import 'club/my_club_widget.dart';
 import 'profile/create_club/on_boarding.dart';
 
 class ClubPage extends StatefulWidget {
-  const ClubPage({super.key, required this.token});
+  const ClubPage({
+    super.key,
+    required this.token,
+    required this.userName,
+  });
 
   final String token;
+  final String userName;
 
   @override
   State<ClubPage> createState() => _ClubPageState();
@@ -155,6 +161,10 @@ class _ClubPageState extends State<ClubPage> {
                                           clubName: dataMyClub[index].clubName,
                                           clubDescription:
                                               dataMyClub[index].description,
+                                          clubId: dataMyClub[index].id,
+                                          clubStatus: dataMyClub[index].status,
+                                          getToken: widget.token,
+                                          userName: widget.userName,
                                         ),
                                       );
                                     },
@@ -189,6 +199,10 @@ class _ClubPageState extends State<ClubPage> {
                                           clubName: dataMyClub[index].clubName,
                                           clubDescription:
                                               dataMyClub[index].description,
+                                          clubId: dataMyClub[index].id,
+                                          clubStatus: dataMyClub[index].status,
+                                          getToken: widget.token,
+                                          userName: widget.userName,
                                         ),
                                       );
                                     },
@@ -228,6 +242,11 @@ class _ClubPageState extends State<ClubPage> {
                                                 dataMyClub[index].clubName,
                                             clubDescription:
                                                 dataMyClub[index].description,
+                                            clubId: dataMyClub[index].id,
+                                            clubStatus:
+                                                dataMyClub[index].status,
+                                            getToken: widget.token,
+                                            userName: widget.userName,
                                           ),
                                         );
                                       },
@@ -237,8 +256,6 @@ class _ClubPageState extends State<ClubPage> {
                                   return SizedBox.fromSize();
                                 }
                               }
-
-                              // return const MyClubLoadingWidget();
                             }
                         }
                         return const MyClubLoadingWidget();
@@ -300,73 +317,18 @@ class _ClubPageState extends State<ClubPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    FutureBuilder<UserClubNotJoined?>(
-                      future:
-                          RemoteService().getUserClubNotJoined(widget.token),
+                    FutureBuilder<UserClubJoined?>(
+                      future: RemoteService().getUserClubJoined(widget.token),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                             return const ClubLoadingWidget();
                           case ConnectionState.waiting:
                             if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<ClubNotJoin> dataAllClub =
-                                  result!.data.clubNotJoin;
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: dataAllClub.length,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return AllClubWidget(
-                                    getToken: widget.token,
-                                    clubId: dataAllClub[index].id,
-                                    clubName: dataAllClub[index].clubName,
-                                    clubProfile: dataAllClub[index].clubProfile,
-                                    clubStatus: dataAllClub[index].status,
-                                    clubAdmin: dataAllClub[index].admin,
-                                    clubZone: dataAllClub[index].clubZone,
-                                  );
-                                },
-                              );
-                            }
-                            break;
-                          case ConnectionState.active:
-                            if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<ClubNotJoin> dataAllClub =
-                                  result!.data.clubNotJoin;
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: dataAllClub.length,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return AllClubWidget(
-                                    getToken: widget.token,
-                                    clubId: dataAllClub[index].id,
-                                    clubName: dataAllClub[index].clubName,
-                                    clubProfile: dataAllClub[index].clubProfile,
-                                    clubStatus: dataAllClub[index].status,
-                                    clubAdmin: dataAllClub[index].admin,
-                                    clubZone: dataAllClub[index].clubZone,
-                                  );
-                                },
-                              );
-                            }
-                            break;
-                          case ConnectionState.done:
-                            if (snapshot.hasError) {
-                              return const Center(
-                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
-                            }
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.data.clubNotJoin.isNotEmpty) {
+                              if (snapshot.data!.data.myClubJoin.isNotEmpty) {
                                 var result = snapshot.data;
-                                List<ClubNotJoin> dataAllClub =
-                                    result!.data.clubNotJoin;
+                                List<MyClubJoin> dataAllClub =
+                                    result!.data.myClubJoin;
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,
@@ -383,9 +345,85 @@ class _ClubPageState extends State<ClubPage> {
                                       clubStatus: dataAllClub[index].status,
                                       clubAdmin: dataAllClub[index].admin,
                                       clubZone: dataAllClub[index].clubZone,
+                                      adminName: dataAllClub[index].admin,
+                                      userName: widget.userName,
                                     );
                                   },
                                 );
+                              } else {
+                                const SizedBox.shrink();
+                              }
+                            } else {
+                              return const ClubLoadingWidget();
+                            }
+                            break;
+                          case ConnectionState.active:
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.data.myClubJoin.isNotEmpty) {
+                                var result = snapshot.data;
+                                List<MyClubJoin> dataAllClub =
+                                    result!.data.myClubJoin;
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: dataAllClub.length,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return AllClubWidget(
+                                      getToken: widget.token,
+                                      clubId: dataAllClub[index].id,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubStatus: dataAllClub[index].status,
+                                      clubAdmin: dataAllClub[index].admin,
+                                      clubZone: dataAllClub[index].clubZone,
+                                      adminName: dataAllClub[index].admin,
+                                      userName: widget.userName,
+                                    );
+                                  },
+                                );
+                              } else {
+                                const SizedBox.shrink();
+                              }
+                            } else {
+                              return const ClubLoadingWidget();
+                            }
+                            break;
+                          case ConnectionState.done:
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                            }
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.data.myClubJoin.isNotEmpty) {
+                                var result = snapshot.data;
+                                List<MyClubJoin> dataAllClub =
+                                    result!.data.myClubJoin;
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: dataAllClub.length,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return AllClubWidget(
+                                      getToken: widget.token,
+                                      clubId: dataAllClub[index].id,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubStatus: dataAllClub[index].status,
+                                      clubAdmin: dataAllClub[index].admin,
+                                      clubZone: dataAllClub[index].clubZone,
+                                      adminName: dataAllClub[index].admin,
+                                      userName: widget.userName,
+                                    );
+                                  },
+                                );
+                              } else {
+                                const SizedBox.shrink();
                               }
                             } else {
                               return SizedBox(
@@ -400,7 +438,7 @@ class _ClubPageState extends State<ClubPage> {
                               );
                             }
                         }
-                        return const ClubLoadingWidget();
+                        return const SizedBox.shrink();
                       },
                     ),
                   ],
@@ -435,52 +473,66 @@ class _ClubPageState extends State<ClubPage> {
                             return const ClubLoadingWidget();
                           case ConnectionState.waiting:
                             if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<ClubNotJoin> dataAllClub =
-                                  result!.data.clubNotJoin;
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: dataAllClub.length,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return AllClubWidget(
-                                    getToken: widget.token,
-                                    clubId: dataAllClub[index].id,
-                                    clubName: dataAllClub[index].clubName,
-                                    clubProfile: dataAllClub[index].clubProfile,
-                                    clubStatus: dataAllClub[index].status,
-                                    clubAdmin: dataAllClub[index].admin,
-                                    clubZone: dataAllClub[index].clubZone,
-                                  );
-                                },
-                              );
+                              if (snapshot.data!.data.clubNotJoin.isNotEmpty) {
+                                var result = snapshot.data;
+                                List<ClubNotJoin> dataAllClub =
+                                    result!.data.clubNotJoin;
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: dataAllClub.length,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return AllClubWidget(
+                                      getToken: widget.token,
+                                      clubId: dataAllClub[index].id,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubStatus: dataAllClub[index].status,
+                                      clubAdmin: dataAllClub[index].admin,
+                                      clubZone: dataAllClub[index].clubZone,
+                                      adminName: dataAllClub[index].admin,
+                                      userName: widget.userName,
+                                    );
+                                  },
+                                );
+                              }
+                            } else {
+                              return const ClubLoadingWidget();
                             }
                             break;
                           case ConnectionState.active:
                             if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<ClubNotJoin> dataAllClub =
-                                  result!.data.clubNotJoin;
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: dataAllClub.length,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return AllClubWidget(
-                                    getToken: widget.token,
-                                    clubId: dataAllClub[index].id,
-                                    clubName: dataAllClub[index].clubName,
-                                    clubProfile: dataAllClub[index].clubProfile,
-                                    clubStatus: dataAllClub[index].status,
-                                    clubAdmin: dataAllClub[index].admin,
-                                    clubZone: dataAllClub[index].clubZone,
-                                  );
-                                },
-                              );
+                              if (snapshot.data!.data.clubNotJoin.isNotEmpty) {
+                                var result = snapshot.data;
+                                List<ClubNotJoin> dataAllClub =
+                                    result!.data.clubNotJoin;
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: dataAllClub.length,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return AllClubWidget(
+                                      getToken: widget.token,
+                                      clubId: dataAllClub[index].id,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubStatus: dataAllClub[index].status,
+                                      clubAdmin: dataAllClub[index].admin,
+                                      clubZone: dataAllClub[index].clubZone,
+                                      adminName: dataAllClub[index].admin,
+                                      userName: widget.userName,
+                                    );
+                                  },
+                                );
+                              }
+                            } else {
+                              return const ClubLoadingWidget();
                             }
                             break;
                           case ConnectionState.done:
@@ -509,6 +561,8 @@ class _ClubPageState extends State<ClubPage> {
                                       clubStatus: dataAllClub[index].status,
                                       clubAdmin: dataAllClub[index].admin,
                                       clubZone: dataAllClub[index].clubZone,
+                                      adminName: dataAllClub[index].admin,
+                                      userName: widget.userName,
                                     );
                                   },
                                 );

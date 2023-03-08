@@ -11,9 +11,11 @@ class MyClubWidget extends StatefulWidget {
   const MyClubWidget({
     super.key,
     required this.getToken,
+    required this.userName,
   });
 
   final String getToken;
+  final String userName;
 
   @override
   State<MyClubWidget> createState() => _MyClubWidgetState();
@@ -124,6 +126,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               clubName: clubApproved![index].clubName,
                               clubProfile: clubApproved![index].clubProfile,
                               clubStatus: clubApproved![index].status,
+                              userName: widget.userName,
                             );
                           },
                         ),
@@ -173,6 +176,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               clubName: clubWaiting![index].clubName,
                               clubProfile: clubWaiting![index].clubProfile,
                               clubStatus: clubWaiting![index].status,
+                              userName: widget.userName,
                             );
                           },
                         ),
@@ -222,6 +226,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               clubName: clubRejected![index].clubName,
                               clubProfile: clubRejected![index].clubProfile,
                               clubStatus: clubRejected![index].status,
+                              userName: widget.userName,
                             );
                           },
                         ),

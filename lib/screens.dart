@@ -48,7 +48,10 @@ class _ScreensPageState extends State<ScreensPage> {
 
   late final _screens = <Widget>[
     HomePage(token: token!),
-    ClubPage(token: token!),
+    ClubPage(
+      token: token!,
+      userName: name!,
+    ),
     SOSPage(
       token: token!,
     ),

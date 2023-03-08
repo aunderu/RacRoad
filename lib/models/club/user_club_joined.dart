@@ -55,39 +55,43 @@ class Data {
 class MyClubJoin {
     MyClubJoin({
         required this.memcId,
-        required this.userId,
-        required this.name,
-        required this.clubId,
+        required this.id,
         required this.clubName,
-        this.type,
+        required this.clubZone,
+        required this.description,
+        required this.clubProfile,
         required this.status,
+        required this.admin,
     });
 
     String memcId;
-    String userId;
-    String name;
-    String clubId;
+    String id;
     String clubName;
-    String? type;
+    String clubZone;
+    String description;
+    String clubProfile;
     String status;
+    String admin;
 
     factory MyClubJoin.fromJson(Map<String, dynamic> json) => MyClubJoin(
         memcId: json["memc_id"],
-        userId: json["user_id"],
-        name: json["name"],
-        clubId: json["club_id"],
+        id: json["id"],
         clubName: json["club_name"],
-        type: json["type"],
+        clubZone: json["club_zone"],
+        description: json["description"],
+        clubProfile: json["club_profile"],
         status: json["status"],
+        admin: json["admin"],
     );
 
     Map<String, dynamic> toJson() => {
         "memc_id": memcId,
-        "user_id": userId,
-        "name": name,
-        "club_id": clubId,
+        "id": id,
         "club_name": clubName,
-        "type": type,
+        "club_zone": clubZone,
+        "description": description,
+        "club_profile": clubProfile,
         "status": status,
+        "admin": admin,
     };
 }
