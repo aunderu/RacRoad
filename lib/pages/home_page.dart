@@ -2,14 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
+import 'package:rac_road/pages/club/search_club.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../colors.dart';
 import '../models/club/my_posts.dart' as myPostModel;
+import '../models/club/newfeed.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../services/remote_service.dart';
 import 'club/my_club_widget.dart';
@@ -74,90 +77,47 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        controller: searchController,
-                        onChanged: (_) => EasyDebounce.debounce(
-                          'textController',
-                          const Duration(milliseconds: 2000),
-                          () => setState(() {}),
+                      child: GestureDetector(
+                        onTap: () => Get.to(
+                          () => SearchClubsPage(
+                            getToken: widget.token,
+                            userName: widget.userName,
+                          ),
+                          transition: Transition.noTransition,
                         ),
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'Search',
-                          labelStyle: GoogleFonts.sarabun(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF3F3F3),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Search',
+                                    style: GoogleFonts.sarabun(
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF757575),
+                                    ),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.search,
+                                  color: Color(0xFF757575),
+                                  size: 22,
+                                ),
+                              ],
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFF3F3F3),
-                          suffixIcon: const Icon(
-                            Icons.search,
-                            color: Color(0xFF757575),
-                            size: 22,
                           ),
                         ),
-                        style: GoogleFonts.sarabun(),
                       ),
                     ),
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-              //   child: Text(
-              //     'Club Suggestion',
-              //     style: GoogleFonts.sarabun(
-              //       fontWeight: FontWeight.bold,
-              //       color: Colors.black,
-              //     ),
-              //   ),
-              // ),
-              // Container(
-              //   width: double.infinity,
-              //   height: 180,
-              //   decoration: const BoxDecoration(
-              //     color: Colors.white,
-              //   ),
-              //   child: ListView(
-              //     padding: EdgeInsets.zero,
-              //     primary: false,
-              //     shrinkWrap: true,
-              //     scrollDirection: Axis.horizontal,
-              //     children: [
-              //       clubSuggestion(context, size),
-              //       clubSuggestion(context, size),
-              //       clubSuggestion(context, size),
-              //       clubSuggestion(context, size),
-              //     ],
-              //   ),
-              // ),
               Padding(
                 padding: EdgeInsetsDirectional.only(
                   top: size.height * 0.02,
@@ -329,8 +289,8 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                child: FutureBuilder<myPostModel.MyPosts?>(
-                  future: RemoteService().getMyPosts(widget.token),
+                child: FutureBuilder<NewFeedModel?>(
+                  future: RemoteService().getNewFeedModel(widget.token),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
@@ -338,8 +298,9 @@ class _HomePageState extends State<HomePage> {
                       case ConnectionState.waiting:
                         if (snapshot.hasData) {
                           var result = snapshot.data;
-                          myPostModel.Data dataMyPosts = result!.data;
-                          if (dataMyPosts.myPost.isEmpty) {
+                          List<PostInMyClubJoin> dataNewFeed =
+                              result!.data.postInMyClubJoin;
+                          if (dataNewFeed.isEmpty) {
                             return Padding(
                               padding: const EdgeInsets.all(30.0),
                               child: SizedBox(
@@ -362,26 +323,18 @@ class _HomePageState extends State<HomePage> {
                             primary: false,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: dataMyPosts.myPost.length,
+                            itemCount: dataNewFeed.length,
                             itemBuilder: (context, index) {
                               return newsFeed(
                                 context,
                                 size,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
-                                    .avatar,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .ownerAvatar,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .owner,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .description,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .imagePost,
                               );
                             },
@@ -392,8 +345,9 @@ class _HomePageState extends State<HomePage> {
                       case ConnectionState.active:
                         if (snapshot.hasData) {
                           var result = snapshot.data;
-                          myPostModel.Data dataMyPosts = result!.data;
-                          if (dataMyPosts.myPost.isEmpty) {
+                          List<PostInMyClubJoin> dataNewFeed =
+                              result!.data.postInMyClubJoin;
+                          if (dataNewFeed.isEmpty) {
                             return Padding(
                               padding: const EdgeInsets.all(30.0),
                               child: SizedBox(
@@ -416,26 +370,18 @@ class _HomePageState extends State<HomePage> {
                             primary: false,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: dataMyPosts.myPost.length,
+                            itemCount: dataNewFeed.length,
                             itemBuilder: (context, index) {
                               return newsFeed(
                                 context,
                                 size,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
-                                    .avatar,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .ownerAvatar,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .owner,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .description,
-                                dataMyPosts
-                                    .myPost[
-                                        (dataMyPosts.myPost.length - 1) - index]
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .imagePost,
                               );
                             },
@@ -449,8 +395,9 @@ class _HomePageState extends State<HomePage> {
                         } else {
                           if (snapshot.hasData) {
                             var result = snapshot.data;
-                            myPostModel.Data dataMyPosts = result!.data;
-                            if (dataMyPosts.myPost.isEmpty) {
+                            List<PostInMyClubJoin> dataNewFeed =
+                                result!.data.postInMyClubJoin;
+                            if (dataNewFeed.isEmpty) {
                               return Padding(
                                 padding: const EdgeInsets.all(30.0),
                                 child: SizedBox(
@@ -474,26 +421,18 @@ class _HomePageState extends State<HomePage> {
                               primary: false,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              itemCount: dataMyPosts.myPost.length,
+                              itemCount: dataNewFeed.length,
                               itemBuilder: (context, index) {
                                 return newsFeed(
                                   context,
                                   size,
-                                  dataMyPosts
-                                      .myPost[(dataMyPosts.myPost.length - 1) -
-                                          index]
-                                      .avatar,
-                                  dataMyPosts
-                                      .myPost[(dataMyPosts.myPost.length - 1) -
-                                          index]
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .ownerAvatar,
-                                  dataMyPosts
-                                      .myPost[(dataMyPosts.myPost.length - 1) -
-                                          index]
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .owner,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .description,
-                                  dataMyPosts
-                                      .myPost[(dataMyPosts.myPost.length - 1) -
-                                          index]
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .imagePost,
                                 );
                               },
@@ -565,7 +504,7 @@ Widget newsFeed(
   String userProfile,
   String userName,
   String description,
-  List<myPostModel.ImagePost> imgPost,
+  List<ImagePost> imgPost,
 ) {
   final controller = PageController();
   return Padding(

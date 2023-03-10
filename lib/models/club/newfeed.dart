@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final clubPostModel = clubPostModelFromJson(jsonString);
+//     final newFeedModel = newFeedModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ClubPostModel clubPostModelFromJson(String str) => ClubPostModel.fromJson(json.decode(str));
+NewFeedModel newFeedModelFromJson(String str) => NewFeedModel.fromJson(json.decode(str));
 
-String clubPostModelToJson(ClubPostModel data) => json.encode(data.toJson());
+String newFeedModelToJson(NewFeedModel data) => json.encode(data.toJson());
 
-class ClubPostModel {
-    ClubPostModel({
+class NewFeedModel {
+    NewFeedModel({
         required this.status,
         required this.count,
         required this.data,
@@ -21,7 +21,7 @@ class ClubPostModel {
     Data data;
     String message;
 
-    factory ClubPostModel.fromJson(Map<String, dynamic> json) => ClubPostModel(
+    factory NewFeedModel.fromJson(Map<String, dynamic> json) => NewFeedModel(
         status: json["status"],
         count: json["count"],
         data: Data.fromJson(json["data"]),
@@ -38,22 +38,22 @@ class ClubPostModel {
 
 class Data {
     Data({
-        required this.myClubPost,
+        required this.postInMyClubJoin,
     });
 
-    List<MyClubPost> myClubPost;
+    List<PostInMyClubJoin> postInMyClubJoin;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        myClubPost: List<MyClubPost>.from(json["my_club_post"].map((x) => MyClubPost.fromJson(x))),
+        postInMyClubJoin: List<PostInMyClubJoin>.from(json["post_in_my_club_join"].map((x) => PostInMyClubJoin.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "my_club_post": List<dynamic>.from(myClubPost.map((x) => x.toJson())),
+        "post_in_my_club_join": List<dynamic>.from(postInMyClubJoin.map((x) => x.toJson())),
     };
 }
 
-class MyClubPost {
-    MyClubPost({
+class PostInMyClubJoin {
+    PostInMyClubJoin({
         required this.id,
         required this.description,
         required this.owner,
@@ -73,7 +73,7 @@ class MyClubPost {
     DateTime postDate;
     List<ImagePost> imagePost;
 
-    factory MyClubPost.fromJson(Map<String, dynamic> json) => MyClubPost(
+    factory PostInMyClubJoin.fromJson(Map<String, dynamic> json) => PostInMyClubJoin(
         id: json["id"],
         description: json["description"],
         owner: json["owner"],

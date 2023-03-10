@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:expandable/expandable.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../colors.dart';
 import '../../models/club/my_club_post.dart' as myClubPostsModel;
-import '../../models/user/club_details.dart' as clubDetailsModel;
+import '../../models/club/club_details.dart' as clubDetailsModel;
 import 'view_calentar.dart';
 
 class ClubDetailsPage extends StatefulWidget {
@@ -125,69 +124,13 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: searchController,
-                            onChanged: (_) => EasyDebounce.debounce(
-                              'textController',
-                              const Duration(milliseconds: 2000),
-                              () => setState(() {}),
-                            ),
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Search',
-                              labelStyle: GoogleFonts.sarabun(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              filled: true,
-                              fillColor: const Color(0xFFF3F3F3),
-                              suffixIcon: const Icon(
-                                Icons.search,
-                                color: Color(0xFF757575),
-                                size: 22,
-                              ),
-                            ),
-                            style: GoogleFonts.sarabun(),
-                          ),
-                        ),
-                      ],
-                    ),
+                  clubDetails(
+                    context,
+                    size,
+                    widget.clubId,
+                    widget.getToken,
+                    widget.userName,
                   ),
-                  clubDetails(context, size, widget.clubId, widget.userName),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                     child: Text(
@@ -200,8 +143,8 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                    child: FutureBuilder<myClubPostsModel.MyClubPosts?>(
-                      future: RemoteService().getMyClubPosts(widget.clubId),
+                    child: FutureBuilder<myClubPostsModel.ClubPostModel?>(
+                      future: RemoteService().getClubPostModel(widget.clubId),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -245,13 +188,13 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                             (dataMyClubPosts.myClubPost.length -
                                                     1) -
                                                 index]
-                                        .avatar,
+                                        .ownerAvatar,
                                     dataMyClubPosts
                                         .myClubPost[
                                             (dataMyClubPosts.myClubPost.length -
                                                     1) -
                                                 index]
-                                        .ownerAvatar,
+                                        .owner,
                                     dataMyClubPosts
                                         .myClubPost[
                                             (dataMyClubPosts.myClubPost.length -
@@ -309,13 +252,13 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                             (dataMyClubPosts.myClubPost.length -
                                                     1) -
                                                 index]
-                                        .avatar,
+                                        .ownerAvatar,
                                     dataMyClubPosts
                                         .myClubPost[
                                             (dataMyClubPosts.myClubPost.length -
                                                     1) -
                                                 index]
-                                        .ownerAvatar,
+                                        .owner,
                                     dataMyClubPosts
                                         .myClubPost[
                                             (dataMyClubPosts.myClubPost.length -
@@ -372,20 +315,18 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                     return newsFeed(
                                       context,
                                       size,
-                                      snapshot
-                                          .data!
-                                          .data
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
-                                          .avatar,
                                       dataMyClubPosts
                                           .myClubPost[(dataMyClubPosts
                                                       .myClubPost.length -
                                                   1) -
                                               index]
                                           .ownerAvatar,
+                                      dataMyClubPosts
+                                          .myClubPost[(dataMyClubPosts
+                                                      .myClubPost.length -
+                                                  1) -
+                                              index]
+                                          .owner,
                                       dataMyClubPosts
                                           .myClubPost[(dataMyClubPosts
                                                       .myClubPost.length -
@@ -422,6 +363,7 @@ Widget clubDetails(
   BuildContext context,
   Size size,
   String clubId,
+  String userId,
   String userName,
 ) {
   return Padding(
@@ -431,8 +373,8 @@ Widget clubDetails(
       size.width * 0.03,
       size.height * 0.01,
     ),
-    child: FutureBuilder<clubDetailsModel.ClubDetails?>(
-      future: RemoteService().getClubDetails(clubId),
+    child: FutureBuilder<clubDetailsModel.ClubDetailsModel?>(
+      future: RemoteService().getClubDetailsModel(clubId, userId),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -920,7 +862,7 @@ class ClubDetailsWidgets extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            '0',
+                            dataMyClub.clubMember.toString(),
                             style: GoogleFonts.sarabun(
                               fontWeight: FontWeight.bold,
                             ),

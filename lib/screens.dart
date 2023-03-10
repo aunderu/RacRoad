@@ -58,7 +58,10 @@ class _ScreensPageState extends State<ScreensPage> {
     SOSPage(
       token: token!,
     ),
-    NotificationsPage(token: token!),
+    NotificationsPage(
+      token: token!,
+      userName: name!,
+    ),
     ProfilePage(
       getToken: token!,
       current: widget.current,

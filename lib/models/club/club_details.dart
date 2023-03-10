@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final clubDetails = clubDetailsFromJson(jsonString);
+//     final clubDetailsModel = clubDetailsModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ClubDetails clubDetailsFromJson(String str) => ClubDetails.fromJson(json.decode(str));
+ClubDetailsModel clubDetailsModelFromJson(String str) => ClubDetailsModel.fromJson(json.decode(str));
 
-String clubDetailsToJson(ClubDetails data) => json.encode(data.toJson());
+String clubDetailsModelToJson(ClubDetailsModel data) => json.encode(data.toJson());
 
-class ClubDetails {
-    ClubDetails({
+class ClubDetailsModel {
+    ClubDetailsModel({
         required this.status,
         required this.data,
         required this.message,
@@ -19,7 +19,7 @@ class ClubDetails {
     Data data;
     String message;
 
-    factory ClubDetails.fromJson(Map<String, dynamic> json) => ClubDetails(
+    factory ClubDetailsModel.fromJson(Map<String, dynamic> json) => ClubDetailsModel(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
@@ -34,28 +34,32 @@ class ClubDetails {
 
 class Data {
     Data({
-        required this.clubApproveDetail,
-        required this.clubDirector,
+        required this.statusMember,
         required this.clubMember,
+        required this.clubApproveDetail,
+        required this.userInMyClub,
         required this.tags,
     });
 
+    String statusMember;
+    int clubMember;
     ClubApproveDetail clubApproveDetail;
-    List<dynamic> clubDirector;
-    List<dynamic> clubMember;
+    List<UserInMyClub> userInMyClub;
     List<Tag> tags;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
+        statusMember: json["status_member"],
+        clubMember: json["club_member"],
         clubApproveDetail: ClubApproveDetail.fromJson(json["club_approve_detail"]),
-        clubDirector: List<dynamic>.from(json["club_director"].map((x) => x)),
-        clubMember: List<dynamic>.from(json["club_member"].map((x) => x)),
+        userInMyClub: List<UserInMyClub>.from(json["user_in_my_club"].map((x) => UserInMyClub.fromJson(x))),
         tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
+        "status_member": statusMember,
+        "club_member": clubMember,
         "club_approve_detail": clubApproveDetail.toJson(),
-        "club_director": List<dynamic>.from(clubDirector.map((x) => x)),
-        "club_member": List<dynamic>.from(clubMember.map((x) => x)),
+        "user_in_my_club": List<dynamic>.from(userInMyClub.map((x) => x.toJson())),
         "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
     };
 }
@@ -68,6 +72,7 @@ class ClubApproveDetail {
         required this.description,
         required this.clubProfile,
         required this.status,
+        required this.adminId,
         required this.admin,
     });
 
@@ -77,6 +82,7 @@ class ClubApproveDetail {
     String description;
     String clubProfile;
     String status;
+    String adminId;
     String admin;
 
     factory ClubApproveDetail.fromJson(Map<String, dynamic> json) => ClubApproveDetail(
@@ -86,6 +92,7 @@ class ClubApproveDetail {
         description: json["description"],
         clubProfile: json["club_profile"],
         status: json["status"],
+        adminId: json["admin_id"],
         admin: json["admin"],
     );
 
@@ -96,6 +103,7 @@ class ClubApproveDetail {
         "description": description,
         "club_profile": clubProfile,
         "status": status,
+        "admin_id": adminId,
         "admin": admin,
     };
 }
@@ -113,5 +121,41 @@ class Tag {
 
     Map<String, dynamic> toJson() => {
         "tags": tags,
+    };
+}
+
+class UserInMyClub {
+    UserInMyClub({
+        required this.memcId,
+        required this.userId,
+        required this.name,
+        required this.type,
+        required this.status,
+        required this.avatar,
+    });
+
+    String memcId;
+    String userId;
+    String name;
+    String type;
+    String status;
+    String avatar;
+
+    factory UserInMyClub.fromJson(Map<String, dynamic> json) => UserInMyClub(
+        memcId: json["memc_id"],
+        userId: json["user_id"],
+        name: json["name"],
+        type: json["type"],
+        status: json["status"],
+        avatar: json["avatar"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "memc_id": memcId,
+        "user_id": userId,
+        "name": name,
+        "type": type,
+        "status": status,
+        "avatar": avatar,
     };
 }

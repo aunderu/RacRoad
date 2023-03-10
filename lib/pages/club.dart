@@ -1,5 +1,6 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/models/club/user_club_not_joined.dart';
 import 'package:rac_road/models/club/my_club_models.dart';
@@ -10,6 +11,7 @@ import '../../colors.dart';
 import '../models/club/user_club_joined.dart';
 import 'club/all_club_widget.dart';
 import 'club/my_club_widget.dart';
+import 'club/search_club.dart';
 import 'profile/create_club/on_boarding.dart';
 
 class ClubPage extends StatefulWidget {
@@ -28,13 +30,6 @@ class ClubPage extends StatefulWidget {
 
 class _ClubPageState extends State<ClubPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController? searchController;
-
-  @override
-  void initState() {
-    super.initState();
-    searchController = TextEditingController();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,56 +50,42 @@ class _ClubPageState extends State<ClubPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        controller: searchController,
-                        onChanged: (_) => EasyDebounce.debounce(
-                          'textController',
-                          const Duration(milliseconds: 2000),
-                          () => setState(() {}),
+                      child: GestureDetector(
+                        onTap: () => Get.to(
+                          () => SearchClubsPage(
+                            getToken: widget.token,
+                            userName: widget.userName,
+                          ),
+                          transition: Transition.noTransition,
                         ),
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'Search',
-                          labelStyle: GoogleFonts.sarabun(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF3F3F3),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Search',
+                                    style: GoogleFonts.sarabun(
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF757575),
+                                    ),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.search,
+                                  color: Color(0xFF757575),
+                                  size: 22,
+                                ),
+                              ],
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFF3F3F3),
-                          suffixIcon: const Icon(
-                            Icons.search,
-                            color: Color(0xFF757575),
-                            size: 22,
                           ),
                         ),
-                        style: GoogleFonts.sarabun(),
                       ),
                     ),
                   ],
@@ -480,6 +461,7 @@ class _ClubPageState extends State<ClubPage> {
                                 var result = snapshot.data;
                                 List<ClubNotJoin> dataAllClub =
                                     result!.data.clubNotJoin;
+                                dataAllClub.shuffle();
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,
@@ -512,6 +494,7 @@ class _ClubPageState extends State<ClubPage> {
                                 var result = snapshot.data;
                                 List<ClubNotJoin> dataAllClub =
                                     result!.data.clubNotJoin;
+                                dataAllClub.shuffle();
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,
@@ -548,6 +531,7 @@ class _ClubPageState extends State<ClubPage> {
                                 var result = snapshot.data;
                                 List<ClubNotJoin> dataAllClub =
                                     result!.data.clubNotJoin;
+                                dataAllClub.shuffle();
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,

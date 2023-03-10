@@ -1,14 +1,18 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'club/search_club.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({
     super.key,
-    required this.token,
+    required this.token, required this.userName,
   });
 
   final String token;
+  final String userName;
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -43,56 +47,42 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        controller: searchController,
-                        onChanged: (_) => EasyDebounce.debounce(
-                          'textController',
-                          const Duration(milliseconds: 2000),
-                          () => setState(() {}),
+                      child: GestureDetector(
+                        onTap: () => Get.to(
+                          () => SearchClubsPage(
+                            getToken: widget.token,
+                            userName: widget.userName,
+                          ),
+                          transition: Transition.noTransition,
                         ),
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'Search',
-                          labelStyle: GoogleFonts.sarabun(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF3F3F3),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Search',
+                                    style: GoogleFonts.sarabun(
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF757575),
+                                    ),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.search,
+                                  color: Color(0xFF757575),
+                                  size: 22,
+                                ),
+                              ],
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFF3F3F3),
-                          suffixIcon: const Icon(
-                            Icons.search,
-                            color: Color(0xFF757575),
-                            size: 22,
                           ),
                         ),
-                        style: GoogleFonts.sarabun(),
                       ),
                     ),
                   ],

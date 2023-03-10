@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/club/all_club_model.dart';
 import '../models/club/my_club_post.dart';
 import '../models/club/my_posts.dart';
+import '../models/club/newfeed.dart';
 import '../models/club/user_club_joined.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../models/user/all_car_models.dart';
@@ -12,7 +14,7 @@ import '../models/user/all_my_car.dart';
 import '../models/sos/all_my_sos_models.dart';
 import '../models/user/all_my_tnc_sos_models.dart';
 import '../models/user/car_data_calculated.dart';
-import '../models/user/club_details.dart';
+import '../models/club/club_details.dart';
 import '../models/user/current_tnc_sos_models.dart';
 import '../models/user/my_car_details.dart';
 import '../models/club/my_club_models.dart';
@@ -27,7 +29,7 @@ MyProfile? resultUserProfile;
 AllMyCar? resultAllMyCar;
 MyCarDetails? resultMyCarDetails;
 MyClub? resultMyClub;
-ClubDetails? resultClubDetails;
+ClubDetailsModel? resultClubDetailsModel;
 MyJob? resultMyJob;
 MyCurrentSos? resultMyCurrentSOS;
 SosDetails? resultSosDetails;
@@ -40,8 +42,10 @@ SpecificProblem? resultSpecificProblem;
 CarDataCal? resultCarDataCal;
 UserClubJoined? resultUserClubJoined;
 UserClubNotJoined? resultUserClubNotJoined;
-MyClubPosts? resultMyClubPosts;
+ClubPostModel? resultClubPostModel;
 MyPosts? resultMyPosts;
+AllClubModel? resultAllClubModel;
+NewFeedModel? resultNewFeedModel;
 
 const url = "https://api.racroad.com/api";
 // const testurl = "https://api-racroad.chabafarm.com/api";
@@ -122,13 +126,13 @@ class RemoteService {
   }
 
   // ################################ ClubDetails #################################
-  Future<ClubDetails?> getClubDetails(String clubId) async {
+  Future<ClubDetailsModel?> getClubDetailsModel(String clubId, String userId) async {
     try {
       final response =
-          await http.get(Uri.parse("$url/club/approve/detail/$clubId"));
+          await http.get(Uri.parse("$url/club/approve/detail/$clubId/$userId"));
       if (response.statusCode == 200) {
-        final itemClubDetails = json.decode(response.body);
-        resultClubDetails = ClubDetails.fromJson(itemClubDetails);
+        final itemClubDetailsModel = json.decode(response.body);
+        resultClubDetailsModel = ClubDetailsModel.fromJson(itemClubDetailsModel);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -137,7 +141,7 @@ class RemoteService {
         print(e);
       }
     }
-    return resultClubDetails;
+    return resultClubDetailsModel;
   }
 
   // ################################ MyClub #################################
@@ -361,13 +365,12 @@ class RemoteService {
   }
 
   // ################################ My Club Posts #################################
-  Future<MyClubPosts?> getMyClubPosts(String clubId) async {
+  Future<ClubPostModel?> getClubPostModel(String clubId) async {
     try {
       final response = await http.get(Uri.parse("$url/my/club/post/$clubId"));
       if (response.statusCode == 200) {
-        final itemMyClubPosts = json.decode(response.body);
-        resultMyClubPosts =
-            MyClubPosts.fromJson(itemMyClubPosts);
+        final itemClubPostModel = json.decode(response.body);
+        resultClubPostModel = ClubPostModel.fromJson(itemClubPostModel);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -376,7 +379,7 @@ class RemoteService {
         print(e);
       }
     }
-    return resultMyClubPosts;
+    return resultClubPostModel;
   }
 
   // ################################ My Posts #################################
@@ -385,8 +388,7 @@ class RemoteService {
       final response = await http.get(Uri.parse("$url/my/post/$userId"));
       if (response.statusCode == 200) {
         final itemMyPosts = json.decode(response.body);
-        resultMyPosts =
-            MyPosts.fromJson(itemMyPosts);
+        resultMyPosts = MyPosts.fromJson(itemMyPosts);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -396,5 +398,41 @@ class RemoteService {
       }
     }
     return resultMyPosts;
+  }
+
+  // ################################ My Posts #################################
+  Future<NewFeedModel?> getNewFeedModel(String userId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/post/in/my/club/join/$userId"));
+      if (response.statusCode == 200) {
+        final itemNewFeedModel = json.decode(response.body);
+        resultNewFeedModel = NewFeedModel.fromJson(itemNewFeedModel);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultNewFeedModel;
+  }
+
+  // ################################ All Club Model #################################
+  Future<AllClubModel?> getAllClubModel() async {
+    try {
+      final response = await http.get(Uri.parse("$url/club/approve"));
+      if (response.statusCode == 200) {
+        final itemAllClubModel = json.decode(response.body);
+        resultAllClubModel = AllClubModel.fromJson(itemAllClubModel);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultAllClubModel;
   }
 }
