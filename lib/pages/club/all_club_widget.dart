@@ -18,7 +18,9 @@ class AllClubWidget extends StatelessWidget {
     required this.clubStatus,
     required this.getToken,
     required this.clubId,
-    required this.adminName, required this.userName,
+    required this.adminName,
+    required this.userName,
+    this.memcId,
   });
 
   final String clubAdmin;
@@ -30,6 +32,7 @@ class AllClubWidget extends StatelessWidget {
   final String getToken;
   final String adminName;
   final String userName;
+  final String? memcId;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,17 @@ class AllClubWidget extends StatelessWidget {
           'user_id': getToken,
           'club_id': clubId,
         },
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw false;
+      }
+    }
+
+    Future<bool> userLeaveClub(String clubId) async {
+      final response = await http.get(
+        Uri.parse("https://api.racroad.com/api/leave/club/$clubId"),
       );
       if (response.statusCode == 200) {
         return true;
@@ -193,8 +207,51 @@ class AllClubWidget extends StatelessWidget {
                                         ),
                                       ),
                                     )
-                                  : Get.snackbar('Unfollow!',
-                                      'ปุมนี้สามารถกดยกเลิกติดตามได้');
+                                  : Get.defaultDialog(
+                                      title: 'ออกจากคลับ\n$clubName',
+                                      titleStyle: GoogleFonts.sarabun(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      titlePadding: const EdgeInsets.only(
+                                        top: 20,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      middleText: '',
+                                      confirm: ElevatedButton(
+                                        onPressed: () {
+                                          userLeaveClub(memcId!).then((value) {
+                                            Get.offAllNamed('/club');
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          minimumSize: const Size(100, 40),
+                                        ),
+                                        child: Text(
+                                          "ออกจากคลับ",
+                                          style: GoogleFonts.sarabun(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      cancel: ElevatedButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: whiteGrey,
+                                          foregroundColor: darkGray,
+                                          minimumSize: const Size(100, 40),
+                                        ),
+                                        child: Text(
+                                          "ยกเลิก",
+                                          style: GoogleFonts.sarabun(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    );
                             },
                             child: Ink(
                               width: 100,
@@ -206,7 +263,7 @@ class AllClubWidget extends StatelessWidget {
                               child: Align(
                                 alignment: const AlignmentDirectional(0, 0),
                                 child: Text(
-                                  clubStatus == 'Notjoin' ? 'Join' : 'Unjoin',
+                                  clubStatus == 'Notjoin' ? 'Join' : 'Leave',
                                   style: GoogleFonts.sarabun(
                                     fontWeight: FontWeight.bold,
                                   ),

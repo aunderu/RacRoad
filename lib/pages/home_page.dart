@@ -1,21 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../colors.dart';
-import '../models/club/my_posts.dart';
+import '../models/club/my_posts.dart' as myPostModel;
+import '../models/club/user_club_not_joined.dart';
 import '../services/remote_service.dart';
+import 'club/my_club_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
     required this.token,
+    required this.userName,
   }) : super(key: key);
 
   final String token;
+  final String userName;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -122,32 +129,191 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+              //   child: Text(
+              //     'Club Suggestion',
+              //     style: GoogleFonts.sarabun(
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // ),
+              // Container(
+              //   width: double.infinity,
+              //   height: 180,
+              //   decoration: const BoxDecoration(
+              //     color: Colors.white,
+              //   ),
+              //   child: ListView(
+              //     padding: EdgeInsets.zero,
+              //     primary: false,
+              //     shrinkWrap: true,
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       clubSuggestion(context, size),
+              //       clubSuggestion(context, size),
+              //       clubSuggestion(context, size),
+              //       clubSuggestion(context, size),
+              //     ],
+              //   ),
+              // ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                child: Text(
-                  'Club Suggestion',
-                  style: GoogleFonts.sarabun(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                padding: EdgeInsetsDirectional.only(
+                  top: size.height * 0.02,
+                  bottom: size.height * 0.02,
+                  start: size.width * 0.04,
+                  end: size.width * 0.04,
                 ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 180,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  primary: false,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    clubSuggestion(context, size),
-                    clubSuggestion(context, size),
-                    clubSuggestion(context, size),
-                    clubSuggestion(context, size),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Club Suggestion',
+                        style: GoogleFonts.sarabun(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    FutureBuilder<UserClubNotJoined?>(
+                      future:
+                          RemoteService().getUserClubNotJoined(widget.token),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return const MyClubLoadingWidget();
+                          case ConnectionState.waiting:
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<ClubNotJoin> dataAllClub =
+                                  result!.data.clubNotJoin;
+                              dataAllClub.shuffle();
+                              if (dataAllClub.isNotEmpty) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.22,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: dataAllClub.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return FittedBox(
+                                        child: MyClubWidget(
+                                          clubProfile:
+                                              dataAllClub[index].clubProfile,
+                                          clubName: dataAllClub[index].clubName,
+                                          clubDescription:
+                                              dataAllClub[index].description,
+                                          clubId: dataAllClub[index].id,
+                                          clubStatus: dataAllClub[index].status,
+                                          getToken: widget.token,
+                                          userName: widget.userName,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              } else {
+                                return SizedBox.fromSize();
+                              }
+                            }
+                            break;
+                          case ConnectionState.active:
+                            if (snapshot.hasData) {
+                              var result = snapshot.data;
+                              List<ClubNotJoin> dataAllClub =
+                                  result!.data.clubNotJoin;
+                              dataAllClub.shuffle();
+                              if (dataAllClub.isNotEmpty) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.22,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: dataAllClub.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return FittedBox(
+                                        child: MyClubWidget(
+                                          clubProfile:
+                                              dataAllClub[index].clubProfile,
+                                          clubName: dataAllClub[index].clubName,
+                                          clubDescription:
+                                              dataAllClub[index].description,
+                                          clubId: dataAllClub[index].id,
+                                          clubStatus: dataAllClub[index].status,
+                                          getToken: widget.token,
+                                          userName: widget.userName,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              } else {
+                                return SizedBox.fromSize();
+                              }
+                            }
+                            break;
+                          case ConnectionState.done:
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                            } else {
+                              if (snapshot.hasData) {
+                                var result = snapshot.data;
+                                List<ClubNotJoin> dataAllClub =
+                                    result!.data.clubNotJoin;
+                                dataAllClub.shuffle();
+                                if (dataAllClub.isNotEmpty) {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.22,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      itemCount: dataAllClub.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return FittedBox(
+                                          child: MyClubWidget(
+                                            clubProfile:
+                                                dataAllClub[index].clubProfile,
+                                            clubName:
+                                                dataAllClub[index].clubName,
+                                            clubDescription:
+                                                dataAllClub[index].description,
+                                            clubId: dataAllClub[index].id,
+                                            clubStatus:
+                                                dataAllClub[index].status,
+                                            getToken: widget.token,
+                                            userName: widget.userName,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  return SizedBox.fromSize();
+                                }
+                              }
+                            }
+                        }
+                        return const MyClubLoadingWidget();
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -163,22 +329,16 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                child: FutureBuilder<MyPosts?>(
+                child: FutureBuilder<myPostModel.MyPosts?>(
                   future: RemoteService().getMyPosts(widget.token),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(mainGreen),
-                            strokeWidth: 8,
-                          ),
-                        );
+                        return newsFeedLoading(context, size);
                       case ConnectionState.waiting:
                         if (snapshot.hasData) {
                           var result = snapshot.data;
-                          Data dataMyPosts = result!.data;
+                          myPostModel.Data dataMyPosts = result!.data;
                           if (dataMyPosts.myPost.isEmpty) {
                             return Padding(
                               padding: const EdgeInsets.all(30.0),
@@ -207,18 +367,32 @@ class _HomePageState extends State<HomePage> {
                               return newsFeed(
                                 context,
                                 size,
-                                dataMyPosts.myPost[index].avatar,
-                                dataMyPosts.myPost[index].ownerAvatar,
-                                dataMyPosts.myPost[index].description,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .avatar,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .ownerAvatar,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .description,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .imagePost,
                               );
                             },
                           );
+                        } else {
+                          return newsFeedLoading(context, size);
                         }
-                        break;
                       case ConnectionState.active:
                         if (snapshot.hasData) {
                           var result = snapshot.data;
-                          Data dataMyPosts = result!.data;
+                          myPostModel.Data dataMyPosts = result!.data;
                           if (dataMyPosts.myPost.isEmpty) {
                             return Padding(
                               padding: const EdgeInsets.all(30.0),
@@ -247,9 +421,22 @@ class _HomePageState extends State<HomePage> {
                               return newsFeed(
                                 context,
                                 size,
-                                dataMyPosts.myPost[index].avatar,
-                                dataMyPosts.myPost[index].ownerAvatar,
-                                dataMyPosts.myPost[index].description,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .avatar,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .ownerAvatar,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .description,
+                                dataMyPosts
+                                    .myPost[
+                                        (dataMyPosts.myPost.length - 1) - index]
+                                    .imagePost,
                               );
                             },
                           );
@@ -262,7 +449,7 @@ class _HomePageState extends State<HomePage> {
                         } else {
                           if (snapshot.hasData) {
                             var result = snapshot.data;
-                            Data dataMyPosts = result!.data;
+                            myPostModel.Data dataMyPosts = result!.data;
                             if (dataMyPosts.myPost.isEmpty) {
                               return Padding(
                                 padding: const EdgeInsets.all(30.0),
@@ -292,21 +479,29 @@ class _HomePageState extends State<HomePage> {
                                 return newsFeed(
                                   context,
                                   size,
-                                  dataMyPosts.myPost[index].avatar,
-                                  dataMyPosts.myPost[index].ownerAvatar,
-                                  dataMyPosts.myPost[index].description,
+                                  dataMyPosts
+                                      .myPost[(dataMyPosts.myPost.length - 1) -
+                                          index]
+                                      .avatar,
+                                  dataMyPosts
+                                      .myPost[(dataMyPosts.myPost.length - 1) -
+                                          index]
+                                      .ownerAvatar,
+                                  dataMyPosts
+                                      .myPost[(dataMyPosts.myPost.length - 1) -
+                                          index]
+                                      .description,
+                                  dataMyPosts
+                                      .myPost[(dataMyPosts.myPost.length - 1) -
+                                          index]
+                                      .imagePost,
                                 );
                               },
                             );
                           }
                         }
                     }
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
-                        strokeWidth: 8,
-                      ),
-                    );
+                    return newsFeedLoading(context, size);
                   },
                 ),
               ),
@@ -318,75 +513,50 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget clubSuggestion(BuildContext context, Size size) {
-  return Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 12, 12),
-    child: InkWell(
-      onTap: () {},
-      child: Container(
-        width: 160,
-        decoration: BoxDecoration(
-          color: const Color(0xFFEBEBEB),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 4,
-              color: Color(0x34090F13),
-              offset: Offset(0, 2),
-            )
-          ],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                // child: Image.network(
-                //   '',
-                //   width: double.infinity,
-                //   height: 100,
-                //   fit: BoxFit.cover,
-                // ),
-                child: Container(
-                  width: double.infinity,
-                  height: 100,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(end: 5),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(
-                      size.width * 0.2,
-                      size.height * 0.035,
-                    ),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Join',
-                    style: GoogleFonts.sarabun(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+class MyClubLoadingWidget extends StatelessWidget {
+  const MyClubLoadingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: MediaQuery.of(context).size.height * 0.22,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 4,
+            color: Color(0x34090F13),
+            offset: Offset(0, 2),
+          )
+        ],
+        borderRadius: BorderRadius.circular(8),
       ),
-    ),
-  );
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+            child: Shimmer.fromColors(
+              baseColor: lightGrey,
+              highlightColor: Colors.white,
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.15,
+                color: lightGrey,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 Widget newsFeed(
@@ -395,7 +565,9 @@ Widget newsFeed(
   String userProfile,
   String userName,
   String description,
+  List<myPostModel.ImagePost> imgPost,
 ) {
+  final controller = PageController();
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
       size.width * 0.03,
@@ -416,7 +588,7 @@ Widget newsFeed(
               size.width * 0.02,
               size.height * 0.01,
               size.width * 0.02,
-              0,
+              size.height * 0.01,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -469,37 +641,7 @@ Widget newsFeed(
             ),
           ),
           Padding(
-            padding: EdgeInsetsDirectional.only(top: size.height * 0.01),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.96,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 6,
-                    color: Color(0x3A000000),
-                    offset: Offset(0, 2),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              //  child: Image.network(
-              //   '',
-              //   width: 100,
-              //   height: 300,
-              //   fit: BoxFit.cover,
-              // ),
-              child: Container(
-                height: 300,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -510,6 +652,238 @@ Widget newsFeed(
                   ),
                 ),
               ],
+            ),
+          ),
+          imgPost.isEmpty
+              ? const SizedBox(height: 20)
+              : const SizedBox(height: 5),
+          imgPost.isNotEmpty
+              ? Padding(
+                  padding: EdgeInsetsDirectional.only(
+                    top: size.height * 0.01,
+                    bottom: size.height * 0.01,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.96,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ExpandablePageView.builder(
+                          controller: controller,
+                          itemCount: imgPost.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: imgPost[index].image,
+                              fit: BoxFit.contain,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Center(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: SmoothPageIndicator(
+                              controller: controller,
+                              count: imgPost.length,
+                              effect: const WormEffect(
+                                spacing: 20,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                activeDotColor: mainGreen,
+                                dotColor: Colors.black26,
+                              ),
+                              onDotClicked: (index) => controller.animateToPage(
+                                index,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeIn,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+
+          // Padding(
+          //   padding: EdgeInsetsDirectional.fromSTEB(
+          //     size.width * 0.02,
+          //     size.height * 0.01,
+          //     size.width * 0.02,
+          //     size.height * 0.01,
+          //   ),
+          //   child: Row(
+          //     mainAxisSize: MainAxisSize.max,
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Row(
+          //         mainAxisSize: MainAxisSize.max,
+          //         children: [
+          //           const Padding(
+          //             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+          //             child: LikeButton(
+          //               size: 24,
+          //               likeCount: 2493,
+          //             ),
+          //           ),
+          //           Padding(
+          //             padding:
+          //                 const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+          //             child: Row(
+          //               mainAxisSize: MainAxisSize.max,
+          //               children: [
+          //                 const Icon(
+          //                   Icons.mode_comment_outlined,
+          //                   color: Colors.grey,
+          //                   size: 24,
+          //                 ),
+          //                 Padding(
+          //                   padding: const EdgeInsetsDirectional.fromSTEB(
+          //                       4, 0, 0, 0),
+          //                   child: Text(
+          //                     '4',
+          //                     style: GoogleFonts.sarabun(
+          //                       color: Colors.grey,
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //           Row(
+          //             mainAxisSize: MainAxisSize.max,
+          //             children: const [
+          //               Icon(
+          //                 Icons.monetization_on_outlined,
+          //                 color: Colors.grey,
+          //                 size: 24,
+          //               ),
+          //             ],
+          //           ),
+          //         ],
+          //       ),
+          //       Row(
+          //         mainAxisSize: MainAxisSize.max,
+          //         children: [
+          //           Padding(
+          //             padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+          //             child: Text(
+          //               '4k Share',
+          //               style: GoogleFonts.sarabun(
+          //                 color: Colors.grey,
+          //               ),
+          //             ),
+          //           ),
+          //           const Icon(
+          //             Icons.share_sharp,
+          //             color: Colors.grey,
+          //             size: 24,
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget newsFeedLoading(
+  BuildContext context,
+  Size size,
+) {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(
+      size.width * 0.03,
+      0,
+      size.width * 0.03,
+      size.height * 0.02,
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFEBEBEB),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+              size.width * 0.02,
+              size.height * 0.01,
+              size.width * 0.02,
+              size.height * 0.01,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.all(1),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.white,
+                    highlightColor: lightGrey,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Shimmer.fromColors(
+                        baseColor: Colors.white,
+                        highlightColor: lightGrey,
+                        child: Container(
+                          color: Colors.white,
+                          height: 10,
+                          width: 80,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Shimmer.fromColors(
+                        baseColor: Colors.white,
+                        highlightColor: lightGrey,
+                        child: Container(
+                          color: Colors.white,
+                          height: 10,
+                          width: 120,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Shimmer.fromColors(
+            baseColor: Colors.white,
+            highlightColor: lightGrey,
+            child: Container(
+              color: Colors.white,
+              height: 250,
+              width: double.infinity,
             ),
           ),
           Padding(
@@ -530,7 +904,7 @@ Widget newsFeed(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                       child: LikeButton(
                         size: 24,
-                        likeCount: 2493,
+                        likeCount: 21,
                       ),
                     ),
                     Padding(
@@ -557,16 +931,16 @@ Widget newsFeed(
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: const [
-                        Icon(
-                          Icons.monetization_on_outlined,
-                          color: Colors.grey,
-                          size: 24,
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.max,
+                    //   children: const [
+                    //     Icon(
+                    //       Icons.monetization_on_outlined,
+                    //       color: Colors.grey,
+                    //       size: 24,
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 Row(

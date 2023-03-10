@@ -45,6 +45,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   chips_choice: ^3.0.0
   flutter_launcher_icons: ^0.11.0
+  expandable_page_view: ^1.0.17
 
 
 dev_dependencies:

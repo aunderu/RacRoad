@@ -347,6 +347,7 @@ class _ClubPageState extends State<ClubPage> {
                                       clubZone: dataAllClub[index].clubZone,
                                       adminName: dataAllClub[index].admin,
                                       userName: widget.userName,
+                                      memcId: dataAllClub[index].memcId,
                                     );
                                   },
                                 );
@@ -381,6 +382,7 @@ class _ClubPageState extends State<ClubPage> {
                                       clubZone: dataAllClub[index].clubZone,
                                       adminName: dataAllClub[index].admin,
                                       userName: widget.userName,
+                                      memcId: dataAllClub[index].memcId,
                                     );
                                   },
                                 );
@@ -419,6 +421,7 @@ class _ClubPageState extends State<ClubPage> {
                                       clubZone: dataAllClub[index].clubZone,
                                       adminName: dataAllClub[index].admin,
                                       userName: widget.userName,
+                                      memcId: dataAllClub[index].memcId,
                                     );
                                   },
                                 );

@@ -2,7 +2,6 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({
     super.key,
@@ -99,22 +98,21 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   ],
                 ),
               ),
-              // Generated code for this ListView Widget...
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  primary: false,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    listTile(widget.token, 'assets/imgs/oparator.png',
-                        'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!'),
-                    listTile(widget.token, 'assets/imgs/oparator.png',
-                        'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ'),
-                  ],
-                ),
-              )
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
+              //   child: ListView(
+              //     padding: EdgeInsets.zero,
+              //     primary: false,
+              //     shrinkWrap: true,
+              //     scrollDirection: Axis.vertical,
+              //     children: [
+              //       listTile(widget.token, 'assets/imgs/oparator.png',
+              //           'ช่างได้ยืนยันรับงาน และกำลังไปแล้ว!'),
+              //       listTile(widget.token, 'assets/imgs/oparator.png',
+              //           'เราได้รับแจ้งปัญหาของคุณแล้ว!\nนี้คือรายละเอียดค่าบริการ'),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

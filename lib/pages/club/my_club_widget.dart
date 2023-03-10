@@ -15,7 +15,8 @@ class MyClubWidget extends StatelessWidget {
     required this.clubDescription,
     required this.clubStatus,
     required this.clubId,
-    required this.getToken, required this.userName,
+    required this.getToken,
+    required this.userName,
   });
 
   final String clubId;
@@ -101,6 +102,8 @@ class MyClubWidget extends StatelessWidget {
                       style: GoogleFonts.sarabun(
                         fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       clubDescription,
