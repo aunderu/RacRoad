@@ -1,14 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:rac_road/pages/club/search_club.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../colors.dart';
 import '../models/club/my_posts.dart' as myPostModel;
@@ -335,6 +336,8 @@ class _HomePageState extends State<HomePage> {
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .description,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .postDate,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .imagePost,
                               );
                             },
@@ -381,6 +384,8 @@ class _HomePageState extends State<HomePage> {
                                     .owner,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .description,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .postDate,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .imagePost,
                               );
@@ -432,6 +437,8 @@ class _HomePageState extends State<HomePage> {
                                       .owner,
                                   dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .description,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .postDate,
                                   dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .imagePost,
                                 );
@@ -498,15 +505,53 @@ class MyClubLoadingWidget extends StatelessWidget {
   }
 }
 
+class MyCustomTimeAgo implements timeago.LookupMessages {
+  @override
+  String prefixAgo() => '';
+  @override
+  String prefixFromNow() => '';
+  @override
+  String suffixAgo() => 'ที่แล้ว';
+  @override
+  String suffixFromNow() => '';
+  @override
+  String lessThanOneMinute(int seconds) => 'ตอนนี้';
+  @override
+  String aboutAMinute(int minutes) => '$minutes นาที';
+  @override
+  String minutes(int minutes) => '$minutes นาที';
+  @override
+  String aboutAnHour(int minutes) => '$minutes นาที';
+  @override
+  String hours(int hours) => '$hours ชั่วโมง';
+  @override
+  String aDay(int hours) => '1 วัน';
+  @override
+  String days(int days) => '$days วัน';
+  @override
+  String aboutAMonth(int days) => '$days วัน';
+  @override
+  String months(int months) => '$months เดือน';
+  @override
+  String aboutAYear(int year) => '$year ปี';
+  @override
+  String years(int years) => '$years ปี';
+  @override
+  String wordSeparator() => '';
+}
+
 Widget newsFeed(
   BuildContext context,
   Size size,
   String userProfile,
   String userName,
   String description,
+  DateTime timestamp,
   List<ImagePost> imgPost,
 ) {
   final controller = PageController();
+  timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
+
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
       size.width * 0.03,
@@ -545,34 +590,29 @@ Widget newsFeed(
                       imageUrl: userProfile,
                       fit: BoxFit.cover,
                     ),
-                    // child: Image.asset(
-                    //   'assets/imgs/profile.png',
-                    //   fit: BoxFit.fitWidth,
-                    // ),
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                        child: Text(
-                          userName,
-                          style: GoogleFonts.sarabun(),
+                      Text(
+                        userName,
+                        style: GoogleFonts.sarabun(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // IconButton(
-                      //   hoverColor: Colors.transparent,
-                      //   icon: const Icon(
-                      //     Icons.bookmark_border,
-                      //     color: Colors.grey,
-                      //     size: 20,
-                      //   ),
-                      //   onPressed: () {},
-                      // ),
+                      const SizedBox(height: 1.5),
+                      Text(
+                        timeago.format(timestamp, locale: 'th-custom'),
+                        style: GoogleFonts.sarabun(
+                          fontSize: 11.5,
+                          color: darkGray,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -617,6 +657,9 @@ Widget newsFeed(
                             return CachedNetworkImage(
                               imageUrl: imgPost[index].image,
                               fit: BoxFit.contain,
+                              placeholder: (context, url) => Container(
+                                color: const Color(0xFFEBEBEB),
+                              ),
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             );

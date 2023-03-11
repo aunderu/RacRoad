@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:rac_road/services/remote_service.dart';
 import 'package:shimmer/shimmer.dart';
@@ -206,6 +207,12 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                             (dataMyClubPosts.myClubPost.length -
                                                     1) -
                                                 index]
+                                        .postDate,
+                                    dataMyClubPosts
+                                        .myClubPost[
+                                            (dataMyClubPosts.myClubPost.length -
+                                                    1) -
+                                                index]
                                         .imagePost,
                                   );
                                 },
@@ -265,6 +272,12 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                                     1) -
                                                 index]
                                         .description,
+                                    dataMyClubPosts
+                                        .myClubPost[
+                                            (dataMyClubPosts.myClubPost.length -
+                                                    1) -
+                                                index]
+                                        .postDate,
                                     dataMyClubPosts
                                         .myClubPost[
                                             (dataMyClubPosts.myClubPost.length -
@@ -333,6 +346,12 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                                   1) -
                                               index]
                                           .description,
+                                      dataMyClubPosts
+                                          .myClubPost[(dataMyClubPosts
+                                                      .myClubPost.length -
+                                                  1) -
+                                              index]
+                                          .postDate,
                                       dataMyClubPosts
                                           .myClubPost[(dataMyClubPosts
                                                       .myClubPost.length -
@@ -900,7 +919,7 @@ class ClubDetailsWidgets extends StatelessWidget {
                       child: Text(
                         'คำอธิบายเกี่ยวกับคลับ',
                         style: GoogleFonts.sarabun(
-                          color: Colors.black,
+                          color: darkGray,
                           fontWeight: FontWeight.bold,
                           fontSize: 17,
                         ),
@@ -916,11 +935,11 @@ class ClubDetailsWidgets extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 5, bottom: 5),
                           child: Text(
                             "${dataMyClub.clubApproveDetail.description}\ntags: ${dataMyClub.tags.map((tag) => tag.tags).toList().join(', ')}",
                             style: GoogleFonts.sarabun(
-                              color: const Color(0x8A000000),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -945,15 +964,52 @@ class ClubDetailsWidgets extends StatelessWidget {
   }
 }
 
+class MyCustomTimeAgo implements timeago.LookupMessages {
+  @override
+  String prefixAgo() => '';
+  @override
+  String prefixFromNow() => '';
+  @override
+  String suffixAgo() => 'ที่แล้ว';
+  @override
+  String suffixFromNow() => '';
+  @override
+  String lessThanOneMinute(int seconds) => 'ตอนนี้';
+  @override
+  String aboutAMinute(int minutes) => '$minutes นาที';
+  @override
+  String minutes(int minutes) => '$minutes นาที';
+  @override
+  String aboutAnHour(int minutes) => '$minutes นาที';
+  @override
+  String hours(int hours) => '$hours ชั่วโมง';
+  @override
+  String aDay(int hours) => '1 วัน';
+  @override
+  String days(int days) => '$days วัน';
+  @override
+  String aboutAMonth(int days) => '$days วัน';
+  @override
+  String months(int months) => '$months เดือน';
+  @override
+  String aboutAYear(int year) => '$year ปี';
+  @override
+  String years(int years) => '$years ปี';
+  @override
+  String wordSeparator() => '';
+}
+
 Widget newsFeed(
   BuildContext context,
   Size size,
   String userProfile,
   String userName,
   String description,
+  DateTime timestamp,
   List<myClubPostsModel.ImagePost> imgPost,
 ) {
   final controller = PageController();
+  timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
 
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
@@ -993,34 +1049,29 @@ Widget newsFeed(
                       imageUrl: userProfile,
                       fit: BoxFit.cover,
                     ),
-                    // child: Image.asset(
-                    //   'assets/imgs/profile.png',
-                    //   fit: BoxFit.fitWidth,
-                    // ),
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                        child: Text(
-                          userName,
-                          style: GoogleFonts.sarabun(),
+                      Text(
+                        userName,
+                        style: GoogleFonts.sarabun(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // IconButton(
-                      //   hoverColor: Colors.transparent,
-                      //   icon: const Icon(
-                      //     Icons.bookmark_border,
-                      //     color: Colors.grey,
-                      //     size: 20,
-                      //   ),
-                      //   onPressed: () {},
-                      // ),
+                      const SizedBox(height: 1.5),
+                      Text(
+                        timeago.format(timestamp, locale: 'th-custom'),
+                        style: GoogleFonts.sarabun(
+                          fontSize: 11.5,
+                          color: darkGray,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1065,6 +1116,9 @@ Widget newsFeed(
                             return CachedNetworkImage(
                               imageUrl: imgPost[index].image,
                               fit: BoxFit.contain,
+                              placeholder: (context, url) => Container(
+                                color: const Color(0xFFEBEBEB),
+                              ),
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             );
