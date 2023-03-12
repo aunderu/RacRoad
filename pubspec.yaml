@@ -25,7 +25,6 @@ dependencies:
   permission_handler: ^10.0.0
   shared_preferences: ^2.0.15
   get: ^4.6.5
-  easy_debounce: ^2.0.2+1
   like_button: ^2.0.4
   expandable: ^5.0.1
   flutter_speed_dial: ^6.0.0
@@ -47,6 +46,7 @@ dependencies:
   flutter_launcher_icons: ^0.11.0
   expandable_page_view: ^1.0.17
   timeago: ^3.3.0
+  syncfusion_flutter_calendar: ^20.4.53
 
 
 dev_dependencies:

@@ -90,6 +90,7 @@ class _MyJobWidgetState extends State<MyJobWidget> {
                               getToken: widget.getToken,
                               sosId: myTncSos!.data.sos![0].sosId,
                             ),
+                            transition: Transition.rightToLeftWithFade,
                           );
                         },
                         child: Ink(

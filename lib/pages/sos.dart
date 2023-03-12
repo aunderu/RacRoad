@@ -115,6 +115,7 @@ class _SOSPageState extends State<SOSPage> {
         latitude: _latitude,
         longitude: _longitude,
       ),
+      transition: Transition.downToUp,
     );
   }
 

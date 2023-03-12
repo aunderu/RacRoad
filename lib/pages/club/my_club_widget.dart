@@ -44,6 +44,7 @@ class MyClubWidget extends StatelessWidget {
                 getToken: getToken,
                 userName: userName,
               ),
+              transition: Transition.rightToLeftWithFade,
             );
           }
         },

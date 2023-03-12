@@ -77,6 +77,7 @@ class AllClubWidget extends StatelessWidget {
                 getToken: getToken,
                 userName: userName,
               ),
+              transition: Transition.rightToLeftWithFade,
             );
           }
         },

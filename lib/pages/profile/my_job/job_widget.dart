@@ -133,6 +133,7 @@ class _JobWidgetState extends State<JobWidget> {
                   getToken: widget.getToken,
                   tncId: widget.tncId,
                 ),
+                transition: Transition.rightToLeftWithFade,
               );
             } else {
               Fluttertoast.showToast(msg: "กำลังรอการอนุมัติ");

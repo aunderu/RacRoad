@@ -36,6 +36,9 @@ class Data {
     Data({
         required this.statusMember,
         required this.clubMember,
+        required this.adminId,
+        required this.adminClub,
+        required this.adminAvatar,
         required this.clubApproveDetail,
         required this.userInMyClub,
         required this.tags,
@@ -43,6 +46,9 @@ class Data {
 
     String statusMember;
     int clubMember;
+    String adminId;
+    String adminClub;
+    String adminAvatar;
     ClubApproveDetail clubApproveDetail;
     List<UserInMyClub> userInMyClub;
     List<Tag> tags;
@@ -50,6 +56,9 @@ class Data {
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         statusMember: json["status_member"],
         clubMember: json["club_member"],
+        adminId: json["admin_id"],
+        adminClub: json["admin_club"],
+        adminAvatar: json["admin_avatar"],
         clubApproveDetail: ClubApproveDetail.fromJson(json["club_approve_detail"]),
         userInMyClub: List<UserInMyClub>.from(json["user_in_my_club"].map((x) => UserInMyClub.fromJson(x))),
         tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
@@ -58,6 +67,9 @@ class Data {
     Map<String, dynamic> toJson() => {
         "status_member": statusMember,
         "club_member": clubMember,
+        "admin_id": adminId,
+        "admin_club": adminClub,
+        "admin_avatar": adminAvatar,
         "club_approve_detail": clubApproveDetail.toJson(),
         "user_in_my_club": List<dynamic>.from(userInMyClub.map((x) => x.toJson())),
         "tags": List<dynamic>.from(tags.map((x) => x.toJson())),

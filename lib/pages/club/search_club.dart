@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,17 +25,69 @@ class SearchClubsPage extends StatefulWidget {
 class _SearchClubsPageState extends State<SearchClubsPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController? searchController;
+  bool isLoaded = false;
+  AllClubModel? allClub;
+  bool haveClub = false;
+
+  List<ClubApprove>? foundClub;
 
   @override
   void initState() {
     super.initState();
     searchController = TextEditingController();
+
+    getClubData();
   }
 
   @override
   void dispose() {
     searchController?.dispose();
     super.dispose();
+  }
+
+  getClubData() async {
+    setState(() {
+      isLoaded = true;
+    });
+    allClub = await RemoteService().getAllClubModel();
+    if (allClub != null) {
+      final bool haveData = allClub!.data.clubApprove.isNotEmpty;
+      if (haveData == true) {
+        if (mounted) {
+          setState(() {
+            haveClub = true;
+            foundClub = allClub!.data.clubApprove.toList();
+            isLoaded = false;
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            haveClub = false;
+            isLoaded = false;
+          });
+        }
+      }
+    }
+  }
+
+  void _runFilter(String enterdKeyword) {
+    List<ClubApprove> result;
+    if (enterdKeyword.isEmpty) {
+      result = allClub!.data.clubApprove;
+    } else {
+      result = allClub!.data.clubApprove
+          .where((club) =>
+              club.clubName
+                  .toLowerCase()
+                  .contains(enterdKeyword.toLowerCase()) ||
+              club.clubZone.toLowerCase().contains(enterdKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      foundClub = result;
+    });
   }
 
   @override
@@ -63,11 +113,7 @@ class _SearchClubsPageState extends State<SearchClubsPage> {
                     Expanded(
                       child: TextFormField(
                         controller: searchController,
-                        onChanged: (_) => EasyDebounce.debounce(
-                          'textController',
-                          const Duration(milliseconds: 2000),
-                          () => setState(() {}),
-                        ),
+                        onChanged: (value) => _runFilter(value),
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(
@@ -124,134 +170,44 @@ class _SearchClubsPageState extends State<SearchClubsPage> {
                   start: MediaQuery.of(context).size.width * 0.04,
                   end: MediaQuery.of(context).size.width * 0.04,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'คลับทั้งหมด',
-                        style: GoogleFonts.sarabun(
-                          fontSize: 20,
+                child: isLoaded
+                    ? SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2.5,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(mainGreen),
+                            strokeWidth: 8,
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    FutureBuilder<AllClubModel?>(
-                      future: RemoteService().getAllClubModel(),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            // return const ClubLoadingWidget();
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          case ConnectionState.waiting:
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.data.clubApprove.isNotEmpty) {
-                                var result = snapshot.data;
-                                List<ClubApprove> dataAllClub =
-                                    result!.data.clubApprove;
-                                return ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: dataAllClub.length,
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) {
-                                    return allClubWidget(
-                                      dataAllClub[index].id,
-                                      widget.getToken,
-                                      widget.userName,
-                                      dataAllClub[index].clubProfile,
-                                      dataAllClub[index].clubName,
-                                      dataAllClub[index].admin,
-                                      dataAllClub[index].clubZone,
-                                    );
-                                  },
-                                );
-                              }
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            break;
-                          case ConnectionState.active:
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.data.clubApprove.isNotEmpty) {
-                                var result = snapshot.data;
-                                List<ClubApprove> dataAllClub =
-                                    result!.data.clubApprove;
-                                return ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: dataAllClub.length,
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) {
-                                    return allClubWidget(
-                                      dataAllClub[index].id,
-                                      widget.getToken,
-                                      widget.userName,
-                                      dataAllClub[index].clubProfile,
-                                      dataAllClub[index].clubName,
-                                      dataAllClub[index].admin,
-                                      dataAllClub[index].clubZone,
-                                    );
-                                  },
-                                );
-                              }
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            break;
-                          case ConnectionState.done:
-                            if (snapshot.hasError) {
-                              return const Center(
-                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
-                            }
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.data.clubApprove.isNotEmpty) {
-                                var result = snapshot.data;
-                                List<ClubApprove> dataAllClub =
-                                    result!.data.clubApprove;
-                                return ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: dataAllClub.length,
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) {
-                                    return allClubWidget(
-                                      dataAllClub[index].id,
-                                      widget.getToken,
-                                      widget.userName,
-                                      dataAllClub[index].clubProfile,
-                                      dataAllClub[index].clubName,
-                                      dataAllClub[index].admin,
-                                      dataAllClub[index].clubZone,
-                                    );
-                                  },
-                                );
-                              }
-                            } else {
-                              return SizedBox(
-                                height: 50,
-                                child: Center(
-                                  child: Text(
-                                    'ดูเหมือนยังไม่มีคลับอะไรในตอนนี้',
-                                    style: GoogleFonts.sarabun(),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                      )
+                    : haveClub
+                        ? ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: foundClub!.length,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return allClubWidget(
+                                foundClub![(foundClub!.length - 1) - index].id,
+                                widget.getToken,
+                                widget.userName,
+                                foundClub![(foundClub!.length - 1) - index]
+                                    .clubProfile,
+                                foundClub![(foundClub!.length - 1) - index]
+                                    .clubName,
+                                foundClub![(foundClub!.length - 1) - index]
+                                    .admin,
+                                foundClub![(foundClub!.length - 1) - index]
+                                    .clubZone,
                               );
-                            }
-                        }
-                        return const Center(child: CircularProgressIndicator());
-                      },
-                    ),
-                  ],
-                ),
+                            },
+                          )
+                        : const Center(
+                            child: Text('ดูเหมือนยังไม่มีข้อมูลรถในขณะนี้'),
+                          ),
               ),
             ],
           ),

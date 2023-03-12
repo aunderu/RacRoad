@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:rac_road/services/remote_service.dart';
@@ -13,9 +14,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../colors.dart';
-import '../../models/club/my_club_post.dart' as myClubPostsModel;
-import '../../models/club/club_details.dart' as clubDetailsModel;
-import 'view_calentar.dart';
+import '../../models/club/my_club_post.dart' as my_club_posts_model;
+import '../../models/club/club_details.dart' as club_details_model;
 
 class ClubDetailsPage extends StatefulWidget {
   const ClubDetailsPage({
@@ -99,21 +99,6 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                   Navigator.pop(context);
                 },
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                  child: IconButton(
-                    hoverColor: Colors.transparent,
-                    iconSize: 60,
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.black,
-                      size: 30,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
               centerTitle: false,
               elevation: 0,
             )
@@ -144,7 +129,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 44),
-                    child: FutureBuilder<myClubPostsModel.ClubPostModel?>(
+                    child: FutureBuilder<my_club_posts_model.ClubPostModel?>(
                       future: RemoteService().getClubPostModel(widget.clubId),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
@@ -153,7 +138,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                           case ConnectionState.waiting:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
-                              myClubPostsModel.Data dataMyClubPosts =
+                              my_club_posts_model.Data dataMyClubPosts =
                                   result!.data;
                               if (dataMyClubPosts.myClubPost.isEmpty) {
                                 return Padding(
@@ -223,7 +208,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                           case ConnectionState.active:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
-                              myClubPostsModel.Data dataMyClubPosts =
+                              my_club_posts_model.Data dataMyClubPosts =
                                   result!.data;
                               if (dataMyClubPosts.myClubPost.isEmpty) {
                                 return Padding(
@@ -296,7 +281,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                             } else {
                               if (snapshot.hasData) {
                                 var result = snapshot.data;
-                                myClubPostsModel.Data dataMyClubPosts =
+                                my_club_posts_model.Data dataMyClubPosts =
                                     result!.data;
                                 if (dataMyClubPosts.myClubPost.isEmpty) {
                                   return Padding(
@@ -392,7 +377,7 @@ Widget clubDetails(
       size.width * 0.03,
       size.height * 0.01,
     ),
-    child: FutureBuilder<clubDetailsModel.ClubDetailsModel?>(
+    child: FutureBuilder<club_details_model.ClubDetailsModel?>(
       future: RemoteService().getClubDetailsModel(clubId, userId),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -401,7 +386,7 @@ Widget clubDetails(
           case ConnectionState.waiting:
             if (snapshot.hasData) {
               var result = snapshot.data;
-              clubDetailsModel.Data dataMyClub = result!.data;
+              club_details_model.Data dataMyClub = result!.data;
               return ClubDetailsWidgets(
                 dataMyClub: dataMyClub,
                 size: size,
@@ -412,7 +397,7 @@ Widget clubDetails(
           case ConnectionState.active:
             if (snapshot.hasData) {
               var result = snapshot.data;
-              clubDetailsModel.Data dataMyClub = result!.data;
+              club_details_model.Data dataMyClub = result!.data;
               return ClubDetailsWidgets(
                 dataMyClub: dataMyClub,
                 size: size,
@@ -426,7 +411,7 @@ Widget clubDetails(
             } else {
               if (snapshot.hasData) {
                 var result = snapshot.data;
-                clubDetailsModel.Data dataMyClub = result!.data;
+                club_details_model.Data dataMyClub = result!.data;
                 return ClubDetailsWidgets(
                   dataMyClub: dataMyClub,
                   size: size,
@@ -592,7 +577,7 @@ class ClubDetailsLoading extends StatelessWidget {
   }
 }
 
-class ClubDetailsWidgets extends StatelessWidget {
+class ClubDetailsWidgets extends StatefulWidget {
   const ClubDetailsWidgets({
     super.key,
     required this.dataMyClub,
@@ -600,10 +585,15 @@ class ClubDetailsWidgets extends StatelessWidget {
     required this.userName,
   });
 
-  final clubDetailsModel.Data dataMyClub;
+  final club_details_model.Data dataMyClub;
   final Size size;
   final String userName;
 
+  @override
+  State<ClubDetailsWidgets> createState() => _ClubDetailsWidgetsState();
+}
+
+class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -614,9 +604,11 @@ class ClubDetailsWidgets extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Padding(
@@ -625,48 +617,51 @@ class ClubDetailsWidgets extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    dataMyClub.clubApproveDetail.clubProfile,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.photo_library,
-                                color: Colors.black,
-                                size: 24,
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Align(
+                              alignment: const AlignmentDirectional(0, 0),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: widget
+                                      .dataMyClub.clubApproveDetail.clubProfile,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.photo_library,
+                                  color: Colors.black,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
                         child: Text(
-                          dataMyClub.clubApproveDetail.clubName,
+                          widget.dataMyClub.clubApproveDetail.clubName,
                           style: GoogleFonts.sarabun(
                             fontWeight: FontWeight.bold,
                           ),
@@ -690,21 +685,32 @@ class ClubDetailsWidgets extends StatelessWidget {
                       //     ),
                       //   ),
                       // ),
-                      SizedBox(height: size.height * 0.01),
-                      userName == dataMyClub.clubApproveDetail.admin
+                      SizedBox(height: widget.size.height * 0.01),
+
+                      widget.dataMyClub.statusMember == 'admin_club'
                           ? const SizedBox.shrink()
-                          : Container(
-                              width: size.width * 0.25,
-                              height: size.height * 0.04,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              alignment: const AlignmentDirectional(0, 0),
-                              child: Text(
-                                'Join',
-                                style: GoogleFonts.sarabun(
-                                  fontWeight: FontWeight.bold,
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Material(
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Ink(
+                                    width: widget.size.width * 0.25,
+                                    height: widget.size.height * 0.04,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Join',
+                                        style: GoogleFonts.sarabun(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -715,184 +721,84 @@ class ClubDetailsWidgets extends StatelessWidget {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(
                   0,
-                  size.height * 0.01,
-                  size.width * 0.03,
-                  size.height * 0.01,
+                  widget.size.height * 0.01,
+                  widget.size.width * 0.03,
+                  widget.size.height * 0.01,
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Material(
-                      child: InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ViewCalentarPage(),
-                            ),
-                          );
-                        },
-                        child: Ink(
-                          width: size.width * 0.6,
-                          height: size.height * 0.2,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 4,
-                                color: Color(0x33000000),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: const Color(0xFFEBEBEB),
-                            ),
-                          ),
-                          child: Stack(
-                            alignment: const AlignmentDirectional(1, -1),
-                            children: [
-                              const Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                                child: Icon(
-                                  Icons.add_circle_outline,
-                                  color: Colors.black,
-                                  size: 24,
-                                ),
-                              ),
-                              Align(
-                                alignment: const AlignmentDirectional(0, -1),
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.all(5),
-                                  child: Text(
-                                    'Calendar',
-                                    style: GoogleFonts.sarabun(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                  top: size.height * 0.02,
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                        start: size.width * 0.02,
-                                      ),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Day',
-                                            style: GoogleFonts.sarabun(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Date',
-                                            style: GoogleFonts.sarabun(
-                                              fontSize: 50,
-                                              height: 0.8,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Event Today',
-                                            style: GoogleFonts.sarabun(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                          size.width * 0.01,
-                                          size.height * 0.03,
-                                          0,
-                                          size.height * 0.03,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '10 event',
-                                              style: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: const Color(0xFFEBEBEB),
+                        ),
+                      ),
+                      // calendar
+                      child: SizedBox(
+                        height: 200,
+                        child: SfCalendar(
+                          view: CalendarView.schedule,
+                          todayHighlightColor: mainGreen,
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(top: 5),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            dataMyClub.clubMember.toString(),
-                            style: GoogleFonts.sarabun(
-                              fontWeight: FontWeight.bold,
+                          SizedBox(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.43,
+                            child: ListView.builder(
+                              itemCount: widget.dataMyClub.userInMyClub.length,
+                              scrollDirection: Axis.horizontal,
+                              reverse: true,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: widget.dataMyClub
+                                          .userInMyClub[index].avatar,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                          Text(
-                            'Members',
-                            style: GoogleFonts.sarabun(
-                              color: Colors.grey,
-                              height: 0.8,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const SizedBox(width: 10),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                widget.dataMyClub.clubMember.toString(),
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Members',
+                                style: GoogleFonts.sarabun(
+                                  color: Colors.grey,
+                                  height: 0.8,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -938,7 +844,7 @@ class ClubDetailsWidgets extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 5, right: 5, bottom: 5),
                           child: Text(
-                            "${dataMyClub.clubApproveDetail.description}\ntags: ${dataMyClub.tags.map((tag) => tag.tags).toList().join(', ')}",
+                            "${widget.dataMyClub.clubApproveDetail.description}\ntags: ${widget.dataMyClub.tags.map((tag) => tag.tags).toList().join(', ')}",
                             style: GoogleFonts.sarabun(
                               fontWeight: FontWeight.bold,
                             ),
@@ -1006,7 +912,7 @@ Widget newsFeed(
   String userName,
   String description,
   DateTime timestamp,
-  List<myClubPostsModel.ImagePost> imgPost,
+  List<my_club_posts_model.ImagePost> imgPost,
 ) {
   final controller = PageController();
   timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());

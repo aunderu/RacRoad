@@ -58,10 +58,10 @@ class _ScreensPageState extends State<ScreensPage> {
     SOSPage(
       token: token!,
     ),
-    NotificationsPage(
-      token: token!,
-      userName: name!,
-    ),
+    // NotificationsPage(
+    //   token: token!,
+    //   userName: name!,
+    // ),
     ProfilePage(
       getToken: token!,
       current: widget.current,
@@ -195,18 +195,18 @@ class _ScreensPageState extends State<ScreensPage> {
             label: 'SOS',
             tooltip: 'แจ้งเหตุฉุกเฉิน',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.notifications_outlined,
-              size: 40,
-            ),
-            activeIcon: Icon(
-              Icons.notifications,
-              size: 40,
-            ),
-            label: 'Notifications',
-            tooltip: 'การแจ้งเตือน',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(
+          //     Icons.notifications_outlined,
+          //     size: 40,
+          //   ),
+          //   activeIcon: Icon(
+          //     Icons.notifications,
+          //     size: 40,
+          //   ),
+          //   label: 'Notifications',
+          //   tooltip: 'การแจ้งเตือน',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
