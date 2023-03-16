@@ -67,7 +67,6 @@ class _AccountSettingState extends State<AccountSetting> {
                 var result = snapshot.data;
                 if (result != null) {
                   return Column(
-                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -160,6 +159,58 @@ class _AccountSettingState extends State<AccountSetting> {
                           style: GoogleFonts.sarabun(),
                         ),
                       ),
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                      //   child: Container(
+                      //     width: double.infinity,
+                      //     height: 60,
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.white,
+                      //       boxShadow: const [
+                      //         BoxShadow(
+                      //           blurRadius: 5,
+                      //           color: Color(0x3416202A),
+                      //           offset: Offset(0, 2),
+                      //         )
+                      //       ],
+                      //       borderRadius: BorderRadius.circular(12),
+                      //       shape: BoxShape.rectangle,
+                      //     ),
+                      //     child: Padding(
+                      //       padding: const EdgeInsetsDirectional.fromSTEB(
+                      //           8, 8, 8, 8),
+                      //       child: Row(
+                      //         mainAxisSize: MainAxisSize.max,
+                      //         children: [
+                      //           const Icon(
+                      //             Icons.person_search_outlined,
+                      //             color: darkGray,
+                      //             size: 24,
+                      //           ),
+                      //           Padding(
+                      //             padding: const EdgeInsetsDirectional.fromSTEB(
+                      //                 12, 0, 0, 0),
+                      //             child: Text(
+                      //               'เพิ่มเพื่อน',
+                      //               style: GoogleFonts.sarabun(),
+                      //             ),
+                      //           ),
+                      //           const Expanded(
+                      //             child: Align(
+                      //               alignment: AlignmentDirectional(0.9, 0),
+                      //               child: Icon(
+                      //                 Icons.arrow_forward_ios,
+                      //                 color: darkGray,
+                      //                 size: 18,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
@@ -288,62 +339,62 @@ class _AccountSettingState extends State<AccountSetting> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-                        child: InkWell(
-                          onTap: null,
-                          child: Ink(
-                            width: double.infinity,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 5,
-                                  color: Color(0x3416202A),
-                                  offset: Offset(0, 2),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12),
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  8, 8, 8, 8),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Icon(
-                                    Icons.notifications_none,
-                                    color: darkGray,
-                                    size: 24,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            12, 0, 0, 0),
-                                    child: Text(
-                                      'ตั้งค่า การแจ้งเตือน',
-                                      style: GoogleFonts.sarabun(),
-                                    ),
-                                  ),
-                                  const Expanded(
-                                    child: Align(
-                                      alignment: AlignmentDirectional(0.9, 0),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: darkGray,
-                                        size: 18,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                      //   child: InkWell(
+                      //     onTap: null,
+                      //     child: Ink(
+                      //       width: double.infinity,
+                      //       height: 60,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.white,
+                      //         boxShadow: const [
+                      //           BoxShadow(
+                      //             blurRadius: 5,
+                      //             color: Color(0x3416202A),
+                      //             offset: Offset(0, 2),
+                      //           )
+                      //         ],
+                      //         borderRadius: BorderRadius.circular(12),
+                      //         shape: BoxShape.rectangle,
+                      //       ),
+                      //       child: Padding(
+                      //         padding: const EdgeInsetsDirectional.fromSTEB(
+                      //             8, 8, 8, 8),
+                      //         child: Row(
+                      //           mainAxisSize: MainAxisSize.max,
+                      //           children: [
+                      //             const Icon(
+                      //               Icons.notifications_none,
+                      //               color: darkGray,
+                      //               size: 24,
+                      //             ),
+                      //             Padding(
+                      //               padding:
+                      //                   const EdgeInsetsDirectional.fromSTEB(
+                      //                       12, 0, 0, 0),
+                      //               child: Text(
+                      //                 'ตั้งค่า การแจ้งเตือน',
+                      //                 style: GoogleFonts.sarabun(),
+                      //               ),
+                      //             ),
+                      //             const Expanded(
+                      //               child: Align(
+                      //                 alignment: AlignmentDirectional(0.9, 0),
+                      //                 child: Icon(
+                      //                   Icons.arrow_forward_ios,
+                      //                   color: darkGray,
+                      //                   size: 18,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
@@ -435,7 +486,7 @@ class _AccountSettingState extends State<AccountSetting> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   const Icon(
-                                    Icons.privacy_tip_rounded,
+                                    Icons.privacy_tip_outlined,
                                     color: darkGray,
                                     size: 24,
                                   ),
@@ -464,56 +515,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-                      //   child: Container(
-                      //     width: double.infinity,
-                      //     height: 60,
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       boxShadow: const [
-                      //         BoxShadow(
-                      //           blurRadius: 5,
-                      //           color: Color(0x3416202A),
-                      //           offset: Offset(0, 2),
-                      //         )
-                      //       ],
-                      //       borderRadius: BorderRadius.circular(12),
-                      //       shape: BoxShape.rectangle,
-                      //     ),
-                      //     child: Padding(
-                      //       padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                      //       child: Row(
-                      //         mainAxisSize: MainAxisSize.max,
-                      //         children: [
-                      //           const Icon(
-                      //             Icons.ios_share,
-                      //             color: darkGray,
-                      //             size: 24,
-                      //           ),
-                      //           Padding(
-                      //             padding:
-                      //                 const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                      //             child: Text(
-                      //               'เพิ่มเพื่อน',
-                      //               style: GoogleFonts.sarabun(),
-                      //             ),
-                      //           ),
-                      //           const Expanded(
-                      //             child: Align(
-                      //               alignment: AlignmentDirectional(0.9, 0),
-                      //               child: Icon(
-                      //                 Icons.arrow_forward_ios,
-                      //                 color: darkGray,
-                      //                 size: 18,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             16, 30, 16, 20),

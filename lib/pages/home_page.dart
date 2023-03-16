@@ -126,160 +126,155 @@ class _HomePageState extends State<HomePage> {
                   start: size.width * 0.04,
                   end: size.width * 0.04,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Club Suggestion',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Club Suggestion',
+                    style: GoogleFonts.sarabun(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                    const SizedBox(height: 10),
-                    FutureBuilder<UserClubNotJoined?>(
-                      future:
-                          RemoteService().getUserClubNotJoined(widget.token),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return const MyClubLoadingWidget();
-                          case ConnectionState.waiting:
-                            if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<ClubNotJoin> dataAllClub =
-                                  result!.data.clubNotJoin;
-                              dataAllClub.shuffle();
-                              if (dataAllClub.isNotEmpty) {
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.22,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    itemCount: dataAllClub.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return FittedBox(
-                                        child: MyClubWidget(
-                                          clubProfile:
-                                              dataAllClub[index].clubProfile,
-                                          clubName: dataAllClub[index].clubName,
-                                          clubDescription:
-                                              dataAllClub[index].description,
-                                          clubId: dataAllClub[index].id,
-                                          clubStatus: dataAllClub[index].status,
-                                          getToken: widget.token,
-                                          userName: widget.userName,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              } else {
-                                return SizedBox.fromSize();
-                              }
-                            }
-                            break;
-                          case ConnectionState.active:
-                            if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<ClubNotJoin> dataAllClub =
-                                  result!.data.clubNotJoin;
-                              dataAllClub.shuffle();
-                              if (dataAllClub.isNotEmpty) {
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.22,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    itemCount: dataAllClub.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return FittedBox(
-                                        child: MyClubWidget(
-                                          clubProfile:
-                                              dataAllClub[index].clubProfile,
-                                          clubName: dataAllClub[index].clubName,
-                                          clubDescription:
-                                              dataAllClub[index].description,
-                                          clubId: dataAllClub[index].id,
-                                          clubStatus: dataAllClub[index].status,
-                                          getToken: widget.token,
-                                          userName: widget.userName,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              } else {
-                                return SizedBox.fromSize();
-                              }
-                            }
-                            break;
-                          case ConnectionState.done:
-                            if (snapshot.hasError) {
-                              return const Center(
-                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
-                            } else {
-                              if (snapshot.hasData) {
-                                var result = snapshot.data;
-                                List<ClubNotJoin> dataAllClub =
-                                    result!.data.clubNotJoin;
-                                dataAllClub.shuffle();
-                                if (dataAllClub.isNotEmpty) {
-                                  return SizedBox(
-                                    width: double.infinity,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.22,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      itemCount: dataAllClub.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        return FittedBox(
-                                          child: MyClubWidget(
-                                            clubProfile:
-                                                dataAllClub[index].clubProfile,
-                                            clubName:
-                                                dataAllClub[index].clubName,
-                                            clubDescription:
-                                                dataAllClub[index].description,
-                                            clubId: dataAllClub[index].id,
-                                            clubStatus:
-                                                dataAllClub[index].status,
-                                            getToken: widget.token,
-                                            userName: widget.userName,
-                                          ),
-                                        );
-                                      },
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: size.width * 0.04),
+                child: FutureBuilder<UserClubNotJoined?>(
+                  future: RemoteService().getUserClubNotJoined(widget.token),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return const MyClubLoadingWidget();
+                      case ConnectionState.waiting:
+                        if (snapshot.hasData) {
+                          var result = snapshot.data;
+                          List<ClubNotJoin> dataAllClub =
+                              result!.data.clubNotJoin;
+                          dataAllClub.shuffle();
+                          if (dataAllClub.isNotEmpty) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.22,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataAllClub.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return FittedBox(
+                                    child: MyClubWidget(
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubDescription:
+                                          dataAllClub[index].description,
+                                      clubId: dataAllClub[index].id,
+                                      clubStatus: dataAllClub[index].status,
+                                      getToken: widget.token,
+                                      userName: widget.userName,
                                     ),
                                   );
-                                } else {
-                                  return SizedBox.fromSize();
-                                }
-                              }
-                            }
+                                },
+                              ),
+                            );
+                          } else {
+                            return SizedBox.fromSize();
+                          }
                         }
-                        return const MyClubLoadingWidget();
-                      },
-                    ),
-                  ],
+                        break;
+                      case ConnectionState.active:
+                        if (snapshot.hasData) {
+                          var result = snapshot.data;
+                          List<ClubNotJoin> dataAllClub =
+                              result!.data.clubNotJoin;
+                          dataAllClub.shuffle();
+                          if (dataAllClub.isNotEmpty) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.22,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataAllClub.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return FittedBox(
+                                    child: MyClubWidget(
+                                      clubProfile:
+                                          dataAllClub[index].clubProfile,
+                                      clubName: dataAllClub[index].clubName,
+                                      clubDescription:
+                                          dataAllClub[index].description,
+                                      clubId: dataAllClub[index].id,
+                                      clubStatus: dataAllClub[index].status,
+                                      getToken: widget.token,
+                                      userName: widget.userName,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            return SizedBox.fromSize();
+                          }
+                        }
+                        break;
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return const Center(
+                              child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                        } else {
+                          if (snapshot.hasData) {
+                            var result = snapshot.data;
+                            List<ClubNotJoin> dataAllClub =
+                                result!.data.clubNotJoin;
+                            dataAllClub.shuffle();
+                            if (dataAllClub.isNotEmpty) {
+                              return SizedBox(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.22,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  itemCount: dataAllClub.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return FittedBox(
+                                      child: MyClubWidget(
+                                        clubProfile:
+                                            dataAllClub[index].clubProfile,
+                                        clubName: dataAllClub[index].clubName,
+                                        clubDescription:
+                                            dataAllClub[index].description,
+                                        clubId: dataAllClub[index].id,
+                                        clubStatus: dataAllClub[index].status,
+                                        getToken: widget.token,
+                                        userName: widget.userName,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return SizedBox.fromSize();
+                            }
+                          }
+                        }
+                    }
+                    return const MyClubLoadingWidget();
+                  },
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                padding: EdgeInsetsDirectional.only(
+                  top: size.height * 0.02,
+                  start: size.width * 0.04,
+                  end: size.width * 0.04,
+                ),
                 child: Text(
                   'News Feed',
                   style: GoogleFonts.sarabun(
@@ -698,86 +693,104 @@ Widget newsFeed(
                   ),
                 )
               : const SizedBox.shrink(),
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+              size.width * 0.02,
+              size.height * 0.01,
+              size.width * 0.02,
+              size.height * 0.01,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                      child: LikeButton(
+                        size: 24,
+                        likeCount: 2493,
+                      ),
+                    ),
 
-          // Padding(
-          //   padding: EdgeInsetsDirectional.fromSTEB(
-          //     size.width * 0.02,
-          //     size.height * 0.01,
-          //     size.width * 0.02,
-          //     size.height * 0.01,
-          //   ),
-          //   child: Row(
-          //     mainAxisSize: MainAxisSize.max,
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Row(
-          //         mainAxisSize: MainAxisSize.max,
-          //         children: [
-          //           const Padding(
-          //             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-          //             child: LikeButton(
-          //               size: 24,
-          //               likeCount: 2493,
-          //             ),
-          //           ),
-          //           Padding(
-          //             padding:
-          //                 const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-          //             child: Row(
-          //               mainAxisSize: MainAxisSize.max,
-          //               children: [
-          //                 const Icon(
-          //                   Icons.mode_comment_outlined,
-          //                   color: Colors.grey,
-          //                   size: 24,
-          //                 ),
-          //                 Padding(
-          //                   padding: const EdgeInsetsDirectional.fromSTEB(
-          //                       4, 0, 0, 0),
-          //                   child: Text(
-          //                     '4',
-          //                     style: GoogleFonts.sarabun(
-          //                       color: Colors.grey,
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //           Row(
-          //             mainAxisSize: MainAxisSize.max,
-          //             children: const [
-          //               Icon(
-          //                 Icons.monetization_on_outlined,
-          //                 color: Colors.grey,
-          //                 size: 24,
-          //               ),
-          //             ],
-          //           ),
-          //         ],
-          //       ),
-          //       Row(
-          //         mainAxisSize: MainAxisSize.max,
-          //         children: [
-          //           Padding(
-          //             padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-          //             child: Text(
-          //               '4k Share',
-          //               style: GoogleFonts.sarabun(
-          //                 color: Colors.grey,
-          //               ),
-          //             ),
-          //           ),
-          //           const Icon(
-          //             Icons.share_sharp,
-          //             color: Colors.grey,
-          //             size: 24,
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.max,
+                    //   children: const [
+                    //     Icon(
+                    //       Icons.monetization_on_outlined,
+                    //       color: Colors.grey,
+                    //       size: 24,
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) => SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: Container(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                          child: Text(
+                            '4',
+                            style: GoogleFonts.sarabun(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        const Icon(
+                          Icons.mode_comment_outlined,
+                          color: Colors.grey,
+                          size: 24,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                //       child: Text(
+                //         '4k Share',
+                //         style: GoogleFonts.sarabun(
+                //           color: Colors.grey,
+                //         ),
+                //       ),
+                //     ),
+                //     const Icon(
+                //       Icons.share_sharp,
+                //       color: Colors.grey,
+                //       size: 24,
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+          ),
         ],
       ),
     ),

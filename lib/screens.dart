@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/models/user/user_profile_model.dart';
@@ -138,15 +139,19 @@ class _ScreensPageState extends State<ScreensPage> {
                 color: Colors.black,
                 size: 30,
               ),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AccountSetting(
-                      getToken: token!,
-                    ),
-                  ),
+              onPressed: () {
+                Get.to(
+                  () => AccountSetting(getToken: token!),
+                  transition: Transition.fadeIn,
                 );
+                // await Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => AccountSetting(
+                //       getToken: token!,
+                //     ),
+                //   ),
+                // );
               },
             ),
           ),

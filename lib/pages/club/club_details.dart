@@ -1063,86 +1063,103 @@ Widget newsFeed(
                   ),
                 )
               : const SizedBox.shrink(),
-
-          // Padding(
-          //   padding: EdgeInsetsDirectional.fromSTEB(
-          //     size.width * 0.02,
-          //     size.height * 0.01,
-          //     size.width * 0.02,
-          //     size.height * 0.01,
-          //   ),
-          //   child: Row(
-          //     mainAxisSize: MainAxisSize.max,
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Row(
-          //         mainAxisSize: MainAxisSize.max,
-          //         children: [
-          //           const Padding(
-          //             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-          //             child: LikeButton(
-          //               size: 24,
-          //               likeCount: 2493,
-          //             ),
-          //           ),
-          //           Padding(
-          //             padding:
-          //                 const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-          //             child: Row(
-          //               mainAxisSize: MainAxisSize.max,
-          //               children: [
-          //                 const Icon(
-          //                   Icons.mode_comment_outlined,
-          //                   color: Colors.grey,
-          //                   size: 24,
-          //                 ),
-          //                 Padding(
-          //                   padding: const EdgeInsetsDirectional.fromSTEB(
-          //                       4, 0, 0, 0),
-          //                   child: Text(
-          //                     '4',
-          //                     style: GoogleFonts.sarabun(
-          //                       color: Colors.grey,
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //           Row(
-          //             mainAxisSize: MainAxisSize.max,
-          //             children: const [
-          //               Icon(
-          //                 Icons.monetization_on_outlined,
-          //                 color: Colors.grey,
-          //                 size: 24,
-          //               ),
-          //             ],
-          //           ),
-          //         ],
-          //       ),
-          //       Row(
-          //         mainAxisSize: MainAxisSize.max,
-          //         children: [
-          //           Padding(
-          //             padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-          //             child: Text(
-          //               '4k Share',
-          //               style: GoogleFonts.sarabun(
-          //                 color: Colors.grey,
-          //               ),
-          //             ),
-          //           ),
-          //           const Icon(
-          //             Icons.share_sharp,
-          //             color: Colors.grey,
-          //             size: 24,
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+              size.width * 0.02,
+              size.height * 0.01,
+              size.width * 0.02,
+              size.height * 0.01,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                      child: LikeButton(
+                        size: 24,
+                        likeCount: 2493,
+                      ),
+                    ),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.max,
+                    //   children: const [
+                    //     Icon(
+                    //       Icons.monetization_on_outlined,
+                    //       color: Colors.grey,
+                    //       size: 24,
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) => SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: Container(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                          child: Text(
+                            '4',
+                            style: GoogleFonts.sarabun(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        const Icon(
+                          Icons.mode_comment_outlined,
+                          color: Colors.grey,
+                          size: 24,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                //       child: Text(
+                //         '4k Share',
+                //         style: GoogleFonts.sarabun(
+                //           color: Colors.grey,
+                //         ),
+                //       ),
+                //     ),
+                //     const Icon(
+                //       Icons.share_sharp,
+                //       color: Colors.grey,
+                //       size: 24,
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+          ),
         ],
       ),
     ),

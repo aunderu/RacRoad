@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -250,13 +249,10 @@ class _ClubPageState extends State<ClubPage> {
                   top: size.height * 0.01,
                 ),
                 child: InkWell(
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            OnBoardingPage(getToken: widget.token),
-                      ),
+                  onTap: () {
+                    Get.to(
+                      () => OnBoardingPage(getToken: widget.token),
+                      transition: Transition.downToUp,
                     );
                   },
                   child: Ink(
