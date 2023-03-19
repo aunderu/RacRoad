@@ -41,7 +41,7 @@ class _ClubPageState extends State<ClubPage> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
@@ -97,177 +97,172 @@ class _ClubPageState extends State<ClubPage> {
                   start: size.width * 0.04,
                   end: size.width * 0.04,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'คลับของฉัน',
-                        style: GoogleFonts.sarabun(
-                          fontSize: 20,
-                        ),
-                      ),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'คลับของฉัน',
+                    style: GoogleFonts.sarabun(
+                      fontSize: 20,
                     ),
-                    const SizedBox(height: 10),
-                    FutureBuilder<MyClub?>(
-                      future: RemoteService().getMyClub(widget.token),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return const MyClubLoadingWidget();
-                          case ConnectionState.waiting:
-                            if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<MyClubElement> dataMyClub =
-                                  result!.data.myClub!;
-                              if (dataMyClub.isNotEmpty) {
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.22,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    itemCount: dataMyClub.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return FittedBox(
-                                        child: MyClubWidget(
-                                          clubProfile:
-                                              dataMyClub[index].clubProfile,
-                                          clubName: dataMyClub[index].clubName,
-                                          clubDescription:
-                                              dataMyClub[index].description,
-                                          clubId: dataMyClub[index].id,
-                                          clubStatus: dataMyClub[index].status,
-                                          getToken: widget.token,
-                                          userName: widget.userName,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              } else {
-                                return SizedBox.fromSize();
-                              }
-                            }
-                            break;
-                          case ConnectionState.active:
-                            if (snapshot.hasData) {
-                              var result = snapshot.data;
-                              List<MyClubElement> dataMyClub =
-                                  result!.data.myClub!;
-                              if (dataMyClub.isNotEmpty) {
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.22,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    itemCount: dataMyClub.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return FittedBox(
-                                        child: MyClubWidget(
-                                          clubProfile:
-                                              dataMyClub[index].clubProfile,
-                                          clubName: dataMyClub[index].clubName,
-                                          clubDescription:
-                                              dataMyClub[index].description,
-                                          clubId: dataMyClub[index].id,
-                                          clubStatus: dataMyClub[index].status,
-                                          getToken: widget.token,
-                                          userName: widget.userName,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              } else {
-                                return SizedBox.fromSize();
-                              }
-                            }
-                            break;
-                          case ConnectionState.done:
-                            if (snapshot.hasError) {
-                              return const Center(
-                                  child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
-                            } else {
-                              if (snapshot.hasData) {
-                                var result = snapshot.data;
-                                List<MyClubElement> dataMyClub =
-                                    result!.data.myClub!;
-                                if (dataMyClub.isNotEmpty) {
-                                  return SizedBox(
-                                    width: double.infinity,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.22,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      itemCount: dataMyClub.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        return FittedBox(
-                                          child: MyClubWidget(
-                                            clubProfile:
-                                                dataMyClub[index].clubProfile,
-                                            clubName:
-                                                dataMyClub[index].clubName,
-                                            clubDescription:
-                                                dataMyClub[index].description,
-                                            clubId: dataMyClub[index].id,
-                                            clubStatus:
-                                                dataMyClub[index].status,
-                                            getToken: widget.token,
-                                            userName: widget.userName,
-                                          ),
-                                        );
-                                      },
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: size.width * 0.04),
+                child: FutureBuilder<MyClub?>(
+                  future: RemoteService().getMyClub(widget.token),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return const MyClubLoadingWidget();
+                      case ConnectionState.waiting:
+                        if (snapshot.hasData) {
+                          var result = snapshot.data;
+                          List<MyClubElement> dataMyClub = result!.data.myClub!;
+                          if (dataMyClub.isNotEmpty) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.22,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataMyClub.length,
+                                scrollDirection: Axis.horizontal,
+                                clipBehavior: Clip.none,
+                                itemBuilder: (context, index) {
+                                  return FittedBox(
+                                    child: MyClubWidget(
+                                      clubProfile:
+                                          dataMyClub[index].clubProfile,
+                                      clubName: dataMyClub[index].clubName,
+                                      clubDescription:
+                                          dataMyClub[index].description,
+                                      clubId: dataMyClub[index].id,
+                                      clubStatus: dataMyClub[index].status,
+                                      getToken: widget.token,
+                                      userName: widget.userName,
                                     ),
                                   );
-                                } else {
-                                  return SizedBox.fromSize();
-                                }
-                              }
-                            }
+                                },
+                              ),
+                            );
+                          } else {
+                            return SizedBox.fromSize();
+                          }
                         }
-                        return const MyClubLoadingWidget();
-                      },
-                    ),
-                  ],
+                        break;
+                      case ConnectionState.active:
+                        if (snapshot.hasData) {
+                          var result = snapshot.data;
+                          List<MyClubElement> dataMyClub = result!.data.myClub!;
+                          if (dataMyClub.isNotEmpty) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.22,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataMyClub.length,
+                                scrollDirection: Axis.horizontal,
+                                clipBehavior: Clip.none,
+                                itemBuilder: (context, index) {
+                                  return FittedBox(
+                                    child: MyClubWidget(
+                                      clubProfile:
+                                          dataMyClub[index].clubProfile,
+                                      clubName: dataMyClub[index].clubName,
+                                      clubDescription:
+                                          dataMyClub[index].description,
+                                      clubId: dataMyClub[index].id,
+                                      clubStatus: dataMyClub[index].status,
+                                      getToken: widget.token,
+                                      userName: widget.userName,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            return SizedBox.fromSize();
+                          }
+                        }
+                        break;
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return const Center(
+                              child: Text("ดูเหมือนมีอะไรผิดปกติ :("));
+                        } else {
+                          if (snapshot.hasData) {
+                            var result = snapshot.data;
+                            List<MyClubElement> dataMyClub =
+                                result!.data.myClub!;
+                            if (dataMyClub.isNotEmpty) {
+                              return SizedBox(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.22,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  itemCount: dataMyClub.length,
+                                  scrollDirection: Axis.horizontal,
+                                  clipBehavior: Clip.none,
+                                  itemBuilder: (context, index) {
+                                    return FittedBox(
+                                      child: MyClubWidget(
+                                        clubProfile:
+                                            dataMyClub[index].clubProfile,
+                                        clubName: dataMyClub[index].clubName,
+                                        clubDescription:
+                                            dataMyClub[index].description,
+                                        clubId: dataMyClub[index].id,
+                                        clubStatus: dataMyClub[index].status,
+                                        getToken: widget.token,
+                                        userName: widget.userName,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return SizedBox.fromSize();
+                            }
+                          }
+                        }
+                    }
+                    return const MyClubLoadingWidget();
+                  },
                 ),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.only(
-                  top: size.height * 0.01,
+                  top: size.height * 0.02,
                 ),
-                child: InkWell(
-                  onTap: () {
-                    Get.to(
-                      () => OnBoardingPage(getToken: widget.token),
-                      transition: Transition.downToUp,
-                    );
-                  },
-                  child: Ink(
-                    width: 150,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEBEBEB),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Align(
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Text(
-                        'สร้างคลับ',
-                        style: GoogleFonts.sarabun(
-                          fontWeight: FontWeight.bold,
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(
+                        () => OnBoardingPage(getToken: widget.token),
+                        transition: Transition.downToUp,
+                      );
+                    },
+                    child: Ink(
+                      width: 150,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEBEBEB),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Text(
+                          'สร้างคลับ',
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -548,6 +543,17 @@ class _ClubPageState extends State<ClubPage> {
                                       userName: widget.userName,
                                     );
                                   },
+                                );
+                              } else {
+                                return SizedBox(
+                                  height: 50,
+                                  child: Center(
+                                    child: Text(
+                                      'ดูเหมือนยังไม่มีคลับอะไรในตอนนี้',
+                                      style: GoogleFonts.sarabun(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 );
                               }
                             } else {

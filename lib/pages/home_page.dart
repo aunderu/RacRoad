@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:http/http.dart' as http;
 
 import '../colors.dart';
 import '../models/club/my_posts.dart' as myPostModel;
@@ -161,6 +164,7 @@ class _HomePageState extends State<HomePage> {
                                 shrinkWrap: true,
                                 itemCount: dataAllClub.length,
                                 scrollDirection: Axis.horizontal,
+                                clipBehavior: Clip.none,
                                 itemBuilder: (context, index) {
                                   return FittedBox(
                                     child: MyClubWidget(
@@ -199,6 +203,7 @@ class _HomePageState extends State<HomePage> {
                                 shrinkWrap: true,
                                 itemCount: dataAllClub.length,
                                 scrollDirection: Axis.horizontal,
+                                clipBehavior: Clip.none,
                                 itemBuilder: (context, index) {
                                   return FittedBox(
                                     child: MyClubWidget(
@@ -242,6 +247,7 @@ class _HomePageState extends State<HomePage> {
                                   shrinkWrap: true,
                                   itemCount: dataAllClub.length,
                                   scrollDirection: Axis.horizontal,
+                                  clipBehavior: Clip.none,
                                   itemBuilder: (context, index) {
                                     return FittedBox(
                                       child: MyClubWidget(
@@ -334,6 +340,17 @@ class _HomePageState extends State<HomePage> {
                                     .postDate,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .imagePost,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .coComment,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .coLike,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .comment,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .like,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .id,
+                                widget.token,
                               );
                             },
                           );
@@ -383,6 +400,17 @@ class _HomePageState extends State<HomePage> {
                                     .postDate,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .imagePost,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .coComment,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .coLike,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .comment,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .like,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .id,
+                                widget.token,
                               );
                             },
                           );
@@ -436,6 +464,17 @@ class _HomePageState extends State<HomePage> {
                                       .postDate,
                                   dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .imagePost,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .coComment,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .coLike,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .comment,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .like,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .id,
+                                  widget.token,
                                 );
                               },
                             );
@@ -535,14 +574,35 @@ class MyCustomTimeAgo implements timeago.LookupMessages {
   String wordSeparator() => '';
 }
 
+Future<bool> userLike(String postId, String userId) async {
+  final response = await http.post(
+    Uri.parse("https://api.racroad.com/api/click/like"),
+    body: {
+      'post_id': postId,
+      'user_id': userId,
+    },
+  );
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 Widget newsFeed(
   BuildContext context,
   Size size,
   String userProfile,
   String userName,
-  String description,
+  String? description,
   DateTime timestamp,
   List<ImagePost> imgPost,
+  int countComment,
+  int countLike,
+  List<Comment> comments,
+  List<Comment> likes,
+  String postId,
+  String userId,
 ) {
   final controller = PageController();
   timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
@@ -614,20 +674,22 @@ Widget newsFeed(
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Text(
-                    description,
-                    style: GoogleFonts.sarabun(),
+          description == null
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          description,
+                          style: GoogleFonts.sarabun(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
           imgPost.isEmpty
               ? const SizedBox(height: 20)
               : const SizedBox(height: 5),
@@ -693,25 +755,23 @@ Widget newsFeed(
                   ),
                 )
               : const SizedBox.shrink(),
+          const Divider(color: Colors.black38),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              size.height * 0.01,
-            ),
+            padding: const EdgeInsetsDirectional.fromSTEB(40, 0, 40, 10),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.max,
-                  children: const [
+                  children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                       child: LikeButton(
                         size: 24,
-                        likeCount: 2493,
+                        likeCount: countLike,
+                        onTap: (isLiked) => userLike(postId, userId),
                       ),
                     ),
 
@@ -727,6 +787,7 @@ Widget newsFeed(
                     // ),
                   ],
                 ),
+
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                   child: GestureDetector(
@@ -741,9 +802,15 @@ Widget newsFeed(
                             top: Radius.circular(20),
                           ),
                         ),
-                        builder: (context) => SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: Container(),
+                        builder: (context) => StatefulBuilder(
+                          builder: (context, setState) => SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: Comments(
+                              comments: comments,
+                              userId: userId,
+                              postId: postId,
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -754,7 +821,7 @@ Widget newsFeed(
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
                           child: Text(
-                            '4',
+                            countComment.toString(),
                             style: GoogleFonts.sarabun(
                               color: Colors.grey,
                             ),
@@ -795,6 +862,210 @@ Widget newsFeed(
       ),
     ),
   );
+}
+
+class Comments extends StatefulWidget {
+  const Comments({
+    super.key,
+    required this.comments,
+    required this.userId,
+    required this.postId,
+  });
+
+  final List<Comment> comments;
+  final String userId;
+  final String postId;
+
+  @override
+  State<Comments> createState() => _CommentsState();
+}
+
+class _CommentsState extends State<Comments> {
+  TextEditingController? userCommentController;
+  final GlobalKey<FormState> _userCommentKey = GlobalKey<FormState>();
+
+  final ScrollController _controller = ScrollController();
+
+  Future<bool> userComment(
+      String postId, String userId, String userComment) async {
+    final response = await http.post(
+      Uri.parse("https://api.racroad.com/api/comment/store"),
+      body: {
+        'post_id': postId,
+        'user_id': userId,
+        'comment': userComment,
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userCommentController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    userCommentController!.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.60,
+                child: ListView.builder(
+                  itemCount: widget.comments.length,
+                  physics: const BouncingScrollPhysics(),
+                  controller: _controller,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        ListTile(
+                          dense: true,
+                          leading: CachedNetworkImage(
+                            imageUrl: widget
+                                .comments[(widget.comments.length - 1) - index]
+                                .ownerAvatar,
+                          ),
+                          title: Text(
+                            widget
+                                .comments[(widget.comments.length - 1) - index]
+                                .owner,
+                            style: GoogleFonts.sarabun(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            widget
+                                .comments[(widget.comments.length - 1) - index]
+                                .comment!,
+                            style: GoogleFonts.sarabun(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Form(
+                      key: _userCommentKey,
+                      child: TextFormField(
+                        controller: userCommentController,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          labelText: 'แสดงความคิดเห็น',
+                          labelStyle: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFF3F3F3),
+                          suffixIcon: const Icon(
+                            Icons.keyboard,
+                            color: Color(0xFF757575),
+                            size: 22,
+                          ),
+                        ),
+                        style: GoogleFonts.sarabun(),
+                        validator: MultiValidator([
+                          RequiredValidator(
+                            errorText: "ไม่สามารถค่าว่างได้",
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (_userCommentKey.currentState?.validate() ?? false) {
+                        userComment(
+                          widget.postId,
+                          widget.userId,
+                          userCommentController!.text,
+                        ).then((value) {
+                          if (value == false) {
+                            Fluttertoast.showToast(
+                              msg:
+                                  "ดูเหมือนมีอะไรผิดพลาด กรุณาลองอีกครั้งในภายหลัง",
+                              backgroundColor: Colors.redAccent,
+                              textColor: Colors.black,
+                            );
+                          } else {
+                            Get.offAllNamed('/home');
+                          }
+                        });
+                        // print(userCommentController);
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.send,
+                      color: darkGray,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 Widget newsFeedLoading(

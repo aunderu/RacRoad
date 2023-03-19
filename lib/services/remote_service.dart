@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/club/all_club_model.dart';
+import '../models/club/club_request_model.dart';
 import '../models/club/my_club_post.dart';
 import '../models/club/my_posts.dart';
 import '../models/club/newfeed.dart';
@@ -46,6 +47,7 @@ ClubPostModel? resultClubPostModel;
 MyPosts? resultMyPosts;
 AllClubModel? resultAllClubModel;
 NewFeedModel? resultNewFeedModel;
+ClubRequestModel? resultClubRequestModel;
 
 const url = "https://api.racroad.com/api";
 // const testurl = "https://api-racroad.chabafarm.com/api";
@@ -126,13 +128,15 @@ class RemoteService {
   }
 
   // ################################ ClubDetails #################################
-  Future<ClubDetailsModel?> getClubDetailsModel(String clubId, String userId) async {
+  Future<ClubDetailsModel?> getClubDetailsModel(
+      String clubId, String userId) async {
     try {
       final response =
           await http.get(Uri.parse("$url/club/approve/detail/$clubId/$userId"));
       if (response.statusCode == 200) {
         final itemClubDetailsModel = json.decode(response.body);
-        resultClubDetailsModel = ClubDetailsModel.fromJson(itemClubDetailsModel);
+        resultClubDetailsModel =
+            ClubDetailsModel.fromJson(itemClubDetailsModel);
       } else {
         throw Exception(jsonDecode(response.body));
       }
@@ -403,7 +407,8 @@ class RemoteService {
   // ################################ My Posts #################################
   Future<NewFeedModel?> getNewFeedModel(String userId) async {
     try {
-      final response = await http.get(Uri.parse("$url/post/in/my/club/join/$userId"));
+      final response =
+          await http.get(Uri.parse("$url/post/in/my/club/join/$userId"));
       if (response.statusCode == 200) {
         final itemNewFeedModel = json.decode(response.body);
         resultNewFeedModel = NewFeedModel.fromJson(itemNewFeedModel);
@@ -434,5 +439,23 @@ class RemoteService {
       }
     }
     return resultAllClubModel;
+  }
+
+  // ################################ Club Request Model #################################
+  Future<ClubRequestModel?> getClubRequestModel(String clubId) async {
+    try {
+      final response = await http.get(Uri.parse("$url/request/my/club/$clubId"));
+      if (response.statusCode == 200) {
+        final itemClubRequestModel = json.decode(response.body);
+        resultClubRequestModel = ClubRequestModel.fromJson(itemClubRequestModel);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultClubRequestModel;
   }
 }

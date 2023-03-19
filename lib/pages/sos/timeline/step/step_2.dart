@@ -273,7 +273,7 @@ class _StepTwoState extends State<StepTwo> {
             ElevatedButton(
               onPressed: () {
                 Get.defaultDialog(
-                  title: 'ปฏิเสธข้อเสนอดังกล่าว',
+                  title: 'ยืนยันข้อเสนอดังกล่าว',
                   titleStyle: GoogleFonts.sarabun(
                     fontWeight: FontWeight.bold,
                   ),

@@ -76,6 +76,7 @@ class AllClubWidget extends StatelessWidget {
                 clubId: clubId,
                 getToken: getToken,
                 userName: userName,
+                memcId: memcId,
               ),
               transition: Transition.rightToLeftWithFade,
             );
@@ -179,6 +180,12 @@ class AllClubWidget extends StatelessWidget {
                                         onPressed: () {
                                           userJoinClub();
                                           Get.offAllNamed('/club');
+                                          Fluttertoast.showToast(
+                                            msg:
+                                                "คุณกดขอเข้าคลับแล้ว กรุณารอการตอบรับเข้าคลับ",
+                                            backgroundColor: lightGreen,
+                                            textColor: Colors.black,
+                                          );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: mainGreen,

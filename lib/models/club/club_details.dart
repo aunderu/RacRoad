@@ -141,33 +141,25 @@ class UserInMyClub {
         required this.memcId,
         required this.userId,
         required this.name,
-        required this.type,
-        required this.status,
         required this.avatar,
     });
 
     String memcId;
     String userId;
     String name;
-    String type;
-    String status;
     String avatar;
 
     factory UserInMyClub.fromJson(Map<String, dynamic> json) => UserInMyClub(
         memcId: json["memc_id"],
         userId: json["user_id"],
         name: json["name"],
-        type: json["type"],
-        status: json["status"],
-        avatar: json["avatar"],
+        avatar: json["owner_avatar"],
     );
 
     Map<String, dynamic> toJson() => {
         "memc_id": memcId,
         "user_id": userId,
         "name": name,
-        "type": type,
-        "status": status,
-        "avatar": avatar,
+        "owner_avatar": avatar,
     };
 }

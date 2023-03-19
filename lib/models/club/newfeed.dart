@@ -55,23 +55,31 @@ class Data {
 class PostInMyClubJoin {
     PostInMyClubJoin({
         required this.id,
-        required this.description,
+        this.description,
         required this.owner,
         required this.ownerAvatar,
         required this.clubId,
         required this.clubName,
         required this.postDate,
         required this.imagePost,
+        required this.coComment,
+        required this.comment,
+        required this.coLike,
+        required this.like,
     });
 
     String id;
-    String description;
+    String? description;
     String owner;
     String ownerAvatar;
     String clubId;
     String clubName;
     DateTime postDate;
     List<ImagePost> imagePost;
+    int coComment;
+    List<Comment> comment;
+    int coLike;
+    List<Comment> like;
 
     factory PostInMyClubJoin.fromJson(Map<String, dynamic> json) => PostInMyClubJoin(
         id: json["id"],
@@ -82,6 +90,10 @@ class PostInMyClubJoin {
         clubName: json["club_name"],
         postDate: DateTime.parse(json["post_date"]),
         imagePost: List<ImagePost>.from(json["image_post"].map((x) => ImagePost.fromJson(x))),
+        coComment: json["co_comment"],
+        comment: List<Comment>.from(json["comment"].map((x) => Comment.fromJson(x))),
+        coLike: json["co_like"],
+        like: List<Comment>.from(json["like"].map((x) => Comment.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -93,6 +105,42 @@ class PostInMyClubJoin {
         "club_name": clubName,
         "post_date": postDate.toIso8601String(),
         "image_post": List<dynamic>.from(imagePost.map((x) => x.toJson())),
+        "co_comment": coComment,
+        "comment": List<dynamic>.from(comment.map((x) => x.toJson())),
+        "co_like": coLike,
+        "like": List<dynamic>.from(like.map((x) => x.toJson())),
+    };
+}
+
+class Comment {
+    Comment({
+        required this.id,
+        required this.owner,
+        required this.ownerAvatar,
+        this.comment,
+        this.status,
+    });
+
+    String id;
+    String owner;
+    String ownerAvatar;
+    String? comment;
+    String? status;
+
+    factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+        id: json["id"],
+        owner: json["owner"],
+        ownerAvatar: json["owner_avatar"],
+        comment: json["comment"],
+        status: json["status"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "owner": owner,
+        "owner_avatar": ownerAvatar,
+        "comment": comment,
+        "status": status,
     };
 }
 
