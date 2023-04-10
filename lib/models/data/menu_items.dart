@@ -51,3 +51,14 @@ class JobMenuItems {
     itemDelete,
   ];
 }
+
+class ClubDetailMenuItem {
+  static const itemLeave = CustomMenuItem(
+    text: 'ออกจากคลับ',
+    icon: Icons.exit_to_app,
+  );
+
+  static const List<CustomMenuItem> itemsFirst = [
+    itemLeave,
+  ];
+}

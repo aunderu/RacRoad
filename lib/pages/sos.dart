@@ -71,7 +71,7 @@ class _SOSPageState extends State<SOSPage> {
   }
 
   setUpTimedFetch() {
-    Timer.periodic(const Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 10), (timer) {
       if (mounted) {
         setState(() {
           _dataCurrentSos = RemoteService().getMyCurrentSOS(widget.token);

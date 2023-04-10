@@ -351,6 +351,8 @@ class _HomePageState extends State<HomePage> {
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .id,
                                 widget.token,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .clubName,
                               );
                             },
                           );
@@ -411,6 +413,8 @@ class _HomePageState extends State<HomePage> {
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .id,
                                 widget.token,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .clubName,
                               );
                             },
                           );
@@ -475,6 +479,8 @@ class _HomePageState extends State<HomePage> {
                                   dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .id,
                                   widget.token,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .clubName,
                                 );
                               },
                             );
@@ -574,7 +580,7 @@ class MyCustomTimeAgo implements timeago.LookupMessages {
   String wordSeparator() => '';
 }
 
-Future<bool> userLike(String postId, String userId) async {
+Future<bool> userLike(bool isLiked, String postId, String userId) async {
   final response = await http.post(
     Uri.parse("https://api.racroad.com/api/click/like"),
     body: {
@@ -603,9 +609,11 @@ Widget newsFeed(
   List<Comment> likes,
   String postId,
   String userId,
+  String clubName,
 ) {
   final controller = PageController();
   timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
+  var isUserLike = false;
 
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
@@ -620,7 +628,6 @@ Widget newsFeed(
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(
@@ -631,6 +638,8 @@ Widget newsFeed(
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsetsDirectional.all(1),
@@ -649,26 +658,31 @@ Widget newsFeed(
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        userName,
-                        style: GoogleFonts.sarabun(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.bold,
+                  child: SizedBox(
+                    width: size.width * 0.75,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "$userName in $clubName",
+                          style: GoogleFonts.sarabun(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                      ),
-                      const SizedBox(height: 1.5),
-                      Text(
-                        timeago.format(timestamp, locale: 'th-custom'),
-                        style: GoogleFonts.sarabun(
-                          fontSize: 11.5,
-                          color: darkGray,
+                        const SizedBox(height: 1.5),
+                        Text(
+                          timeago.format(timestamp, locale: 'th-custom'),
+                          style: GoogleFonts.sarabun(
+                            fontSize: 11.5,
+                            color: darkGray,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -769,12 +783,45 @@ Widget newsFeed(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                       child: LikeButton(
-                        size: 24,
                         likeCount: countLike,
-                        onTap: (isLiked) => userLike(postId, userId),
+                        likeBuilder: (isLiked) {
+                          final color = isLiked ? Colors.red : Colors.grey;
+
+                          return Icon(Icons.favorite, color: color, size: 24);
+                        },
+                        countBuilder: (likeCount, isLiked, text) {
+                          final color = isLiked ? Colors.red : Colors.grey;
+
+                          return Text(
+                            text,
+                            style: GoogleFonts.sarabun(
+                              color: color,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
+                        isLiked: (() {
+                          for (var like in likes) {
+                            if (like.userId == userId &&
+                                like.status == "like") {
+                              isUserLike = true;
+                              return isUserLike;
+                            } else {
+                              isUserLike = false;
+                              return isUserLike;
+                            }
+                          }
+                          return isUserLike;
+                        }()),
+                        onTap: (isLiked) =>
+                            userLike(isLiked, postId, userId).then((isLike) {
+                          if (isLike == true) {
+                            isUserLike = !isUserLike;
+                          }
+                          return isUserLike;
+                        }),
                       ),
                     ),
-
                     // Row(
                     //   mainAxisSize: MainAxisSize.max,
                     //   children: const [
@@ -787,7 +834,6 @@ Widget newsFeed(
                     // ),
                   ],
                 ),
-
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                   child: GestureDetector(
@@ -836,25 +882,25 @@ Widget newsFeed(
                     ),
                   ),
                 ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.max,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                //       child: Text(
-                //         '4k Share',
-                //         style: GoogleFonts.sarabun(
-                //           color: Colors.grey,
-                //         ),
-                //       ),
-                //     ),
-                //     const Icon(
-                //       Icons.share_sharp,
-                //       color: Colors.grey,
-                //       size: 24,
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                      child: Text(
+                        '0 Share',
+                        style: GoogleFonts.sarabun(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.share_sharp,
+                      color: Colors.grey,
+                      size: 24,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

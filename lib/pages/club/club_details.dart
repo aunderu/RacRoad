@@ -25,6 +25,8 @@ import '../../../colors.dart';
 import '../../models/club/club_request_model.dart';
 import '../../models/club/my_club_post.dart' as my_club_posts_model;
 import '../../models/club/club_details.dart' as club_details_model;
+import '../../models/data/menu_items.dart';
+import '../../models/menu_item.dart';
 
 class ClubDetailsPage extends StatefulWidget {
   const ClubDetailsPage({
@@ -43,6 +45,103 @@ class ClubDetailsPage extends StatefulWidget {
   @override
   State<ClubDetailsPage> createState() => _ClubDetailsPageState();
 }
+
+Future<bool> userLeaveClub(String? memcId) async {
+  if (memcId == null) {
+    return false;
+  }
+  final response = await http.get(
+    Uri.parse("https://api.racroad.com/api/leave/club/$memcId"),
+  );
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void onSelected(
+  BuildContext context,
+  CustomMenuItem item,
+  String memcId,
+) {
+  switch (item) {
+    case ClubDetailMenuItem.itemLeave:
+      Get.defaultDialog(
+        title: 'ออกจากคลับ',
+        titleStyle: GoogleFonts.sarabun(
+          fontWeight: FontWeight.bold,
+        ),
+        titlePadding: const EdgeInsets.only(
+          top: 20,
+          left: 10,
+          right: 10,
+        ),
+        middleText: '',
+        confirm: ElevatedButton(
+          onPressed: () {
+            userLeaveClub(memcId).then((value) {
+              if (value == false) {
+                Fluttertoast.showToast(
+                  msg: "มีบางอย่างผิดพลาด กรุณาลองอีกครั้งในภายหลัง",
+                  backgroundColor: Colors.red[300],
+                  textColor: Colors.black,
+                );
+              } else {
+                Get.offAllNamed('/club');
+              }
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            minimumSize: const Size(100, 40),
+          ),
+          child: Text(
+            "ออกจากคลับ",
+            style: GoogleFonts.sarabun(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        cancel: ElevatedButton(
+          onPressed: () {
+            Get.back();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: whiteGrey,
+            foregroundColor: darkGray,
+            minimumSize: const Size(100, 40),
+          ),
+          child: Text(
+            "ยกเลิก",
+            style: GoogleFonts.sarabun(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+      break;
+  }
+}
+
+PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
+    PopupMenuItem<CustomMenuItem>(
+      value: item,
+      child: Row(
+        children: [
+          Icon(
+            item.icon,
+            color: Colors.black,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Text(
+            item.text,
+            style: GoogleFonts.sarabun(),
+          ),
+        ],
+      ),
+    );
 
 class _ClubDetailsPageState extends State<ClubDetailsPage> {
   bool isFabVisible = true;
@@ -80,6 +179,23 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                   Navigator.pop(context);
                 },
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: PopupMenuButton<CustomMenuItem>(
+                    onSelected: (item) =>
+                        onSelected(context, item, widget.memcId!),
+                    itemBuilder: (context) => [
+                      ...ClubDetailMenuItem.itemsFirst.map(buildItem).toList(),
+                    ],
+                    child: const Icon(
+                      Icons.keyboard_control,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                  ),
+                )
+              ],
               centerTitle: false,
               elevation: 0,
             )
@@ -467,7 +583,6 @@ Widget clubDetails(
                 dataMyClub: dataMyClub,
                 size: size,
                 userName: userName,
-                memcId: memcId,
                 clubId: clubId,
                 getToken: userId,
               );
@@ -481,7 +596,6 @@ Widget clubDetails(
                 dataMyClub: dataMyClub,
                 size: size,
                 userName: userName,
-                memcId: memcId,
                 clubId: clubId,
                 getToken: userId,
               );
@@ -498,7 +612,6 @@ Widget clubDetails(
                   dataMyClub: dataMyClub,
                   size: size,
                   userName: userName,
-                  memcId: memcId,
                   clubId: clubId,
                   getToken: userId,
                 );
@@ -849,7 +962,6 @@ class ClubDetailsWidgets extends StatefulWidget {
     required this.dataMyClub,
     required this.size,
     required this.userName,
-    required this.memcId,
     required this.clubId,
     required this.getToken,
   });
@@ -857,7 +969,7 @@ class ClubDetailsWidgets extends StatefulWidget {
   final club_details_model.Data dataMyClub;
   final Size size;
   final String userName;
-  final String? memcId;
+
   final String clubId;
   final String getToken;
 
@@ -1081,20 +1193,6 @@ class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
       return true;
     } else {
       throw false;
-    }
-  }
-
-  Future<bool> userLeaveClub(String? memcId) async {
-    if (memcId == null) {
-      return false;
-    }
-    final response = await http.get(
-      Uri.parse("https://api.racroad.com/api/leave/club/$memcId"),
-    );
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -1388,101 +1486,102 @@ class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
                                         ),
                                       ),
                                     )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Material(
-                                        child: InkWell(
-                                          onTap: () {
-                                            Get.defaultDialog(
-                                              title:
-                                                  'ออกจากคลับ\n${widget.dataMyClub.clubApproveDetail.clubName}',
-                                              titleStyle: GoogleFonts.sarabun(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              titlePadding:
-                                                  const EdgeInsets.only(
-                                                top: 20,
-                                                left: 10,
-                                                right: 10,
-                                              ),
-                                              middleText: '',
-                                              confirm: ElevatedButton(
-                                                onPressed: () {
-                                                  userLeaveClub(widget.memcId)
-                                                      .then((value) {
-                                                    if (value == false) {
-                                                      Fluttertoast.showToast(
-                                                        msg:
-                                                            "มีบางอย่างผิดพลาด กรุณาลองอีกครั้งในภายหลัง",
-                                                        backgroundColor:
-                                                            Colors.red[300],
-                                                        textColor: Colors.black,
-                                                      );
-                                                    } else {
-                                                      Get.offAllNamed('/club');
-                                                    }
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.red,
-                                                  minimumSize:
-                                                      const Size(100, 40),
-                                                ),
-                                                child: Text(
-                                                  "ออกจากคลับ",
-                                                  style: GoogleFonts.sarabun(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              cancel: ElevatedButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: whiteGrey,
-                                                  foregroundColor: darkGray,
-                                                  minimumSize:
-                                                      const Size(100, 40),
-                                                ),
-                                                child: Text(
-                                                  "ยกเลิก",
-                                                  style: GoogleFonts.sarabun(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: Ink(
-                                            width: widget.size.width * 0.25,
-                                            height: widget.size.height * 0.04,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  'ออกคลับ',
-                                                  style: GoogleFonts.sarabun(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const Icon(
-                                                  Icons.exit_to_app,
-                                                  size: 17,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  : const SizedBox.shrink()
+                          // ClipRRect(
+                          //     borderRadius: BorderRadius.circular(10),
+                          //     child: Material(
+                          //       child: InkWell(
+                          //         onTap: () {
+                          //           Get.defaultDialog(
+                          //             title:
+                          //                 'ออกจากคลับ\n${widget.dataMyClub.clubApproveDetail.clubName}',
+                          //             titleStyle: GoogleFonts.sarabun(
+                          //               fontWeight: FontWeight.bold,
+                          //             ),
+                          //             titlePadding:
+                          //                 const EdgeInsets.only(
+                          //               top: 20,
+                          //               left: 10,
+                          //               right: 10,
+                          //             ),
+                          //             middleText: '',
+                          //             confirm: ElevatedButton(
+                          //               onPressed: () {
+                          //                 userLeaveClub(widget.memcId)
+                          //                     .then((value) {
+                          //                   if (value == false) {
+                          //                     Fluttertoast.showToast(
+                          //                       msg:
+                          //                           "มีบางอย่างผิดพลาด กรุณาลองอีกครั้งในภายหลัง",
+                          //                       backgroundColor:
+                          //                           Colors.red[300],
+                          //                       textColor: Colors.black,
+                          //                     );
+                          //                   } else {
+                          //                     Get.offAllNamed('/club');
+                          //                   }
+                          //                 });
+                          //               },
+                          //               style: ElevatedButton.styleFrom(
+                          //                 backgroundColor: Colors.red,
+                          //                 minimumSize:
+                          //                     const Size(100, 40),
+                          //               ),
+                          //               child: Text(
+                          //                 "ออกจากคลับ",
+                          //                 style: GoogleFonts.sarabun(
+                          //                   fontWeight: FontWeight.bold,
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //             cancel: ElevatedButton(
+                          //               onPressed: () {
+                          //                 Get.back();
+                          //               },
+                          //               style: ElevatedButton.styleFrom(
+                          //                 backgroundColor: whiteGrey,
+                          //                 foregroundColor: darkGray,
+                          //                 minimumSize:
+                          //                     const Size(100, 40),
+                          //               ),
+                          //               child: Text(
+                          //                 "ยกเลิก",
+                          //                 style: GoogleFonts.sarabun(
+                          //                   fontWeight: FontWeight.bold,
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //           );
+                          //         },
+                          //         child: Ink(
+                          //           width: widget.size.width * 0.25,
+                          //           height: widget.size.height * 0.04,
+                          //           decoration: BoxDecoration(
+                          //             color: Colors.white,
+                          //             borderRadius:
+                          //                 BorderRadius.circular(10),
+                          //           ),
+                          //           child: Row(
+                          //             mainAxisSize: MainAxisSize.min,
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceEvenly,
+                          //             children: [
+                          //               Text(
+                          //                 'ออกคลับ',
+                          //                 style: GoogleFonts.sarabun(
+                          //                   fontWeight: FontWeight.bold,
+                          //                 ),
+                          //               ),
+                          //               const Icon(
+                          //                 Icons.exit_to_app,
+                          //                 size: 17,
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
                         ],
                       ),
                     ),
@@ -1878,7 +1977,7 @@ class MyCustomTimeAgo implements timeago.LookupMessages {
   String wordSeparator() => '';
 }
 
-Future<bool> userLike(String postId, String userId) async {
+Future<bool> userLike(bool isLiked, String postId, String userId) async {
   final response = await http.post(
     Uri.parse("https://api.racroad.com/api/click/like"),
     body: {
@@ -1910,6 +2009,7 @@ Widget newsFeed(
 ) {
   final controller = PageController();
   timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
+  var isUserLike = false;
 
   return Padding(
     padding: EdgeInsetsDirectional.fromSTEB(
@@ -1924,7 +2024,6 @@ Widget newsFeed(
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(
@@ -1935,6 +2034,8 @@ Widget newsFeed(
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsetsDirectional.all(1),
@@ -1953,26 +2054,33 @@ Widget newsFeed(
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        userName,
-                        style: GoogleFonts.sarabun(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  child: Expanded(
+                    child: SizedBox(
+                      width: size.width * 0.75,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            userName,
+                            style: GoogleFonts.sarabun(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          const SizedBox(height: 1.5),
+                          Text(
+                            timeago.format(timestamp, locale: 'th-custom'),
+                            style: GoogleFonts.sarabun(
+                              fontSize: 11.5,
+                              color: darkGray,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 1.5),
-                      Text(
-                        timeago.format(timestamp, locale: 'th-custom'),
-                        style: GoogleFonts.sarabun(
-                          fontSize: 11.5,
-                          color: darkGray,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
@@ -2073,25 +2181,57 @@ Widget newsFeed(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                       child: LikeButton(
-                        size: 24,
                         likeCount: countLike,
-                        onTap: (isLiked) => userLike(postId, userId),
+                        likeBuilder: (isLiked) {
+                          final color = isLiked ? Colors.red : Colors.grey;
+
+                          return Icon(Icons.favorite, color: color, size: 24);
+                        },
+                        countBuilder: (likeCount, isLiked, text) {
+                          final color = isLiked ? Colors.red : Colors.grey;
+
+                          return Text(
+                            text,
+                            style: GoogleFonts.sarabun(
+                              color: color,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
+                        isLiked: (() {
+                          for (var like in likes) {
+                            if (like.userId == userId &&
+                                like.status == "like") {
+                              isUserLike = true;
+                              return isUserLike;
+                            } else {
+                              isUserLike = false;
+                              return isUserLike;
+                            }
+                          }
+                          return isUserLike;
+                        }()),
+                        onTap: (isLiked) =>
+                            userLike(isLiked, postId, userId).then((isLike) {
+                          if (isLike == true) {
+                            isUserLike = !isUserLike;
+                          }
+                          return isUserLike;
+                        }),
                       ),
                     ),
-
-                    // Row(
-                    //   mainAxisSize: MainAxisSize.max,
-                    //   children: const [
-                    //     Icon(
-                    //       Icons.monetization_on_outlined,
-                    //       color: Colors.grey,
-                    //       size: 24,
-                    //     ),
-                    //   ],
-                    // ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: const [
+                        Icon(
+                          Icons.monetization_on_outlined,
+                          color: Colors.grey,
+                          size: 24,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                   child: GestureDetector(
@@ -2140,25 +2280,25 @@ Widget newsFeed(
                     ),
                   ),
                 ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.max,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                //       child: Text(
-                //         '4k Share',
-                //         style: GoogleFonts.sarabun(
-                //           color: Colors.grey,
-                //         ),
-                //       ),
-                //     ),
-                //     const Icon(
-                //       Icons.share_sharp,
-                //       color: Colors.grey,
-                //       size: 24,
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                      child: Text(
+                        '0 Share',
+                        style: GoogleFonts.sarabun(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.share_sharp,
+                      color: Colors.grey,
+                      size: 24,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

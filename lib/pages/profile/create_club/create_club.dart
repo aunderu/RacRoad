@@ -440,7 +440,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                   errorText: "กรุณากรอกคำอธิบายคลับด้วย",
                 ),
                 style: GoogleFonts.sarabun(),
-                maxLines: 4,
+                maxLines: 10,
                 // expands: true,
                 keyboardType: TextInputType.multiline,
               ),
