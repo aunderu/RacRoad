@@ -211,26 +211,26 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
                           },
                         );
 
-                        // final UpdateUserTel updateTel = await saveUserTel(
-                        //   widget.getToken,
-                        //   userTelController.text,
-                        // );
+                        final UpdateUserTel updateTel = await saveUserTel(
+                          widget.getToken,
+                          userTelController.text,
+                        );
 
                         Get.back();
 
-                        print(userTelController.text);
+                        // print(userTelController.text);
 
-                        // if (updateTel.status == true) {
-                        //   Get.offAllNamed('/');
-                        // } else {
-                        //   Get.snackbar(
-                        //     'โอ๊ะ !',
-                        //     updateTel.error,
-                        //     backgroundColor:
-                        //         const Color.fromARGB(159, 255, 220, 115),
-                        //     snackPosition: SnackPosition.BOTTOM,
-                        //   );
-                        // }
+                        if (updateTel.status == true) {
+                          Get.offAllNamed('/');
+                        } else {
+                          Get.snackbar(
+                            'โอ๊ะ !',
+                            updateTel.message,
+                            backgroundColor:
+                                const Color.fromARGB(159, 255, 220, 115),
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        }
                       }
                     },
                     child: const Text('ยืนยัน'),

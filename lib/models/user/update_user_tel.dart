@@ -11,23 +11,23 @@ String updateUserTelToJson(UpdateUserTel data) => json.encode(data.toJson());
 class UpdateUserTel {
     bool status;
     List<dynamic> data;
-    String error;
+    String message;
 
     UpdateUserTel({
         required this.status,
         required this.data,
-        required this.error,
+        required this.message,
     });
 
     factory UpdateUserTel.fromJson(Map<String, dynamic> json) => UpdateUserTel(
         status: json["status"],
         data: List<dynamic>.from(json["data"].map((x) => x)),
-        error: json["error"],
+        message: json["message"],
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
         "data": List<dynamic>.from(data.map((x) => x)),
-        "error": error,
+        "message": message,
     };
 }
