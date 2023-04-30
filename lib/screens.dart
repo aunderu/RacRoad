@@ -12,10 +12,8 @@ import 'models/user/current_tnc_sos_models.dart';
 import 'pages/profile/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
-import 'pages/notifications.dart';
 import 'pages/profile.dart';
 import 'pages/sos.dart';
-import 'pages/test_page.dart';
 
 class ScreensPage extends StatefulWidget {
   ScreensPage({

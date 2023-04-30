@@ -691,7 +691,7 @@ Widget formCompleted(String token) {
               fontSize: 17,
             );
             Get.to(() => ScreensPage(
-                  pageIndex: 4,
+                  pageIndex: 3,
                   current: 2,
                 ));
           },

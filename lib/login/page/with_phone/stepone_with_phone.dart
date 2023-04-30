@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -5,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../models/user/update_user_tel.dart';
 
 const List<String> list = <String>['TH +66', 'MY +60', 'ID +62', 'SG +65'];
 
@@ -34,17 +38,19 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
     super.dispose();
   }
 
-  Future<bool> saveUserTel(String userId, String userTel) async {
+  Future<UpdateUserTel> saveUserTel(String userId, String userTel) async {
     final response = await http.post(
       Uri.parse("https://api.racroad.com/api/user/tel/update/$userId"),
       body: {
         'tel': userTel,
       },
     );
+
     if (response.statusCode == 200) {
-      return true;
+      String responseString = response.body;
+      return updateUserTelFromJson(responseString);
     } else {
-      throw false;
+      throw Exception(jsonDecode(response.body));
     }
   }
 
@@ -179,19 +185,52 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
-                        saveUserTel(widget.getToken, userTelController.text)
-                            .then((value) {
-                          value == true
-                              ? Get.offAllNamed('/')
-                              : Fluttertoast.showToast(
-                                  msg:
-                                      "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
-                                  backgroundColor: Colors.yellowAccent,
-                                  textColor: Colors.black,
-                                );
-                        });
+                        // saveUserTel(widget.getToken, userTelController.text)
+                        //     .then((value) {
+                        //   value == true
+                        //       ? Get.offAllNamed('/')
+                        //       : Fluttertoast.showToast(
+                        //           msg:
+                        //               "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
+                        //           backgroundColor: Colors.yellowAccent,
+                        //           textColor: Colors.black,
+                        //         );
+                        // });
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(mainGreen),
+                                strokeWidth: 8,
+                              ),
+                            );
+                          },
+                        );
+
+                        // final UpdateUserTel updateTel = await saveUserTel(
+                        //   widget.getToken,
+                        //   userTelController.text,
+                        // );
+
+                        Get.back();
+
+                        print(userTelController.text);
+
+                        // if (updateTel.status == true) {
+                        //   Get.offAllNamed('/');
+                        // } else {
+                        //   Get.snackbar(
+                        //     'โอ๊ะ !',
+                        //     updateTel.error,
+                        //     backgroundColor:
+                        //         const Color.fromARGB(159, 255, 220, 115),
+                        //     snackPosition: SnackPosition.BOTTOM,
+                        //   );
+                        // }
                       }
                     },
                     child: const Text('ยืนยัน'),

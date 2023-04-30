@@ -12,7 +12,6 @@ import 'package:rac_road/models/menu_item.dart';
 
 import '../../screens.dart';
 import '../club/club_details.dart';
-import '../club/club_settings.dart';
 
 class AllMyClub extends StatefulWidget {
   const AllMyClub({

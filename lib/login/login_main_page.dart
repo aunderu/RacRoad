@@ -8,14 +8,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/main.dart';
 import 'package:rac_road/models/user/user_login.dart';
-import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
-import '../models/user/user_profile_model.dart';
 import 'page/with_email/stepone_with_email.dart';
-import 'page/with_phone/stepone_with_phone.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: <String>[
@@ -136,6 +132,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
       ),
       onPressed: () async {
         final UserLogin login = await googleSignIn();
+
         if (login.status == true) {
           await UserPreferences.setToken(login.data.id);
           await UserPreferences.setName(login.data.name);

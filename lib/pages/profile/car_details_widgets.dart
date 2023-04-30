@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -1282,7 +1281,7 @@ class OilWidgets extends StatefulWidget {
 class _OilWidgetsState extends State<OilWidgets> {
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     TextEditingController mileNowController = TextEditingController();
     TextEditingController mileNextController = TextEditingController();
@@ -1360,7 +1359,7 @@ class _OilWidgetsState extends State<OilWidgets> {
                     ),
                   ),
                   Form(
-                    key: _formKey,
+                    key: formKey,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -1547,7 +1546,7 @@ class _OilWidgetsState extends State<OilWidgets> {
                           ),
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_formKey.currentState?.validate() ?? false) {
+                              if (formKey.currentState?.validate() ?? false) {
                                 // next
                                 showDialog(
                                   context: context,

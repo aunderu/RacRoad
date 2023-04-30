@@ -7,7 +7,6 @@ import 'package:rac_road/models/user/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../login/api/google_sign_in_api.dart';
-import '../../../login/login_main_page.dart';
 import '../../../services/remote_service.dart';
 import 'edit_profile.dart';
 import 'my_sos_history.dart';

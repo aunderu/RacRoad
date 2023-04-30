@@ -2280,25 +2280,25 @@ Widget newsFeed(
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                      child: Text(
-                        '0 Share',
-                        style: GoogleFonts.sarabun(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.share_sharp,
-                      color: Colors.grey,
-                      size: 24,
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                //       child: Text(
+                //         '0 Share',
+                //         style: GoogleFonts.sarabun(
+                //           color: Colors.grey,
+                //         ),
+                //       ),
+                //     ),
+                //     const Icon(
+                //       Icons.share_sharp,
+                //       color: Colors.grey,
+                //       size: 24,
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),

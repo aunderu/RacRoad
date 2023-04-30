@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:rac_road/pages/club/search_club.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +14,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:http/http.dart' as http;
 
 import '../colors.dart';
-import '../models/club/my_posts.dart' as myPostModel;
 import '../models/club/newfeed.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../services/remote_service.dart';
@@ -882,25 +880,25 @@ Widget newsFeed(
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                      child: Text(
-                        '0 Share',
-                        style: GoogleFonts.sarabun(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.share_sharp,
-                      color: Colors.grey,
-                      size: 24,
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                //       child: Text(
+                //         '0 Share',
+                //         style: GoogleFonts.sarabun(
+                //           color: Colors.grey,
+                //         ),
+                //       ),
+                //     ),
+                //     const Icon(
+                //       Icons.share_sharp,
+                //       color: Colors.grey,
+                //       size: 24,
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
