@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -145,7 +144,7 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'เมื่อคุณใช้บริการ SOS เจ้าหน้า RacRoad จะใช้เบอร์มือถือนี้พูดคุยค่าบริการต่าง ๆ ให้กับคุณและช่าง',
+                      'เมื่อคุณใช้บริการ SOS เจ้าหน้าที่ RacRoad จะใช้เบอร์มือถือนี้พูดคุยค่าบริการต่าง ๆ ให้ระหว่างคุณและช่าง',
                       style: GoogleFonts.sarabun(
                         color: const Color.fromARGB(255, 109, 109, 109),
                         fontWeight: FontWeight.bold,
@@ -218,10 +217,9 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
 
                         Get.back();
 
-                        // print(userTelController.text);
-
                         if (updateTel.status == true) {
                           Get.offAllNamed('/');
+                          Get.reload();
                         } else {
                           Get.snackbar(
                             'โอ๊ะ !',

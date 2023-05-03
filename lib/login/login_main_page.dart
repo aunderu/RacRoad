@@ -33,18 +33,18 @@ class LoginMainPage extends StatefulWidget {
 }
 
 class _LoginMainPageState extends State<LoginMainPage> {
-  GoogleSignInAccount? _currentUser;
+  // GoogleSignInAccount? _currentUser;
 
-  @override
-  void initState() {
-    super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
-      });
-    });
-    _googleSignIn.signInSilently();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+  //     setState(() {
+  //       _currentUser = account;
+  //     });
+  //   });
+  //   _googleSignIn.signInSilently();
+  // }
 
   Widget loginWithMail(BuildContext context, Size size) {
     return ElevatedButton.icon(
@@ -86,15 +86,19 @@ class _LoginMainPageState extends State<LoginMainPage> {
     const url = "https://api.racroad.com/api";
 
     Future<UserLogin> googleSignIn() async {
-      final result = await _googleSignIn.signIn();
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
+      final result = await _googleSignIn.signIn().catchError((onError) {
+        print("Error $onError");
+      });
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        );
+      }
       if (result != null) {
         final response = await http.post(
           Uri.parse('$url/google/login'),

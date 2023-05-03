@@ -717,7 +717,7 @@ class ClubDetailsLoading extends StatelessWidget {
                       child: Container(
                         color: Colors.white,
                         height: 160,
-                        width: 230,
+                        width: size.width * 0.55,
                       ),
                     ),
                     Padding(

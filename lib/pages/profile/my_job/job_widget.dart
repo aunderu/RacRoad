@@ -7,9 +7,7 @@ import 'package:http/http.dart' as http;
 import '../../../../colors.dart';
 import '../../../../models/data/menu_items.dart';
 import '../../../../models/menu_item.dart';
-import '../../../screens.dart';
 import 'job_history.dart';
-import 'job_setting.dart';
 
 class JobWidget extends StatefulWidget {
   const JobWidget({
@@ -42,16 +40,8 @@ class _JobWidgetState extends State<JobWidget> {
     var response = await http.delete(url);
 
     if (response.statusCode == 200) {
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ScreensPage(
-            pageIndex: 4,
-            current: 2,
-          ),
-        ),
-      );
+      Get.toNamed('/profile-myjob');
+
       Fluttertoast.showToast(
         msg: "คุณลบเรียบร้อย",
         toastLength: Toast.LENGTH_SHORT,
@@ -83,9 +73,9 @@ class _JobWidgetState extends State<JobWidget> {
 
   void onSelected(BuildContext context, CustomMenuItem item) {
     switch (item) {
-      case JobMenuItems.itemEdit:
-        Get.to(() => const JobSettings());
-        break;
+      // case JobMenuItems.itemEdit:
+      //   Get.to(() => const JobSettings());
+      //   break;
       case JobMenuItems.itemDelete:
         showDialog(
           context: context,
@@ -154,8 +144,8 @@ class _JobWidgetState extends State<JobWidget> {
                       onSelected: (item) => onSelected(context, item),
                       itemBuilder: (context) => [
                         ...JobMenuItems.itemsFirst.map(buildItem).toList(),
-                        const PopupMenuDivider(),
-                        ...JobMenuItems.itemsSecond.map(buildItem).toList(),
+                        // const PopupMenuDivider(),
+                        // ...JobMenuItems.itemsSecond.map(buildItem).toList(),
                       ],
                       child: const Icon(
                         Icons.keyboard_control,

@@ -88,6 +88,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
 
     if (response.statusCode == 200) {
       Get.offAllNamed('/profile');
+      
       Fluttertoast.showToast(
         msg: "คุณได้ลบคลับนี้แล้ว",
         toastLength: Toast.LENGTH_SHORT,

@@ -690,10 +690,7 @@ Widget formCompleted(String token) {
               backgroundColor: mainGreen,
               fontSize: 17,
             );
-            Get.to(() => ScreensPage(
-                  pageIndex: 3,
-                  current: 2,
-                ));
+            Get.toNamed('/profile-myjob');
           },
           style: ElevatedButton.styleFrom(backgroundColor: mainGreen),
           child: const Text('กลับหน้าแรก'),

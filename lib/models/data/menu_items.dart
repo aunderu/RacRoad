@@ -38,16 +38,16 @@ class JobMenuItems {
     icon: Icons.group_off,
   );
 
-  static const itemEdit = CustomMenuItem(
-    text: 'แก้ไขข้อมูลช่าง',
-    icon: Icons.edit,
-  );
+  // static const itemEdit = CustomMenuItem(
+  //   text: 'แก้ไขข้อมูลช่าง',
+  //   icon: Icons.edit,
+  // );
+
+  // static const List<CustomMenuItem> itemsFirst = [
+  //   itemEdit,
+  // ];
 
   static const List<CustomMenuItem> itemsFirst = [
-    itemEdit,
-  ];
-
-  static const List<CustomMenuItem> itemsSecond = [
     itemDelete,
   ];
 }

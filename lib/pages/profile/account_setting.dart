@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/models/user/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -411,7 +412,8 @@ class _AccountSettingState extends State<AccountSetting> {
                             width: double.infinity,
                             height: 60,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              // color: Colors.white,
+                              color: lightGrey,
                               boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 5,
@@ -467,7 +469,8 @@ class _AccountSettingState extends State<AccountSetting> {
                             width: double.infinity,
                             height: 60,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              // color: Colors.white,
+                              color: lightGrey,
                               boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 5,
@@ -525,14 +528,13 @@ class _AccountSettingState extends State<AccountSetting> {
 
                             sharedPreferences.clear();
 
-                            await GoogleSignInApi.handleSignOut();
+                            // await GoogleSignInApi.handleSignOut();
+                            GoogleSignIn googleSignIn = GoogleSignIn();
 
-                            // Navigator.of(context)
-                            //     .pushReplacement(MaterialPageRoute(
-                            //   builder: (context) => const LoginMainPage(),
-                            // ));
+                            await googleSignIn.disconnect();
 
                             Get.offNamedUntil("/", (route) => false);
+                            Get.reload();
                           },
                           child: Container(
                             alignment: Alignment.center,

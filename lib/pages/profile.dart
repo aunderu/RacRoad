@@ -119,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     alignment: Alignment.center,
                     width: double.infinity,
-                    height: size.height * 0.064,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: const Color(0xFFEBEBEB),
                       borderRadius: BorderRadius.circular(20),
@@ -145,8 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   margin: const EdgeInsets.all(5),
                                   width:
                                       MediaQuery.of(context).size.width * 0.27,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: 40,
                                   decoration: BoxDecoration(
                                     color: widget.current == index
                                         ? mainGreen
