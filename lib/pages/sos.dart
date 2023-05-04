@@ -122,7 +122,7 @@ class _SOSPageState extends State<SOSPage> {
   // เอาโลเคชันของผู้ใช้ รับเป็น ละติจุด ลองติจุด
   Future<Position> _determindePosition() async {
     bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!isServiceEnabled) {
+    if (isServiceEnabled == false) {
       Get.back();
       return Future.error('บริการระบุตำแหน่งปิดใช้งานอยู่');
     }
