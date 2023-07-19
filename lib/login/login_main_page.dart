@@ -308,7 +308,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
                       top: size.height * 0.02,
                     ),
                     child: Text(
-                      'มีปัญหาในการเข้าระบบใช่ไหม ?\nติดต่อได้ที่อีเมล itimsolution@gmail.com',
+                      'มีปัญหาในการเข้าระบบใช่ไหม ?\nติดต่อได้ที่อีเมล support@racroad.com',
                       style: GoogleFonts.sarabun(
                         fontWeight: FontWeight.bold,
                         color: const Color(0xC8FFFFFF),
