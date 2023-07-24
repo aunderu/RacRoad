@@ -46,6 +46,7 @@ dependencies:
   expandable_page_view: ^1.0.17
   timeago: ^3.3.0
   syncfusion_flutter_calendar: ^20.4.53
+  flutter_markdown: ^0.6.17
 
 
 dev_dependencies:
@@ -73,4 +74,5 @@ flutter:
     - assets/imgs/
     - assets/imgs/logos/
     - assets/icons/
+    - assets/
 

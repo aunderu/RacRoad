@@ -128,26 +128,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         // child: Container(color: Colors.grey),
                       ),
                     ),
-                    Container(
-                      width: 35,
-                      height: 35,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 4,
-                            color: Color(0x33000000),
-                            offset: Offset(0, 2),
-                          )
-                        ],
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.photo_library,
-                        color: Colors.black,
-                        size: 20,
-                      ),
-                    ),
+                    // Container(
+                    //   width: 35,
+                    //   height: 35,
+                    //   decoration: const BoxDecoration(
+                    //     color: Colors.white,
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         blurRadius: 4,
+                    //         color: Color(0x33000000),
+                    //         offset: Offset(0, 2),
+                    //       )
+                    //     ],
+                    //     shape: BoxShape.circle,
+                    //   ),
+                    //   child: const Icon(
+                    //     Icons.photo_library,
+                    //     color: Colors.black,
+                    //     size: 20,
+                    //   ),
+                    // ),
                   ],
                 ),
                 const Divider(
@@ -337,10 +337,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ],
                 ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red[300],
+                        minimumSize: Size(double.infinity, 30)),
+                    child: Text(
+                      'ลบบัญชี',
+                      style: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

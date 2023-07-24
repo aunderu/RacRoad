@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rac_road/colors.dart';
 import 'package:rac_road/models/user/user_profile_model.dart';
+import 'package:rac_road/pages/profile/privacy_policy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../login/api/google_sign_in_api.dart';
@@ -403,74 +404,82 @@ class _AccountSettingState extends State<AccountSetting> {
                           style: GoogleFonts.sarabun(),
                         ),
                       ),
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                      //   child: InkWell(
+                      //     onTap: null,
+                      //     child: Ink(
+                      //       width: double.infinity,
+                      //       height: 60,
+                      //       decoration: BoxDecoration(
+                      //         // color: Colors.white,
+                      //         color: lightGrey,
+                      //         boxShadow: const [
+                      //           BoxShadow(
+                      //             blurRadius: 5,
+                      //             color: Color(0x3416202A),
+                      //             offset: Offset(0, 2),
+                      //           )
+                      //         ],
+                      //         borderRadius: BorderRadius.circular(12),
+                      //         shape: BoxShape.rectangle,
+                      //       ),
+                      //       child: Padding(
+                      //         padding: const EdgeInsetsDirectional.fromSTEB(
+                      //             8, 8, 8, 8),
+                      //         child: Row(
+                      //           mainAxisSize: MainAxisSize.max,
+                      //           children: [
+                      //             const Icon(
+                      //               Icons.help_outline_rounded,
+                      //               color: darkGray,
+                      //               size: 24,
+                      //             ),
+                      //             Padding(
+                      //               padding:
+                      //                   const EdgeInsetsDirectional.fromSTEB(
+                      //                       12, 0, 0, 0),
+                      //               child: Text(
+                      //                 'ช่วยเหลือ',
+                      //                 style: GoogleFonts.sarabun(),
+                      //               ),
+                      //             ),
+                      //             const Expanded(
+                      //               child: Align(
+                      //                 alignment: AlignmentDirectional(0.9, 0),
+                      //                 child: Icon(
+                      //                   Icons.arrow_forward_ios,
+                      //                   color: darkGray,
+                      //                   size: 18,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
                         child: InkWell(
-                          onTap: null,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return PolicyDialog(
+                                    mdFileName: 'terms_conditions.md');
+                              },
+                            );
+                          },
                           child: Ink(
                             width: double.infinity,
                             height: 60,
                             decoration: BoxDecoration(
-                              // color: Colors.white,
-                              color: lightGrey,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 5,
-                                  color: Color(0x3416202A),
-                                  offset: Offset(0, 2),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12),
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  8, 8, 8, 8),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Icon(
-                                    Icons.help_outline_rounded,
-                                    color: darkGray,
-                                    size: 24,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            12, 0, 0, 0),
-                                    child: Text(
-                                      'ช่วยเหลือ',
-                                      style: GoogleFonts.sarabun(),
-                                    ),
-                                  ),
-                                  const Expanded(
-                                    child: Align(
-                                      alignment: AlignmentDirectional(0.9, 0),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: darkGray,
-                                        size: 18,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-                        child: InkWell(
-                          onTap: null,
-                          child: Ink(
-                            width: double.infinity,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              // color: Colors.white,
-                              color: lightGrey,
+                              color: Colors.white,
+                              // color: lightGrey,
                               boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 5,
@@ -498,6 +507,71 @@ class _AccountSettingState extends State<AccountSetting> {
                                             12, 0, 0, 0),
                                     child: Text(
                                       'เงื่อนไขการให้บริการ',
+                                      style: GoogleFonts.sarabun(),
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.9, 0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: darkGray,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return PolicyDialog(
+                                    mdFileName: 'privacy_policy.md');
+                              },
+                            );
+                          },
+                          child: Ink(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              // color: lightGrey,
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 5,
+                                  color: Color(0x3416202A),
+                                  offset: Offset(0, 2),
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(12),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  8, 8, 8, 8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Icon(
+                                    Icons.privacy_tip,
+                                    color: darkGray,
+                                    size: 24,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 0, 0),
+                                    child: Text(
+                                      'นโยบายความเป็นส่วนตัว',
                                       style: GoogleFonts.sarabun(),
                                     ),
                                   ),
