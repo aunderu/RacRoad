@@ -106,6 +106,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Column(
+                  children: [],
+                ),
                 Stack(
                   alignment: const AlignmentDirectional(0.2, 1),
                   children: [
@@ -341,12 +344,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: null,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[300],
-                        minimumSize: Size(double.infinity, 30)),
+                        minimumSize: const Size(double.infinity, 30)),
                     child: Text(
-                      'ลบบัญชี',
+                      'ฉันต้องการลบบัญชี',
                       style: GoogleFonts.sarabun(
                         fontWeight: FontWeight.bold,
                       ),

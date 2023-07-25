@@ -161,6 +161,7 @@ class _HomePageState extends State<HomePage> {
                                 primary: false,
                                 shrinkWrap: true,
                                 itemCount: dataAllClub.length,
+                                physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 clipBehavior: Clip.none,
                                 itemBuilder: (context, index) {
@@ -200,6 +201,7 @@ class _HomePageState extends State<HomePage> {
                                 primary: false,
                                 shrinkWrap: true,
                                 itemCount: dataAllClub.length,
+                                physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 clipBehavior: Clip.none,
                                 itemBuilder: (context, index) {
@@ -245,6 +247,7 @@ class _HomePageState extends State<HomePage> {
                                   shrinkWrap: true,
                                   itemCount: dataAllClub.length,
                                   scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
                                   clipBehavior: Clip.none,
                                   itemBuilder: (context, index) {
                                     return FittedBox(

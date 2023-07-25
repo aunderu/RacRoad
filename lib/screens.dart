@@ -46,14 +46,14 @@ class _ScreensPageState extends State<ScreensPage> {
   // int index = 0;
 
   late final _screens = <Widget>[
-    // HomePage(
-    //   token: token!,
-    //   userName: name!,
-    // ),
-    // ClubPage(
-    //   token: token!,
-    //   userName: name!,
-    // ),
+    HomePage(
+      token: token!,
+      userName: name!,
+    ),
+    ClubPage(
+      token: token!,
+      userName: name!,
+    ),
     SOSPage(
       token: token!,
     ),
@@ -160,30 +160,30 @@ class _ScreensPageState extends State<ScreensPage> {
       body: _screens[widget.pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.home_outlined,
-          //     size: 40,
-          //   ),
-          //   activeIcon: Icon(
-          //     Icons.home,
-          //     size: 40,
-          //   ),
-          //   label: 'Home',
-          //   tooltip: 'หน้าแรก',
-          // ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.groups_outlined,
-          //     size: 40,
-          //   ),
-          //   activeIcon: Icon(
-          //     Icons.groups,
-          //     size: 40,
-          //   ),
-          //   label: 'Club',
-          //   tooltip: 'คลับ',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.home,
+              size: 40,
+            ),
+            label: 'Home',
+            tooltip: 'หน้าแรก',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.groups_outlined,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.groups,
+              size: 40,
+            ),
+            label: 'Club',
+            tooltip: 'คลับ',
+          ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.sos_outlined,
