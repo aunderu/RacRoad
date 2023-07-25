@@ -1,4 +1,4 @@
-package com.example.project_b
+package com.medbuddy.racroad
 
 import io.flutter.embedding.android.FlutterActivity
 

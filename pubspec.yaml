@@ -47,6 +47,7 @@ dependencies:
   timeago: ^3.3.0
   syncfusion_flutter_calendar: ^20.4.53
   flutter_markdown: ^0.6.17
+  change_app_package_name: ^1.1.0
 
 
 dev_dependencies:
