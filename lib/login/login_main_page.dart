@@ -118,7 +118,8 @@ class _LoginMainPageState extends State<LoginMainPage> {
         }
       } else {
         if (mounted) Navigator.pop(context);
-        throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
+        throw Fluttertoast.showToast(
+            msg: "กรุณาทำการเข้าสู่ระบบใหม่ในภายหน้า");
       }
     }
 

@@ -90,7 +90,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
       Get.offAllNamed('/profile');
       
       Fluttertoast.showToast(
-        msg: "คุณได้ลบคลับนี้แล้ว",
+        msg: "คุณได้ลบข้อมูลรถคันนี้แล้ว",
         toastLength: Toast.LENGTH_SHORT,
         backgroundColor: Colors.red,
         textColor: Colors.white,
