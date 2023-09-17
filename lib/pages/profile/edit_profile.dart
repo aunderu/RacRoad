@@ -6,7 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../colors.dart';
 import '../../screens.dart';
@@ -78,6 +80,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  Future<void> deleteUser(String userId) async {
+    final response = await http.delete(
+      Uri.parse("https://api.racroad.com/api/user/destroy/$userId"),
+    );
+
+    try {
+      if (response.statusCode == 200) {
+        // return Get.offAll(() => const LoginMainPage());
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -106,7 +122,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                const Column(
                   children: [],
                 ),
                 Stack(
@@ -344,7 +360,58 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: ElevatedButton(
-                    onPressed: null,
+                    onPressed: () => Get.defaultDialog(
+                      title: 'คำเตือน!',
+                      titleStyle: GoogleFonts.sarabun(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      titlePadding: const EdgeInsets.only(top: 20),
+                      middleText:
+                          'เมื่อคุณลบบัญชีของคุณ จะไม่สามารถกู้คืนข้อมูลใด ๆ ได้อีก\n\nคุณแน่ใจแล้วใช่ไหม ?',
+                      confirm: ElevatedButton(
+                        onPressed: () async {
+                          final SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+
+                          sharedPreferences.clear();
+
+                          // await GoogleSignInApi.handleSignOut();
+                          GoogleSignIn googleSignIn = GoogleSignIn();
+
+                          await googleSignIn.disconnect();
+
+                          Get.offNamedUntil("/", (route) => false);
+
+                          deleteUser(widget.getToken);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainRed,
+                          minimumSize: const Size(100, 40),
+                        ),
+                        child: Text(
+                          "ยืนยันลบข้อมูลของฉัน",
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      cancel: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: whiteGrey,
+                          foregroundColor: darkGray,
+                          minimumSize: const Size(100, 40),
+                        ),
+                        child: Text(
+                          "ไม่ดีกว่า",
+                          style: GoogleFonts.sarabun(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[300],
                         minimumSize: const Size(double.infinity, 30)),

@@ -21,7 +21,7 @@ class PolicyDialog extends StatelessWidget {
       child: Column(children: [
         Expanded(
           child: FutureBuilder(
-            future: Future.delayed(Duration(milliseconds: 150)).then((value) {
+            future: Future.delayed(const Duration(milliseconds: 150)).then((value) {
               return rootBundle.loadString('assets/$mdFileName');
             }),
             builder: (context, snapshot) {
@@ -30,13 +30,13 @@ class PolicyDialog extends StatelessWidget {
                   data: snapshot.data!,
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('ปิด'),
+          child: const Text('ปิด'),
         ),
       ]),
     );

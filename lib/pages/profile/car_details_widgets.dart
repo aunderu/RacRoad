@@ -1288,20 +1288,7 @@ class _OilWidgetsState extends State<OilWidgets> {
 
     DateTime date = DateTime.now();
 
-    @override
-    void initState() {
-      super.initState();
 
-      mileNowController = TextEditingController();
-      mileNextController = TextEditingController();
-    }
-
-    @override
-    void dispose() {
-      mileNowController.dispose();
-      mileNextController.dispose();
-      super.dispose();
-    }
 
     Future<bool> saveUpgc(
       String carId,

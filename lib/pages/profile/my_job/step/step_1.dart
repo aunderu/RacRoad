@@ -988,7 +988,6 @@ class _TncStepOneState extends State<TncStepOne> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     // if (timelines!.isEmpty) {}
     return Form(
       key: formKey,

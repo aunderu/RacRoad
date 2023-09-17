@@ -396,7 +396,6 @@ class _UserRejectTwoState extends State<UserRejectTwo> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return GroupedListView<Timelines, DateTime>(
       elements: timelines,
       reverse: true,

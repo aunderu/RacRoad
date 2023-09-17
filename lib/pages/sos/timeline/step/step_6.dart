@@ -1211,7 +1211,6 @@ class _StepSixState extends State<StepSix> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Form(
       key: basicFormKey,
       child: GestureDetector(

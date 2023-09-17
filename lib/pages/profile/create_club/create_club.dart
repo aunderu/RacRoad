@@ -39,7 +39,6 @@ class _CreateClubPageState extends State<CreateClubPage> {
   int totalIndex = 5;
   File? imageFile;
 
-  int _itemTotal = 0;
 
   @override
   void dispose() {

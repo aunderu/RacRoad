@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../../colors.dart';
 import '../../../../../models/data/timeline_models.dart';
@@ -385,13 +384,6 @@ class _TncStepThreeState extends State<TncStepThree> {
     ];
   }
 
-  Future<void> _openMap(String latitude, String longitude) async {
-    String googleURL =
-        'https://www.google.co.th/maps/search/?api=1&query=$latitude,$longitude';
-    await canLaunchUrlString(googleURL)
-        ? await launchUrlString(googleURL)
-        : throw 'Could not launch $googleURL';
-  }
 
   @override
   Widget build(BuildContext context) {

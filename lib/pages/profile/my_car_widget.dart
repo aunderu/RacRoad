@@ -274,11 +274,11 @@ class _MyCarWidgetState extends State<MyCarWidget> {
                                         ),
                                       ),
                                     ),
-                                    Column(
+                                    const Column(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(

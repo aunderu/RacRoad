@@ -2220,9 +2220,9 @@ Widget newsFeed(
                         }),
                       ),
                     ),
-                    Row(
+                    const Row(
                       mainAxisSize: MainAxisSize.max,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.monetization_on_outlined,
                           color: Colors.grey,

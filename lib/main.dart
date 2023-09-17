@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,14 +16,6 @@ import 'screens.dart';
 import 'services/remote_service.dart';
 import 'utils/user_preferences.dart';
 
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
-);
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -108,31 +99,31 @@ class _MyAppState extends State<MyApp> {
             current: 0,
           ),
         ),
-        // GetPage(
-        //   name: "/notification",
-        //   page: () => ScreensPage(
-        //     pageIndex: 3,
-        //     current: 0,
-        //   ),
-        // ),
         GetPage(
-          name: "/profile",
+          name: "/notification",
           page: () => ScreensPage(
             pageIndex: 3,
             current: 0,
           ),
         ),
         GetPage(
+          name: "/profile",
+          page: () => ScreensPage(
+            pageIndex: 4,
+            current: 0,
+          ),
+        ),
+        GetPage(
           name: "/profile-myclub",
           page: () => ScreensPage(
-            pageIndex: 3,
+            pageIndex: 4,
             current: 1,
           ),
         ),
         GetPage(
           name: "/profile-myjob",
           page: () => ScreensPage(
-            pageIndex: 3,
+            pageIndex: 4,
             current: 2,
           ),
         ),
@@ -176,25 +167,33 @@ class _CheckLoginState extends State<CheckLogin> {
 
     if (token != null) {
       MyProfile? myProfile = await RemoteService().getUserProfile(token);
-      if (myProfile!.data.myProfile.tel != null) {
+      if (myProfile?.data.myProfile.tel != null) {
         Timer(
           const Duration(seconds: 2),
-          () => Get.to(
-            () => ScreensPage(
-              pageIndex: 0,
-              current: 0,
-            ),
-          ),
+          // () => Get.to(
+          //   () => ScreensPage(
+          //     pageIndex: 0,
+          //     current: 0,
+          //   ),
+          // ),
+          () => Get.offUntil(
+            MaterialPageRoute(
+                builder: (context) => ScreensPage(pageIndex: 0, current: 0)),
+            ((route) => false)),
         );
       } else {
-        Get.to(() => StepOneWithPhoneNumber(getToken: token));
+        Get.offUntil(
+            MaterialPageRoute(
+                builder: (context) => StepOneWithPhoneNumber(getToken: token)),
+            ((route) => false));
       }
     } else {
       Timer(
         const Duration(seconds: 2),
-        () => Get.to(
-          () => LoginMainPage(bgImage: bgImage),
-        ),
+        () => Get.offUntil(
+            MaterialPageRoute(
+                builder: (context) => LoginMainPage(bgImage: bgImage)),
+            ((route) => false)),
       );
     }
   }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/colors.dart';
-import 'package:rac_road/models/user/user_profile_model.dart';
 import 'package:rac_road/services/remote_service.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 
 import 'models/user/my_job_models.dart';
 import 'models/user/current_tnc_sos_models.dart';
+import 'pages/market_page.dart';
 import 'pages/profile/account_setting.dart';
 import 'pages/club.dart';
 import 'pages/home_page.dart';
@@ -24,8 +24,8 @@ class ScreensPage extends StatefulWidget {
   }) : super(key: key);
 
   // final GoogleSignInAccount user;
-  int current;
 
+  int current;
   int pageIndex;
 
   @override
@@ -42,7 +42,6 @@ class _ScreensPageState extends State<ScreensPage> {
   String? email;
   String? name;
 
-  late Future<MyProfile?> _dataFuture;
   // int index = 0;
 
   late final _screens = <Widget>[
@@ -57,10 +56,7 @@ class _ScreensPageState extends State<ScreensPage> {
     SOSPage(
       token: token!,
     ),
-    // NotificationsPage(
-    //   token: token!,
-    //   userName: name!,
-    // ),
+    const MarketPage(),
     ProfilePage(
       getToken: token!,
       current: widget.current,
@@ -79,7 +75,6 @@ class _ScreensPageState extends State<ScreensPage> {
     avatar = UserPreferences.getAvatar() ?? 'assets/imgs/profile.png';
 
     getData(token!);
-    _dataFuture = RemoteService().getUserProfile(token!);
   }
 
   getData(String token) async {
@@ -94,7 +89,6 @@ class _ScreensPageState extends State<ScreensPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -198,18 +192,18 @@ class _ScreensPageState extends State<ScreensPage> {
             label: 'SOS',
             tooltip: 'แจ้งเหตุฉุกเฉิน',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.notifications_outlined,
-          //     size: 40,
-          //   ),
-          //   activeIcon: Icon(
-          //     Icons.notifications,
-          //     size: 40,
-          //   ),
-          //   label: 'Notifications',
-          //   tooltip: 'การแจ้งเตือน',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shopping_bag_outlined,
+              size: 40,
+            ),
+            activeIcon: Icon(
+              Icons.shopping_bag,
+              size: 40,
+            ),
+            label: 'Market',
+            tooltip: 'ร้านค้า',
+          ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,

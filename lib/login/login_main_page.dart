@@ -21,12 +21,12 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 class LoginMainPage extends StatefulWidget {
-  LoginMainPage({
+  const LoginMainPage({
     super.key,
     this.bgImage,
   });
 
-  AssetImage? bgImage;
+  final AssetImage? bgImage;
 
   @override
   State<LoginMainPage> createState() => _LoginMainPageState();
@@ -87,7 +87,8 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
     Future<UserLogin> googleSignIn() async {
       final result = await _googleSignIn.signIn().catchError((onError) {
-        print("Error $onError");
+        // print(onError);
+        return null;
       });
       if (context.mounted) {
         showDialog(
@@ -118,8 +119,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
         }
       } else {
         if (mounted) Navigator.pop(context);
-        throw Fluttertoast.showToast(
-            msg: "กรุณาทำการเข้าสู่ระบบใหม่ในภายหน้า");
+        throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่ในภายหน้า");
       }
     }
 

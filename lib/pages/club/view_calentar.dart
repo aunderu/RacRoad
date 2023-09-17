@@ -13,7 +13,6 @@ class _ViewCalentarPageState extends State<ViewCalentarPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
