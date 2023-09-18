@@ -24,7 +24,7 @@ class MarketPage extends StatelessWidget {
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                "สนใจสามารถติดต่อได้ที่เบอร์ -",
+                "สนใจสามารถติดต่อได้ที่เบอร์ - 0614531146",
                 style: TextStyle(
                   fontSize: 15,
                 ),
@@ -58,17 +58,21 @@ class MarketPage extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Row(
                           children: [
-                            Text(
-                              "฿${item[index].price ?? "0"} ",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            // Text(
+                            //   "฿${item[index].price ?? "0"} ",
+                            //   style: const TextStyle(
+                            //     fontSize: 20,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             Expanded(
                               child: Text(
-                                "- ${item[index].name}",
+                                item[index].name,
                                 overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  // fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
