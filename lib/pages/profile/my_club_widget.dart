@@ -285,33 +285,33 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              // TextButton(
-              //   onPressed: () async {
-              //     await Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) =>
-              //             OnBoardingPage(getToken: widget.getToken),
-              //       ),
-              //     );
-              //   },
-              //   child: Text(
-              //     'เพิ่มคลับ',
-              //     style: GoogleFonts.sarabun(
-              //       fontSize: 16,
-              //       fontWeight: FontWeight.bold,
-              //       color: mainGreen,
-              //     ),
-              //   ),
-              // ),
-              Text(
-                'เราจะเปิดให้ใช้บริการเร็ว ๆ นี้',
-                style: GoogleFonts.sarabun(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black38,
+              TextButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          OnBoardingPage(getToken: widget.getToken),
+                    ),
+                  );
+                },
+                child: Text(
+                  'เพิ่มคลับ',
+                  style: GoogleFonts.sarabun(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: mainGreen,
+                  ),
                 ),
               ),
+              // Text(
+              //   'เราจะเปิดให้ใช้บริการเร็ว ๆ นี้',
+              //   style: GoogleFonts.sarabun(
+              //     fontSize: 16,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.black38,
+              //   ),
+              // ),
               const SizedBox(height: 20),
             ],
           ),
