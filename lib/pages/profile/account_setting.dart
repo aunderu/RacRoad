@@ -113,7 +113,8 @@ class _AccountSettingState extends State<AccountSetting> {
                                               Image.asset(
                                                   'assets/imgs/profile.png'),
                                           errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+                                              Image.asset(
+                                                  'assets/imgs/profile.png'),
                                         ),
                                       ),
                                     ),
@@ -602,12 +603,12 @@ class _AccountSettingState extends State<AccountSetting> {
                             sharedPreferences.clear();
 
                             // await GoogleSignInApi.handleSignOut();
-                            GoogleSignIn googleSignIn = GoogleSignIn();
+                            GoogleSignIn googleSignIn =
+                                GoogleSignIn(scopes: ['email']);
 
-                            await googleSignIn.disconnect();
+                            await googleSignIn.signOut();
 
                             Get.offNamedUntil("/", (route) => false);
-                            Get.reload();
                           },
                           child: Container(
                             alignment: Alignment.center,

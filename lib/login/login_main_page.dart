@@ -14,10 +14,7 @@ import '../colors.dart';
 import 'page/with_email/stepone_with_email.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
+  scopes: <String>['email'],
 );
 
 class LoginMainPage extends StatefulWidget {
@@ -101,14 +98,16 @@ class _LoginMainPageState extends State<LoginMainPage> {
         );
       }
       if (result != null) {
+        // print(result);
         final response = await http.post(
           Uri.parse('$url/google/login'),
           body: {
             'email': result.email,
             'name': result.displayName,
-            'avatar': result.photoUrl,
+            'avatar': result.photoUrl ?? "no user profile",
           },
         );
+        // print(response.body);
         if (response.statusCode == 200) {
           String responseString = response.body;
           if (mounted) Navigator.pop(context);
