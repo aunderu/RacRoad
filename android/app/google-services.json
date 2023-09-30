@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "393321453673",
+    "project_id": "racroad",
+    "storage_bucket": "racroad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393321453673:android:c7a2d2821684a9b6016af8",
+        "android_client_info": {
+          "package_name": "com.medbuddy.racroad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393321453673-dg5cfmcmetuthirghh8mc1k568qp4163.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medbuddy.racroad",
+            "certificate_hash": "440e83575cc2b47307cbe6133a2afbd4dc35fb1c"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC4kZwId4ZylE6AHIUiUq9Xuhy4xmDJlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393321453673-guc7m4vcof4jqrlu9jrc10rianlpo066.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.medbuddy.racroad"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
