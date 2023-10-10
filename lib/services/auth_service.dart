@@ -56,6 +56,7 @@ class AuthService {
     } catch (e) {
       return null;
     }
+    return null;
   }
 
   Future<void> signOut() async {
