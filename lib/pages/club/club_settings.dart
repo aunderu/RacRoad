@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 
 class ClubSettings extends StatefulWidget {
   const ClubSettings({super.key});

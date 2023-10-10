@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../colors.dart';
+import '../../utils/colors.dart';
 import '../../models/sos/all_my_sos_models.dart';
 import 'my_history_sos_details.dart';
 

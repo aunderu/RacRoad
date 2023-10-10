@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../colors.dart';
+import '../../utils/colors.dart';
 import '../../models/club/all_club_model.dart';
 import '../../services/remote_service.dart';
 import 'club_details.dart';

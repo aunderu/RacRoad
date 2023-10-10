@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../colors.dart';
+import '../utils/colors.dart';
 
 class AccountSettingLoading extends StatelessWidget {
   const AccountSettingLoading({

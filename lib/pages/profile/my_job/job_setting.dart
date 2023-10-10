@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 
 class JobSettings extends StatefulWidget {
   const JobSettings({super.key});

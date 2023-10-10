@@ -20,6 +20,26 @@
             "package_name": "com.medbuddy.racroad",
             "certificate_hash": "4164505c7fcaa5184418c4cc2372b74519478845"
           }
+        },
+        {
+          "client_id": "393321453673-i5lkqtum0llk0okvnvig51ccho0r4se3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medbuddy.racroad",
+            "certificate_hash": "440e83575cc2b47307cbe6133a2afbd4dc35fb1c"
+          }
+        },
+        {
+          "client_id": "393321453673-mo4n2rhq7k9jhnmbbc5poui68k7v80d5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medbuddy.racroad",
+            "certificate_hash": "a303884980ed5702a05d8a1456d43cd8ecc774bc"
+          }
+        },
+        {
+          "client_id": "393321453673-keicn92mu4jauh32g3nmcfh7prrv2ge7.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -31,10 +51,14 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "393321453673-guc7m4vcof4jqrlu9jrc10rianlpo066.apps.googleusercontent.com",
+              "client_id": "393321453673-keicn92mu4jauh32g3nmcfh7prrv2ge7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "393321453673-b4vosdnr9a775hs8s7lqjum9ef91ej6v.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.medbuddy.racroad"
+                "bundle_id": "com.racroad.RacRoadApp"
               }
             }
           ]

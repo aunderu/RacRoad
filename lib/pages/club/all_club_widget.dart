@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-import '../../colors.dart';
+import '../../utils/colors.dart';
 import 'club_details.dart';
 
 class AllClubWidget extends StatelessWidget {

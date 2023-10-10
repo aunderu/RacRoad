@@ -16,7 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../../colors.dart';
+import '../../../../utils/colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 import '../../../../models/sos/sos_details_models.dart';
 

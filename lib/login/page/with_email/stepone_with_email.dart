@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 import 'package:rac_road/login/page/setup/set_name.dart';
 
 class StepOneWithEmail extends StatefulWidget {

@@ -11,7 +11,7 @@ import 'package:rac_road/models/sos/problem_type.dart';
 import 'package:rac_road/models/sos/specific_problem.dart';
 import 'package:rac_road/services/remote_service.dart';
 
-import '../colors.dart';
+import '../utils/colors.dart';
 import '../models/sos/my_current_sos_models.dart';
 import 'sos/sos_form.dart';
 import 'sos/timeline/timeline_page.dart';

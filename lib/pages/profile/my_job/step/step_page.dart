@@ -6,7 +6,7 @@ import 'package:rac_road/loading/timeline.dart';
 import 'package:rac_road/models/sos/sos_details_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 
-import '../../../../../colors.dart';
+import '../../../../utils/colors.dart';
 import 'step_1.dart';
 import 'step_2.dart';
 import 'step_3.dart';

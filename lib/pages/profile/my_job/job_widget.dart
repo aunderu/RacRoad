@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../colors.dart';
+import '../../../utils/colors.dart';
 import '../../../../models/data/menu_items.dart';
 import '../../../../models/menu_item.dart';
 import 'job_history.dart';

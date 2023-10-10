@@ -13,7 +13,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:http/http.dart' as http;
 
-import '../colors.dart';
+import '../utils/colors.dart';
 import '../models/club/newfeed.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../services/remote_service.dart';

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 import 'profile/my_car_widget.dart';
 import 'profile/my_club_widget.dart';

@@ -6,7 +6,7 @@ import 'package:rac_road/models/club/my_club_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../colors.dart';
+import '../utils/colors.dart';
 import '../models/club/user_club_joined.dart';
 import 'club/all_club_widget.dart';
 import 'club/my_club_widget.dart';

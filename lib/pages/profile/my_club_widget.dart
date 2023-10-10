@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../colors.dart';
+import '../../utils/colors.dart';
 import '../../../services/remote_service.dart';
 import '../../models/club/my_club_models.dart';
 import 'all_my_club.dart';

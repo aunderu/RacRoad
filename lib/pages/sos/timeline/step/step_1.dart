@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 import 'package:rac_road/models/data/timeline_models.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

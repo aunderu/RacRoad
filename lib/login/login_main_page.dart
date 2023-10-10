@@ -1,21 +1,17 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:rac_road/main.dart';
 import 'package:rac_road/models/user/user_login.dart';
 import 'package:rac_road/utils/user_preferences.dart';
 
-import '../colors.dart';
-import 'page/with_email/stepone_with_email.dart';
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: <String>['email'],
-);
+import '../check_login.dart';
+import '../utils/colors.dart';
+import '../services/auth_service.dart';
 
 class LoginMainPage extends StatefulWidget {
   const LoginMainPage({
@@ -43,85 +39,43 @@ class _LoginMainPageState extends State<LoginMainPage> {
   //   _googleSignIn.signInSilently();
   // }
 
-  Widget loginWithMail(BuildContext context, Size size) {
-    return ElevatedButton.icon(
-      icon: const Icon(
-        Icons.email,
-        size: 40,
-        color: Colors.grey,
-      ),
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(size.width * 1, size.height * 0.07),
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
-      onPressed: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const StepOneWithEmail(),
-          ),
-        );
-      },
-      label: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          'เข้าสู่ระบบด้วยอีเมล',
-          style: GoogleFonts.sarabun(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget loginWithMail(BuildContext context, Size size) {
+  //   return ElevatedButton.icon(
+  //     icon: const Icon(
+  //       Icons.email,
+  //       size: 40,
+  //       color: Colors.grey,
+  //     ),
+  //     style: ElevatedButton.styleFrom(
+  //       minimumSize: Size(size.width * 1, size.height * 0.07),
+  //       backgroundColor: Colors.white,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(30.0),
+  //       ),
+  //     ),
+  //     onPressed: () async {
+  //       await Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const StepOneWithEmail(),
+  //         ),
+  //       );
+  //     },
+  //     label: Align(
+  //       alignment: Alignment.centerLeft,
+  //       child: Text(
+  //         'เข้าสู่ระบบด้วยอีเมล',
+  //         style: GoogleFonts.sarabun(
+  //           color: Colors.grey,
+  //           fontWeight: FontWeight.bold,
+  //           fontSize: 17,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget loginWithGoogle(BuildContext context, Size size) {
-    const url = "https://api.racroad.com/api";
-
-    Future<UserLogin> googleSignIn() async {
-      final result = await _googleSignIn.signIn().catchError((onError) {
-        // print(onError);
-        return null;
-      });
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        );
-      }
-      if (result != null) {
-        // print(result);
-        final response = await http.post(
-          Uri.parse('$url/google/login'),
-          body: {
-            'email': result.email,
-            'name': result.displayName,
-            'avatar': result.photoUrl ?? "no user profile",
-          },
-        );
-        // print(response.body);
-        if (response.statusCode == 200) {
-          String responseString = response.body;
-          if (mounted) Navigator.pop(context);
-          return userLoginFromJson(responseString);
-        } else {
-          if (mounted) Navigator.pop(context);
-          throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
-        }
-      } else {
-        if (mounted) Navigator.pop(context);
-        throw Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่ในภายหน้า");
-      }
-    }
-
     return ElevatedButton.icon(
       icon: Image.asset(
         "assets/icons/google_logo.png",
@@ -135,19 +89,38 @@ class _LoginMainPageState extends State<LoginMainPage> {
         ),
       ),
       onPressed: () async {
-        final UserLogin login = await googleSignIn();
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                  strokeWidth: 8,
+                ),
+              );
+            },
+          );
+        }
+        final auth = FirebaseAuth.instance;
+        final UserLogin? login = await AuthService(auth).signInWithGoogle();
 
-        if (login.status == true) {
-          await UserPreferences.setToken(login.data.id);
-          await UserPreferences.setName(login.data.name);
-          await UserPreferences.setEmail(login.data.email);
-          await UserPreferences.setAvatar(login.data.avatar);
-          // prefUserId.setString("token", login.data.id);
-          // prefUserName.setString("name", login.data.name);
-          // prefUserEmail.setString("email", login.data.email);
-          // prefUserProfile.setString("profile", login.data.avatar);
+        if (login != null) {
+          if (login.status == true) {
+            await UserPreferences.setToken(login.data.id);
+            await UserPreferences.setName(login.data.name);
+            await UserPreferences.setEmail(login.data.email);
+            await UserPreferences.setAvatar(login.data.avatar);
 
-          Get.to(() => const CheckLogin());
+            if (mounted) Navigator.pop(context);
+
+            Get.to(() => const CheckLogin());
+          } else {
+            if (mounted) Navigator.pop(context);
+            Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
+          }
+        } else {
+          if (mounted) Navigator.pop(context);
         }
       },
       label: Align(
@@ -164,77 +137,77 @@ class _LoginMainPageState extends State<LoginMainPage> {
     );
   }
 
-  Widget loginWithFacebook(BuildContext context, Size size) {
-    return ElevatedButton.icon(
-      icon: Image.asset(
-        'assets/icons/facebook_logo.png',
-        width: 40,
-      ),
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(size.width * 1, size.height * 0.07),
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
-      onPressed: () async {
-        // await Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => ScreensPage(),
-        //   ),
-        // );
-        // Fluttertoast.showToast(msg: "เข้าสู่ระบบด้วย Facebook");
-      },
-      label: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          'เข้าสู่ระบบด้วย FACEBOOK',
-          style: GoogleFonts.sarabun(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget loginWithFacebook(BuildContext context, Size size) {
+  //   return ElevatedButton.icon(
+  //     icon: Image.asset(
+  //       'assets/icons/facebook_logo.png',
+  //       width: 40,
+  //     ),
+  //     style: ElevatedButton.styleFrom(
+  //       minimumSize: Size(size.width * 1, size.height * 0.07),
+  //       backgroundColor: Colors.white,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(30.0),
+  //       ),
+  //     ),
+  //     onPressed: () async {
+  //       // await Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(
+  //       //     builder: (context) => ScreensPage(),
+  //       //   ),
+  //       // );
+  //       // Fluttertoast.showToast(msg: "เข้าสู่ระบบด้วย Facebook");
+  //     },
+  //     label: Align(
+  //       alignment: Alignment.centerLeft,
+  //       child: Text(
+  //         'เข้าสู่ระบบด้วย FACEBOOK',
+  //         style: GoogleFonts.sarabun(
+  //           color: Colors.grey,
+  //           fontWeight: FontWeight.bold,
+  //           fontSize: 17,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget loginWithPhone(BuildContext context, Size size) {
-    return ElevatedButton.icon(
-      icon: const Icon(
-        Icons.phone,
-        size: 40,
-        color: Colors.green,
-      ),
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(size.width * 1, size.height * 0.07),
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
-      onPressed: () async {
-        // await Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => StepOneWithPhoneNumber(),
-        //   ),
-        // );
-      },
-      label: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          'เข้าสู่ระบบด้วยหมายเลขโทรศัพท์',
-          style: GoogleFonts.sarabun(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget loginWithPhone(BuildContext context, Size size) {
+  //   return ElevatedButton.icon(
+  //     icon: const Icon(
+  //       Icons.phone,
+  //       size: 40,
+  //       color: Colors.green,
+  //     ),
+  //     style: ElevatedButton.styleFrom(
+  //       minimumSize: Size(size.width * 1, size.height * 0.07),
+  //       backgroundColor: Colors.white,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(30.0),
+  //       ),
+  //     ),
+  //     onPressed: () async {
+  //       // await Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(
+  //       //     builder: (context) => StepOneWithPhoneNumber(),
+  //       //   ),
+  //       // );
+  //     },
+  //     label: Align(
+  //       alignment: Alignment.centerLeft,
+  //       child: Text(
+  //         'เข้าสู่ระบบด้วยหมายเลขโทรศัพท์',
+  //         style: GoogleFonts.sarabun(
+  //           color: Colors.grey,
+  //           fontWeight: FontWeight.bold,
+  //           fontSize: 17,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

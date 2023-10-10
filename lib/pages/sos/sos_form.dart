@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 import 'package:http/http.dart' as http;
 
 class SOSFormPage extends StatefulWidget {

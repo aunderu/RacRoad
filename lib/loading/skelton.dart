@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../colors.dart';
+import '../utils/colors.dart';
 
 class Skelton extends StatelessWidget {
   const Skelton({super.key, this.height, this.width});

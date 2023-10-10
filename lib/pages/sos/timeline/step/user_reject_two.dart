@@ -6,7 +6,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../../colors.dart';
+import '../../../../utils/colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 import '../../../../models/sos/sos_details_models.dart';
 

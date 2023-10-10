@@ -12,7 +12,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/user/car_data_calculated.dart';
 
-import '../../colors.dart';
+import '../../utils/colors.dart';
 import '../../models/data/menu_items.dart';
 import '../../models/menu_item.dart';
 import '../../models/user/my_car_details.dart';

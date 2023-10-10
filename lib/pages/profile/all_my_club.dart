@@ -5,7 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 
 import 'package:rac_road/models/data/menu_items.dart';
 import 'package:rac_road/models/menu_item.dart';

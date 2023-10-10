@@ -21,7 +21,7 @@ import 'package:rac_road/services/remote_service.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../colors.dart';
+import '../../utils/colors.dart';
 import '../../models/club/club_request_model.dart';
 import '../../models/club/my_club_post.dart' as my_club_posts_model;
 import '../../models/club/club_details.dart' as club_details_model;

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 
 import 'create_club.dart';
 

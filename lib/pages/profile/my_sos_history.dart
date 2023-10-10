@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 import 'package:rac_road/models/sos/all_my_sos_models.dart';
 import 'package:rac_road/services/remote_service.dart';
 

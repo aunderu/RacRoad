@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../colors.dart';
+import '../../utils/colors.dart';
 import 'club_details.dart';
 
 class MyClubWidget extends StatelessWidget {

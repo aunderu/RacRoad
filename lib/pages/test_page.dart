@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:rac_road/colors.dart';
+import 'package:rac_road/utils/colors.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
