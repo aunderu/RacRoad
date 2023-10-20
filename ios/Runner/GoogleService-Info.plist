@@ -6,9 +6,31 @@
 	<string>393321453673-guc7m4vcof4jqrlu9jrc10rianlpo066.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.393321453673-guc7m4vcof4jqrlu9jrc10rianlpo066</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>393321453673-dg5cfmcmetuthirghh8mc1k568qp4163.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDFolj8E2CEheiq7aFlFVPF5KZX_QZ0aoQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>393321453673</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.racroad.racroad</string>
+	<string>com.medbuddy.racroad</string>
+	<key>PROJECT_ID</key>
+	<string>racroad</string>
+	<key>STORAGE_BUCKET</key>
+	<string>racroad.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:393321453673:ios:05d390a06bff1831016af8</string>
 </dict>
 </plist>

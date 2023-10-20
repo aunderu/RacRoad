@@ -42,7 +42,6 @@ dependencies:
   gallery_saver: ^2.3.2
   pull_to_refresh: ^2.0.0
   chips_choice: ^3.0.0
-  flutter_launcher_icons: ^0.11.0
   expandable_page_view: ^1.0.17
   timeago: ^3.3.0
   syncfusion_flutter_calendar: ^20.4.53
@@ -57,12 +56,14 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
 
-flutter_icons:
-  android: true
+flutter_launcher_icons:
+  android: "launcher_icon"
   ios: true
+  image_path: "assets/ic_launcher.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
   remove_alpha_ios: true
-  image_path: "assets/ic_launcer.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
