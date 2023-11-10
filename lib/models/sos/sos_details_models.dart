@@ -124,7 +124,7 @@ class Sos {
     required this.userTel,
     required this.avatar,
     this.crimeScene,
-    required this.problemDetail,
+    this.problemDetail,
     required this.location,
     required this.latitude,
     required this.longitude,
@@ -235,14 +235,14 @@ class Sos {
   String longitude;
   String? price2Status;
   String problem;
-  String problemDetail;
+  String? problemDetail;
   String? qrId;
   String? qrName;
   String? qrNumber;
   String? qrType;
   String? qrStatus;
   dynamic rate;
-  dynamic repairDetail;
+  String? repairDetail;
   String? repairDetail2;
   dynamic repairPrice;
   String? repairPrice2;

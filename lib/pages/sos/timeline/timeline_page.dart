@@ -90,7 +90,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -103,7 +104,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -118,7 +120,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -135,7 +138,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -164,7 +168,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -194,7 +199,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -229,7 +235,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -268,7 +275,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -307,7 +315,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -321,7 +330,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   stepOnetimeStamp: result.data.sos.tuStep1,
                   userName: result.data.sos.userName,
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
@@ -346,7 +356,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
                   userName: result.data.sos.userName,
                   userTel: result.data.sos.userTel.toString(),
                   problem: result.data.sos.problem,
-                  problemDetails: result.data.sos.problemDetail,
+                  problemDetails:
+                      result.data.sos.problemDetail ?? 'ไม่มีรายละเอียด',
                   location: result.data.sos.location,
                   userProfile: result.data.sos.avatar,
                   imgIncident: result.data.imgIncident,
