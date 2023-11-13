@@ -68,7 +68,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'racroad.appspot.com',
     androidClientId: '393321453673-dg5cfmcmetuthirghh8mc1k568qp4163.apps.googleusercontent.com',
     iosClientId: '393321453673-cosio952o103tboghia8l3hnoih1f7eq.apps.googleusercontent.com',
-    iosBundleId: 'com.racroad.racroad',
+    iosBundleId: 'com.medbuddy.racroad',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -79,6 +79,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'racroad.appspot.com',
     androidClientId: '393321453673-dg5cfmcmetuthirghh8mc1k568qp4163.apps.googleusercontent.com',
     iosClientId: '393321453673-b4vosdnr9a775hs8s7lqjum9ef91ej6v.apps.googleusercontent.com',
-    iosBundleId: 'com.racroad.RacRoadApp',
+    iosBundleId: 'com.medbuddy.racroadApp',
   );
 }

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>393321453673-b4vosdnr9a775hs8s7lqjum9ef91ej6v.apps.googleusercontent.com</string>
+	<string>393321453673-guc7m4vcof4jqrlu9jrc10rianlpo066.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.393321453673-b4vosdnr9a775hs8s7lqjum9ef91ej6v</string>
+	<string>com.googleusercontent.apps.393321453673-guc7m4vcof4jqrlu9jrc10rianlpo066</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>393321453673-dg5cfmcmetuthirghh8mc1k568qp4163.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.medbuddy.racroadApp</string>
+	<string>com.medbuddy.racroad</string>
 	<key>PROJECT_ID</key>
 	<string>racroad</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:393321453673:ios:f973d3a671648a23016af8</string>
+	<string>1:393321453673:ios:05d390a06bff1831016af8</string>
 </dict>
 </plist>
