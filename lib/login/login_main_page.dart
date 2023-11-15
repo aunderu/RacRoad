@@ -1,12 +1,16 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rac_road/models/user/user_login.dart';
 import 'package:rac_road/utils/user_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:http/http.dart' as http;
 
 import '../check_login.dart';
 import '../utils/colors.dart';
@@ -109,17 +113,24 @@ class _LoginMainPageState extends State<LoginMainPage> {
             await UserPreferences.setToken(login.data.id);
             await UserPreferences.setName(login.data.name);
             await UserPreferences.setEmail(login.data.email);
-            await UserPreferences.setAvatar(login.data.avatar);
+            await UserPreferences.setAvatar(login.data.avatar!);
 
             if (mounted) Navigator.pop(context);
 
             Get.to(() => const CheckLogin());
           } else {
             if (mounted) Navigator.pop(context);
-            Fluttertoast.showToast(msg: "กรุณาทำการเข้าสู่ระบบใหม่");
+            Fluttertoast.showToast(
+              msg: "กรุณาทำการเข้าสู่ระบบใหม่",
+              timeInSecForIosWeb: 5,
+            );
           }
         } else {
           if (mounted) Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: "กรุณาทำการเข้าสู่ระบบใหม่",
+            timeInSecForIosWeb: 5,
+          );
         }
       },
       label: Align(
@@ -128,6 +139,80 @@ class _LoginMainPageState extends State<LoginMainPage> {
           'ลงชื่อเข้าใช้ด้วย GOOGLE',
           style: GoogleFonts.sarabun(
             color: Colors.grey,
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget loginWithApple(BuildContext context, Size size) {
+    return ElevatedButton.icon(
+      icon: const Icon(
+        Icons.apple,
+        color: Colors.white,
+        size: 40,
+      ),
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(size.width * 1, size.height * 0.07),
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+      onPressed: () async {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(mainGreen),
+                  strokeWidth: 8,
+                ),
+              );
+            },
+          );
+        }
+
+        final auth = FirebaseAuth.instance;
+        final UserLogin? login = await AuthService(auth).signInWithApple();
+
+        if (login != null) {
+          if (login.status == true) {
+            await UserPreferences.setToken(login.data.id);
+            await UserPreferences.setName(login.data.name);
+            await UserPreferences.setEmail(login.data.email);
+
+            if (login.data.avatar != null) {
+              await UserPreferences.setAvatar(login.data.avatar!);
+            }
+
+            if (mounted) Navigator.pop(context);
+
+            Get.to(() => const CheckLogin());
+          } else {
+            if (mounted) Navigator.pop(context);
+            Fluttertoast.showToast(
+              msg: "กรุณาทำการเข้าสู่ระบบใหม่",
+              timeInSecForIosWeb: 5,
+            );
+          }
+        } else {
+          if (mounted) Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: "กรุณาทำการเข้าสู่ระบบใหม่",
+            timeInSecForIosWeb: 5,
+          );
+        }
+      },
+      label: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'เข้าสู่ระบบด้วย APPLE ID',
+          style: GoogleFonts.sarabun(
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 17,
           ),
@@ -271,8 +356,14 @@ class _LoginMainPageState extends State<LoginMainPage> {
                   // loginWithMail(context, size),
                   // SizedBox(height: size.height * 0.02),
                   loginWithGoogle(context, size),
-                  // SizedBox(height: size.height * 0.02),
-                  // loginWithFacebook(context, size),
+
+                  Platform.isIOS
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: loginWithApple(context, size),
+                        )
+                      : const SizedBox.shrink(),
+
                   // SizedBox(height: size.height * 0.02),
                   // loginWithPhone(context, size),
                   Padding(

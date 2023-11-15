@@ -37,7 +37,8 @@ class Data {
     required this.id,
     required this.name,
     required this.email,
-    required this.avatar,
+    this.avatar,
+    this.appleId,
     required this.role,
     required this.type,
   });
@@ -47,6 +48,7 @@ class Data {
         name: json["name"],
         email: json["email"],
         avatar: json["avatar"],
+        appleId: json["apple_id"],
         role: json["role"],
         type: json["type"],
       );
@@ -54,7 +56,8 @@ class Data {
   String email;
   String id;
   String name;
-  String avatar;
+  String? avatar;
+  String? appleId;
   String role;
   String type;
 
@@ -63,6 +66,7 @@ class Data {
         "name": name,
         "email": email,
         "avatar": avatar,
+        "apple_id": appleId,
         "role": role,
         "type": type,
       };
