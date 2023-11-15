@@ -48,7 +48,22 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location allows us to know where you call us for help</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location allows us to know where you call us for help</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to photo library when open.<string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to Camera<string>
 	<false/>
 </dict>
 </plist>
