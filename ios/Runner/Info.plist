@@ -56,14 +56,18 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location allows us to know where you call us for help</string>
+	<string>Your location allows us to know where you call us for help.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location allows us to know where you call us for help</string>
+	<string>Your location allows us to know where you call us for help.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location allows us to know where you call us for help.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs access to photo library when open.<string>
+	<string>This app needs access to photo library when open.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs access to Camera<string>
+	<string>This app needs access to Camera when open.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>
 </plist>
