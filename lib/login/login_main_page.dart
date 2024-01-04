@@ -116,6 +116,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
             Get.to(() => const CheckLogin());
           } else {
+            // print('status not true');
             if (mounted) Navigator.pop(context);
             Fluttertoast.showToast(
               msg: "กรุณาทำการเข้าสู่ระบบใหม่",

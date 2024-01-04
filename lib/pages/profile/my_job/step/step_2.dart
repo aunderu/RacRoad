@@ -58,17 +58,10 @@ class TncStepTwo extends StatefulWidget {
 }
 
 class _TncStepTwoState extends State<TncStepTwo> {
-  late List<Timelines> timelines;
-  final imageUserController = PageController();
-  final imageBfController = PageController();
   final imageAfController = PageController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    getTimelines();
-  }
+  final imageBfController = PageController();
+  final imageUserController = PageController();
+  late List<Timelines> timelines;
 
   @override
   void dispose() {
@@ -77,6 +70,13 @@ class _TncStepTwoState extends State<TncStepTwo> {
     imageAfController.dispose();
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getTimelines();
   }
 
   void getTimelines() {

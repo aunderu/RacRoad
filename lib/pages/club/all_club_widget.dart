@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import '../../utils/api_url.dart';
 import '../../utils/colors.dart';
 import 'club_details.dart';
 
@@ -23,6 +24,7 @@ class AllClubWidget extends StatelessWidget {
     this.memcId,
   });
 
+  final String adminName;
   final String clubAdmin;
   final String clubId;
   final String clubName;
@@ -30,15 +32,15 @@ class AllClubWidget extends StatelessWidget {
   final String clubStatus;
   final String clubZone;
   final String getToken;
-  final String adminName;
-  final String userName;
   final String? memcId;
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
+
     Future<bool> userJoinClub() async {
       final response = await http.post(
-        Uri.parse("https://api.racroad.com/api/request/join/club"),
+        Uri.parse("$currentApi/request/join/club"),
         body: {
           'user_id': getToken,
           'club_id': clubId,
@@ -53,7 +55,7 @@ class AllClubWidget extends StatelessWidget {
 
     Future<bool> userLeaveClub(String clubId) async {
       final response = await http.get(
-        Uri.parse("https://api.racroad.com/api/leave/club/$clubId"),
+        Uri.parse("$currentApi/leave/club/$clubId"),
       );
       if (response.statusCode == 200) {
         return true;
@@ -74,9 +76,9 @@ class AllClubWidget extends StatelessWidget {
             Get.to(
               () => ClubDetailsPage(
                 clubId: clubId,
-                getToken: getToken,
                 userName: userName,
                 memcId: memcId,
+                userId: getToken,
               ),
               transition: Transition.rightToLeftWithFade,
             );

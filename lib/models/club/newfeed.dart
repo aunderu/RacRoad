@@ -17,17 +17,17 @@ class NewFeedModel {
     required this.message,
   });
 
-  bool status;
-  int count;
-  Data data;
-  String message;
-
   factory NewFeedModel.fromJson(Map<String, dynamic> json) => NewFeedModel(
         status: json["status"],
         count: json["count"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
       );
+
+  int count;
+  Data data;
+  String message;
+  bool status;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -42,13 +42,13 @@ class Data {
     required this.postInMyClubJoin,
   });
 
-  List<PostInMyClubJoin> postInMyClubJoin;
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         postInMyClubJoin: List<PostInMyClubJoin>.from(
             json["post_in_my_club_join"]
                 .map((x) => PostInMyClubJoin.fromJson(x))),
       );
+
+  List<PostInMyClubJoin> postInMyClubJoin;
 
   Map<String, dynamic> toJson() => {
         "post_in_my_club_join":
@@ -60,6 +60,7 @@ class PostInMyClubJoin {
   PostInMyClubJoin({
     required this.id,
     this.description,
+    required this.ownerId,
     required this.owner,
     required this.ownerAvatar,
     required this.clubId,
@@ -72,23 +73,11 @@ class PostInMyClubJoin {
     required this.like,
   });
 
-  String id;
-  String? description;
-  String owner;
-  String ownerAvatar;
-  String clubId;
-  String clubName;
-  DateTime postDate;
-  List<ImagePost> imagePost;
-  int coComment;
-  List<Comment> comment;
-  int coLike;
-  List<Comment> like;
-
   factory PostInMyClubJoin.fromJson(Map<String, dynamic> json) =>
       PostInMyClubJoin(
         id: json["id"],
         description: json["description"],
+        ownerId: json["user_id"],
         owner: json["owner"],
         ownerAvatar: json["owner_avatar"],
         clubId: json["club_id"],
@@ -103,9 +92,24 @@ class PostInMyClubJoin {
         like: List<Comment>.from(json["like"].map((x) => Comment.fromJson(x))),
       );
 
+  String clubId;
+  String clubName;
+  int coComment;
+  int coLike;
+  List<Comment> comment;
+  String? description;
+  String id;
+  List<ImagePost> imagePost;
+  List<Comment> like;
+  String ownerId;
+  String owner;
+  String ownerAvatar;
+  DateTime postDate;
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "description": description,
+        "user_id": ownerId,
         "owner": owner,
         "owner_avatar": ownerAvatar,
         "club_id": clubId,
@@ -129,13 +133,6 @@ class Comment {
     this.status,
   });
 
-  String id;
-  String userId;
-  String owner;
-  String ownerAvatar;
-  String? comment;
-  String? status;
-
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
         id: json["id"],
         userId: json["user_id"],
@@ -144,6 +141,13 @@ class Comment {
         comment: json["comment"],
         status: json["status"],
       );
+
+  String? comment;
+  String id;
+  String owner;
+  String ownerAvatar;
+  String? status;
+  String userId;
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -161,13 +165,13 @@ class ImagePost {
     required this.image,
   });
 
-  String id;
-  String image;
-
   factory ImagePost.fromJson(Map<String, dynamic> json) => ImagePost(
         id: json["id"],
         image: json["image"],
       );
+
+  String id;
+  String image;
 
   Map<String, dynamic> toJson() => {
         "id": id,

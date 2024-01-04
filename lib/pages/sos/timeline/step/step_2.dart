@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../utils/api_url.dart';
 import '../../../../utils/colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 import '../../../../models/sos/sos_details_models.dart';
@@ -52,15 +53,8 @@ class StepTwo extends StatefulWidget {
 }
 
 class _StepTwoState extends State<StepTwo> {
-  late List<Timelines> timelines;
   final controller = PageController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    getTimelines();
-  }
+  late List<Timelines> timelines;
 
   @override
   void dispose() {
@@ -69,9 +63,16 @@ class _StepTwoState extends State<StepTwo> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+
+    getTimelines();
+  }
+
   Future<void> userSendDeal(String sosId, String userDeal) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/sos/step/$sosId"),
+      Uri.parse("$currentApi/sos/step/$sosId"),
       body: {
         'user_deal': userDeal,
       },

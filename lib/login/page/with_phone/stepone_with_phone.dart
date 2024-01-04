@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rac_road/utils/api_url.dart';
 import 'package:rac_road/utils/colors.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,6 +24,7 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
   String dropdownValue = list.first;
   TextEditingController userTelController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final url = currentApi;
 
   @override
   void initState() {
@@ -39,7 +41,7 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
 
   Future<UpdateUserTel> saveUserTel(String userId, String userTel) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/user/tel/update/$userId"),
+      Uri.parse("$url/user/tel/update/$userId"),
       body: {
         'tel': userTel,
       },
@@ -186,17 +188,6 @@ class _StepOneWithPhoneNumberState extends State<StepOneWithPhoneNumber> {
                     ),
                     onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
-                        // saveUserTel(widget.getToken, userTelController.text)
-                        //     .then((value) {
-                        //   value == true
-                        //       ? Get.offAllNamed('/')
-                        //       : Fluttertoast.showToast(
-                        //           msg:
-                        //               "มีบางอย่างผิดพลาด กรุณาเพิ่มข้อมูลภายหลัง",
-                        //           backgroundColor: Colors.yellowAccent,
-                        //           textColor: Colors.black,
-                        //         );
-                        // });
                         showDialog(
                           context: context,
                           builder: (context) {

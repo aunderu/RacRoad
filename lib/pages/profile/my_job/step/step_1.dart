@@ -15,6 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../utils/api_url.dart';
 import '../../../../utils/colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 import '../../../../models/sos/sos_details_models.dart';
@@ -54,28 +55,37 @@ class TncStepOne extends StatefulWidget {
   final DateTime stepOneTimeStamp;
   final String tncAvatar;
   final String tncName;
+  final String? tncNote;
   final String tncStatus;
+  final String? userDeal;
   final String userName;
   final String userProfile;
   final String userTel;
-  final String? tncNote;
-  final String? userDeal;
 
   @override
   State<TncStepOne> createState() => _TncStepOneState();
 }
 
 class _TncStepOneState extends State<TncStepOne> {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
-  List<XFile> photo = <XFile>[];
-  List<XFile> itemImagesList = <XFile>[];
   XFile? camera;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final imageBfController = PageController();
   List<File> imageFile = <File>[];
+  final imageUserController = PageController();
+  List<XFile> itemImagesList = <XFile>[];
+  List<XFile> photo = <XFile>[];
   List<Timelines>? timelines = [];
   TextEditingController? tncNoteController;
-  final imageUserController = PageController();
-  final imageBfController = PageController();
+
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -596,14 +606,6 @@ class _TncStepOneState extends State<TncStepOne> {
     isUserDeal();
   }
 
-  @override
-  void dispose() {
-    imageUserController.dispose();
-    imageBfController.dispose();
-
-    super.dispose();
-  }
-
   void isUserDeal() {
     if (widget.userDeal == "yes") {
       setState(() {
@@ -882,7 +884,7 @@ class _TncStepOneState extends State<TncStepOne> {
 
   Future<void> tncSendStatus(String sosId, String tncSendStatus) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/sos/step/$sosId"),
+      Uri.parse("$currentApi/sos/step/$sosId"),
       body: {
         'tnc_status': tncSendStatus,
       },
@@ -920,7 +922,7 @@ class _TncStepOneState extends State<TncStepOne> {
     };
 
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.racroad.com/api/sos/step/$sosId'));
+        'POST', Uri.parse('$currentApi/sos/step/$sosId'));
 
     request
       ..fields.addAll({
@@ -955,7 +957,7 @@ class _TncStepOneState extends State<TncStepOne> {
     };
 
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.racroad.com/api/sos/step/$sosId'));
+        'POST', Uri.parse('$currentApi/sos/step/$sosId'));
 
     for (var i = 0; i < imgFile.length; i++) {
       request

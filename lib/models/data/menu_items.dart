@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rac_road/models/menu_item.dart';
+import 'package:rac_road/models/data/menu_item.dart';
 
 class CarMenuItems {
   static const itemDelete = CustomMenuItem(
@@ -21,6 +21,46 @@ class ClubMenuItems {
   static const itemEdit = CustomMenuItem(
     text: 'แก้ไขคลับ',
     icon: Icons.edit,
+  );
+
+  static const List<CustomMenuItem> itemsFirst = [
+    itemEdit,
+  ];
+
+  static const List<CustomMenuItem> itemsSecond = [
+    itemDelete,
+  ];
+}
+
+class PostMenuItems {
+  static const itemDelete = CustomMenuItem(
+    text: 'ลบโพสต์',
+    icon: Icons.delete_forever,
+  );
+
+  static const itemEdit = CustomMenuItem(
+    text: 'แก้ไขโพสต์',
+    icon: Icons.edit_note,
+  );
+
+  static const List<CustomMenuItem> itemsFirst = [
+    itemEdit,
+  ];
+
+  static const List<CustomMenuItem> itemsSecond = [
+    itemDelete,
+  ];
+}
+
+class CommentMenuItems {
+  static const itemDelete = CustomMenuItem(
+    text: 'ลบคอมเม้น',
+    icon: Icons.delete_forever,
+  );
+
+  static const itemEdit = CustomMenuItem(
+    text: 'แก้ไขคอมเม้น',
+    icon: Icons.edit_note,
   );
 
   static const List<CustomMenuItem> itemsFirst = [

@@ -41,8 +41,8 @@ class MyClubWidget extends StatelessWidget {
             Get.to(
               () => ClubDetailsPage(
                 clubId: clubId,
-                getToken: getToken,
                 userName: userName,
+                userId: getToken,
               ),
               transition: Transition.rightToLeftWithFade,
             );

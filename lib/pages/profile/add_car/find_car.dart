@@ -13,6 +13,7 @@ import 'package:rac_road/utils/colors.dart';
 import 'package:rac_road/models/user/all_car_models.dart';
 
 import '../../../services/remote_service.dart';
+import '../../../utils/api_url.dart';
 
 class FindCarPage extends StatefulWidget {
   const FindCarPage({super.key, required this.getToken});
@@ -23,13 +24,11 @@ class FindCarPage extends StatefulWidget {
   State<FindCarPage> createState() => _FindCarPageState();
 }
 
-class _FindCarPageState extends State<FindCarPage> { 
+class _FindCarPageState extends State<FindCarPage> {
   AllCarModel? allCar;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   List<CarDatum>? foundCars;
   bool haveCar = false;
-
   bool isLoaded = false;
   TextEditingController? searchController;
 
@@ -291,11 +290,6 @@ void showFormBottomSheet(context, String brand, String model, String makeOver,
 }
 
 class FormBottomSheet extends StatefulWidget {
-  final String brand;
-  final String model;
-  final String makeOver;
-  final String getToken;
-  final String carId;
   const FormBottomSheet({
     super.key,
     required this.brand,
@@ -305,14 +299,20 @@ class FormBottomSheet extends StatefulWidget {
     required this.carId,
   });
 
+  final String brand;
+  final String carId;
+  final String getToken;
+  final String makeOver;
+  final String model;
+
   @override
   State<FormBottomSheet> createState() => _FormBottomSheetState();
 }
 
 class _FormBottomSheetState extends State<FormBottomSheet> {
   GlobalKey<FormState> carPlateKey = GlobalKey<FormState>();
-  TextEditingController? licensePlateController;
   File? imageFile;
+  TextEditingController? licensePlateController;
 
   @override
   void initState() {
@@ -445,7 +445,7 @@ class _FormBottomSheetState extends State<FormBottomSheet> {
     );
     Map<String, String> headers = {"Context-Type": "multipart/formdata"};
     var requset = http.MultipartRequest(
-        "POST", Uri.parse("https://api.racroad.com/api/mycar/store"))
+        "POST", Uri.parse("$currentApi/mycar/store"))
       ..fields.addAll({
         "user_id": widget.getToken,
         "car_id": carId,

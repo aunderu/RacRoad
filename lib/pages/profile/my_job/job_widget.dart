@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../utils/api_url.dart';
 import '../../../utils/colors.dart';
 import '../../../../models/data/menu_items.dart';
-import '../../../../models/menu_item.dart';
+import '../../../models/data/menu_item.dart';
 import 'job_history.dart';
 
 class JobWidget extends StatefulWidget {
@@ -36,7 +37,7 @@ class JobWidget extends StatefulWidget {
 class _JobWidgetState extends State<JobWidget> {
   void deleteJob(String jobId) async {
     var url =
-        Uri.parse('https://api.racroad.com/api/technician/destroy/$jobId');
+        Uri.parse('$currentApi/technician/destroy/$jobId');
     var response = await http.delete(url);
 
     if (response.statusCode == 200) {

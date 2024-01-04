@@ -127,6 +127,8 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               clubProfile: clubApproved![index].clubProfile,
                               clubStatus: clubApproved![index].status,
                               userName: widget.userName,
+                              clubDescription: clubApproved![index].description,
+                              clubZone: clubApproved![index].clubZone,
                             );
                           },
                         ),
@@ -177,6 +179,8 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               clubProfile: clubWaiting![index].clubProfile,
                               clubStatus: clubWaiting![index].status,
                               userName: widget.userName,
+                              clubDescription: clubWaiting![index].description,
+                              clubZone: clubWaiting![index].clubZone,
                             );
                           },
                         ),
@@ -227,6 +231,8 @@ class _MyClubWidgetState extends State<MyClubWidget> {
                               clubProfile: clubRejected![index].clubProfile,
                               clubStatus: clubRejected![index].status,
                               userName: widget.userName,
+                              clubDescription: clubRejected![index].description,
+                              clubZone: clubRejected![index].clubZone,
                             );
                           },
                         ),

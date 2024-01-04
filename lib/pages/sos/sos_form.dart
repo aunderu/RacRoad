@@ -13,6 +13,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rac_road/utils/colors.dart';
 import 'package:http/http.dart' as http;
 
+import '../../utils/api_url.dart';
+
 class SOSFormPage extends StatefulWidget {
   SOSFormPage({
     super.key,
@@ -36,21 +38,19 @@ class SOSFormPage extends StatefulWidget {
 }
 
 class _SOSFormPageState extends State<SOSFormPage> {
-  final formKey = GlobalKey<FormState>();
-
-  final ImagePicker _picker = ImagePicker();
-  List<File> imageFile = <File>[];
-  List<XFile> photo = <XFile>[];
-  List<XFile> itemImagesList = <XFile>[];
   XFile? camera;
-
+  final formKey = GlobalKey<FormState>();
+  List<File> imageFile = <File>[];
+  List<XFile> itemImagesList = <XFile>[];
   String locationMessage = 'ยังไม่ได้เลือกที่อยู่ของคุณ';
+  List<XFile> photo = <XFile>[];
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int tag = 1;
   TextEditingController? userProblemController;
 
   var _isLoading = false;
   List<String> _isSelected = [];
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -196,7 +196,7 @@ class _SOSFormPageState extends State<SOSFormPage> {
     };
 
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.racroad.com/api/event/sos'))
+        'POST', Uri.parse('$currentApi/event/sos'))
       ..fields.addAll({
         "user_id": widget.getToken,
         "problem": widget.sosTitle,

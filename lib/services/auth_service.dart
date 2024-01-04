@@ -6,8 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../models/user/user_login.dart';
-
-const url = "https://api.racroad.com/api";
+import '../utils/api_url.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
@@ -35,7 +34,7 @@ class AuthService {
 
       if (user != null) {
         final response = await http.post(
-          Uri.parse('$url/google/login'),
+          Uri.parse('$currentApi/google/login'),
           body: {
             'email': user.email,
             'name': user.displayName,
@@ -89,17 +88,17 @@ class AuthService {
       userEmail = appleCredential.email;
 
       final firebaseUser = authResult.user;
-      print("Apple auth uid:  ${appleCredential.userIdentifier}");
-      print("Apple auth name:  $displayName");
-      print("Apple auth email:  $userEmail");
-      print("________________________________________");
+      // print("Apple auth uid:  ${appleCredential.userIdentifier}");
+      // print("Apple auth name:  $displayName");
+      // print("Apple auth email:  $userEmail");
+      // print("________________________________________");
 
       if (userEmail != null && displayName != null) {
         await firebaseUser!.updateDisplayName(displayName);
         await firebaseUser.updateEmail(userEmail);
 
         final response = await http.post(
-          Uri.parse('$url/apple/login'),
+          Uri.parse('$currentApi/apple/login'),
           body: {
             'apple_id': appleCredential.userIdentifier,
             'email': userEmail,
@@ -119,7 +118,7 @@ class AuthService {
         }
       } else {
         final response = await http.post(
-          Uri.parse('$url/apple/login'),
+          Uri.parse('$currentApi/apple/login'),
           body: {
             'apple_id': appleCredential.userIdentifier,
           },

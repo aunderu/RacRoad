@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../utils/api_url.dart';
 import '../../../../utils/colors.dart';
 import '../../../../../models/data/timeline_models.dart';
 import '../../../../models/sos/sos_details_models.dart';
@@ -62,24 +63,32 @@ class StepFour extends StatefulWidget {
   final DateTime stepOnetimeStamp;
   final DateTime stepThreeTimeStamp;
   final DateTime stepTwoTimeStamp;
-  final DateTime? tuPriceTwoTimeStamp;
   final String tncName;
   final String? tncProfile;
   final String tncStatus;
+  final DateTime? tuPriceTwoTimeStamp;
+  final DateTime? tuUserDealTwoTimeStamp;
+  final String? userDealTwo;
   final String userName;
   final String userProfile;
   final String userTel;
-  final String? userDealTwo;
-  final DateTime? tuUserDealTwoTimeStamp;
 
   @override
   State<StepFour> createState() => _StepFourState();
 }
 
 class _StepFourState extends State<StepFour> {
-  late List<Timelines> timelines;
-  final imageUserController = PageController();
   final imageBfController = PageController();
+  final imageUserController = PageController();
+  late List<Timelines> timelines;
+
+  @override
+  void dispose() {
+    imageUserController.dispose();
+    imageBfController.dispose();
+
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -357,17 +366,9 @@ class _StepFourState extends State<StepFour> {
     isPriceTwoStatus();
   }
 
-  @override
-  void dispose() {
-    imageUserController.dispose();
-    imageBfController.dispose();
-
-    super.dispose();
-  }
-
   Future<void> userSendDeal(String sosId, String userDeal) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/set/user/deal2/$sosId"),
+      Uri.parse("$currentApi/set/user/deal2/$sosId"),
       body: {
         'user_deal2': userDeal,
       },

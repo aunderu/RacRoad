@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:rac_road/utils/colors.dart';
+import '../../../utils/api_url.dart';
+import '../../../utils/colors.dart';
 
 // TAF = Technician application form
 class TAFpage extends StatefulWidget {
@@ -41,20 +42,6 @@ class _TAFpageState extends State<TAFpage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    addressController = TextEditingController();
-    serviceTimeController = TextEditingController();
-    serviceTypeController = TextEditingController();
-    workHistoryController = TextEditingController();
-    tel1Controller = TextEditingController();
-    tel2Controller = TextEditingController();
-    serviceZoneController = TextEditingController();
-    stdHistoryController = TextEditingController();
-    tncNameController = TextEditingController();
-    super.initState();
-  }
-
-  @override
   void dispose() {
     addressController?.dispose();
     serviceTimeController?.dispose();
@@ -66,6 +53,20 @@ class _TAFpageState extends State<TAFpage> {
     stdHistoryController?.dispose();
     tncNameController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    addressController = TextEditingController();
+    serviceTimeController = TextEditingController();
+    serviceTypeController = TextEditingController();
+    workHistoryController = TextEditingController();
+    tel1Controller = TextEditingController();
+    tel2Controller = TextEditingController();
+    serviceZoneController = TextEditingController();
+    stdHistoryController = TextEditingController();
+    tncNameController = TextEditingController();
+    super.initState();
   }
 
   List<Step> getSteps() => [
@@ -658,7 +659,7 @@ class _TAFpageState extends State<TAFpage> {
           serviceZoneController?.text != "" ||
           serviceTimeController?.text != "") {
         final response = await http.post(
-          Uri.parse("https://api.racroad.com/api/technician/store"),
+          Uri.parse("$currentApi/technician/store"),
           body: {
             'user_id': widget.getToken,
             'address': addressController!.text,

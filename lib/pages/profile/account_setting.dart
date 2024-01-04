@@ -224,6 +224,7 @@ class _AccountSettingState extends State<AccountSetting> {
                                 userEmail: result.data.myProfile.email,
                                 userName: result.data.myProfile.name,
                                 userTel: result.data.myProfile.tel,
+                                cardId: result.data.myProfile.cardId,
                               ),
                             );
                           },

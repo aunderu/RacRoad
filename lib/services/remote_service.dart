@@ -8,6 +8,7 @@ import '../models/club/club_request_model.dart';
 import '../models/club/my_club_post.dart';
 import '../models/club/my_posts.dart';
 import '../models/club/newfeed.dart';
+import '../models/club/post_in_club.dart';
 import '../models/club/user_club_joined.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../models/user/all_car_models.dart';
@@ -25,6 +26,7 @@ import '../models/sos/problem_type.dart';
 import '../models/sos/sos_details_models.dart';
 import '../models/sos/specific_problem.dart';
 import '../models/user/user_profile_model.dart';
+import '../utils/api_url.dart';
 
 MyProfile? resultUserProfile;
 AllMyCar? resultAllMyCar;
@@ -48,16 +50,14 @@ MyPosts? resultMyPosts;
 AllClubModel? resultAllClubModel;
 NewFeedModel? resultNewFeedModel;
 ClubRequestModel? resultClubRequestModel;
-
-const url = "https://api.racroad.com/api";
-// const testurl = "https://api-racroad.chabafarm.com/api";
+PostInClubModel? resultPostInClubModel;
 
 class RemoteService {
   // ################################ UserProfile #################################
   Future<MyProfile?> getUserProfile(String token) async {
     try {
       final response = await http.get(
-        Uri.parse("$url/my/profile/$token"),
+        Uri.parse("$currentApi/my/profile/$token"),
       );
       if (response.statusCode == 200) {
         final itemUserProfile = json.decode(response.body);
@@ -76,7 +76,8 @@ class RemoteService {
   // ################################ MyCar #################################
   Future<AllMyCar?> getMyCar(String token) async {
     try {
-      final response = await http.get(Uri.parse("$url/mycar/all/$token"));
+      final response =
+          await http.get(Uri.parse("$currentApi/mycar/all/$token"));
       if (response.statusCode == 200) {
         final itemMyCar = json.decode(response.body);
         resultAllMyCar = AllMyCar.fromJson(itemMyCar);
@@ -94,7 +95,8 @@ class RemoteService {
   // ################################ MyCarDetails #################################
   Future<MyCarDetails?> getMyCarDetails(String carId) async {
     try {
-      final response = await http.get(Uri.parse("$url/mycar/detail/$carId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/mycar/detail/$carId"));
       if (response.statusCode == 200) {
         final itemMyCarDetails = json.decode(response.body);
         resultMyCarDetails = MyCarDetails.fromJson(itemMyCarDetails);
@@ -112,7 +114,7 @@ class RemoteService {
   // ################################ MyClub #################################
   Future<MyClub?> getMyClub(String token) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/club/$token"));
+      final response = await http.get(Uri.parse("$currentApi/my/club/$token"));
       if (response.statusCode == 200) {
         final itemMyClub = json.decode(response.body);
         resultMyClub = MyClub.fromJson(itemMyClub);
@@ -131,8 +133,8 @@ class RemoteService {
   Future<ClubDetailsModel?> getClubDetailsModel(
       String clubId, String userId) async {
     try {
-      final response =
-          await http.get(Uri.parse("$url/club/approve/detail/$clubId/$userId"));
+      final response = await http
+          .get(Uri.parse("$currentApi/club/approve/detail/$clubId/$userId"));
       if (response.statusCode == 200) {
         final itemClubDetailsModel = json.decode(response.body);
         resultClubDetailsModel =
@@ -151,7 +153,8 @@ class RemoteService {
   // ################################ MyClub #################################
   Future<MyJob?> getMyJob(String token) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/technician/$token"));
+      final response =
+          await http.get(Uri.parse("$currentApi/my/technician/$token"));
       if (response.statusCode == 200) {
         final itemMyJob = json.decode(response.body);
         resultMyJob = MyJob.fromJson(itemMyJob);
@@ -170,7 +173,7 @@ class RemoteService {
   Future<MyCurrentSos?> getMyCurrentSOS(String token) async {
     try {
       final response =
-          await http.get(Uri.parse("$url/my/sos/in/progress/$token"));
+          await http.get(Uri.parse("$currentApi/my/sos/in/progress/$token"));
       if (response.statusCode == 200) {
         final itemMyCurrentSOS = json.decode(response.body);
         resultMyCurrentSOS = MyCurrentSos.fromJson(itemMyCurrentSOS);
@@ -188,7 +191,8 @@ class RemoteService {
   // ################################ SosDetails #################################
   Future<SosDetails?> getSosDetails(String sosId) async {
     try {
-      final response = await http.get(Uri.parse("$url/sos/detail/$sosId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/sos/detail/$sosId"));
       if (response.statusCode == 200) {
         final itemSosDetails = json.decode(response.body);
         resultSosDetails = SosDetails.fromJson(itemSosDetails);
@@ -206,8 +210,8 @@ class RemoteService {
   // ################################ MyCurrentTncSos #################################
   Future<CurrentTncSos?> getCurrentTncSos(String tncId) async {
     try {
-      final response =
-          await http.get(Uri.parse("$url/my/tnc/sos/in/progress/$tncId"));
+      final response = await http
+          .get(Uri.parse("$currentApi/my/tnc/sos/in/progress/$tncId"));
       if (response.statusCode == 200) {
         final itemCurrentTncSos = json.decode(response.body);
         resultCurrentTncSos = CurrentTncSos.fromJson(itemCurrentTncSos);
@@ -225,7 +229,8 @@ class RemoteService {
   // ################################ AllMyTncSos #################################
   Future<AllMyTncSos?> getAllMyTncSos(String tncId) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/tnc/sos/$tncId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/my/tnc/sos/$tncId"));
       if (response.statusCode == 200) {
         final itemAllMyTncSos = json.decode(response.body);
         resultAllMyTncSos = AllMyTncSos.fromJson(itemAllMyTncSos);
@@ -243,7 +248,8 @@ class RemoteService {
   // ################################ AllMySos #################################
   Future<AllMySos?> getAllMySos(String token) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/user/sos/$token"));
+      final response =
+          await http.get(Uri.parse("$currentApi/my/user/sos/$token"));
       if (response.statusCode == 200) {
         final itemAllMySos = json.decode(response.body);
         resultAllMySos = AllMySos.fromJson(itemAllMySos);
@@ -261,7 +267,7 @@ class RemoteService {
   // ################################ AllCar #################################
   Future<AllCarModel?> getAllCar() async {
     try {
-      final response = await http.get(Uri.parse("$url/car/data"));
+      final response = await http.get(Uri.parse("$currentApi/car/data"));
       if (response.statusCode == 200) {
         final itemAllCar = json.decode(response.body);
         resultAllCar = AllCarModel.fromJson(itemAllCar);
@@ -279,7 +285,8 @@ class RemoteService {
   // ################################ ProblemType #################################
   Future<ProblemType?> getProblemType() async {
     try {
-      final response = await http.get(Uri.parse("$url/problem/type/all"));
+      final response =
+          await http.get(Uri.parse("$currentApi/problem/type/all"));
       if (response.statusCode == 200) {
         final itemProblemType = json.decode(response.body);
         resultProblemType = ProblemType.fromJson(itemProblemType);
@@ -298,7 +305,7 @@ class RemoteService {
   Future<SpecificProblem?> getSpecificProblem(String problemTypeId) async {
     try {
       final response = await http
-          .get(Uri.parse("$url/problem/in/problem/type/$problemTypeId"));
+          .get(Uri.parse("$currentApi/problem/in/problem/type/$problemTypeId"));
       if (response.statusCode == 200) {
         final itemSpecificProblem = json.decode(response.body);
         resultSpecificProblem = SpecificProblem.fromJson(itemSpecificProblem);
@@ -316,7 +323,7 @@ class RemoteService {
   // ################################ Car Data Calculated #################################
   Future<CarDataCal?> getCarDataCal(String carId) async {
     try {
-      final response = await http.get(Uri.parse("$url/upgc/cal/$carId"));
+      final response = await http.get(Uri.parse("$currentApi/upgc/cal/$carId"));
       if (response.statusCode == 200) {
         final itemCarDataCal = json.decode(response.body);
         resultCarDataCal = CarDataCal.fromJson(itemCarDataCal);
@@ -334,7 +341,8 @@ class RemoteService {
   // ################################ User Club Joined #################################
   Future<UserClubJoined?> getUserClubJoined(String userId) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/club/join/$userId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/my/club/join/$userId"));
       if (response.statusCode == 200) {
         final itemUserClubJoined = json.decode(response.body);
         resultUserClubJoined = UserClubJoined.fromJson(itemUserClubJoined);
@@ -352,7 +360,8 @@ class RemoteService {
   // ################################ User Club NOT Joined #################################
   Future<UserClubNotJoined?> getUserClubNotJoined(String userId) async {
     try {
-      final response = await http.get(Uri.parse("$url/club/not/join/$userId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/club/not/join/$userId"));
       if (response.statusCode == 200) {
         final itemUserClubNotJoined = json.decode(response.body);
         resultUserClubNotJoined =
@@ -369,9 +378,10 @@ class RemoteService {
   }
 
   // ################################ My Club Posts #################################
-  Future<ClubPostModel?> getClubPostModel(String clubId) async {
+  Future<ClubPostModel?> getClubPostModel(String clubId, String userId) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/club/post/$clubId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/my/club/post/$clubId/$userId"));
       if (response.statusCode == 200) {
         final itemClubPostModel = json.decode(response.body);
         resultClubPostModel = ClubPostModel.fromJson(itemClubPostModel);
@@ -386,10 +396,28 @@ class RemoteService {
     return resultClubPostModel;
   }
 
+  // ################################ Post In Club #################################
+  Future<PostInClubModel?> getPostInClub(String clubid) async {
+    try {
+      final response = await http.get(Uri.parse("$currentApi/club/post/$clubid"));
+      if (response.statusCode == 200) {
+        final itemPostInClub = json.decode(response.body);
+        resultPostInClubModel = PostInClubModel.fromJson(itemPostInClub);
+      } else {
+        throw Exception(jsonDecode(response.body));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return resultPostInClubModel;
+  }
+
   // ################################ My Posts #################################
   Future<MyPosts?> getMyPosts(String userId) async {
     try {
-      final response = await http.get(Uri.parse("$url/my/post/$userId"));
+      final response = await http.get(Uri.parse("$currentApi/my/post/$userId"));
       if (response.statusCode == 200) {
         final itemMyPosts = json.decode(response.body);
         resultMyPosts = MyPosts.fromJson(itemMyPosts);
@@ -404,11 +432,11 @@ class RemoteService {
     return resultMyPosts;
   }
 
-  // ################################ My Posts #################################
+  // ################################ New Feed #################################
   Future<NewFeedModel?> getNewFeedModel(String userId) async {
     try {
       final response =
-          await http.get(Uri.parse("$url/post/in/my/club/join/$userId"));
+          await http.get(Uri.parse("$currentApi/post/in/my/club/join/$userId"));
       if (response.statusCode == 200) {
         final itemNewFeedModel = json.decode(response.body);
         resultNewFeedModel = NewFeedModel.fromJson(itemNewFeedModel);
@@ -426,7 +454,7 @@ class RemoteService {
   // ################################ All Club Model #################################
   Future<AllClubModel?> getAllClubModel() async {
     try {
-      final response = await http.get(Uri.parse("$url/club/approve"));
+      final response = await http.get(Uri.parse("$currentApi/club/approve"));
       if (response.statusCode == 200) {
         final itemAllClubModel = json.decode(response.body);
         resultAllClubModel = AllClubModel.fromJson(itemAllClubModel);
@@ -444,10 +472,12 @@ class RemoteService {
   // ################################ Club Request Model #################################
   Future<ClubRequestModel?> getClubRequestModel(String clubId) async {
     try {
-      final response = await http.get(Uri.parse("$url/request/my/club/$clubId"));
+      final response =
+          await http.get(Uri.parse("$currentApi/request/my/club/$clubId"));
       if (response.statusCode == 200) {
         final itemClubRequestModel = json.decode(response.body);
-        resultClubRequestModel = ClubRequestModel.fromJson(itemClubRequestModel);
+        resultClubRequestModel =
+            ClubRequestModel.fromJson(itemClubRequestModel);
       } else {
         throw Exception(jsonDecode(response.body));
       }

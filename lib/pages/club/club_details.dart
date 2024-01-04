@@ -17,30 +17,33 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:http/http.dart' as http;
 
-import 'package:rac_road/services/remote_service.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../utils/loading/new_feed_loading.dart';
+import '../../utils/custom_time_ago.dart';
+import '../../utils/loading/club_loading.dart';
+import '../../models/club/post_in_club.dart' as post_in_club_model;
+import '../../services/remote_service.dart';
+import '../../utils/api_url.dart';
 import '../../utils/colors.dart';
 import '../../models/club/club_request_model.dart';
-import '../../models/club/my_club_post.dart' as my_club_posts_model;
 import '../../models/club/club_details.dart' as club_details_model;
 import '../../models/data/menu_items.dart';
-import '../../models/menu_item.dart';
+import '../../models/data/menu_item.dart';
 
 class ClubDetailsPage extends StatefulWidget {
   const ClubDetailsPage({
     super.key,
-    required this.getToken,
     required this.clubId,
     required this.userName,
     this.memcId,
+    required this.userId,
   });
 
   final String clubId;
-  final String getToken;
-  final String userName;
   final String? memcId;
+  final String userName;
+  final String userId;
 
   @override
   State<ClubDetailsPage> createState() => _ClubDetailsPageState();
@@ -51,7 +54,7 @@ Future<bool> userLeaveClub(String? memcId) async {
     return false;
   }
   final response = await http.get(
-    Uri.parse("https://api.racroad.com/api/leave/club/$memcId"),
+    Uri.parse("$currentApi/leave/club/$memcId"),
   );
   if (response.statusCode == 200) {
     return true;
@@ -211,7 +214,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                     context,
                     size,
                     widget.clubId,
-                    widget.getToken,
+                    widget.userId,
                     widget.userName,
                     widget.memcId,
                   ),
@@ -227,8 +230,8 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 44),
-                    child: FutureBuilder<my_club_posts_model.ClubPostModel?>(
-                      future: RemoteService().getClubPostModel(widget.clubId),
+                    child: FutureBuilder<post_in_club_model.PostInClubModel?>(
+                      future: RemoteService().getPostInClub(widget.clubId),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -236,9 +239,9 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                           case ConnectionState.waiting:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
-                              my_club_posts_model.Data dataMyClubPosts =
+                              post_in_club_model.Data dataPostInClub =
                                   result!.data;
-                              if (dataMyClubPosts.myClubPost.isEmpty) {
+                              if (dataPostInClub.post.isEmpty) {
                                 return Padding(
                                   padding: const EdgeInsets.all(30.0),
                                   child: SizedBox(
@@ -247,7 +250,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                         MediaQuery.of(context).size.height / 5,
                                     child: Center(
                                       child: Text(
-                                        "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการเพิ่มโพสต์ที่มุมขวาล่าง",
+                                        "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการโพสต์",
                                         style: GoogleFonts.sarabun(
                                           fontSize: 15,
                                         ),
@@ -262,72 +265,52 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                 primary: false,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: dataMyClubPosts.myClubPost.length,
+                                itemCount: dataPostInClub.post.length,
                                 itemBuilder: (context, index) {
                                   return newsFeed(
                                     context,
                                     size,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .ownerAvatar,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .owner,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .description,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .postDate,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .imagePost,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .coComment,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .coLike,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .comment,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .like,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .id,
-                                    widget.getToken,
+                                    widget.userId,
                                   );
                                 },
                               );
@@ -337,9 +320,9 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                           case ConnectionState.active:
                             if (snapshot.hasData) {
                               var result = snapshot.data;
-                              my_club_posts_model.Data dataMyClubPosts =
+                              post_in_club_model.Data dataPostInClub =
                                   result!.data;
-                              if (dataMyClubPosts.myClubPost.isEmpty) {
+                              if (dataPostInClub.post.isEmpty) {
                                 return Padding(
                                   padding: const EdgeInsets.all(30.0),
                                   child: SizedBox(
@@ -348,7 +331,7 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                         MediaQuery.of(context).size.height / 5,
                                     child: Center(
                                       child: Text(
-                                        "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการเพิ่มโพสต์ที่มุมขวาล่าง",
+                                        "ดูเหมือนยังไม่มีใครโพสต์อะไรนะ?\nคุณสามารถเริ่มต้นการสนทนาได้โดยการโพสต์",
                                         style: GoogleFonts.sarabun(
                                           fontSize: 15,
                                         ),
@@ -363,72 +346,52 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                 primary: false,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: dataMyClubPosts.myClubPost.length,
+                                itemCount: dataPostInClub.post.length,
                                 itemBuilder: (context, index) {
                                   return newsFeed(
                                     context,
                                     size,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .ownerAvatar,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .owner,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .description,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .postDate,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .imagePost,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .coComment,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .coLike,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .comment,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .like,
-                                    dataMyClubPosts
-                                        .myClubPost[
-                                            (dataMyClubPosts.myClubPost.length -
-                                                    1) -
-                                                index]
+                                    dataPostInClub
+                                        .post[(dataPostInClub.post.length - 1) -
+                                            index]
                                         .id,
-                                    widget.getToken,
+                                    widget.userId,
                                   );
                                 },
                               );
@@ -441,9 +404,9 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                             } else {
                               if (snapshot.hasData) {
                                 var result = snapshot.data;
-                                my_club_posts_model.Data dataMyClubPosts =
+                                post_in_club_model.Data dataPostInClub =
                                     result!.data;
-                                if (dataMyClubPosts.myClubPost.isEmpty) {
+                                if (dataPostInClub.post.isEmpty) {
                                   return Padding(
                                     padding: const EdgeInsets.all(30.0),
                                     child: SizedBox(
@@ -468,72 +431,62 @@ class _ClubDetailsPageState extends State<ClubDetailsPage> {
                                   primary: false,
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
-                                  itemCount: dataMyClubPosts.myClubPost.length,
+                                  itemCount: dataPostInClub.post.length,
                                   itemBuilder: (context, index) {
                                     return newsFeed(
                                       context,
                                       size,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .ownerAvatar,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .owner,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .description,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .postDate,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .imagePost,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .coComment,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .coLike,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .comment,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .like,
-                                      dataMyClubPosts
-                                          .myClubPost[(dataMyClubPosts
-                                                      .myClubPost.length -
-                                                  1) -
-                                              index]
+                                      dataPostInClub
+                                          .post[
+                                              (dataPostInClub.post.length - 1) -
+                                                  index]
                                           .id,
-                                      widget.getToken,
+                                      widget.userId,
                                     );
                                   },
                                 );
@@ -626,158 +579,9 @@ Widget clubDetails(
   );
 }
 
-class ClubDetailsLoading extends StatelessWidget {
-  const ClubDetailsLoading({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.all(5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: lightGrey,
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                      child: Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: lightGrey,
-                        child: Container(
-                          color: Colors.white,
-                          height: 10,
-                          width: 50,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Shimmer.fromColors(
-                      baseColor: Colors.white,
-                      highlightColor: lightGrey,
-                      child: Container(
-                        width: size.width * 0.25,
-                        height: size.height * 0.04,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        alignment: const AlignmentDirectional(0, 0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  0,
-                  size.height * 0.01,
-                  size.width * 0.03,
-                  size.height * 0.01,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Shimmer.fromColors(
-                      baseColor: Colors.white,
-                      highlightColor: lightGrey,
-                      child: Container(
-                        color: Colors.white,
-                        height: 160,
-                        width: size.width * 0.55,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(top: 5),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Shimmer.fromColors(
-                            baseColor: Colors.white,
-                            highlightColor: lightGrey,
-                            child: Container(
-                              color: Colors.white,
-                              width: 30,
-                              height: 10,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Shimmer.fromColors(
-                            baseColor: Colors.white,
-                            highlightColor: lightGrey,
-                            child: Container(
-                              color: Colors.white,
-                              width: 70,
-                              height: 7,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-            child: Shimmer.fromColors(
-              baseColor: Colors.white,
-              highlightColor: lightGrey,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  height: 40,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 Future<void> userSendDeal(String memcId, String status) async {
   final response = await http.post(
-    Uri.parse("https://api.racroad.com/api/respond/join/club/$memcId"),
+    Uri.parse("$currentApi/respond/join/club/$memcId"),
     body: {
       'status': status,
     },
@@ -966,41 +770,39 @@ class ClubDetailsWidgets extends StatefulWidget {
     required this.getToken,
   });
 
+  final String clubId;
   final club_details_model.Data dataMyClub;
+  final String getToken;
   final Size size;
   final String userName;
-
-  final String clubId;
-  final String getToken;
 
   @override
   State<ClubDetailsWidgets> createState() => _ClubDetailsWidgetsState();
 }
 
 class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
-  ClubRequestModel? dataClubRequest;
-  bool isHavingData = false;
-
-  TextEditingController? userPostController;
+  XFile? camera;
   bool canPost = false;
+  ClubRequestModel? dataClubRequest;
+  List<File> imageFile = <File>[];
+  bool isHavingData = false;
+  List<XFile> itemImagesList = <XFile>[];
+  List<XFile> photo = <XFile>[];
+  TextEditingController? userPostController;
 
   final ImagePicker _picker = ImagePicker();
-  List<File> imageFile = <File>[];
-  List<XFile> photo = <XFile>[];
-  List<XFile> itemImagesList = <XFile>[];
-  XFile? camera;
+
+  @override
+  void dispose() {
+    userPostController!.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     userPostController = TextEditingController();
     getClubRequest();
-  }
-
-  @override
-  void dispose() {
-    userPostController!.dispose();
-    super.dispose();
   }
 
   void showImageDialog() {
@@ -1144,14 +946,14 @@ class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
       'Content-type': 'application/json',
     };
 
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.racroad.com/api/post/store'))
-      ..fields.addAll({
-        "description": userPost!,
-        "owner": userId,
-        "club_id": clubId,
-      })
-      ..headers.addAll(headers);
+    var request =
+        http.MultipartRequest('POST', Uri.parse('$currentApi/post/store'))
+          ..fields.addAll({
+            "description": userPost!,
+            "owner": userId,
+            "club_id": clubId,
+          })
+          ..headers.addAll(headers);
     for (var i = 0; i < imgFile.length; i++) {
       request.files.add(
         http.MultipartFile(
@@ -1183,7 +985,7 @@ class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
 
   Future<bool> userJoinClub(String userId, String clubId) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/request/join/club"),
+      Uri.parse("$currentApi/request/join/club"),
       body: {
         'user_id': userId,
         'club_id': clubId,
@@ -1352,6 +1154,7 @@ class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
+                                                      // TODO: คำขอเข้าคลับยังไม่ได้ใส่เลข
                                                       'คำขอเข้าคลับ (0)',
                                                       style:
                                                           GoogleFonts.sarabun(
@@ -1942,44 +1745,9 @@ class _ClubDetailsWidgetsState extends State<ClubDetailsWidgets> {
   }
 }
 
-class MyCustomTimeAgo implements timeago.LookupMessages {
-  @override
-  String prefixAgo() => '';
-  @override
-  String prefixFromNow() => '';
-  @override
-  String suffixAgo() => 'ที่แล้ว';
-  @override
-  String suffixFromNow() => '';
-  @override
-  String lessThanOneMinute(int seconds) => 'ตอนนี้';
-  @override
-  String aboutAMinute(int minutes) => '$minutes นาที';
-  @override
-  String minutes(int minutes) => '$minutes นาที';
-  @override
-  String aboutAnHour(int minutes) => '$minutes นาที';
-  @override
-  String hours(int hours) => '$hours ชั่วโมง';
-  @override
-  String aDay(int hours) => '1 วัน';
-  @override
-  String days(int days) => '$days วัน';
-  @override
-  String aboutAMonth(int days) => '$days วัน';
-  @override
-  String months(int months) => '$months เดือน';
-  @override
-  String aboutAYear(int year) => '$year ปี';
-  @override
-  String years(int years) => '$years ปี';
-  @override
-  String wordSeparator() => '';
-}
-
 Future<bool> userLike(bool isLiked, String postId, String userId) async {
   final response = await http.post(
-    Uri.parse("https://api.racroad.com/api/click/like"),
+    Uri.parse("$currentApi/click/like"),
     body: {
       'post_id': postId,
       'user_id': userId,
@@ -1999,16 +1767,16 @@ Widget newsFeed(
   String userName,
   String? description,
   DateTime timestamp,
-  List<my_club_posts_model.ImagePost> imgPost,
+  List<post_in_club_model.ImagePost> imgPost,
   int countComment,
   int countLike,
-  List<my_club_posts_model.Comment> comments,
-  List<my_club_posts_model.Comment> likes,
+  List<post_in_club_model.Comment> comments,
+  List<post_in_club_model.Comment> likes,
   String postId,
   String userId,
 ) {
   final controller = PageController();
-  timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
+  timeago.setLocaleMessages('th-custom', CustomTimeAgo());
   var isUserLike = false;
 
   return Padding(
@@ -2200,13 +1968,11 @@ Widget newsFeed(
                         },
                         isLiked: (() {
                           for (var like in likes) {
-                            if (like.userId == userId &&
-                                like.status == "like") {
+                            if (like.userId == userId) {
                               isUserLike = true;
-                              return isUserLike;
+                              break;
                             } else {
                               isUserLike = false;
-                              return isUserLike;
                             }
                           }
                           return isUserLike;
@@ -2220,16 +1986,16 @@ Widget newsFeed(
                         }),
                       ),
                     ),
-                    const Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Icon(
-                          Icons.monetization_on_outlined,
-                          color: Colors.grey,
-                          size: 24,
-                        ),
-                      ],
-                    ),
+                    // const Row(
+                    //   mainAxisSize: MainAxisSize.max,
+                    //   children: [
+                    //     Icon(
+                    //       Icons.monetization_on_outlined,
+                    //       color: Colors.grey,
+                    //       size: 24,
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 Padding(
@@ -2249,7 +2015,7 @@ Widget newsFeed(
                         builder: (context) => StatefulBuilder(
                           builder: (context, setState) => SizedBox(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child: Comments(
+                            child: CommentsInClub(
                               comments: comments,
                               userId: userId,
                               postId: postId,
@@ -2308,32 +2074,44 @@ Widget newsFeed(
   );
 }
 
-class Comments extends StatefulWidget {
-  const Comments({
+class CommentsInClub extends StatefulWidget {
+  const CommentsInClub({
     super.key,
     required this.comments,
     required this.userId,
     required this.postId,
   });
 
-  final List<my_club_posts_model.Comment> comments;
-  final String userId;
+  final List<post_in_club_model.Comment> comments;
   final String postId;
+  final String userId;
 
   @override
-  State<Comments> createState() => _CommentsState();
+  State<CommentsInClub> createState() => _CommentsState();
 }
 
-class _CommentsState extends State<Comments> {
+class _CommentsState extends State<CommentsInClub> {
   TextEditingController? userCommentController;
-  final GlobalKey<FormState> _userCommentKey = GlobalKey<FormState>();
 
   final ScrollController _controller = ScrollController();
+  final GlobalKey<FormState> _userCommentKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    userCommentController!.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userCommentController = TextEditingController();
+  }
 
   Future<bool> userComment(
       String postId, String userId, String userComment) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/comment/store"),
+      Uri.parse("$currentApi/comment/store"),
       body: {
         'post_id': postId,
         'user_id': userId,
@@ -2345,18 +2123,6 @@ class _CommentsState extends State<Comments> {
     } else {
       return false;
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    userCommentController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    userCommentController!.dispose();
-    super.dispose();
   }
 
   @override
@@ -2512,173 +2278,4 @@ class _CommentsState extends State<Comments> {
       ),
     );
   }
-}
-
-Widget newsFeedLoading(
-  BuildContext context,
-  Size size,
-) {
-  return Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(
-      size.width * 0.03,
-      0,
-      size.width * 0.03,
-      size.height * 0.02,
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              size.height * 0.01,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.all(1),
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.white,
-                    highlightColor: lightGrey,
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: lightGrey,
-                        child: Container(
-                          color: Colors.white,
-                          height: 10,
-                          width: 80,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: lightGrey,
-                        child: Container(
-                          color: Colors.white,
-                          height: 10,
-                          width: 120,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Shimmer.fromColors(
-            baseColor: Colors.white,
-            highlightColor: lightGrey,
-            child: Container(
-              color: Colors.white,
-              height: 250,
-              width: double.infinity,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              size.height * 0.01,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                      child: LikeButton(
-                        size: 24,
-                        likeCount: 21,
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const Icon(
-                            Icons.mode_comment_outlined,
-                            color: Colors.grey,
-                            size: 24,
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                4, 0, 0, 0),
-                            child: Text(
-                              '4',
-                              style: GoogleFonts.sarabun(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Row(
-                    //   mainAxisSize: MainAxisSize.max,
-                    //   children: const [
-                    //     Icon(
-                    //       Icons.monetization_on_outlined,
-                    //       color: Colors.grey,
-                    //       size: 24,
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                      child: Text(
-                        '4k Share',
-                        style: GoogleFonts.sarabun(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.share_sharp,
-                      color: Colors.grey,
-                      size: 24,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
 }

@@ -554,7 +554,6 @@ class _ClubPageState extends State<ClubPage> {
                                 var result = snapshot.data;
                                 List<ClubNotJoin> dataAllClub =
                                     result!.data.clubNotJoin;
-                                dataAllClub.shuffle();
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,
@@ -587,7 +586,6 @@ class _ClubPageState extends State<ClubPage> {
                                 var result = snapshot.data;
                                 List<ClubNotJoin> dataAllClub =
                                     result!.data.clubNotJoin;
-                                dataAllClub.shuffle();
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: dataAllClub.length,

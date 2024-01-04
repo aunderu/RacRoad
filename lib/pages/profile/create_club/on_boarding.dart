@@ -55,7 +55,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 image: DecorationImage(
                   image: AssetImage("assets/imgs/club-banner1.jpg"),
                   scale: 0.5,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fill,
                 ),
               ),
               child: Align(
@@ -94,7 +94,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 image: DecorationImage(
                   image: AssetImage("assets/imgs/club-banner2.jpg"),
                   scale: 0.5,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fill,
                 ),
               ),
               child: Align(
@@ -134,7 +134,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 image: DecorationImage(
                   image: AssetImage("assets/imgs/club-banner3.jpg"),
                   scale: 0.5,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fill,
                 ),
               ),
               child: Align(
@@ -227,13 +227,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   'โดยการสร้างคลับ คุณได้ยินยอมข้อตกลงแล้ว',
                   style: GoogleFonts.sarabun(),
                 ),
-                Text(
-                  'อ่านข้อตกลง',
-                  style: GoogleFonts.sarabun(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
+                // Text(
+                //   'อ่านข้อตกลง',
+                //   style: GoogleFonts.sarabun(
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.blue,
+                //   ),
+                // ),
               ],
             ),
           ],

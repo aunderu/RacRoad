@@ -8,6 +8,8 @@ class ClubSettings extends StatefulWidget {
   State<ClubSettings> createState() => _ClubSettingsState();
 }
 
+
+// TODO : ตั้งค่าคลับ
 class _ClubSettingsState extends State<ClubSettings> {
   @override
   Widget build(BuildContext context) {

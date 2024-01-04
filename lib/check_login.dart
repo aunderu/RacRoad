@@ -41,6 +41,7 @@ class _CheckLoginState extends State<CheckLogin> {
 
     if (token != null) {
       MyProfile? myProfile = await RemoteService().getUserProfile(token);
+      // print(myProfile?.data.myProfile.id);
       if (myProfile?.data.myProfile.tel != null) {
         Timer(
           const Duration(seconds: 2),

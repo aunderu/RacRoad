@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -8,15 +9,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:rac_road/pages/club/search_club.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:http/http.dart' as http;
 
+import '../utils/loading/my_club_loading.dart';
+import '../utils/loading/new_feed_loading.dart';
+import '../models/data/menu_item.dart';
+import '../models/data/menu_items.dart';
+import '../utils/api_url.dart';
 import '../utils/colors.dart';
 import '../models/club/newfeed.dart';
 import '../models/club/user_club_not_joined.dart';
 import '../services/remote_service.dart';
+import '../utils/custom_time_ago.dart';
+import 'club/club_details.dart';
+import 'club/comment.dart';
 import 'club/my_club_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,29 +44,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool circular = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController? searchController;
+  TextEditingController editPostController = TextEditingController();
   late SharedPreferences sharedPreferences;
 
   @override
   void initState() {
     super.initState();
     searchController = TextEditingController();
-
-    // fetchUser();
+    editPostController = TextEditingController();
   }
 
-  // Future<UserProfile?> fetchUser() async {
-  //   sharedPreferences = await SharedPreferences.getInstance();
-  //   int? id = sharedPreferences.getInt("id");
-  //   Response response = await post(
-  //     Uri.parse('https://api-racroad.chabafarm.com/api/my/profile/$id'),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     return userProfileFromJson(response.body);
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  @override
+  void dispose() {
+    editPostController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +153,6 @@ class _HomePageState extends State<HomePage> {
                           var result = snapshot.data;
                           List<ClubNotJoin> dataAllClub =
                               result!.data.clubNotJoin;
-                          dataAllClub.shuffle();
                           if (dataAllClub.isNotEmpty) {
                             return SizedBox(
                               width: double.infinity,
@@ -191,7 +192,6 @@ class _HomePageState extends State<HomePage> {
                           var result = snapshot.data;
                           List<ClubNotJoin> dataAllClub =
                               result!.data.clubNotJoin;
-                          dataAllClub.shuffle();
                           if (dataAllClub.isNotEmpty) {
                             return SizedBox(
                               width: double.infinity,
@@ -353,7 +353,11 @@ class _HomePageState extends State<HomePage> {
                                     .id,
                                 widget.token,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .clubId,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .clubName,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .ownerId,
                               );
                             },
                           );
@@ -415,7 +419,11 @@ class _HomePageState extends State<HomePage> {
                                     .id,
                                 widget.token,
                                 dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .clubId,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
                                     .clubName,
+                                dataNewFeed[(dataNewFeed.length - 1) - index]
+                                    .ownerId,
                               );
                             },
                           );
@@ -481,7 +489,11 @@ class _HomePageState extends State<HomePage> {
                                       .id,
                                   widget.token,
                                   dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .clubId,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
                                       .clubName,
+                                  dataNewFeed[(dataNewFeed.length - 1) - index]
+                                      .ownerId,
                                 );
                               },
                             );
@@ -498,181 +510,404 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-class MyClubLoadingWidget extends StatelessWidget {
-  const MyClubLoadingWidget({
-    super.key,
-  });
+  void showFormDialog(
+    String? description,
+    String postId,
+    String clubId,
+    String ownerId,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              title: Text(
+                'แก้ไขโพสต์',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.sarabun(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              ),
+              content: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: editPostController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 4,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: "กรุณาใส่ข้อความด้วย",
+                            ),
+                          ]),
+                          decoration: const InputDecoration(
+                            label: Text('พูดคุยว่าอะไรดีนะ?'),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffffffff),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: mainGreen,
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: whiteGreen, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffEF4444), width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: mainGreen, width: 1.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: lightGrey,
+                                minimumSize: Size(
+                                  MediaQuery.of(context).size.width / 3.5,
+                                  40,
+                                ),
+                              ),
+                              child: Text(
+                                'ยกเลิก',
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  // next
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
-      height: MediaQuery.of(context).size.height * 0.22,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            color: Color(0x34090F13),
-            offset: Offset(0, 2),
-          )
-        ],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-            child: Shimmer.fromColors(
-              baseColor: lightGrey,
-              highlightColor: Colors.white,
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.15,
-                color: lightGrey,
+                                  editPost(
+                                    postId,
+                                    clubId,
+                                    ownerId,
+                                    editPostController.text,
+                                  );
+
+                                  Get.back();
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mainGreen,
+                                minimumSize: Size(
+                                  MediaQuery.of(context).size.width / 3.5,
+                                  40,
+                                ),
+                              ),
+                              child: Text(
+                                'แก้ไข',
+                                style: GoogleFonts.sarabun(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
-}
 
-class MyCustomTimeAgo implements timeago.LookupMessages {
-  @override
-  String prefixAgo() => '';
-  @override
-  String prefixFromNow() => '';
-  @override
-  String suffixAgo() => 'ที่แล้ว';
-  @override
-  String suffixFromNow() => '';
-  @override
-  String lessThanOneMinute(int seconds) => 'ตอนนี้';
-  @override
-  String aboutAMinute(int minutes) => '$minutes นาที';
-  @override
-  String minutes(int minutes) => '$minutes นาที';
-  @override
-  String aboutAnHour(int minutes) => '$minutes นาที';
-  @override
-  String hours(int hours) => '$hours ชั่วโมง';
-  @override
-  String aDay(int hours) => '1 วัน';
-  @override
-  String days(int days) => '$days วัน';
-  @override
-  String aboutAMonth(int days) => '$days วัน';
-  @override
-  String months(int months) => '$months เดือน';
-  @override
-  String aboutAYear(int year) => '$year ปี';
-  @override
-  String years(int years) => '$years ปี';
-  @override
-  String wordSeparator() => '';
-}
-
-Future<bool> userLike(bool isLiked, String postId, String userId) async {
-  final response = await http.post(
-    Uri.parse("https://api.racroad.com/api/click/like"),
-    body: {
-      'post_id': postId,
-      'user_id': userId,
-    },
-  );
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-Widget newsFeed(
-  BuildContext context,
-  Size size,
-  String userProfile,
-  String userName,
-  String? description,
-  DateTime timestamp,
-  List<ImagePost> imgPost,
-  int countComment,
-  int countLike,
-  List<Comment> comments,
-  List<Comment> likes,
-  String postId,
-  String userId,
-  String clubName,
-) {
-  final controller = PageController();
-  timeago.setLocaleMessages('th-custom', MyCustomTimeAgo());
-  var isUserLike = false;
-
-  return Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(
-      size.width * 0.03,
-      0,
-      size.width * 0.03,
-      size.height * 0.02,
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              size.height * 0.01,
+  PopupMenuItem<CustomMenuItem> buildItem(CustomMenuItem item) =>
+      PopupMenuItem<CustomMenuItem>(
+        value: item,
+        child: Row(
+          children: [
+            Icon(
+              item.icon,
+              color: Colors.black,
+              size: 20,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.all(1),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: userProfile,
-                      fit: BoxFit.cover,
+            const SizedBox(width: 12),
+            Text(
+              item.text,
+              style: GoogleFonts.sarabun(),
+            ),
+          ],
+        ),
+      );
+
+  void onSelected(
+    BuildContext context,
+    CustomMenuItem item,
+    String userId,
+    String ownerId,
+    String postId,
+    String clubId,
+    String? description,
+  ) {
+    if (userId == ownerId) {
+      switch (item) {
+        case PostMenuItems.itemEdit:
+          showFormDialog(description, postId, clubId, ownerId);
+          break;
+        case PostMenuItems.itemDelete:
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text("ต้องการลบโพสต์นี้หรือไม่?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    if (userId == ownerId) {
+                      deletePost(postId);
+                    }
+                    Navigator.pop(context);
+                  },
+                  child: const Text('ลบโพสต์'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('ยกเลิก'),
+                ),
+              ],
+              elevation: 24,
+            ),
+          );
+          break;
+      }
+    }
+  }
+
+  void deletePost(String postId) async {
+    var url = Uri.parse('$currentApi/post/destroy/$postId');
+    var response = await http.delete(url);
+
+    if (response.statusCode == 200) {
+      setState(() {});
+
+      Fluttertoast.showToast(
+        msg: "คุณได้ลบโพสต์นี้แล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  void editPost(
+    String postId,
+    String clubId,
+    String ownerId,
+    String description,
+  ) async {
+    var url = Uri.parse('$currentApi/post/update/$postId');
+
+    final response = await http.post(
+      url,
+      body: {
+        'club_id': clubId,
+        'owner': ownerId,
+        'description': description,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {});
+
+      Fluttertoast.showToast(
+        msg: "คุณได้แก้ไขโพสต์แล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Widget newsFeed(
+    BuildContext context,
+    Size size,
+    String userProfile,
+    String userName,
+    String? description,
+    DateTime timestamp,
+    List<ImagePost> imgPost,
+    int countComment,
+    int countLike,
+    List<Comment> comments,
+    List<Comment> likes,
+    String postId,
+    String userId,
+    String clubId,
+    String clubName,
+    String ownerId,
+  ) {
+    final controller = PageController();
+    timeago.setLocaleMessages('th-custom', CustomTimeAgo());
+    var isUserLike = false;
+    var isTap = false;
+    var maxLine = 1;
+
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(
+        size.width * 0.03,
+        0,
+        size.width * 0.03,
+        size.height * 0.02,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFEBEBEB),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              // padding: EdgeInsetsDirectional.fromSTEB(
+              //   size.width * 0.02,
+              //   size.height * 0.01,
+              //   size.width * 0.02,
+              //   size.height * 0.01,
+              // ),
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.all(1),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: userProfile,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                  child: SizedBox(
-                    width: size.width * 0.75,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "$userName in $clubName",
-                          style: GoogleFonts.sarabun(
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.bold,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 1.5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: StatefulBuilder(
+                              builder: (context, setState) => GestureDetector(
+                                onTap: () {
+                                  if (isTap == false) {
+                                    setState(() {
+                                      maxLine = 5;
+                                      isTap = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      maxLine = 1;
+                                      isTap = false;
+                                    });
+                                  }
+                                },
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        // text: 'tatasffffffffffffffaweqweasdasdd',
+                                        text: userName,
+                                        style: GoogleFonts.sarabun(
+                                          fontSize: 13.5,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black45,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: ' in ',
+                                        style: GoogleFonts.sarabun(
+                                          fontSize: 13.5,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        // text:
+                                        //     'tttttttttttttttttttttttttttttttttttttttttttttttttttt',
+                                        text: clubName,
+                                        style: GoogleFonts.sarabun(
+                                          fontSize: 13.5,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () => Get.to(
+                                                () => ClubDetailsPage(
+                                                  clubId: clubId,
+                                                  userName: userName,
+                                                  userId: userId,
+                                                ),
+                                                transition: Transition
+                                                    .rightToLeftWithFade,
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                  maxLines: maxLine,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
                         ),
                         const SizedBox(height: 1.5),
                         Text(
@@ -685,426 +920,249 @@ Widget newsFeed(
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          description == null
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          description,
-                          style: GoogleFonts.sarabun(),
-                        ),
+                  Expanded(
+                    child: PopupMenuButton<CustomMenuItem>(
+                      onSelected: (item) => onSelected(
+                        context,
+                        item,
+                        userId,
+                        ownerId,
+                        postId,
+                        clubId,
+                        description,
                       ),
-                    ],
-                  ),
-                ),
-          imgPost.isEmpty
-              ? const SizedBox(height: 20)
-              : const SizedBox(height: 5),
-          imgPost.isNotEmpty
-              ? Padding(
-                  padding: EdgeInsetsDirectional.only(
-                    top: size.height * 0.01,
-                    bottom: size.height * 0.01,
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.96,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: ExpandablePageView.builder(
-                          controller: controller,
-                          itemCount: imgPost.length,
-                          itemBuilder: (context, index) {
-                            return CachedNetworkImage(
-                              imageUrl: imgPost[index].image,
-                              fit: BoxFit.contain,
-                              placeholder: (context, url) => Container(
-                                color: const Color(0xFFEBEBEB),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Center(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: SmoothPageIndicator(
-                              controller: controller,
-                              count: imgPost.length,
-                              effect: const WormEffect(
-                                spacing: 20,
-                                dotHeight: 10,
-                                dotWidth: 10,
-                                activeDotColor: mainGreen,
-                                dotColor: Colors.black26,
-                              ),
-                              onDotClicked: (index) => controller.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeIn,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : const SizedBox.shrink(),
-          const Divider(color: Colors.black38),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(40, 0, 40, 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                      child: LikeButton(
-                        likeCount: countLike,
-                        likeBuilder: (isLiked) {
-                          final color = isLiked ? Colors.red : Colors.grey;
-
-                          return Icon(Icons.favorite, color: color, size: 24);
-                        },
-                        countBuilder: (likeCount, isLiked, text) {
-                          final color = isLiked ? Colors.red : Colors.grey;
-
-                          return Text(
-                            text,
-                            style: GoogleFonts.sarabun(
-                              color: color,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        },
-                        isLiked: (() {
-                          for (var like in likes) {
-                            if (like.userId == userId &&
-                                like.status == "like") {
-                              isUserLike = true;
-                              return isUserLike;
-                            } else {
-                              isUserLike = false;
-                              return isUserLike;
-                            }
-                          }
-                          return isUserLike;
-                        }()),
-                        onTap: (isLiked) =>
-                            userLike(isLiked, postId, userId).then((isLike) {
-                          if (isLike == true) {
-                            isUserLike = !isUserLike;
-                          }
-                          return isUserLike;
-                        }),
+                      enabled: userId == ownerId,
+                      itemBuilder: (context) => [
+                        ...PostMenuItems.itemsFirst.map(buildItem).toList(),
+                        const PopupMenuDivider(),
+                        ...PostMenuItems.itemsSecond.map(buildItem).toList(),
+                      ],
+                      child: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.black,
+                        size: 24,
                       ),
                     ),
-                    // Row(
-                    //   mainAxisSize: MainAxisSize.max,
-                    //   children: const [
-                    //     Icon(
-                    //       Icons.monetization_on_outlined,
-                    //       color: Colors.grey,
-                    //       size: 24,
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        useSafeArea: true,
-                        enableDrag: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                        ),
-                        builder: (context) => StatefulBuilder(
-                          builder: (context, setState) => SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.8,
-                            child: Comments(
-                              comments: comments,
-                              userId: userId,
-                              postId: postId,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                  ),
+                ],
+              ),
+            ),
+            description == null
+                ? const SizedBox.shrink()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                        Expanded(
                           child: Text(
-                            countComment.toString(),
-                            style: GoogleFonts.sarabun(
-                              color: Colors.grey,
-                            ),
+                            description,
+                            style: GoogleFonts.sarabun(),
                           ),
-                        ),
-                        const Icon(
-                          Icons.mode_comment_outlined,
-                          color: Colors.grey,
-                          size: 24,
                         ),
                       ],
                     ),
                   ),
-                ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.max,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                //       child: Text(
-                //         '0 Share',
-                //         style: GoogleFonts.sarabun(
-                //           color: Colors.grey,
-                //         ),
-                //       ),
-                //     ),
-                //     const Icon(
-                //       Icons.share_sharp,
-                //       color: Colors.grey,
-                //       size: 24,
-                //     ),
-                //   ],
-                // ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-class Comments extends StatefulWidget {
-  const Comments({
-    super.key,
-    required this.comments,
-    required this.userId,
-    required this.postId,
-  });
-
-  final List<Comment> comments;
-  final String userId;
-  final String postId;
-
-  @override
-  State<Comments> createState() => _CommentsState();
-}
-
-class _CommentsState extends State<Comments> {
-  TextEditingController? userCommentController;
-  final GlobalKey<FormState> _userCommentKey = GlobalKey<FormState>();
-
-  final ScrollController _controller = ScrollController();
-
-  Future<bool> userComment(
-      String postId, String userId, String userComment) async {
-    final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/comment/store"),
-      body: {
-        'post_id': postId,
-        'user_id': userId,
-        'comment': userComment,
-      },
-    );
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    userCommentController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    userCommentController!.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.60,
-                child: ListView.builder(
-                  itemCount: widget.comments.length,
-                  physics: const BouncingScrollPhysics(),
-                  controller: _controller,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Column(
+            imgPost.isEmpty
+                ? const SizedBox(height: 20)
+                : const SizedBox(height: 5),
+            imgPost.isNotEmpty
+                ? Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      top: size.height * 0.01,
+                      bottom: size.height * 0.01,
+                    ),
+                    child: Column(
                       children: [
-                        ListTile(
-                          dense: true,
-                          leading: CachedNetworkImage(
-                            imageUrl: widget
-                                .comments[(widget.comments.length - 1) - index]
-                                .ownerAvatar,
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.96,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          title: Text(
-                            widget
-                                .comments[(widget.comments.length - 1) - index]
-                                .owner,
-                            style: GoogleFonts.sarabun(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: ExpandablePageView.builder(
+                            controller: controller,
+                            itemCount: imgPost.length,
+                            itemBuilder: (context, index) {
+                              return CachedNetworkImage(
+                                imageUrl: imgPost[index].image,
+                                fit: BoxFit.contain,
+                                placeholder: (context, url) => Container(
+                                  color: const Color(0xFFEBEBEB),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              );
+                            },
                           ),
-                          subtitle: Text(
-                            widget
-                                .comments[(widget.comments.length - 1) - index]
-                                .comment!,
-                            style: GoogleFonts.sarabun(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
+                        ),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: SmoothPageIndicator(
+                                controller: controller,
+                                count: imgPost.length,
+                                effect: const WormEffect(
+                                  spacing: 20,
+                                  dotHeight: 10,
+                                  dotWidth: 10,
+                                  activeDotColor: mainGreen,
+                                  dotColor: Colors.black26,
+                                ),
+                                onDotClicked: (index) =>
+                                    controller.animateToPage(
+                                  index,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
-              ),
-            ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            const Divider(color: Colors.black38),
             Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
+              padding: const EdgeInsetsDirectional.fromSTEB(40, 0, 40, 10),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Form(
-                      key: _userCommentKey,
-                      child: TextFormField(
-                        controller: userCommentController,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'แสดงความคิดเห็น',
-                          labelStyle: GoogleFonts.sarabun(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFF3F3F3),
-                          suffixIcon: const Icon(
-                            Icons.keyboard,
-                            color: Color(0xFF757575),
-                            size: 22,
-                          ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                        child: LikeButton(
+                          likeCount: countLike,
+                          likeBuilder: (isLiked) {
+                            final color = isLiked ? Colors.red : Colors.grey;
+
+                            return Icon(Icons.favorite, color: color, size: 24);
+                          },
+                          countBuilder: (likeCount, isLiked, text) {
+                            final color = isLiked ? Colors.red : Colors.grey;
+
+                            return Text(
+                              text,
+                              style: GoogleFonts.sarabun(
+                                color: color,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
+                          isLiked: (() {
+                            for (var like in likes) {
+                              if (like.userId == userId) {
+                                isUserLike = true;
+                                break;
+                              } else {
+                                isUserLike = false;
+                              }
+                            }
+                            return isUserLike;
+                          }()),
+                          onTap: (isLiked) =>
+                              userLike(isLiked, postId, userId).then((isLike) {
+                            if (isLike == true) {
+                              isUserLike = !isUserLike;
+                            }
+                            return isUserLike;
+                          }),
                         ),
-                        style: GoogleFonts.sarabun(),
-                        validator: MultiValidator([
-                          RequiredValidator(
-                            errorText: "ไม่สามารถค่าว่างได้",
+                      ),
+                      // Row(
+                      //   mainAxisSize: MainAxisSize.max,
+                      //   children: const [
+                      //     Icon(
+                      //       Icons.monetization_on_outlined,
+                      //       color: Colors.grey,
+                      //       size: 24,
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
+
+                  // comment widget
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          enableDrag: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
                           ),
-                        ]),
+                          builder: (context) => StatefulBuilder(
+                            builder: (context, setState) => SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: CommentsWidget(
+                                comments: comments,
+                                userId: userId,
+                                postId: postId,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                4, 0, 4, 0),
+                            child: Text(
+                              countComment.toString(),
+                              style: GoogleFonts.sarabun(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.mode_comment_outlined,
+                            color: Colors.grey,
+                            size: 24,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      if (_userCommentKey.currentState?.validate() ?? false) {
-                        userComment(
-                          widget.postId,
-                          widget.userId,
-                          userCommentController!.text,
-                        ).then((value) {
-                          if (value == false) {
-                            Fluttertoast.showToast(
-                              msg:
-                                  "ดูเหมือนมีอะไรผิดพลาด กรุณาลองอีกครั้งในภายหลัง",
-                              backgroundColor: Colors.redAccent,
-                              textColor: Colors.black,
-                            );
-                          } else {
-                            Get.offAllNamed('/home');
-                          }
-                        });
-                        // print(userCommentController);
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.send,
-                      color: darkGray,
-                    ),
-                  ),
+
+                  // share widget
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.max,
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
+                  //       child: Text(
+                  //         '0 Share',
+                  //         style: GoogleFonts.sarabun(
+                  //           color: Colors.grey,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     const Icon(
+                  //       Icons.share_sharp,
+                  //       color: Colors.grey,
+                  //       size: 24,
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
@@ -1115,171 +1173,17 @@ class _CommentsState extends State<Comments> {
   }
 }
 
-Widget newsFeedLoading(
-  BuildContext context,
-  Size size,
-) {
-  return Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(
-      size.width * 0.03,
-      0,
-      size.width * 0.03,
-      size.height * 0.02,
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              size.height * 0.01,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.all(1),
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.white,
-                    highlightColor: lightGrey,
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: lightGrey,
-                        child: Container(
-                          color: Colors.white,
-                          height: 10,
-                          width: 80,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: lightGrey,
-                        child: Container(
-                          color: Colors.white,
-                          height: 10,
-                          width: 120,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Shimmer.fromColors(
-            baseColor: Colors.white,
-            highlightColor: lightGrey,
-            child: Container(
-              color: Colors.white,
-              height: 250,
-              width: double.infinity,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              size.width * 0.02,
-              size.height * 0.01,
-              size.width * 0.02,
-              size.height * 0.01,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                      child: LikeButton(
-                        size: 24,
-                        likeCount: 21,
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const Icon(
-                            Icons.mode_comment_outlined,
-                            color: Colors.grey,
-                            size: 24,
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                4, 0, 0, 0),
-                            child: Text(
-                              '4',
-                              style: GoogleFonts.sarabun(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Row(
-                    //   mainAxisSize: MainAxisSize.max,
-                    //   children: const [
-                    //     Icon(
-                    //       Icons.monetization_on_outlined,
-                    //       color: Colors.grey,
-                    //       size: 24,
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),
-                      child: Text(
-                        '4k Share',
-                        style: GoogleFonts.sarabun(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.share_sharp,
-                      color: Colors.grey,
-                      size: 24,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
+Future<bool> userLike(bool isLiked, String postId, String userId) async {
+  final response = await http.post(
+    Uri.parse("$currentApi/click/like"),
+    body: {
+      'post_id': postId,
+      'user_id': userId,
+    },
   );
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
 }

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/user/car_data_calculated.dart';
 
+import '../../utils/api_url.dart';
 import '../../utils/colors.dart';
 import '../../models/user/all_my_car.dart';
 import '../../models/user/my_car_details.dart';
@@ -24,10 +25,10 @@ class MyCarWidget extends StatefulWidget {
 }
 
 class _MyCarWidgetState extends State<MyCarWidget> {
+  CarDataCal? carDataCal;
+  MyCarDetails? carDetails;
   bool isLoaded = true;
   AllMyCar? myCar;
-  MyCarDetails? carDetails;
-  CarDataCal? carDataCal;
 
   bool _haveCar = false;
   bool _isMultiCar = false;
@@ -83,7 +84,7 @@ class _MyCarWidgetState extends State<MyCarWidget> {
         );
       },
     );
-    var url = Uri.parse('https://api.racroad.com/api/mycar/destroy/$carId');
+    var url = Uri.parse('$currentApi/mycar/destroy/$carId');
     var response = await http.delete(url);
 
     if (response.statusCode == 200) {

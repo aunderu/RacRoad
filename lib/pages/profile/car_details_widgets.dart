@@ -12,13 +12,14 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:rac_road/models/user/car_data_calculated.dart';
 
+import '../../utils/api_url.dart';
 import '../../utils/colors.dart';
 import '../../models/data/menu_items.dart';
-import '../../models/menu_item.dart';
+import '../../models/data/menu_item.dart';
 import '../../models/user/my_car_details.dart';
 
 void deleteCar(String carId) async {
-  var url = Uri.parse('https://api.racroad.com/api/mycar/destroy/$carId');
+  var url = Uri.parse('$currentApi/mycar/destroy/$carId');
   var response = await http.delete(url);
 
   if (response.statusCode == 200) {
@@ -1298,7 +1299,7 @@ class _OilWidgetsState extends State<OilWidgets> {
       String date,
     ) async {
       final response = await http.post(
-        Uri.parse("https://api.racroad.com/api/upgc/store"),
+        Uri.parse("$currentApi/upgc/store"),
         body: {
           'mycar_id': carId,
           'type': problemType,
@@ -2272,12 +2273,18 @@ class TireWidgets extends StatefulWidget {
 }
 
 class _TireWidgetsState extends State<TireWidgets> {
+  DateTime date = DateTime.now();
+  TextEditingController mileNextController = TextEditingController();
+  TextEditingController mileNowController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController mileNowController = TextEditingController();
-  TextEditingController mileNextController = TextEditingController();
-
-  DateTime date = DateTime.now();
+  @override
+  void dispose() {
+    mileNowController.dispose();
+    mileNextController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -2285,13 +2292,6 @@ class _TireWidgetsState extends State<TireWidgets> {
 
     mileNowController = TextEditingController();
     mileNextController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    mileNowController.dispose();
-    mileNextController.dispose();
-    super.dispose();
   }
 
   Future<bool> saveUpgc(
@@ -2302,7 +2302,7 @@ class _TireWidgetsState extends State<TireWidgets> {
     String date,
   ) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/upgc/store"),
+      Uri.parse("$currentApi/upgc/store"),
       body: {
         'mycar_id': carId,
         'type': problemType,
@@ -2961,12 +2961,18 @@ class BatteryWidgets extends StatefulWidget {
 }
 
 class _BatteryWidgetsState extends State<BatteryWidgets> {
+  DateTime date = DateTime.now();
+  TextEditingController mileNextController = TextEditingController();
+  TextEditingController mileNowController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController mileNowController = TextEditingController();
-  TextEditingController mileNextController = TextEditingController();
-
-  DateTime date = DateTime.now();
+  @override
+  void dispose() {
+    mileNowController.dispose();
+    mileNextController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -2974,13 +2980,6 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
 
     mileNowController = TextEditingController();
     mileNextController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    mileNowController.dispose();
-    mileNextController.dispose();
-    super.dispose();
   }
 
   Future<bool> saveUpgc(
@@ -2991,7 +2990,7 @@ class _BatteryWidgetsState extends State<BatteryWidgets> {
     String date,
   ) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/upgc/store"),
+      Uri.parse("$currentApi/upgc/store"),
       body: {
         'mycar_id': carId,
         'type': problemType,
@@ -3488,12 +3487,18 @@ class AirWidgets extends StatefulWidget {
 }
 
 class _AirWidgetsState extends State<AirWidgets> {
+  DateTime date = DateTime.now();
+  TextEditingController mileNextController = TextEditingController();
+  TextEditingController mileNowController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController mileNowController = TextEditingController();
-  TextEditingController mileNextController = TextEditingController();
-
-  DateTime date = DateTime.now();
+  @override
+  void dispose() {
+    mileNowController.dispose();
+    mileNextController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -3501,13 +3506,6 @@ class _AirWidgetsState extends State<AirWidgets> {
 
     mileNowController = TextEditingController();
     mileNextController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    mileNowController.dispose();
-    mileNextController.dispose();
-    super.dispose();
   }
 
   Future<bool> saveUpgc(
@@ -3518,7 +3516,7 @@ class _AirWidgetsState extends State<AirWidgets> {
     String date,
   ) async {
     final response = await http.post(
-      Uri.parse("https://api.racroad.com/api/upgc/store"),
+      Uri.parse("$currentApi/upgc/store"),
       body: {
         'mycar_id': carId,
         'type': problemType,
