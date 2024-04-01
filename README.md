@@ -1,6 +1,4 @@
-# project_b
-
-A new Flutter project.
+# RacRoad Project
 
 ## Getting Started
 
